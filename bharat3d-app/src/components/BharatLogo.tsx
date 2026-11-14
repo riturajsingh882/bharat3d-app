@@ -3,12 +3,14 @@ import React from 'react';
 interface BharatLogoProps {
   size?: 'sm' | 'md' | 'lg';
   showSubtitle?: boolean;
+  compactOnMobile?: boolean;
   className?: string;
 }
 
 export const BharatLogo: React.FC<BharatLogoProps> = ({
   size = 'md',
   showSubtitle = true,
+  compactOnMobile = false,
   className = ''
 }) => {
   const isSm = size === 'sm';
@@ -58,7 +60,7 @@ export const BharatLogo: React.FC<BharatLogoProps> = ({
       </div>
 
       {/* Brand Name Typography */}
-      <div className="flex flex-col justify-center">
+      <div className={`${compactOnMobile ? 'hidden md:flex' : 'flex'} flex-col justify-center`}>
         <div className="flex items-center gap-2 leading-none">
           <span className={`font-serif font-bold tracking-normal text-white ${isSm ? 'text-base' : isLg ? 'text-2xl' : 'text-lg'}`}>
             BHARAT

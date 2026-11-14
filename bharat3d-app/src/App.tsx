@@ -7,7 +7,7 @@ import { SourceModal } from './components/SourceModal';
 import { LoadingScreen } from './components/LoadingScreen';
 import { HistoricalTimeline } from './components/HistoricalTimeline';
 import { StateComparisonModal } from './components/StateComparisonModal';
-import { PanelLeftClose, PanelLeftOpen, Mountain, Landmark, Scroll, Compass, AlertTriangle, Route } from 'lucide-react';
+import { PanelLeftClose, PanelLeftOpen, Mountain, Landmark, Scroll, Compass, AlertTriangle, Route, ChevronUp, ChevronDown, Clock } from 'lucide-react';
 import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo } from './types';
 import { HISTORICAL_ERAS } from './data/historicalEras';
 
@@ -38,6 +38,9 @@ export function App() {
   // Historical Atlas State
   const [selectedHistoricalPeriod, setSelectedHistoricalPeriod] = useState<HistoricalPeriodId>('maurya');
   const [isTimelineOpen, setIsTimelineOpen] = useState<boolean>(false);
+  const [isTimelineCollapsed, setIsTimelineCollapsed] = useState<boolean>(
+    typeof window !== 'undefined' && window.innerWidth < 768
+  );
 
   // State Comparison Studio State
   const [isComparisonModalOpen, setIsComparisonModalOpen] = useState<boolean>(false);
@@ -454,12 +457,35 @@ export function App() {
 
       {/* Universal Historical Timeline Slider - Docked at Bottom Center */}
       {isTimelineOpen && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-[92%] max-w-4xl">
-          <HistoricalTimeline
-            currentEraId={selectedHistoricalPeriod}
-            onSelectEra={(era) => setSelectedHistoricalPeriod(era)}
-            onClose={() => setIsTimelineOpen(false)}
-          />
+        <div className="fixed bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-40 w-[94%] max-w-4xl flex flex-col items-center gap-1.5">
+          {/* Small collapse / expand toggle, sitting above the timeline bar */}
+          <button
+            onClick={() => setIsTimelineCollapsed((v) => !v)}
+            className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/90 text-[#C9A227] border border-[#C9A227]/40 hover:bg-slate-800 transition-colors shadow-lg backdrop-blur-md text-xs font-semibold"
+            title={isTimelineCollapsed ? 'Expand timeline' : 'Collapse timeline'}
+          >
+            {isTimelineCollapsed ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            <span>{isTimelineCollapsed ? 'Show Timeline' : 'Hide Timeline'}</span>
+          </button>
+
+          {isTimelineCollapsed ? (
+            <button
+              onClick={() => setIsTimelineCollapsed(false)}
+              className="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl glass-panel-glow border border-amber-500/40 text-left"
+            >
+              <span className="flex items-center gap-2 text-amber-300 font-semibold truncate text-sm min-w-0">
+                <Clock className="w-4 h-4 shrink-0" />
+                <span className="truncate">{activeEraMeta.name}</span>
+              </span>
+              <span className="text-xs text-neutral-400 font-mono shrink-0">{activeEraMeta.yearApprox}</span>
+            </button>
+          ) : (
+            <HistoricalTimeline
+              currentEraId={selectedHistoricalPeriod}
+              onSelectEra={(era) => setSelectedHistoricalPeriod(era)}
+              onClose={() => setIsTimelineOpen(false)}
+            />
+          )}
         </div>
       )}
 

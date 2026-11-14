@@ -246,6 +246,15 @@ button, input, select, textarea {
   background: var(--accent);
 }
 
+/* Hide scrollbar for horizontal swipe areas (mobile top bar) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* --------------------------------------------------------------------------
    MapLibre control overrides — refined gold accent
    -------------------------------------------------------------------------- */

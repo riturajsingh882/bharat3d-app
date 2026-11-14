@@ -21,6 +21,17 @@ import type { ActiveLayer, HistoricalPeriodId, ReligionFilter } from '../types';
 import { HISTORICAL_ERAS } from '../data/historicalEras';
 import { BharatLogo } from './BharatLogo';
 
+// Small status light on each main section header:
+// green = at least one layer in the section is active (shown on the map),
+// red = no layer in the section is active.
+const ActiveDot: React.FC<{ on: boolean }> = ({ on }) => (
+  <span
+    className={`h-2 w-2 shrink-0 rounded-full ${on ? 'bg-emerald-400 shadow-[0_0_7px_#34d399]' : 'bg-rose-500 shadow-[0_0_7px_#f43f5e]'}`}
+    title={on ? 'Active — a layer here is shown on the map' : 'Inactive — no layer here is shown'}
+    aria-label={on ? 'Section active' : 'Section inactive'}
+  />
+);
+
 interface SidebarNavProps {
   activeLayers: Set<ActiveLayer>;
   toggleLayer: (layer: ActiveLayer) => void;
@@ -61,6 +72,8 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
     setOpenSections(prev => ({ ...prev, [sec]: !prev[sec] }));
   };
 
+  const sectionActive = (layers: ActiveLayer[]) => layers.some((l) => activeLayers.has(l));
+
   const currentEra = HISTORICAL_ERAS.find(e => e.id === selectedEraId) || HISTORICAL_ERAS[0];
 
   return (
@@ -81,6 +94,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
             className="w-full px-3.5 py-3 flex items-center justify-between text-sm font-serif font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200 transition-colors bg-[#17130d]"
           >
             <span className="flex items-center gap-2">
+              <ActiveDot on={sectionActive(['historical_atlas'])} />
               <Landmark className="w-4 h-4 text-amber-400" />
               <span>Historical Atlas & Time Machine</span>
             </span>
@@ -162,6 +176,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
             className="w-full px-3.5 py-3 flex items-center justify-between text-sm font-serif font-semibold uppercase tracking-wide text-teal-300 hover:text-teal-200 transition-colors bg-[#0b1717]"
           >
             <span className="flex items-center gap-2">
+              <ActiveDot on={sectionActive(['archaeological_sites'])} />
               <Scroll className="w-4 h-4 text-teal-400" />
               <span>Civilizations & Archaeology</span>
             </span>
@@ -205,6 +220,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
             className="w-full px-3.5 py-3 flex items-center justify-between text-sm font-serif font-semibold uppercase tracking-wide text-sky-300 hover:text-sky-200 transition-colors bg-[#0b141d]"
           >
             <span className="flex items-center gap-2">
+              <ActiveDot on={sectionActive(['trade_routes'])} />
               <Compass className="w-4 h-4 text-sky-400" />
               <span>Trade Routes & Connectivity</span>
             </span>
@@ -246,6 +262,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
             className="w-full px-3.5 py-3 flex items-center justify-between text-sm font-serif font-semibold uppercase tracking-wide text-orange-300 hover:text-orange-200 transition-colors bg-[#1a110a]"
           >
             <span className="flex items-center gap-2">
+              <ActiveDot on={sectionActive(['roads'])} />
               <Route className="w-4 h-4 text-orange-400" />
               <span>National Highways &amp; Expressways</span>
             </span>
@@ -287,6 +304,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
             className="w-full px-3.5 py-3 flex items-center justify-between text-sm font-serif font-semibold uppercase tracking-wide text-rose-300 hover:text-rose-200 transition-colors bg-[#1a0f12]"
           >
             <span className="flex items-center gap-2">
+              <ActiveDot on={sectionActive(['disaster_seismic'])} />
               <AlertTriangle className="w-4 h-4 text-rose-500" />
               <span>Disaster & Seismic Risk</span>
             </span>
@@ -328,6 +346,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
             className="w-full px-3.5 py-3 flex items-center justify-between text-sm font-serif font-semibold uppercase tracking-wide text-white hover:text-[#C9A227] transition-colors bg-[#131720]"
           >
             <span className="flex items-center gap-2">
+              <ActiveDot on={sectionActive(['political_states', 'state_labels', 'political_districts'])} />
               <MapPin className="w-4 h-4 text-[#C9A227]" />
               Political Boundaries
             </span>
@@ -393,6 +412,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
             className="w-full px-3.5 py-3 flex items-center justify-between text-sm font-serif font-semibold uppercase tracking-wide text-white hover:text-amber-400 transition-colors bg-[#131720]"
           >
             <span className="flex items-center gap-2">
+              <ActiveDot on={sectionActive(['soils'])} />
               <TreePine className="w-4 h-4 text-amber-500" />
               Soil Geography (ICAR)
             </span>
@@ -439,6 +459,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
             className="w-full px-3.5 py-3 flex items-center justify-between text-sm font-serif font-semibold uppercase tracking-wide text-white hover:text-[#C9A227] transition-colors bg-[#131720]"
           >
             <span className="flex items-center gap-2">
+              <ActiveDot on={sectionActive(['pop_density', 'pop_total', 'literacy', 'sex_ratio', 'religion'])} />
               <Users className="w-4 h-4 text-[#C9A227]" />
               Demographic Intelligence
             </span>
@@ -555,6 +576,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
             className="w-full px-3.5 py-3 flex items-center justify-between text-sm font-serif font-semibold uppercase tracking-wide text-white hover:text-sky-400 transition-colors bg-[#131720]"
           >
             <span className="flex items-center gap-2">
+              <ActiveDot on={sectionActive(['rivers'])} />
               <Waves className="w-4 h-4 text-sky-400" />
               River Systems & Tributaries
             </span>
@@ -597,6 +619,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
             className="w-full px-3.5 py-3 flex items-center justify-between text-sm font-serif font-semibold uppercase tracking-wide text-white hover:text-emerald-400 transition-colors bg-[#131720]"
           >
             <span className="flex items-center gap-2">
+              <ActiveDot on={sectionActive(['mountains'])} />
               <Mountain className="w-4 h-4 text-emerald-400" />
               Mountains & Orogeny
             </span>

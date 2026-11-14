@@ -446,7 +446,7 @@ export function App() {
 
         {/* Right Information Intelligence Panel (Sliding Dossier Drawer) */}
         {selectedFeature && (
-          <div className="w-full sm:w-96 h-full relative z-30 transition-all duration-300 shadow-2xl animate-in slide-in-from-right">
+          <div className="absolute bottom-0 left-0 right-0 z-30 h-[60vh] w-full overflow-hidden rounded-t-2xl transition-all duration-300 shadow-2xl animate-in slide-in-from-bottom-4 sm:relative sm:inset-auto sm:h-full sm:w-96 sm:rounded-none">
             <InfoPanel
               feature={selectedFeature}
               onClose={() => setSelectedFeature(null)}

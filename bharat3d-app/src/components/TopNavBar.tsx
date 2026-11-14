@@ -229,9 +229,9 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
   };
 
   return (
-    <header className="h-14 px-2 md:px-4 bg-[#07090d]/95 backdrop-blur-xl border-b border-white/10 flex items-center justify-between gap-1 md:gap-2 z-30 select-none shadow-[0_4px_30px_rgba(0,0,0,0.8)] font-sans">
+    <header className="h-auto md:h-14 px-2 md:px-4 py-1.5 md:py-0 bg-[#07090d]/95 backdrop-blur-xl border-b border-white/10 flex flex-wrap md:flex-nowrap items-center justify-between gap-1.5 md:gap-2 z-30 shrink-0 select-none shadow-[0_4px_30px_rgba(0,0,0,0.8)] font-sans">
       {/* Left: Fresh New BHARAT 3D Logo & Breadcrumb Focus */}
-      <div className="flex items-center gap-3">
+      <div className="order-1 flex items-center gap-3">
         <BharatLogo size="sm" showSubtitle={false} compactOnMobile />
 
         <div className="h-4 w-px bg-white/15 mx-1 hidden sm:block" />
@@ -262,7 +262,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
       </div>
 
       {/* Middle: Universal Search Bar */}
-      <div className="flex-1 min-w-0 max-w-md mx-2 md:mx-4 relative">
+      <div className="order-3 w-full min-w-0 relative md:order-2 md:w-auto md:flex-1 md:max-w-md md:mx-4">
         <form onSubmit={handleSearchSubmit} className="relative">
           <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
@@ -299,7 +299,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
                   <span className="truncate font-semibold">{entry.name}</span>
                 </span>
                 {entry.sub && (
-                  <span className="text-xs text-neutral-400 font-medium truncate max-w-[45%] shrink-0">{entry.sub}</span>
+                  <span className="hidden sm:block text-xs text-neutral-400 font-medium truncate max-w-[45%] shrink-0">{entry.sub}</span>
                 )}
               </button>
             ))}
@@ -308,7 +308,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
       </div>
 
       {/* Right Controls: Views, Basemap, 3D, Exaggeration, Sources */}
-      <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
+      <div className="order-2 ml-auto md:order-3 md:ml-0 flex items-center gap-1.5 md:gap-2 shrink-0">
         {/* Camera Cinema Presets */}
         <div className="relative hidden md:block">
           <button

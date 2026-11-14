@@ -1,0 +1,29 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    { "type": "Feature", "properties": { "name": "National Capital Region (Delhi)", "type": "Megacity Hub", "color": "#00f0ff", "radius": 7, "intensity": "extreme" }, "geometry": { "type": "Point", "coordinates": [77.2090, 28.6139] } },
+    { "type": "Feature", "properties": { "name": "Mumbai Metropolitan Region", "type": "Megacity Hub", "color": "#fbbf24", "radius": 8, "intensity": "extreme" }, "geometry": { "type": "Point", "coordinates": [72.8777, 19.0760] } },
+    { "type": "Feature", "properties": { "name": "Bengaluru Innovation Hub", "type": "Tech Hub", "color": "#00f0ff", "radius": 7, "intensity": "high" }, "geometry": { "type": "Point", "coordinates": [77.5946, 12.9716] } },
+    { "type": "Feature", "properties": { "name": "Kolkata Fluvial Hub", "type": "Megacity Hub", "color": "#00f0ff", "radius": 7, "intensity": "high" }, "geometry": { "type": "Point", "coordinates": [88.3639, 22.5726] } },
+    { "type": "Feature", "properties": { "name": "Chennai Coastal Hub", "type": "Industrial Hub", "color": "#fbbf24", "radius": 7, "intensity": "high" }, "geometry": { "type": "Point", "coordinates": [80.2707, 13.0827] } },
+    { "type": "Feature", "properties": { "name": "Hyderabad Cyber Hub", "type": "Tech Hub", "color": "#00f0ff", "radius": 6.5, "intensity": "high" }, "geometry": { "type": "Point", "coordinates": [78.4867, 17.3850] } },
+    { "type": "Feature", "properties": { "name": "Ahmedabad Sabarmati Hub", "type": "Industrial Hub", "color": "#fbbf24", "radius": 6, "intensity": "high" }, "geometry": { "type": "Point", "coordinates": [72.5714, 23.0225] } },
+    { "type": "Feature", "properties": { "name": "Pune Deccan Hub", "type": "Education & Auto Hub", "color": "#00f0ff", "radius": 5.5, "intensity": "moderate" }, "geometry": { "type": "Point", "coordinates": [73.8567, 18.5204] } },
+    { "type": "Feature", "properties": { "name": "Surat Coastal Diamond Hub", "type": "Industrial Hub", "color": "#fbbf24", "radius": 5.5, "intensity": "moderate" }, "geometry": { "type": "Point", "coordinates": [72.8311, 21.1702] } },
+    { "type": "Feature", "properties": { "name": "Jaipur Desert Gateway", "type": "Heritage Hub", "color": "#fbbf24", "radius": 5, "intensity": "moderate" }, "geometry": { "type": "Point", "coordinates": [75.7873, 26.9124] } },
+    { "type": "Feature", "properties": { "name": "Lucknow Awadh Hub", "type": "Administrative Hub", "color": "#00f0ff", "radius": 5.5, "intensity": "moderate" }, "geometry": { "type": "Point", "coordinates": [80.9462, 26.8467] } },
+    { "type": "Feature", "properties": { "name": "Kanpur Ganga Basin", "type": "Industrial Hub", "color": "#00f0ff", "radius": 5, "intensity": "moderate" }, "geometry": { "type": "Point", "coordinates": [80.3319, 26.4499] } },
+    { "type": "Feature", "properties": { "name": "Patna Ganga Heartland", "type": "Historic Basin Hub", "color": "#00f0ff", "radius": 5, "intensity": "moderate" }, "geometry": { "type": "Point", "coordinates": [85.1376, 25.5941] } },
+    { "type": "Feature", "properties": { "name": "Nagpur Central Zero Mile", "type": "Logistics Hub", "color": "#fbbf24", "radius": 5, "intensity": "moderate" }, "geometry": { "type": "Point", "coordinates": [79.0882, 21.1458] } },
+    { "type": "Feature", "properties": { "name": "Indore Malwa Hub", "type": "Commercial Hub", "color": "#fbbf24", "radius": 4.5, "intensity": "moderate" }, "geometry": { "type": "Point", "coordinates": [75.8577, 22.7196] } },
+    { "type": "Feature", "properties": { "name": "Bhopal Lake Hub", "type": "Administrative Hub", "color": "#00f0ff", "radius": 4.5, "intensity": "moderate" }, "geometry": { "type": "Point", "coordinates": [77.4126, 23.2599] } },
+    { "type": "Feature", "properties": { "name": "Visakhapatnam Eastern Coast", "type": "Port & Naval Hub", "color": "#00f0ff", "radius": 5, "intensity": "moderate" }, "geometry": { "type": "Point", "coordinates": [83.2185, 17.6868] } },
+    { "type": "Feature", "properties": { "name": "Kochi Malabar Port", "type": "Port Hub", "color": "#00f0ff", "radius": 5, "intensity": "moderate" }, "geometry": { "type": "Point", "coordinates": [76.2673, 9.9312] } },
+    { "type": "Feature", "properties": { "name": "Guwahati Brahmaputra Gateway", "type": "Northeast Hub", "color": "#00f0ff", "radius": 5, "intensity": "moderate" }, "geometry": { "type": "Point", "coordinates": [91.7362, 26.1445] } },
+    { "type": "Feature", "properties": { "name": "Chandigarh Shivalik Hub", "type": "Planned City Hub", "color": "#00f0ff", "radius": 4.5, "intensity": "moderate" }, "geometry": { "type": "Point", "coordinates": [76.7794, 30.7333] } },
+    { "type": "Feature", "properties": { "name": "Srinagar Kashmir Valley", "type": "Himalayan Hub", "color": "#00f0ff", "radius": 4.5, "intensity": "moderate" }, "geometry": { "type": "Point", "coordinates": [74.7973, 34.0837] } },
+    { "type": "Feature", "properties": { "name": "Varanasi Kashi Ganga", "type": "Spiritual Heartland", "color": "#fbbf24", "radius": 5, "intensity": "moderate" }, "geometry": { "type": "Point", "coordinates": [82.9739, 25.3176] } },
+    { "type": "Feature", "properties": { "name": "Bhubaneswar Kalinga Hub", "type": "Eastern Smart City", "color": "#00f0ff", "radius": 4.5, "intensity": "moderate" }, "geometry": { "type": "Point", "coordinates": [85.8245, 20.2961] } },
+    { "type": "Feature", "properties": { "name": "Thiruvananthapuram Travancore", "type": "Southern Coastal Hub", "color": "#00f0ff", "radius": 4.5, "intensity": "moderate" }, "geometry": { "type": "Point", "coordinates": [76.9366, 8.5241] } }
+  ]
+}

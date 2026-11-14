@@ -1,0 +1,520 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NH 1",
+        "name": "Srinagar–Kargil–Leh Highway",
+        "category": "National Highway",
+        "from": "Srinagar, J&K",
+        "to": "Leh, Ladakh",
+        "length_km": 422,
+        "states": "Jammu & Kashmir, Ladakh",
+        "lanes": "2",
+        "toll": false,
+        "corridor": "Frontier / Trans-Himalayan",
+        "color": "#f59e0b",
+        "source": "MoRTH / BRO"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[74.80,34.08],[75.30,34.30],[75.75,34.42],[76.13,34.55],[77.58,34.15]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NH 44",
+        "name": "Srinagar–Kanyakumari (North–South Corridor)",
+        "category": "National Highway",
+        "from": "Srinagar, J&K",
+        "to": "Kanyakumari, Tamil Nadu",
+        "length_km": 3745,
+        "states": "J&K, Punjab, Haryana, Delhi, UP, MP, Maharashtra, Telangana, AP, Karnataka, Tamil Nadu",
+        "lanes": "4–6",
+        "toll": true,
+        "corridor": "North–South Corridor",
+        "color": "#f59e0b",
+        "source": "MoRTH / NHAI"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[74.80,34.08],[74.86,32.73],[75.65,32.27],[75.58,31.33],[75.86,30.90],[76.78,30.38],[76.97,29.39],[77.21,28.61],[78.01,27.18],[78.57,25.45],[78.75,23.84],[79.60,22.60],[79.09,21.15],[78.53,19.67],[78.49,17.39],[78.04,15.82],[77.60,14.68],[77.59,12.97],[78.15,11.66],[78.12,9.93],[77.54,8.08]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NH 48",
+        "name": "Delhi–Mumbai–Bengaluru–Chennai (Golden Quadrilateral West)",
+        "category": "National Highway",
+        "from": "Delhi",
+        "to": "Chennai, Tamil Nadu",
+        "length_km": 2807,
+        "states": "Delhi, Haryana, Rajasthan, Gujarat, Maharashtra, Karnataka, Tamil Nadu",
+        "lanes": "4–6",
+        "toll": true,
+        "corridor": "Golden Quadrilateral",
+        "color": "#f59e0b",
+        "source": "MoRTH / NHAI"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[77.21,28.61],[77.03,28.46],[75.79,26.91],[74.64,26.45],[73.71,24.58],[72.57,23.02],[73.18,22.31],[72.83,21.17],[72.88,19.08],[73.86,18.52],[74.02,17.68],[74.24,16.70],[74.50,15.85],[75.12,15.36],[75.92,14.47],[77.10,13.34],[77.59,12.97],[79.13,12.92],[80.27,13.08]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NH 16",
+        "name": "Chennai–Kolkata East Coast Corridor",
+        "category": "National Highway",
+        "from": "Chennai, Tamil Nadu",
+        "to": "Kolkata, West Bengal",
+        "length_km": 1664,
+        "states": "Tamil Nadu, Andhra Pradesh, Odisha, West Bengal",
+        "lanes": "4–6",
+        "toll": true,
+        "corridor": "Golden Quadrilateral",
+        "color": "#f59e0b",
+        "source": "MoRTH / NHAI"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[80.27,13.08],[79.97,14.44],[80.05,15.51],[80.65,16.51],[81.79,17.00],[83.22,17.69],[83.90,18.30],[85.83,20.30],[85.88,20.47],[86.93,21.49],[87.28,22.35],[88.36,22.57]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NH 19",
+        "name": "Delhi–Kolkata Grand Trunk Corridor",
+        "category": "National Highway",
+        "from": "Delhi",
+        "to": "Kolkata, West Bengal",
+        "length_km": 1435,
+        "states": "Delhi, Haryana, UP, Bihar, Jharkhand, West Bengal",
+        "lanes": "4–6",
+        "toll": true,
+        "corridor": "Golden Quadrilateral",
+        "color": "#f59e0b",
+        "source": "MoRTH / NHAI"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[77.21,28.61],[77.67,27.49],[78.01,27.18],[80.33,26.45],[81.85,25.44],[82.97,25.32],[84.01,24.95],[86.43,23.80],[86.98,23.68],[87.31,23.52],[88.36,22.57]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NH 27",
+        "name": "Porbandar–Silchar East–West Corridor",
+        "category": "National Highway",
+        "from": "Porbandar, Gujarat",
+        "to": "Silchar, Assam",
+        "length_km": 3507,
+        "states": "Gujarat, Rajasthan, MP, UP, Bihar, West Bengal, Assam, Meghalaya",
+        "lanes": "4",
+        "toll": true,
+        "corridor": "East–West Corridor",
+        "color": "#f59e0b",
+        "source": "MoRTH / NHAI"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[69.63,21.64],[70.80,22.30],[72.57,23.02],[73.71,24.58],[75.86,25.21],[77.66,25.42],[78.57,25.45],[80.33,26.45],[80.95,26.85],[82.20,26.79],[83.37,26.75],[85.39,26.12],[85.90,26.15],[87.47,25.78],[87.95,26.10],[88.43,26.73],[90.56,26.48],[91.75,26.18],[91.88,25.57],[92.79,24.83]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NH 65",
+        "name": "Pune–Hyderabad–Vijayawada–Machilipatnam",
+        "category": "National Highway",
+        "from": "Pune, Maharashtra",
+        "to": "Machilipatnam, Andhra Pradesh",
+        "length_km": 926,
+        "states": "Maharashtra, Karnataka, Telangana, Andhra Pradesh",
+        "lanes": "4–6",
+        "toll": true,
+        "corridor": "Deccan East–West Link",
+        "color": "#f59e0b",
+        "source": "MoRTH / NHAI"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[73.86,18.52],[75.91,17.66],[76.84,17.34],[78.49,17.39],[79.60,17.14],[80.65,16.51],[81.14,16.19]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NH 66",
+        "name": "Panvel–Kochi–Kanyakumari West Coast Highway",
+        "category": "National Highway",
+        "from": "Panvel, Maharashtra",
+        "to": "Kanyakumari, Tamil Nadu",
+        "length_km": 1640,
+        "states": "Maharashtra, Goa, Karnataka, Kerala, Tamil Nadu",
+        "lanes": "2–4",
+        "toll": true,
+        "corridor": "West Coastal Corridor",
+        "color": "#f59e0b",
+        "source": "MoRTH / NHAI"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[73.11,18.99],[73.31,16.99],[73.83,15.50],[74.13,14.81],[74.86,12.91],[75.78,11.26],[76.27,9.93],[76.95,8.52],[77.54,8.08]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NH 30",
+        "name": "Sitarganj–Lucknow–Raipur–Jagdalpur",
+        "category": "National Highway",
+        "from": "Sitarganj, Uttarakhand",
+        "to": "Jagdalpur, Chhattisgarh",
+        "length_km": 1984,
+        "states": "Uttarakhand, UP, MP, Chhattisgarh",
+        "lanes": "2–4",
+        "toll": false,
+        "corridor": "Central Peninsular Artery",
+        "color": "#f59e0b",
+        "source": "MoRTH / NHAI"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[79.70,28.93],[79.42,28.37],[80.95,26.85],[81.85,25.44],[81.30,24.53],[79.95,23.18],[80.37,22.60],[81.63,21.25],[81.99,19.08]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NH 53",
+        "name": "Surat–Nagpur–Paradip Corridor",
+        "category": "National Highway",
+        "from": "Surat, Gujarat",
+        "to": "Paradip, Odisha",
+        "length_km": 1779,
+        "states": "Gujarat, Maharashtra, Chhattisgarh, Odisha",
+        "lanes": "2–4",
+        "toll": true,
+        "corridor": "Central India East–West Link",
+        "color": "#f59e0b",
+        "source": "MoRTH / NHAI"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[72.83,21.17],[74.78,20.90],[75.56,21.01],[77.00,20.70],[77.75,20.93],[79.09,21.15],[81.63,21.25],[83.98,21.47],[85.88,20.47],[86.61,20.31]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NH 52",
+        "name": "Sangrur–Indore–Ankola Corridor",
+        "category": "National Highway",
+        "from": "Sangrur, Punjab",
+        "to": "Ankola, Karnataka",
+        "length_km": 2317,
+        "states": "Punjab, Haryana, Rajasthan, MP, Maharashtra, Karnataka",
+        "lanes": "2–4",
+        "toll": true,
+        "corridor": "Western Meridian Corridor",
+        "color": "#f59e0b",
+        "source": "MoRTH / NHAI"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[75.85,30.25],[75.72,29.15],[74.97,28.30],[75.79,26.91],[75.86,25.21],[75.86,22.72],[75.34,19.88],[75.91,17.66],[75.72,16.82],[75.12,15.36],[74.25,14.66]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NH 9",
+        "name": "Malout–Haridwar–Pithoragarh Highway",
+        "category": "National Highway",
+        "from": "Malout, Punjab",
+        "to": "Pithoragarh, Uttarakhand",
+        "length_km": 811,
+        "states": "Punjab, Haryana, Uttar Pradesh, Uttarakhand",
+        "lanes": "2–4",
+        "toll": false,
+        "corridor": "Trans-Himalayan Foothill Link",
+        "color": "#f59e0b",
+        "source": "MoRTH / NHAI"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[74.19,30.19],[74.94,30.21],[76.78,30.38],[78.16,29.95],[79.03,28.81],[79.42,28.37],[80.69,27.57],[80.20,29.58]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NH 34",
+        "name": "Gangotri–Kanpur–Lakhnadon Highway",
+        "category": "National Highway",
+        "from": "Gangotri, Uttarakhand",
+        "to": "Lakhnadon, Madhya Pradesh",
+        "length_km": 1426,
+        "states": "Uttarakhand, Uttar Pradesh, Madhya Pradesh",
+        "lanes": "2–4",
+        "toll": false,
+        "corridor": "Ganga Valley Artery",
+        "color": "#f59e0b",
+        "source": "MoRTH / NHAI"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[78.94,30.99],[78.29,30.09],[78.16,29.95],[78.13,29.37],[78.78,28.84],[79.42,28.37],[80.33,26.45],[80.86,25.18],[80.82,24.58],[79.95,23.18],[79.60,22.60]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NH 15",
+        "name": "Samakhiali–Ajmer–Pathankot Corridor",
+        "category": "National Highway",
+        "from": "Samakhiali, Gujarat",
+        "to": "Pathankot, Punjab",
+        "length_km": 1526,
+        "states": "Gujarat, Rajasthan, Punjab",
+        "lanes": "2–4",
+        "toll": false,
+        "corridor": "Thar Frontier Corridor",
+        "color": "#f59e0b",
+        "source": "MoRTH / NHAI"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[70.50,23.30],[71.60,23.83],[72.43,24.17],[73.71,24.58],[74.64,26.45],[75.79,26.91],[73.31,28.02],[73.88,29.92],[74.02,30.40],[74.87,31.63],[75.65,32.27]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NH 2",
+        "name": "Dibrugarh–Kohima–Imphal–Tuipang (North-East Corridor)",
+        "category": "National Highway",
+        "from": "Dibrugarh, Assam",
+        "to": "Tuipang, Mizoram",
+        "length_km": 1326,
+        "states": "Assam, Nagaland, Manipur, Mizoram",
+        "lanes": "2",
+        "toll": false,
+        "corridor": "North-East Meridian",
+        "color": "#f59e0b",
+        "source": "MoRTH / NHAI"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[94.91,27.47],[94.22,26.75],[94.11,25.67],[93.94,24.82],[92.72,23.73],[93.25,22.31]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NE-4",
+        "name": "Delhi–Mumbai Expressway",
+        "category": "Expressway",
+        "from": "Sohna (Delhi NCR), Haryana",
+        "to": "Mumbai, Maharashtra",
+        "length_km": 1350,
+        "states": "Haryana, Rajasthan, Madhya Pradesh, Gujarat, Maharashtra",
+        "lanes": "8",
+        "toll": true,
+        "corridor": "Greenfield Expressway",
+        "status": "Partially Operational",
+        "color": "#10b981",
+        "source": "MoRTH / NHAI"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[77.21,28.61],[77.07,28.25],[76.63,27.55],[76.36,26.02],[75.86,25.21],[75.04,23.33],[74.26,22.83],[73.18,22.31],[72.83,21.17],[72.88,19.08]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NE-1",
+        "name": "Mumbai–Nagpur Samruddhi Mahamarg",
+        "category": "Expressway",
+        "from": "Nagpur, Maharashtra",
+        "to": "Mumbai, Maharashtra",
+        "length_km": 701,
+        "states": "Maharashtra",
+        "lanes": "6",
+        "toll": true,
+        "corridor": "Greenfield Expressway",
+        "status": "Operational",
+        "color": "#10b981",
+        "source": "Maharashtra State Road Development Corporation"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[79.09,21.15],[78.60,20.74],[77.75,20.93],[75.34,19.88],[73.79,20.00],[72.98,19.22],[72.88,19.08]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "Purvanchal Exp.",
+        "name": "Purvanchal Expressway",
+        "category": "Expressway",
+        "from": "Lucknow, Uttar Pradesh",
+        "to": "Ghazipur, Uttar Pradesh",
+        "length_km": 340,
+        "states": "Uttar Pradesh",
+        "lanes": "6",
+        "toll": true,
+        "corridor": "Greenfield Expressway",
+        "status": "Operational",
+        "color": "#10b981",
+        "source": "UPEIDA / MoRTH"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[80.95,26.85],[82.07,26.26],[83.18,26.06],[83.59,25.58]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "Agra–Lucknow Exp.",
+        "name": "Agra–Lucknow Expressway",
+        "category": "Expressway",
+        "from": "Agra, Uttar Pradesh",
+        "to": "Lucknow, Uttar Pradesh",
+        "length_km": 302,
+        "states": "Uttar Pradesh",
+        "lanes": "6",
+        "toll": true,
+        "corridor": "Greenfield Expressway",
+        "status": "Operational",
+        "color": "#10b981",
+        "source": "UPEIDA / MoRTH"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[78.01,27.18],[78.40,27.16],[79.03,27.23],[79.92,27.05],[80.95,26.85]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "Yamuna Exp.",
+        "name": "Yamuna Expressway",
+        "category": "Expressway",
+        "from": "Greater Noida, Uttar Pradesh",
+        "to": "Agra, Uttar Pradesh",
+        "length_km": 165,
+        "states": "Uttar Pradesh",
+        "lanes": "6",
+        "toll": true,
+        "corridor": "Greenfield Expressway",
+        "status": "Operational",
+        "color": "#10b981",
+        "source": "Yamuna Expressway Industrial Development Authority"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[77.39,28.54],[77.67,27.49],[78.01,27.18]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "NE-3",
+        "name": "Delhi–Meerut Expressway",
+        "category": "Expressway",
+        "from": "Delhi",
+        "to": "Meerut, Uttar Pradesh",
+        "length_km": 96,
+        "states": "Delhi, Uttar Pradesh",
+        "lanes": "6–8",
+        "toll": true,
+        "corridor": "Greenfield Expressway",
+        "status": "Operational",
+        "color": "#10b981",
+        "source": "NHAI / MoRTH"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[77.21,28.61],[77.44,28.67],[77.71,28.98]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "EPE",
+        "name": "Eastern Peripheral Expressway (KGP)",
+        "category": "Expressway",
+        "from": "Kundli, Haryana",
+        "to": "Palwal, Haryana",
+        "length_km": 135,
+        "states": "Haryana, Uttar Pradesh",
+        "lanes": "6",
+        "toll": true,
+        "corridor": "Regional Ring Road",
+        "status": "Operational",
+        "color": "#10b981",
+        "source": "NHAI / MoRTH"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[77.12,28.88],[77.22,28.95],[77.53,28.68],[77.39,28.54],[77.31,28.41],[77.33,28.14]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "WPE",
+        "name": "Western Peripheral Expressway (KMP)",
+        "category": "Expressway",
+        "from": "Kundli, Haryana",
+        "to": "Palwal, Haryana",
+        "length_km": 135,
+        "states": "Haryana",
+        "lanes": "6",
+        "toll": true,
+        "corridor": "Regional Ring Road",
+        "status": "Operational",
+        "color": "#10b981",
+        "source": "NHAI / MoRTH"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[77.12,28.88],[77.02,28.99],[76.59,28.90],[76.66,28.61],[76.98,28.35],[77.33,28.14]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "Ganga Exp.",
+        "name": "Ganga Expressway",
+        "category": "Expressway",
+        "from": "Meerut, Uttar Pradesh",
+        "to": "Prayagraj, Uttar Pradesh",
+        "length_km": 594,
+        "states": "Uttar Pradesh",
+        "lanes": "6",
+        "toll": true,
+        "corridor": "Greenfield Expressway",
+        "status": "Under Construction",
+        "color": "#10b981",
+        "source": "UPEIDA / MoRTH"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[77.71,28.98],[77.78,28.73],[77.86,28.40],[79.57,27.39],[80.33,26.45],[80.81,25.93],[81.85,25.44]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "B'luru–Mysuru Exp.",
+        "name": "Bengaluru–Mysuru Expressway",
+        "category": "Expressway",
+        "from": "Bengaluru, Karnataka",
+        "to": "Mysuru, Karnataka",
+        "length_km": 118,
+        "states": "Karnataka",
+        "lanes": "6",
+        "toll": true,
+        "corridor": "Greenfield Expressway",
+        "status": "Operational",
+        "color": "#10b981",
+        "source": "NHAI / MoRTH"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[77.59,12.97],[77.28,12.72],[76.89,12.52],[76.64,12.30]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "Mumbai–Pune Exp.",
+        "name": "Mumbai–Pune Expressway",
+        "category": "Expressway",
+        "from": "Mumbai, Maharashtra",
+        "to": "Pune, Maharashtra",
+        "length_km": 94,
+        "states": "Maharashtra",
+        "lanes": "6",
+        "toll": true,
+        "corridor": "Greenfield Expressway",
+        "status": "Operational",
+        "color": "#10b981",
+        "source": "MSRDC / MoRTH"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[72.88,19.08],[73.11,18.99],[73.40,18.75],[73.86,18.52]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "RJ SH 61",
+        "name": "Jodhpur–Jaisalmer Highway",
+        "category": "State Highway",
+        "from": "Jodhpur, Rajasthan",
+        "to": "Jaisalmer, Rajasthan",
+        "length_km": 290,
+        "states": "Rajasthan",
+        "lanes": "2",
+        "toll": false,
+        "corridor": "Thar Desert Corridor",
+        "color": "#94a3b8",
+        "source": "Rajasthan PWD / MoRTH"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[73.02,26.24],[71.92,26.92],[70.90,26.91]] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "code": "ECR",
+        "name": "East Coast Road (Chennai–Pondicherry–Nagapattinam)",
+        "category": "State Highway",
+        "from": "Chennai, Tamil Nadu",
+        "to": "Nagapattinam, Tamil Nadu",
+        "length_km": 340,
+        "states": "Tamil Nadu, Puducherry",
+        "lanes": "2–4",
+        "toll": false,
+        "corridor": "Coastal Corridor",
+        "color": "#94a3b8",
+        "source": "Tamil Nadu Highways Department"
+      },
+      "geometry": { "type": "LineString", "coordinates": [[80.27,13.08],[80.19,12.62],[79.81,11.93],[79.76,11.75],[79.69,11.40],[79.83,10.77]] }
+    }
+  ]
+}

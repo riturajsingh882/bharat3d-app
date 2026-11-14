@@ -1,0 +1,473 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "harappa",
+      "properties": {
+        "id": "harappa",
+        "name": "Harappa",
+        "civilization": "Indus Valley Civilization",
+        "period": "Mature Harappan (2600–1900 BCE)",
+        "category": "ivc_site",
+        "excavator": "Daya Ram Sahni & Sir John Marshall (1921)",
+        "discovery_year": 1921,
+        "lat": 30.6292,
+        "lng": 72.8687,
+        "key_finds": "Great Granary (12 units), Cemetery R-37, Red sandstone male torso, Copper scale, Faience bangles",
+        "status": "UNESCO Tentative / National Monument",
+        "description": "The type-site of the Indus Civilization situated on the left bank of the Ravi river. Gave its name to the entire Harappan cultural horizon.",
+        "citation": "Archaeological Survey of India (ASI) & Vats, M.S. (1940)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8687,
+          30.6292
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "mohenjo_daro",
+      "properties": {
+        "id": "mohenjo_daro",
+        "name": "Mohenjo-daro (Mound of the Dead)",
+        "civilization": "Indus Valley Civilization",
+        "period": "Mature Harappan (2600–1900 BCE)",
+        "category": "ivc_site",
+        "excavator": "R.D. Banerji (1922) & Sir John Marshall (1931)",
+        "discovery_year": 1922,
+        "lat": 27.3294,
+        "lng": 68.1389,
+        "key_finds": "Great Bath, Granary, College of Priests, Bronze Dancing Girl, Steatite Priest-King statue, Pashupati seal",
+        "status": "UNESCO World Heritage Site (1980)",
+        "description": "The largest excavated Bronze Age metropolis in the Indus basin, showcasing monumental public civic architecture and an advanced covered drainage network.",
+        "citation": "Marshall, Sir John (1931, Mohenjo-daro and the Indus Civilization)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          68.1389,
+          27.3294
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "dholavira",
+      "properties": {
+        "id": "dholavira",
+        "name": "Dholavira: A Harappan City",
+        "civilization": "Indus Valley Civilization",
+        "period": "c. 3000 – 1500 BCE (All 7 Cultural Stages)",
+        "category": "ivc_site",
+        "excavator": "J.P. Joshi (1968) & R.S. Bisht (1990–2005, ASI)",
+        "discovery_year": 1968,
+        "lat": 23.8864,
+        "lng": 70.2142,
+        "key_finds": "Monumental stone reservoirs (water harvesting), 10-symbol Indus Signboard, Tripartite urban plan (Citadel, Middle Town, Lower Town), Check dams on Manhar and Mansar streams",
+        "status": "UNESCO World Heritage Site (2021)",
+        "description": "Located on Khadir Bet island in the Rann of Kutch, Gujarat. Premier example of hydraulic engineering, stone masonry, and urban defense in the ancient world.",
+        "citation": "Archaeological Survey of India (ASI) Monograph / Bisht, R.S."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          70.2142,
+          23.8864
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "rakhigarhi",
+      "properties": {
+        "id": "rakhigarhi",
+        "name": "Rakhigarhi",
+        "civilization": "Indus Valley Civilization",
+        "period": "Early to Mature Harappan (c. 4500 – 1900 BCE)",
+        "category": "ivc_site",
+        "excavator": "Amarendra Nath (1997–2000, ASI) & Vasant Shinde",
+        "discovery_year": 1969,
+        "lat": 29.2891,
+        "lng": 76.1158,
+        "key_finds": "11 Mounds covering >350 hectares, Mud-brick podiums, Gold foundry, Lapidary workshop, Intact DNA skeletal burials",
+        "status": "ASI Protected Monument of National Importance",
+        "description": "The largest known settlement of the Indus-Saraswati Civilization located in Hisar district, Haryana. Ancient paleochannel of the Drishadvati river.",
+        "citation": "ASI Excavation Reports & Shinde et al. (Cell, 2019)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.1158,
+          29.2891
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "lothal",
+      "properties": {
+        "id": "lothal",
+        "name": "Lothal (Ancient Tidal Dockyard)",
+        "civilization": "Indus Valley Civilization",
+        "period": "Mature Harappan (2400–1900 BCE)",
+        "category": "ivc_site",
+        "excavator": "S.R. Rao (1955–1960, ASI)",
+        "discovery_year": 1954,
+        "lat": 22.5228,
+        "lng": 72.2494,
+        "key_finds": "Tidal dockyard basin (214m x 36m) with sluice gate, Bead factory, Persian Gulf button seal, Dual burials",
+        "status": "UNESCO Tentative / ASI Monument",
+        "description": "World's earliest identified tidal dockyard connecting the Harappan heartland to Arabian Sea maritime trade channels at the head of the Gulf of Khambhat.",
+        "citation": "Rao, S.R. (Lothal and the Indus Civilization, 1973)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.2494,
+          22.5228
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "kalibangan",
+      "properties": {
+        "id": "kalibangan",
+        "name": "Kalibangan (Black Bangles)",
+        "civilization": "Indus Valley Civilization",
+        "period": "Pre-Harappan & Mature Harappan (2900–1800 BCE)",
+        "category": "ivc_site",
+        "excavator": "B.B. Lal & B.K. Thapar (1961–1969, ASI)",
+        "discovery_year": 1953,
+        "lat": 29.4739,
+        "lng": 74.1317,
+        "key_finds": "Earliest ploughed agricultural field surface (criss-cross furrows), Row of 7 brick fire-altars (sacrificial platforms)",
+        "status": "ASI Protected Monument",
+        "description": "Situated on the dried bed of the Ghaggar (ancient Saraswati) in Hanumangarh district, Rajasthan. Shows transition from Early to Mature Harappan phases.",
+        "citation": "ASI Memoirs No. 98 / Lal, B.B. (2003)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.1317,
+          29.4739
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "nalanda",
+      "properties": {
+        "id": "nalanda",
+        "name": "Nalanda Mahavihara",
+        "civilization": "Classical & Early Medieval India",
+        "period": "5th c. CE (Gupta Empire) – 1200 CE",
+        "category": "ancient_university",
+        "excavator": "Alexander Cunningham (1861) & Spooner / ASI (1915)",
+        "discovery_year": 1861,
+        "lat": 25.1357,
+        "lng": 85.4449,
+        "key_finds": "Monasteries, Stupas, Temple No. 3, Inscribed seals of Harshavardhana and Devapala, Bronze Buddhist sculptures",
+        "status": "UNESCO World Heritage Site (2016)",
+        "description": "One of the greatest residential universities of the ancient world. Accommodated 10,000 scholars and 2,000 masters studying philosophy, astronomy, medicine, and logic.",
+        "citation": "Archaeological Survey of India & Xuanzang's Great Tang Records on the Western Regions"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.4449,
+          25.1357
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "taxila",
+      "properties": {
+        "id": "taxila",
+        "name": "Takshashila (Taxila)",
+        "civilization": "Ancient India (Gandhara)",
+        "period": "c. 1000 BCE – 500 CE",
+        "category": "ancient_university",
+        "excavator": "Sir John Marshall (1913–1934)",
+        "discovery_year": 1863,
+        "lat": 33.7463,
+        "lng": 72.8277,
+        "key_finds": "Dharmarajika Stupa, Sirkap Greek-style city grid, Jaulian monastery, Silver scrolls, Indo-Greek coinage",
+        "status": "UNESCO World Heritage Site (1980)",
+        "description": "Legendary seat of Vedic and Buddhist intellectual learning where Chanakya authored the Arthashastra, Panini taught Sanskrit grammar, and Jivaka studied medicine.",
+        "citation": "Marshall, Sir John (Taxila: An Illustrated Account, 1951)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8277,
+          33.7463
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sanchi",
+      "properties": {
+        "id": "sanchi",
+        "name": "Great Stupa at Sanchi",
+        "civilization": "Mauryan to Gupta Periods",
+        "period": "3rd c. BCE (Emperor Ashoka) – 12th c. CE",
+        "category": "buddhist_monument",
+        "excavator": "Gen. Henry Taylor (1818) & Sir John Marshall (1912)",
+        "discovery_year": 1818,
+        "lat": 23.4795,
+        "lng": 77.7397,
+        "key_finds": "Great Stupa hemisphere, Four intricately carved Torana gateways depicting Jataka tales, Ashoka Pillar edict",
+        "status": "UNESCO World Heritage Site (1989)",
+        "description": "The oldest stone structure in India, commissioned by Emperor Ashoka over the holy relics of the Buddha in Raisen district, Madhya Pradesh.",
+        "citation": "Marshall & Foucher (The Monuments of Sanchi, 1940)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.7397,
+          23.4795
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sarnath",
+      "properties": {
+        "id": "sarnath",
+        "name": "Sarnath (Isipatana Deer Park)",
+        "civilization": "Mauryan to Gahadavala Periods",
+        "period": "6th c. BCE – 12th c. CE",
+        "category": "buddhist_monument",
+        "excavator": "Sir Alexander Cunningham (1834) & F.O. Oertel (1904)",
+        "discovery_year": 1834,
+        "lat": 25.3811,
+        "lng": 83.0214,
+        "key_finds": "Lion Capital of Ashoka (National Emblem of India), Dhamek Stupa, Dharmarajika Stupa foundation, Preaching Buddha sculpture",
+        "status": "UNESCO Tentative / National Monument",
+        "description": "The sacred site where Gautama Buddha delivered his First Sermon (Dhammacakkappavattana Sutta) setting the Wheel of Law into motion.",
+        "citation": "Archaeological Survey of India (ASI)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          83.0214,
+          25.3811
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "bodh_gaya",
+      "properties": {
+        "id": "bodh_gaya",
+        "name": "Mahabodhi Temple Complex at Bodh Gaya",
+        "civilization": "Mauryan to Pala Periods",
+        "period": "3rd c. BCE – Present",
+        "category": "buddhist_monument",
+        "excavator": "Sir Alexander Cunningham (1880 restoration)",
+        "discovery_year": 1861,
+        "lat": 24.6961,
+        "lng": 84.9914,
+        "key_finds": "Diamond Throne (Vajrasana) of Ashoka, Sacred Bodhi Tree (Ficus religiosa), 55m grand pyramidal brick temple",
+        "status": "UNESCO World Heritage Site (2002)",
+        "description": "The most sacred pilgrimage center of Buddhism, where Siddhartha Gautama attained supreme enlightenment under the Bodhi tree in Gaya district, Bihar.",
+        "citation": "UNESCO World Heritage Centre & Cunningham (Mahabodhi, 1892)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          84.9914,
+          24.6961
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ajanta_caves",
+      "properties": {
+        "id": "ajanta_caves",
+        "name": "Ajanta Rock-Cut Caves",
+        "civilization": "Satavahana & Vakataka Dynasties",
+        "period": "2nd c. BCE – 5th c. CE",
+        "category": "rock_cut_monument",
+        "excavator": "Captain John Smith (1819)",
+        "discovery_year": 1819,
+        "lat": 20.5523,
+        "lng": 75.7033,
+        "key_finds": "30 rock-cut caves carved into horseshoe basalt cliff, Masterpiece Buddhist tempera murals (Padmapani & Vajrapani)",
+        "status": "UNESCO World Heritage Site (1983)",
+        "description": "Masterpieces of Buddhist religious art located in Chhatrapati Sambhaji Nagar district, Maharashtra, overlooking the Waghur river ravine.",
+        "citation": "Archaeological Survey of India & UNESCO"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.7033,
+          20.5523
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ellora_caves",
+      "properties": {
+        "id": "ellora_caves",
+        "name": "Ellora Caves & Kailash Temple",
+        "civilization": "Rashtrakuta & Yadava Dynasties",
+        "period": "6th – 10th c. CE",
+        "category": "rock_cut_monument",
+        "excavator": "Survey of India / Historical Documentation",
+        "discovery_year": 1800,
+        "lat": 20.0268,
+        "lng": 75.1792,
+        "key_finds": "Cave 16 Kailasa Temple (world's largest monolithic rock excavation: 200,000 tonnes of basalt carved from the top down)",
+        "status": "UNESCO World Heritage Site (1983)",
+        "description": "34 rock-cut sanctuaries honoring Hindu, Buddhist, and Jain traditions side-by-side, epitomizing the religious tolerance of classical India.",
+        "citation": "ASI Monograph & Fergusson / Burgess (The Cave Temples of India)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.1792,
+          20.0268
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hampi",
+      "properties": {
+        "id": "hampi",
+        "name": "Group of Monuments at Hampi (Vijayanagara)",
+        "civilization": "Vijayanagara Empire",
+        "period": "14th – 16th c. CE (1336–1565 CE)",
+        "category": "medieval_monument",
+        "excavator": "Colin Mackenzie (1800) & ASI",
+        "discovery_year": 1800,
+        "lat": 15.335,
+        "lng": 76.46,
+        "key_finds": "Virupaksha Temple, Vijaya Vittala Stone Chariot, Queen's Bath, Lotus Mahal, Stepped Tank (Pushkarani)",
+        "status": "UNESCO World Heritage Site (1986)",
+        "description": "The grand imperial capital of the Vijayanagara Empire on the banks of the Tungabhadra river. Was the world's second-largest medieval city in 1500 CE.",
+        "citation": "Archaeological Survey of India & Longhurst (Hampi Ruins, 1917)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.46,
+          15.335
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "brihadisvara",
+      "properties": {
+        "id": "brihadisvara",
+        "name": "Brihadisvara Temple, Thanjavur",
+        "civilization": "Imperial Chola Dynasty",
+        "period": "1003 – 1010 CE (Raja Raja Chola I)",
+        "category": "ancient_temple",
+        "excavator": "ASI Continuous Conservation",
+        "discovery_year": 1010,
+        "lat": 10.7828,
+        "lng": 79.1318,
+        "key_finds": "66m granite vimana tower, 80-tonne monolithic cupola (Kumbam), Massive monolithic Nandi (bull), Chola fresco paintings",
+        "status": "UNESCO World Heritage Site (Great Living Chola Temples)",
+        "description": "Peruvudaiyar Kovil, towering Dravidian architectural triumph constructed entirely of interlocking granite blocks without mortar.",
+        "citation": "Archaeological Survey of India (ASI) Southern Circle"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.1318,
+          10.7828
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "konark",
+      "properties": {
+        "id": "konark",
+        "name": "Sun Temple, Konark (Black Pagoda)",
+        "civilization": "Eastern Ganga Dynasty",
+        "period": "c. 1250 CE (King Narasimhadeva I)",
+        "category": "ancient_temple",
+        "excavator": "ASI Restoration (1901–present)",
+        "discovery_year": 1837,
+        "lat": 19.8876,
+        "lng": 86.0945,
+        "key_finds": "24 colossal stone chariot wheels functioning as precision sundials, 7 stone horses, Kalinga chlorite sculptures",
+        "status": "UNESCO World Heritage Site (1984)",
+        "description": "Conceived as a colossal celestial chariot for Surya the Sun God emerging from the Bay of Bengal coast in Puri district, Odisha.",
+        "citation": "Archaeological Survey of India & UNESCO"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          86.0945,
+          19.8876
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "muziris",
+      "properties": {
+        "id": "muziris",
+        "name": "Muziris (Pattanam Maritime Port)",
+        "civilization": "Chera Kingdom & Indo-Roman Trade",
+        "period": "3rd c. BCE – 14th c. CE",
+        "category": "ancient_port",
+        "excavator": "KCHR (Kerala Council for Historical Research, 2007)",
+        "discovery_year": 2007,
+        "lat": 10.1542,
+        "lng": 76.2081,
+        "key_finds": "Roman amphorae shards, Terra Sigillata, Chera coins, Carnelian intaglio seals, Wharf canoe wood (C-14 dated to 1st c. BCE)",
+        "status": "State Heritage Site / Muziris Heritage Project",
+        "description": "The celebrated ancient trans-oceanic spice port described in Sangam poetry and Pliny's Natural History as the destination of Roman pepper ships.",
+        "citation": "KCHR Pattanam Excavation Reports & Periplus of the Erythraean Sea"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.2081,
+          10.1542
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "arikamedu",
+      "properties": {
+        "id": "arikamedu",
+        "name": "Arikamedu (Podouke of Ptolemy)",
+        "civilization": "Early Historic Tamil-Brahmi & Indo-Roman",
+        "period": "2nd c. BCE – 8th c. CE",
+        "category": "ancient_port",
+        "excavator": "Sir Mortimer Wheeler (1945) & J.M. Casal",
+        "discovery_year": 1945,
+        "lat": 11.9067,
+        "lng": 79.8292,
+        "key_finds": "Arretine pottery, Roman Mediterranean wine amphorae, Intaglio signet rings, Glass bead manufactory",
+        "status": "ASI Protected Monument",
+        "description": "Coastal trading emporium near Puducherry on the Ariyankuppam river. Provided the first stratigraphic proof of Indo-Roman commerce in South India.",
+        "citation": "Wheeler, R.E.M. (Ancient India No. 2, 1946, ASI)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.8292,
+          11.9067
+        ]
+      }
+    }
+  ]
+}

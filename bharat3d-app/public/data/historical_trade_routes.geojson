@@ -1,0 +1,192 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "uttarapatha",
+      "properties": {
+        "id": "uttarapatha",
+        "name": "Uttarapatha (Northern Highway / Grand Trunk Precursor)",
+        "era": "Vedic, Mauryan, Mughal to British Eras (c. 1000 BCE – Present)",
+        "route_type": "terrestrial_highway",
+        "total_length_km": 2500,
+        "termini": "Taxila (Gandhara) ↔ Pataliputra & Tamralipti (Bengal Delta)",
+        "key_stations": "Taxila, Lahore, Panipat, Delhi, Mathura, Kannauj, Prayagraj, Varanasi, Pataliputra, Champa, Tamralipti",
+        "commodities": "Silk, lapis lazuli, fine horses, Gandharan wool, Bengal muslins, iron tools, imperial edicts",
+        "historical_accounts": "Megasthenes (Indica), Xuanzang travels, Sher Shah Suri (Sadak-e-Azam), British Grand Trunk Road",
+        "color": "#f59e0b"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.8277,
+            33.7463
+          ],
+          [
+            74.3587,
+            31.5204
+          ],
+          [
+            76.9635,
+            29.3909
+          ],
+          [
+            77.209,
+            28.6139
+          ],
+          [
+            77.6737,
+            27.4924
+          ],
+          [
+            79.9199,
+            27.0543
+          ],
+          [
+            81.8463,
+            25.4358
+          ],
+          [
+            82.9739,
+            25.3176
+          ],
+          [
+            85.1376,
+            25.5941
+          ],
+          [
+            87,
+            25.25
+          ],
+          [
+            87.925,
+            22.3
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "dakshinapatha",
+      "properties": {
+        "id": "dakshinapatha",
+        "name": "Dakshinapatha (Great Southern Highway)",
+        "era": "Mauryan, Satavahana, & Chola Eras (c. 500 BCE – 14th c. CE)",
+        "route_type": "terrestrial_highway",
+        "total_length_km": 2100,
+        "termini": "Varanasi / Ujjayini ↔ Pratishthana & Madurai",
+        "key_stations": "Varanasi, Kaushambi, Vidisha, Ujjayini, Maheshwar (Narmada), Pratishthana (Paithan), Tagara, Amaravati, Kanchipuram, Madurai",
+        "commodities": "Black pepper, pearls, beryls, cotton textiles, sandalwood, semi-precious carnelian beads",
+        "historical_accounts": "Arthashastra of Kautilya (Book VII praising southern wealth), Periplus of the Erythraean Sea",
+        "color": "#10b981"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            82.9739,
+            25.3176
+          ],
+          [
+            81.38,
+            25.34
+          ],
+          [
+            77.81,
+            23.53
+          ],
+          [
+            75.7682,
+            23.1765
+          ],
+          [
+            75.58,
+            22.18
+          ],
+          [
+            75.38,
+            19.48
+          ],
+          [
+            76.08,
+            18.25
+          ],
+          [
+            80.35,
+            16.57
+          ],
+          [
+            79.7036,
+            12.8342
+          ],
+          [
+            78.1198,
+            9.9252
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "monsoon_spice_route",
+      "properties": {
+        "id": "monsoon_spice_route",
+        "name": "Indian Ocean Maritime Monsoon Spice Route",
+        "era": "1st c. BCE – 17th c. CE",
+        "route_type": "maritime_network",
+        "total_length_km": 3800,
+        "termini": "Red Sea / Alexandria ↔ Muziris, Barygaza, Arikamedu & Malacca",
+        "key_stations": "Barygaza (Bharuch), Sopara, Muziris (Kodungallur), Korkai (Pandyan pearls), Arikamedu (Puducherry), Tamralipti",
+        "commodities": "Malabar black pepper ('Black Gold'), cinnamon, cardamom, Roman gold aurei, wine amphorae, Frankincense",
+        "historical_accounts": "Hippalus (discovery of monsoon navigation winds), Periplus of the Erythraean Sea, Pliny the Elder (Naturalis Historia)",
+        "color": "#38bdf8"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            65,
+            22
+          ],
+          [
+            72.93,
+            21.7
+          ],
+          [
+            72.8,
+            19.42
+          ],
+          [
+            76.2,
+            10.15
+          ],
+          [
+            77.55,
+            8.08
+          ],
+          [
+            78.16,
+            8.63
+          ],
+          [
+            79.82,
+            11.9
+          ],
+          [
+            80.35,
+            15.9
+          ],
+          [
+            86,
+            19.8
+          ],
+          [
+            87.92,
+            22.3
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,312 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Great Himalayan Range",
+        "type": "Fold Mountain System",
+        "peak": "Kangchenjunga (8,586 m)",
+        "elevation_m": 8586,
+        "geology": "Continental-continental collision between Indian and Eurasian tectonic plates (Tertiary orogeny).",
+        "extent": "2,400 km arc from Nanga Parbat to Namcha Barwa",
+        "states": [
+          "Jammu & Kashmir",
+          "Ladakh",
+          "Himachal Pradesh",
+          "Uttarakhand",
+          "Sikkim",
+          "Arunachal Pradesh"
+        ],
+        "passes": [
+          "Zoji La",
+          "Rohtang Pass",
+          "Lipulekh",
+          "Nathu La",
+          "Jelep La"
+        ],
+        "source": "Survey of India / Geological Survey of India"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            74.5,
+            35.2
+          ],
+          [
+            76.8,
+            34.2
+          ],
+          [
+            79.2,
+            31.8
+          ],
+          [
+            82.5,
+            29.8
+          ],
+          [
+            86.2,
+            28.1
+          ],
+          [
+            88.5,
+            27.8
+          ],
+          [
+            92.1,
+            28.0
+          ],
+          [
+            95.5,
+            28.8
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Western Ghats (Sahyadri)",
+        "type": "Fault-Block Escarpment / UNESCO World Heritage",
+        "peak": "Anamudi (2,695 m)",
+        "elevation_m": 2695,
+        "geology": "Faulted edge of the Deccan Plateau created during the breakup of Gondwanaland.",
+        "extent": "1,600 km continuous chain parallel to western coast",
+        "states": [
+          "Gujarat",
+          "Maharashtra",
+          "Goa",
+          "Karnataka",
+          "Kerala",
+          "Tamil Nadu"
+        ],
+        "biodiversity": "One of the world's 8 'hottest biodiversity hotspots', origin of Godavari, Krishna, and Kaveri.",
+        "passes": [
+          "Thal Ghat",
+          "Bhor Ghat",
+          "Palakkad Gap (Palghat)"
+        ],
+        "source": "MoEFCC / WGEEP (Gadgil Commission Report)"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            73.5,
+            20.8
+          ],
+          [
+            73.7,
+            19.2
+          ],
+          [
+            74.0,
+            17.5
+          ],
+          [
+            74.5,
+            15.2
+          ],
+          [
+            75.5,
+            13.0
+          ],
+          [
+            76.5,
+            11.2
+          ],
+          [
+            77.0,
+            10.0
+          ],
+          [
+            77.4,
+            8.5
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Eastern Ghats",
+        "type": "Discontinuous Relict Fold Mountain Belt",
+        "peak": "Arma Konda / Jindhagada (1,690 m)",
+        "elevation_m": 1690,
+        "geology": "Precambrian charnockite and khondalite complex, heavily dissected by east-flowing rivers.",
+        "extent": "Discontinuous ranges from Mahanadi to Vaigai river basins",
+        "states": [
+          "Odisha",
+          "Andhra Pradesh",
+          "Telangana",
+          "Tamil Nadu"
+        ],
+        "source": "GSI Bhukosh Geological Maps"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            85.0,
+            20.2
+          ],
+          [
+            83.5,
+            18.5
+          ],
+          [
+            82.2,
+            17.5
+          ],
+          [
+            80.0,
+            16.0
+          ],
+          [
+            79.2,
+            14.2
+          ],
+          [
+            78.5,
+            12.5
+          ],
+          [
+            77.8,
+            11.8
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Aravalli Range",
+        "type": "Oldest Fold Mountain System in India (Relict)",
+        "peak": "Guru Shikhar, Mount Abu (1,722 m)",
+        "elevation_m": 1722,
+        "geology": "Proterozoic Delhi-Aravalli Orogen, acts as a barrier checking desertification from Thar.",
+        "extent": "692 km southwest-northeast strike from Gujarat to Delhi Ridge",
+        "states": [
+          "Gujarat",
+          "Rajasthan",
+          "Haryana",
+          "Delhi"
+        ],
+        "source": "Geological Survey of India"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.6,
+            24.2
+          ],
+          [
+            73.4,
+            25.0
+          ],
+          [
+            74.5,
+            26.0
+          ],
+          [
+            76.0,
+            27.5
+          ],
+          [
+            77.1,
+            28.5
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vindhya Range",
+        "type": "Block Mountain / Continental Watershed",
+        "peak": "Sad-bhawna Shikhar / Kalumar (752 m)",
+        "elevation_m": 752,
+        "geology": "Precambrian sedimentary sandstone and limestone escarpments separating Northern plains from Deccan.",
+        "extent": "1,086 km across Central India",
+        "states": [
+          "Gujarat",
+          "Madhya Pradesh",
+          "Uttar Pradesh",
+          "Bihar"
+        ],
+        "source": "Survey of India"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            74.0,
+            22.8
+          ],
+          [
+            76.5,
+            23.0
+          ],
+          [
+            78.8,
+            23.8
+          ],
+          [
+            81.5,
+            24.5
+          ],
+          [
+            83.5,
+            24.8
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Satpura Range",
+        "type": "Horst / Tectonic Block Mountain",
+        "peak": "Dhupgarh (1,350 m), Pachmarhi",
+        "elevation_m": 1350,
+        "geology": "Flanked by tectonic rift valleys of Narmada on north and Tapi on south.",
+        "extent": "900 km from Rajpipla to Maikala Range",
+        "states": [
+          "Gujarat",
+          "Maharashtra",
+          "Madhya Pradesh",
+          "Chhattisgarh"
+        ],
+        "source": "Survey of India"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            74.0,
+            21.8
+          ],
+          [
+            76.5,
+            21.6
+          ],
+          [
+            78.5,
+            22.2
+          ],
+          [
+            80.5,
+            22.5
+          ],
+          [
+            82.0,
+            22.8
+          ]
+        ]
+      }
+    }
+  ]
+}

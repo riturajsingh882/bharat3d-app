@@ -1,0 +1,327 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "seismic_zone_5_northeast",
+      "properties": {
+        "zone_id": "ZONE_V",
+        "zone_name": "Seismic Zone V (Very High Damage Risk)",
+        "seismic_intensity": "MSK IX or greater",
+        "zone_factor_z": 0.36,
+        "color": "#dc2626",
+        "border_color": "#ef4444",
+        "description": "Subduction and thrust zone along the Eastern Himalayan syntaxis, Dauki fault, and Indo-Burmese wedge. Highest seismic hazard in India.",
+        "regions_covered": "Entire Northeastern States (Assam, Meghalaya, Arunachal, Nagaland, Manipur, Mizoram, Tripura), Andaman & Nicobar, North Bihar, Kangra (HP), Chamoli/Uttarkashi (UK), Rann of Kutch (Gujarat).",
+        "authority": "Bureau of Indian Standards (IS 1893: 2002/2016 Part 1)"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              89.5,
+              26
+            ],
+            [
+              92,
+              28
+            ],
+            [
+              97.5,
+              29
+            ],
+            [
+              97.5,
+              24
+            ],
+            [
+              93,
+              22
+            ],
+            [
+              91,
+              24.5
+            ],
+            [
+              89.5,
+              26
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "seismic_zone_5_kutch",
+      "properties": {
+        "zone_id": "ZONE_V",
+        "zone_name": "Seismic Zone V (Kutch Fault Belt)",
+        "seismic_intensity": "MSK IX or greater",
+        "zone_factor_z": 0.36,
+        "color": "#dc2626",
+        "border_color": "#ef4444",
+        "description": "Intraplate rifting zone along the Kutch Mainland Fault, Allah Bund, and Island Belt Fault.",
+        "regions_covered": "Kutch District, Bhuj, Anjar, Gandhidham (Gujarat).",
+        "authority": "Bureau of Indian Standards (IS 1893: 2016)"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              68.5,
+              23
+            ],
+            [
+              71,
+              23
+            ],
+            [
+              71.2,
+              24.5
+            ],
+            [
+              68.5,
+              24.5
+            ],
+            [
+              68.5,
+              23
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "seismic_zone_4_belt",
+      "properties": {
+        "zone_id": "ZONE_IV",
+        "zone_name": "Seismic Zone IV (High Damage Risk)",
+        "seismic_intensity": "MSK VIII",
+        "zone_factor_z": 0.24,
+        "color": "#ea580c",
+        "border_color": "#f97316",
+        "description": "Main Himalayan Frontal Thrust belt, Delhi-Haridwar ridge, and active tectonic fault zones.",
+        "regions_covered": "National Capital Region (Delhi, Gurugram, Noida), Jammu & Kashmir, Himachal Pradesh, Uttarakhand, Northern Punjab/Haryana, Foothills of UP and Bihar, Koyna fault zone (Maharashtra), Sikkim, West Bengal delta.",
+        "authority": "Bureau of Indian Standards (IS 1893: 2016)"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              74,
+              32.5
+            ],
+            [
+              78,
+              31
+            ],
+            [
+              82,
+              28.5
+            ],
+            [
+              88,
+              26.5
+            ],
+            [
+              88.5,
+              22.5
+            ],
+            [
+              86,
+              24
+            ],
+            [
+              80,
+              27
+            ],
+            [
+              76.5,
+              28
+            ],
+            [
+              74.5,
+              30.5
+            ],
+            [
+              74,
+              32.5
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "eq_shillong_1897",
+      "properties": {
+        "id": "eq_shillong_1897",
+        "name": "1897 Great Shillong Earthquake",
+        "year": 1897,
+        "magnitude": 8.1,
+        "depth_km": 35,
+        "lat": 26,
+        "lng": 91,
+        "casualties": "~1,542 casualties",
+        "tectonic_setting": "Oldham Fault rupture beneath the Shillong Plateau",
+        "significance": "Richard Dixon Oldham used records of this earthquake to discover P, S, and surface seismic waves.",
+        "authority": "Geological Survey of India (GSI Memoirs Vol. XXIX)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          91,
+          26
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "eq_kangra_1905",
+      "properties": {
+        "id": "eq_kangra_1905",
+        "name": "1905 Kangra Earthquake",
+        "year": 1905,
+        "magnitude": 7.8,
+        "depth_km": 25,
+        "lat": 32,
+        "lng": 76.3,
+        "casualties": ">20,000 casualties",
+        "tectonic_setting": "Main Boundary Thrust (MBT), Western Himalaya",
+        "significance": "Destroyed Kangra Fort and Dharamshala; led to early structural seismic regulations in India.",
+        "authority": "Geological Survey of India (Middlemiss, 1910)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.3,
+          32
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "eq_bihar_nepal_1934",
+      "properties": {
+        "id": "eq_bihar_nepal_1934",
+        "name": "1934 Bihar–Nepal Earthquake",
+        "year": 1934,
+        "magnitude": 8,
+        "depth_km": 15,
+        "lat": 26.5,
+        "lng": 86.5,
+        "casualties": ">10,700 casualties",
+        "tectonic_setting": "Main Frontal Thrust (MFT) / Indo-Gangetic Plains",
+        "significance": "Extensive liquefaction across North Bihar (Munger, Muzaffarpur); Mahatma Gandhi visited for relief.",
+        "authority": "Geological Survey of India (Dunn et al., 1939)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          86.5,
+          26.5
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "eq_assam_1950",
+      "properties": {
+        "id": "eq_assam_1950",
+        "name": "1950 Great Assam–Tibet Earthquake",
+        "year": 1950,
+        "magnitude": 8.6,
+        "depth_km": 15,
+        "lat": 28.5,
+        "lng": 96.5,
+        "casualties": ">4,800 casualties",
+        "tectonic_setting": "Eastern Himalayan Syntaxis strike-slip and thrust",
+        "significance": "Largest known terrestrial intra-continental earthquake; dammed Subansiri river, altered Brahmaputra bed.",
+        "authority": "Geological Survey of India & USGS"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          96.5,
+          28.5
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "eq_latur_1993",
+      "properties": {
+        "id": "eq_latur_1993",
+        "name": "1993 Latur (Killari) Earthquake",
+        "year": 1993,
+        "magnitude": 6.2,
+        "depth_km": 7,
+        "lat": 18.06,
+        "lng": 76.58,
+        "casualties": "~9,748 casualties",
+        "tectonic_setting": "Stable Continental Region (SCR) intraplate thrust beneath Deccan Traps",
+        "significance": "Disproved the assumption that Peninsular India was entirely aseismic; revised national seismic code IS 1893.",
+        "authority": "Geological Survey of India & IMD"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.58,
+          18.06
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "eq_bhuj_2001",
+      "properties": {
+        "id": "eq_bhuj_2001",
+        "name": "2001 Bhuj (Gujarat) Earthquake",
+        "year": 2001,
+        "magnitude": 7.7,
+        "depth_km": 16,
+        "lat": 23.419,
+        "lng": 70.232,
+        "casualties": "~20,085 casualties",
+        "tectonic_setting": "South Wagad Fault / Kutch rift basin",
+        "significance": "Occurred on Republic Day 2001; prompted the establishment of the Gujarat State Disaster Management Authority (GSDMA) and NDMA.",
+        "authority": "National Disaster Management Authority (NDMA) & IMD"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          70.232,
+          23.419
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "eq_tsunami_2004",
+      "properties": {
+        "id": "eq_tsunami_2004",
+        "name": "2004 Indian Ocean Tsunami & Megathrust",
+        "year": 2004,
+        "magnitude": 9.1,
+        "depth_km": 30,
+        "lat": 3.316,
+        "lng": 95.854,
+        "casualties": ">16,000 casualties in India",
+        "tectonic_setting": "Sunda Megathrust plate boundary subduction",
+        "significance": "Generated catastrophic tsunami waves across Tamil Nadu, Andhra Pradesh, Kerala, and Andaman & Nicobar; led to India establishing the Indian Tsunami Early Warning Centre (ITEWC) at INCOIS Hyderabad.",
+        "authority": "INCOIS / Ministry of Earth Sciences & USGS"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          95.854,
+          3.316
+        ]
+      }
+    }
+  ]
+}

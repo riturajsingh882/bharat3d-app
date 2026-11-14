@@ -1,0 +1,1454 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": 1,
+      "properties": {
+        "id": 1,
+        "name": "Mt. Kangchenjunga",
+        "zone": "Sikkim Himalayas",
+        "category": "Extreme Alpine Peak",
+        "elevation_m": 8586,
+        "elevation_ft_in": "28,169 ft 3 in",
+        "description": "Highest summit in India (3rd on Earth). Permanent glacial crown.",
+        "intensity": 0.9995348837209302,
+        "sharpness": 0.999348897788221,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          88.1475,
+          27.7025
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 2,
+      "properties": {
+        "id": 2,
+        "name": "Nanda Devi",
+        "zone": "Garhwal Himalayas (Uttarakhand)",
+        "category": "Extreme Alpine Peak",
+        "elevation_m": 7816,
+        "elevation_ft_in": "25,643 ft 1 in",
+        "description": "Highest peak entirely within Indian territorial borders.",
+        "intensity": 0.91,
+        "sharpness": 0.8763103663928941,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.9706,
+          30.3758
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 3,
+      "properties": {
+        "id": 3,
+        "name": "Kamet Peak",
+        "zone": "Zaskar Range (Uttarakhand)",
+        "category": "Extreme Alpine Peak",
+        "elevation_m": 7756,
+        "elevation_ft_in": "25,446 ft 2 in",
+        "description": "Second highest peak in Garhwal Himalayas near Mana Pass.",
+        "intensity": 0.9030232558139535,
+        "sharpness": 0.8669189752421758,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.5703,
+          30.9208
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 4,
+      "properties": {
+        "id": 4,
+        "name": "Saltoro Kangri",
+        "zone": "Saltoro Range (Ladakh)",
+        "category": "Extreme Alpine Peak",
+        "elevation_m": 7742,
+        "elevation_ft_in": "25,400 ft 3 in",
+        "description": "Highest peak of the Saltoro Karakoram range.",
+        "intensity": 0.9013953488372093,
+        "sharpness": 0.864731815385472,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.8483,
+          35.3992
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 5,
+      "properties": {
+        "id": 5,
+        "name": "Saser Kangri I",
+        "zone": "Saser Muztagh (Ladakh)",
+        "category": "Extreme Alpine Peak",
+        "elevation_m": 7672,
+        "elevation_ft_in": "25,170 ft 7 in",
+        "description": "Glaciated Karakoram summit above the Shyok River.",
+        "intensity": 0.8932558139534884,
+        "sharpness": 0.8538197417817819,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.7522,
+          34.8667
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 6,
+      "properties": {
+        "id": 6,
+        "name": "Mamostong Kangri",
+        "zone": "Rimo Muztagh (Ladakh)",
+        "category": "Extreme Alpine Peak",
+        "elevation_m": 7516,
+        "elevation_ft_in": "24,658 ft 10 in",
+        "description": "Remote glaciated peak in northern Ladakh.",
+        "intensity": 0.8751162790697674,
+        "sharpness": 0.8296445561448027,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5667,
+          35.1333
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 7,
+      "properties": {
+        "id": 7,
+        "name": "Rimo I",
+        "zone": "Karakoram (Ladakh)",
+        "category": "Extreme Alpine Peak",
+        "elevation_m": 7385,
+        "elevation_ft_in": "24,229 ft 0 in",
+        "description": "Source of the Central Rimo Glacier and Shyok headwaters.",
+        "intensity": 0.8598837209302326,
+        "sharpness": 0.8094976977278551,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.55,
+          35.35
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 8,
+      "properties": {
+        "id": 8,
+        "name": "Chaukhamba I",
+        "zone": "Garhwal Himalayas",
+        "category": "Extreme Alpine Peak",
+        "elevation_m": 7138,
+        "elevation_ft_in": "23,418 ft 8 in",
+        "description": "Four-pillared massif feeding the Gangotri Glacier.",
+        "intensity": 0.8311627906976744,
+        "sharpness": 0.7718990912265602,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.2883,
+          30.7483
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 9,
+      "properties": {
+        "id": 9,
+        "name": "Trisul I",
+        "zone": "Kumaon Himalayas",
+        "category": "Extreme Alpine Peak",
+        "elevation_m": 7120,
+        "elevation_ft_in": "23,359 ft 7 in",
+        "description": "Trident-shaped high peak ringing Nanda Devi sanctuary.",
+        "intensity": 0.8290697674418605,
+        "sharpness": 0.7691791618088782,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.7758,
+          30.315
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 10,
+      "properties": {
+        "id": 10,
+        "name": "Nun Peak",
+        "zone": "Suru Valley (Zaskar, Ladakh)",
+        "category": "Extreme Alpine Peak",
+        "elevation_m": 7135,
+        "elevation_ft_in": "23,408 ft 10 in",
+        "description": "Highest peak in the Nun-Kun mountain massif.",
+        "intensity": 0.8308139534883721,
+        "sharpness": 0.7714455791909923,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.0233,
+          33.9808
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 11,
+      "properties": {
+        "id": 11,
+        "name": "Kun Peak",
+        "zone": "Suru Valley (Zaskar, Ladakh)",
+        "category": "Extreme Alpine Peak",
+        "elevation_m": 7077,
+        "elevation_ft_in": "23,218 ft 6 in",
+        "description": "Twin sister peak to Mt. Nun.",
+        "intensity": 0.8240697674418604,
+        "sharpness": 0.7626926727824466,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.0583,
+          34.0133
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 12,
+      "properties": {
+        "id": 12,
+        "name": "Kangto Peak",
+        "zone": "Arunachal Himalayas",
+        "category": "Extreme Alpine Peak",
+        "elevation_m": 7060,
+        "elevation_ft_in": "23,162 ft 9 in",
+        "description": "Highest summit in Arunachal Pradesh (Eastern Himalayas).",
+        "intensity": 0.8220930232558139,
+        "sharpness": 0.7601325806507793,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          92.315,
+          27.865
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 13,
+      "properties": {
+        "id": 13,
+        "name": "Siachen Glacial Ridge",
+        "zone": "Trans-Himalayas (Ladakh)",
+        "category": "Glacial Ridge",
+        "elevation_m": 5753,
+        "elevation_ft_in": "18,874 ft 8 in",
+        "description": "Subcontinental water divide and highest battlefield on Earth.",
+        "intensity": 0.6701162790697675,
+        "sharpness": 0.5709659843729854,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77,
+          35.5
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 14,
+      "properties": {
+        "id": 14,
+        "name": "Khardung La Pass",
+        "zone": "Ladakh Range",
+        "category": "High Alpine Pass",
+        "elevation_m": 5359,
+        "elevation_ft_in": "17,582 ft 0 in",
+        "description": "Strategic motorable pass connecting Indus & Shyok valleys.",
+        "intensity": 0.6243023255813953,
+        "sharpness": 0.517074277517517,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.6047,
+          34.2787
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 15,
+      "properties": {
+        "id": 15,
+        "name": "Chang La Pass",
+        "zone": "Ladakh Range",
+        "category": "High Alpine Pass",
+        "elevation_m": 5360,
+        "elevation_ft_in": "17,585 ft 4 in",
+        "description": "High altitude pass en route to Pangong Tso Lake.",
+        "intensity": 0.6244186046511628,
+        "sharpness": 0.5172091128599615,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.9297,
+          34.0483
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 16,
+      "properties": {
+        "id": 16,
+        "name": "Nathu La Pass",
+        "zone": "East Sikkim",
+        "category": "High Alpine Pass",
+        "elevation_m": 4310,
+        "elevation_ft_in": "14,140 ft 5 in",
+        "description": "Ancient Silk Route pass between Sikkim and Tibet.",
+        "intensity": 0.5023255813953489,
+        "sharpness": 0.3813988803679981,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          88.85,
+          27.3867
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 17,
+      "properties": {
+        "id": 17,
+        "name": "Pir Panjal Crest",
+        "zone": "Jammu & Kashmir / HP",
+        "category": "Alpine Ridge",
+        "elevation_m": 4100,
+        "elevation_ft_in": "13,451 ft 5 in",
+        "description": "Longest sub-Himalayan chain protecting the Kashmir basin.",
+        "intensity": 0.47790697674418603,
+        "sharpness": 0.3556974230965353,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.8,
+          33.8
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 18,
+      "properties": {
+        "id": 18,
+        "name": "Rohtang Pass",
+        "zone": "Himachal Pradesh",
+        "category": "High Alpine Pass",
+        "elevation_m": 3980,
+        "elevation_ft_in": "13,057 ft 9 in",
+        "description": "Pass connecting Kullu Valley with Lahaul and Spiti.",
+        "intensity": 0.46395348837209305,
+        "sharpness": 0.3412433699803333,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.2467,
+          32.3717
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 19,
+      "properties": {
+        "id": 19,
+        "name": "Saramati Peak",
+        "zone": "Naga Hills (Nagaland)",
+        "category": "Alpine Ridge",
+        "elevation_m": 3826,
+        "elevation_ft_in": "12,552 ft 6 in",
+        "description": "Highest peak of the Purvanchal and Naga Hills.",
+        "intensity": 0.446046511627907,
+        "sharpness": 0.32294770763478226,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          95.0317,
+          25.7417
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 20,
+      "properties": {
+        "id": 20,
+        "name": "Zoji La Pass",
+        "zone": "Western Himalayas",
+        "category": "High Alpine Pass",
+        "elevation_m": 3528,
+        "elevation_ft_in": "11,574 ft 10 in",
+        "description": "Vital link between Kashmir Valley and Ladakh.",
+        "intensity": 0.4113953488372093,
+        "sharpness": 0.2883786658340738,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.8056,
+          34.2814
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 21,
+      "properties": {
+        "id": 21,
+        "name": "Darjeeling Tiger Hill",
+        "zone": "West Bengal",
+        "category": "Hill Ridge",
+        "elevation_m": 2590,
+        "elevation_ft_in": "8,497 ft 5 in",
+        "description": "Renowned panoramic sunrise vantage facing Kangchenjunga.",
+        "intensity": 0.3023255813953488,
+        "sharpness": 0.18735481349880273,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          88.2475,
+          27.0142
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 22,
+      "properties": {
+        "id": 22,
+        "name": "Mussoorie Lal Tibba",
+        "zone": "Uttarakhand",
+        "category": "Hill Ridge",
+        "elevation_m": 2275,
+        "elevation_ft_in": "7,463 ft 11 in",
+        "description": "Highest point in Mussoorie (Queen of the Hills).",
+        "intensity": 0.26569767441860465,
+        "sharpness": 0.15636619003634017,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.0967,
+          30.4617
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 23,
+      "properties": {
+        "id": 23,
+        "name": "Shimla Ridge",
+        "zone": "Himachal Pradesh",
+        "category": "Hill Ridge",
+        "elevation_m": 2205,
+        "elevation_ft_in": "7,234 ft 3 in",
+        "description": "Historic colonial summer capital atop Lesser Himalayan spurs.",
+        "intensity": 0.2575581395348837,
+        "sharpness": 0.14970123770813676,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.1734,
+          31.1048
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 24,
+      "properties": {
+        "id": 24,
+        "name": "Phawngpui (Blue Mountain)",
+        "zone": "Mizoram",
+        "category": "Hill Ridge",
+        "elevation_m": 2157,
+        "elevation_ft_in": "7,076 ft 9 in",
+        "description": "Highest peak in the Lushai Hills of Mizoram.",
+        "intensity": 0.2519767441860465,
+        "sharpness": 0.14517928196154595,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          93.0539,
+          22.6317
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 25,
+      "properties": {
+        "id": 25,
+        "name": "Shillong Peak",
+        "zone": "Meghalaya Plateau",
+        "category": "Plateau Ridge",
+        "elevation_m": 1965,
+        "elevation_ft_in": "6,446 ft 10 in",
+        "description": "Highest point on the Khasi Hills tableland.",
+        "intensity": 0.22965116279069767,
+        "sharpness": 0.12749586747510097,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          91.8542,
+          25.535
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 26,
+      "properties": {
+        "id": 26,
+        "name": "Anamudi Peak",
+        "zone": "Western Ghats (Kerala)",
+        "category": "Peninsular Summit",
+        "elevation_m": 2695,
+        "elevation_ft_in": "8,841 ft 10 in",
+        "description": "Highest summit in Peninsular India (south of Himalayas).",
+        "intensity": 0.31453488372093025,
+        "sharpness": 0.19803244316423796,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.0642,
+          10.1697
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 27,
+      "properties": {
+        "id": 27,
+        "name": "Meesapulimala",
+        "zone": "Western Ghats (Kerala/TN)",
+        "category": "Peninsular Summit",
+        "elevation_m": 2640,
+        "elevation_ft_in": "8,661 ft 5 in",
+        "description": "Second highest peak in the Western Ghats.",
+        "intensity": 0.3081395348837209,
+        "sharpness": 0.19241830815134647,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.2033,
+          10.0983
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 28,
+      "properties": {
+        "id": 28,
+        "name": "Doddabetta",
+        "zone": "Nilgiri Hills (Tamil Nadu)",
+        "category": "Peninsular Summit",
+        "elevation_m": 2637,
+        "elevation_ft_in": "8,651 ft 7 in",
+        "description": "Highest point in the Nilgiri horst block.",
+        "intensity": 0.3077906976744186,
+        "sharpness": 0.19211341234988674,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.7358,
+          11.4011
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 29,
+      "properties": {
+        "id": 29,
+        "name": "Kolaribetta",
+        "zone": "Nilgiris (Mukurthi NP)",
+        "category": "Peninsular Summit",
+        "elevation_m": 2625,
+        "elevation_ft_in": "8,612 ft 2 in",
+        "description": "Protected mountain habitat of the Nilgiri Tahr.",
+        "intensity": 0.3063953488372093,
+        "sharpness": 0.19089521199746592,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.5833,
+          11.3167
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 30,
+      "properties": {
+        "id": 30,
+        "name": "Chembra Peak",
+        "zone": "Wayanad (Kerala)",
+        "category": "Peninsular Summit",
+        "elevation_m": 2100,
+        "elevation_ft_in": "6,889 ft 9 in",
+        "description": "Prominent peak in southern Western Ghats.",
+        "intensity": 0.2453488372093023,
+        "sharpness": 0.1398613144980564,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.0883,
+          11.5133
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 31,
+      "properties": {
+        "id": 31,
+        "name": "Mullayanagiri",
+        "zone": "Chikkamagaluru (Karnataka)",
+        "category": "Peninsular Summit",
+        "elevation_m": 1930,
+        "elevation_ft_in": "6,332 ft 0 in",
+        "description": "Highest peak in Karnataka state (Baba Budangiri range).",
+        "intensity": 0.2255813953488372,
+        "sharpness": 0.12434393018628809,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.7208,
+          13.3917
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 32,
+      "properties": {
+        "id": 32,
+        "name": "Kudremukh Peak",
+        "zone": "Chikkamagaluru (Karnataka)",
+        "category": "Peninsular Summit",
+        "elevation_m": 1894,
+        "elevation_ft_in": "6,213 ft 11 in",
+        "description": "Horse-faced mountain peak rich in magnetite iron deposits.",
+        "intensity": 0.2213953488372093,
+        "sharpness": 0.12112558565590761,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.2717,
+          13.2208
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 33,
+      "properties": {
+        "id": 33,
+        "name": "Agasthyamala",
+        "zone": "Agasthyamalai Biosphere (TN/KL)",
+        "category": "Peninsular Summit",
+        "elevation_m": 1868,
+        "elevation_ft_in": "6,128 ft 7 in",
+        "description": "Sacred peak in southernmost Western Ghats.",
+        "intensity": 0.2183720930232558,
+        "sharpness": 0.11881629104308562,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.2458,
+          8.615
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 34,
+      "properties": {
+        "id": 34,
+        "name": "Kalsubai Peak",
+        "zone": "Sahyadri (Maharashtra)",
+        "category": "Peninsular Summit",
+        "elevation_m": 1646,
+        "elevation_ft_in": "5,400 ft 3 in",
+        "description": "Everest of Maharashtra; highest point in the Sahyadri range.",
+        "intensity": 0.1925581395348837,
+        "sharpness": 0.09962919785324836,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.7103,
+          19.6017
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 35,
+      "properties": {
+        "id": 35,
+        "name": "Salher Fort Peak",
+        "zone": "Nashik (Maharashtra)",
+        "category": "Peninsular Summit",
+        "elevation_m": 1567,
+        "elevation_ft_in": "5,141 ft 1 in",
+        "description": "Second highest peak in Maharashtra.",
+        "intensity": 0.18337209302325583,
+        "sharpness": 0.09303932242766465,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.95,
+          20.7167
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 36,
+      "properties": {
+        "id": 36,
+        "name": "Mahabaleshwar Wilson Point",
+        "zone": "Western Ghats (Maharashtra)",
+        "category": "Plateau Escarpment",
+        "elevation_m": 1439,
+        "elevation_ft_in": "4,721 ft 2 in",
+        "description": "Source plateau of the sacred Krishna River.",
+        "intensity": 0.16848837209302325,
+        "sharpness": 0.08264144607063258,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.6633,
+          17.925
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 37,
+      "properties": {
+        "id": 37,
+        "name": "Guru Shikhar",
+        "zone": "Aravalli Range (Rajasthan)",
+        "category": "Relict Fold Peak",
+        "elevation_m": 1722,
+        "elevation_ft_in": "5,649 ft 7 in",
+        "description": "Highest summit of the ancient Precambrian Aravallis.",
+        "intensity": 0.2013953488372093,
+        "sharpness": 0.10608872036541976,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.7788,
+          24.6503
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 38,
+      "properties": {
+        "id": 38,
+        "name": "Arma Konda / Jindhagada",
+        "zone": "Eastern Ghats (Andhra Pradesh)",
+        "category": "Relict Escarpment",
+        "elevation_m": 1690,
+        "elevation_ft_in": "5,544 ft 7 in",
+        "description": "Highest peak of the entire Eastern Ghats chain.",
+        "intensity": 0.19767441860465115,
+        "sharpness": 0.10335480172961475,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          82.9036,
+          18.2325
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 39,
+      "properties": {
+        "id": 39,
+        "name": "Deomali Peak",
+        "zone": "Koraput (Odisha)",
+        "category": "Relict Escarpment",
+        "elevation_m": 1672,
+        "elevation_ft_in": "5,485 ft 7 in",
+        "description": "Highest peak in the state of Odisha.",
+        "intensity": 0.1955813953488372,
+        "sharpness": 0.1018259700970446,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          82.9833,
+          18.6667
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 40,
+      "properties": {
+        "id": 40,
+        "name": "Mahendragiri",
+        "zone": "Gajapati (Odisha)",
+        "category": "Relict Escarpment",
+        "elevation_m": 1501,
+        "elevation_ft_in": "4,924 ft 6 in",
+        "description": "Sacred coastal mountain near the Bay of Bengal.",
+        "intensity": 0.17569767441860465,
+        "sharpness": 0.08763395622960052,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          84.3667,
+          18.9667
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 41,
+      "properties": {
+        "id": 41,
+        "name": "Parasnath Hill (Shikharji)",
+        "zone": "Giridih (Jharkhand)",
+        "category": "Inselberg / Holy Peak",
+        "elevation_m": 1365,
+        "elevation_ft_in": "4,478 ft 4 in",
+        "description": "Highest peak in Jharkhand; sacred Jain pilgrimage.",
+        "intensity": 0.15988372093023256,
+        "sharpness": 0.07679376239075661,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          86.1333,
+          23.9667
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 42,
+      "properties": {
+        "id": 42,
+        "name": "Dhupgarh",
+        "zone": "Satpura Range (Madhya Pradesh)",
+        "category": "Horst Summit",
+        "elevation_m": 1350,
+        "elevation_ft_in": "4,429 ft 2 in",
+        "description": "Highest peak in Madhya Pradesh and Central India.",
+        "intensity": 0.15813953488372093,
+        "sharpness": 0.07562347675503998,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.3694,
+          22.4492
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 43,
+      "properties": {
+        "id": 43,
+        "name": "Girnar Peak (Gorakhnath)",
+        "zone": "Junagadh (Gujarat)",
+        "category": "Plutonic Massif",
+        "elevation_m": 1117,
+        "elevation_ft_in": "3,664 ft 8 in",
+        "description": "Highest peak in the state of Gujarat.",
+        "intensity": 0.13104651162790698,
+        "sharpness": 0.058129374628403084,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          70.5283,
+          21.5283
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 44,
+      "properties": {
+        "id": 44,
+        "name": "Netarhat Pat",
+        "zone": "Chota Nagpur (Jharkhand)",
+        "category": "Pat Tableland",
+        "elevation_m": 1067,
+        "elevation_ft_in": "3,500 ft 8 in",
+        "description": "Queen of Chota Nagpur tablelands.",
+        "intensity": 0.12523255813953488,
+        "sharpness": 0.05455118045206645,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          84.2667,
+          23.4833
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 45,
+      "properties": {
+        "id": 45,
+        "name": "Amarkantak Plateau",
+        "zone": "Maikal Hills (MP/CG)",
+        "category": "Plateau Node",
+        "elevation_m": 1048,
+        "elevation_ft_in": "3,438 ft 4 in",
+        "description": "Hydrographic origin of Narmada, Son, and Johilla rivers.",
+        "intensity": 0.12302325581395349,
+        "sharpness": 0.05320863319212702,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          81.7583,
+          22.6733
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 46,
+      "properties": {
+        "id": 46,
+        "name": "Taragarh Hill",
+        "zone": "Aravallis (Ajmer, Rajasthan)",
+        "category": "Relict Ridge",
+        "elevation_m": 870,
+        "elevation_ft_in": "2,854 ft 4 in",
+        "description": "High fort crest commanding the Sambhar gap.",
+        "intensity": 0.10232558139534884,
+        "sharpness": 0.0411128808182125,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.6167,
+          26.4433
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 47,
+      "properties": {
+        "id": 47,
+        "name": "Sadbhawna Shikhar (Kalumar)",
+        "zone": "Vindhyan Scarp (MP)",
+        "category": "Scarp Summit",
+        "elevation_m": 752,
+        "elevation_ft_in": "2,467 ft 2 in",
+        "description": "Highest point of the Vindhyan Range.",
+        "intensity": 0.0886046511627907,
+        "sharpness": 0.03360772602662115,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.7333,
+          23.4667
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 48,
+      "properties": {
+        "id": 48,
+        "name": "Bangalore Upland Plateau",
+        "zone": "Karnataka Craton",
+        "category": "Plateau Tableland",
+        "elevation_m": 920,
+        "elevation_ft_in": "3,018 ft 4 in",
+        "description": "High peninsular tableland between Cauvery and Ponnaiyar.",
+        "intensity": 0.10813953488372093,
+        "sharpness": 0.04441997361380998,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.5946,
+          12.9716
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 49,
+      "properties": {
+        "id": 49,
+        "name": "Chota Nagpur Craton",
+        "zone": "Jharkhand / Odisha",
+        "category": "Mineral Plateau",
+        "elevation_m": 700,
+        "elevation_ft_in": "2,296 ft 7 in",
+        "description": "Ancient Precambrian craton holding major mineral basins.",
+        "intensity": 0.08255813953488372,
+        "sharpness": 0.03044134635748727,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.3,
+          23.3
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 50,
+      "properties": {
+        "id": 50,
+        "name": "Bastar Plateau",
+        "zone": "Dandakaranya (Chhattisgarh)",
+        "category": "Highland Plateau",
+        "elevation_m": 600,
+        "elevation_ft_in": "1,968 ft 6 in",
+        "description": "Forested tableland drained by the Indravati.",
+        "intensity": 0.07093023255813953,
+        "sharpness": 0.02461296517850349,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          81.9,
+          19.1
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 51,
+      "properties": {
+        "id": 51,
+        "name": "Deccan Traps (Pune Upland)",
+        "zone": "Maharashtra Basalt",
+        "category": "Volcanic Trap",
+        "elevation_m": 560,
+        "elevation_ft_in": "1,837 ft 3 in",
+        "description": "Stepped basaltic tableland created by Deccan volcanism.",
+        "intensity": 0.06627906976744186,
+        "sharpness": 0.022383446922385794,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.8567,
+          18.5204
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 52,
+      "properties": {
+        "id": 52,
+        "name": "Malwa Tableland",
+        "zone": "Madhya Pradesh",
+        "category": "Volcanic Plateau",
+        "elevation_m": 495,
+        "elevation_ft_in": "1,624 ft 0 in",
+        "description": "Gently undulating fertile black soil volcanic upland.",
+        "intensity": 0.05872093023255814,
+        "sharpness": 0.018893399057214592,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.7772,
+          23.1765
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 53,
+      "properties": {
+        "id": 53,
+        "name": "Bundelkhand Granitic Upland",
+        "zone": "UP / MP Border",
+        "category": "Granitic Upland",
+        "elevation_m": 350,
+        "elevation_ft_in": "1,148 ft 4 in",
+        "description": "Rugged ancient gneissic terrain north of Vindhyas.",
+        "intensity": 0.04186046511627907,
+        "sharpness": 0.011763205100230488,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.5,
+          25
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 54,
+      "properties": {
+        "id": 54,
+        "name": "Ambala Drainage Divide",
+        "zone": "Punjab / Haryana",
+        "category": "Drainage Divide",
+        "elevation_m": 250,
+        "elevation_ft_in": "820 ft 3 in",
+        "description": "Geomorphological divide separating Indus from Ganga.",
+        "intensity": 0.030232558139534883,
+        "sharpness": 0.007458729469158654,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.7767,
+          30.3782
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 55,
+      "properties": {
+        "id": 55,
+        "name": "Delhi Ridge",
+        "zone": "National Capital Region",
+        "category": "Relict Spur",
+        "elevation_m": 215,
+        "elevation_ft_in": "705 ft 5 in",
+        "description": "Northernmost spur of the Aravalli system into Yamuna plains.",
+        "intensity": 0.02616279069767442,
+        "sharpness": 0.006091969125195808,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.18,
+          28.61
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 56,
+      "properties": {
+        "id": 56,
+        "name": "Varanasi Central Plains",
+        "zone": "Middle Ganga Plain",
+        "category": "Alluvial Plain",
+        "elevation_m": 81,
+        "elevation_ft_in": "265 ft 9 in",
+        "description": "Deep fertile Quaternary alluvial plain.",
+        "intensity": 0.01058139534883721,
+        "sharpness": 0.0017153791123760455,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          82.9739,
+          25.3176
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 57,
+      "properties": {
+        "id": 57,
+        "name": "Guwahati Brahmaputra Bank",
+        "zone": "Assam Valley",
+        "category": "Fluvial Trough",
+        "elevation_m": 55,
+        "elevation_ft_in": "180 ft 5 in",
+        "description": "Narrow braided river corridor between Shillong & Himalayas.",
+        "intensity": 0.007558139534883721,
+        "sharpness": 0.001070978783948807,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          91.7362,
+          26.1445
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 58,
+      "properties": {
+        "id": 58,
+        "name": "Patna Delta Convergence",
+        "zone": "Bihar Plains",
+        "category": "Alluvial Plain",
+        "elevation_m": 53,
+        "elevation_ft_in": "173 ft 11 in",
+        "description": "Confluence of Ganga, Son, Gandak, and Ghaghara rivers.",
+        "intensity": 0.007325581395348837,
+        "sharpness": 0.0010251299866482272,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.1376,
+          25.5941
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 59,
+      "properties": {
+        "id": 59,
+        "name": "Rann of Kutch Salt Flats",
+        "zone": "Gujarat",
+        "category": "Seasonal Wetland",
+        "elevation_m": 12,
+        "elevation_ft_in": "39 ft 4 in",
+        "description": "Vast salt marsh depression near the Arabian Sea.",
+        "intensity": 0.0025581395348837207,
+        "sharpness": 0.00023501410121818314,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          70,
+          23.8
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 60,
+      "properties": {
+        "id": 60,
+        "name": "Kolkata Tidal Lowland",
+        "zone": "Bengal Delta",
+        "category": "Tidal Delta",
+        "elevation_m": 9,
+        "elevation_ft_in": "29 ft 6 in",
+        "description": "Lower deltaic plains along the Hooghly tidal estuary.",
+        "intensity": 0.0022093023255813954,
+        "sharpness": 0.00019140673254454076,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          88.3639,
+          22.5726
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 61,
+      "properties": {
+        "id": 61,
+        "name": "Sundarbans Estuary",
+        "zone": "Bay of Bengal",
+        "category": "Tidal Delta",
+        "elevation_m": 6,
+        "elevation_ft_in": "19 ft 8 in",
+        "description": "World's largest active deltaic mangrove system.",
+        "intensity": 0.0018604651162790699,
+        "sharpness": 0.00015047700682741707,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          88.9,
+          21.9497
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 62,
+      "properties": {
+        "id": 62,
+        "name": "Indian Ocean Mean Sea Level",
+        "zone": "National Vertical Datum",
+        "category": "Sea Level Baseline",
+        "elevation_m": 0,
+        "elevation_ft_in": "0 ft 0 in",
+        "description": "Survey of India 0 ft vertical baseline datum.",
+        "intensity": 0.0011627906976744186,
+        "sharpness": 0.00007792954996819205,
+        "is_major_peak": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.5,
+          14
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 63,
+      "properties": {
+        "id": 63,
+        "name": "Kuttanad Region",
+        "zone": "Alappuzha (Kerala)",
+        "category": "Sub-Zero Depression",
+        "elevation_m": -2.2,
+        "elevation_ft_in": "-7 ft 3 in",
+        "description": "Lowest elevation point in India (-7 ft 3 in below sea level).",
+        "intensity": 0.0009069767441860465,
+        "sharpness": 0.0000550344476453397,
+        "is_major_peak": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.4312,
+          9.4981
+        ]
+      }
+    }
+  ]
+}

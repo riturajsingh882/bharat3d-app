@@ -1,0 +1,881 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "indus_valley",
+      "properties": {
+        "id": "indus_valley",
+        "name": "Indus Valley Civilization (Mature Harappan)",
+        "era": "c. 2600 – 1900 BCE",
+        "period_group": "ancient",
+        "calendar_year": -2500,
+        "capital": "Multi-Centric (Harappa, Mohenjo-daro, Rakhigarhi, Dholavira)",
+        "ruler_or_system": "Civic Merchant Assemblies / Standardized Urban System",
+        "primary_rivers": "Indus, Saraswati (Ghaggar-Hakra), Ravi, Chenab, Sabarmati",
+        "approximate_area_sqkm": 1250000,
+        "scholarly_disclaimer": "APPROXIMATE SCHOLARLY RECONSTRUCTION: Boundaries depict the maximum distribution zone of Mature Harappan urban artifacts, town planning, standardized weights, and seal scripts rather than rigid modern political borders.",
+        "citation": "Archaeological Survey of India (ASI) & Kenoyer / Possehl archaeological catalogues",
+        "color": "#d97706",
+        "border_color": "#f59e0b",
+        "trade_connections": "Mesopotamia (Meluhha trade), Persian Gulf (Dilmun), Oman (Magan)",
+        "highlights": "Grid-pattern urban planning, underground drainage, standardized fired brick ratios (1:2:4), tidal dockyard at Lothal, reservoirs at Dholavira."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              62,
+              25
+            ],
+            [
+              64.5,
+              27
+            ],
+            [
+              67,
+              30.5
+            ],
+            [
+              70.5,
+              34
+            ],
+            [
+              74.5,
+              34.5
+            ],
+            [
+              77.5,
+              30
+            ],
+            [
+              78.2,
+              28.5
+            ],
+            [
+              76.5,
+              26.5
+            ],
+            [
+              74,
+              24.5
+            ],
+            [
+              73,
+              21
+            ],
+            [
+              70,
+              20.5
+            ],
+            [
+              68.5,
+              22.5
+            ],
+            [
+              66,
+              24
+            ],
+            [
+              62,
+              25
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "mahajanapadas",
+      "properties": {
+        "id": "mahajanapadas",
+        "name": "Sixteen Mahajanapadas (Iron Age Republics & Kingdoms)",
+        "era": "c. 600 – 321 BCE",
+        "period_group": "ancient",
+        "calendar_year": -500,
+        "capital": "Major Capitals: Rajagriha, Vaishali, Kaushambi, Ujjayini, Shravasti",
+        "ruler_or_system": "Oligarchic Ganasanghas (Vajji, Malla) & Monarchies (Magadha, Kosala, Vatsa, Avanti)",
+        "primary_rivers": "Ganga, Yamuna, Son, Sarayu, Gandak, Narmada",
+        "approximate_area_sqkm": 1800000,
+        "scholarly_disclaimer": "APPROXIMATE SCHOLARLY RECONSTRUCTION: Outlines define the primary northern cultural and political realm described in early Buddhist (Anguttara Nikaya) and Jain (Bhagavati Sutra) canonical literature.",
+        "citation": "Rhys Davids, H.C. Raychaudhuri, R.S. Sharma (Ancient India)",
+        "color": "#059669",
+        "border_color": "#10b981",
+        "trade_connections": "Uttarapatha (Northern Trunk Route) connecting Taxila to Champa & Tamralipti",
+        "highlights": "Second Urbanization of India, emergence of punch-marked coinage, life of Gautama Buddha and Vardhamana Mahavira."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              71,
+              33.5
+            ],
+            [
+              75,
+              32.5
+            ],
+            [
+              80,
+              29.5
+            ],
+            [
+              86.5,
+              27
+            ],
+            [
+              89,
+              25.5
+            ],
+            [
+              88,
+              22.5
+            ],
+            [
+              84,
+              22
+            ],
+            [
+              78,
+              21.5
+            ],
+            [
+              75,
+              21
+            ],
+            [
+              73.5,
+              23.5
+            ],
+            [
+              72.5,
+              28
+            ],
+            [
+              71,
+              33.5
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "maurya",
+      "properties": {
+        "id": "maurya",
+        "name": "Maurya Empire (Under Emperor Ashoka the Great)",
+        "era": "c. 260 BCE",
+        "period_group": "ancient",
+        "calendar_year": -260,
+        "capital": "Pataliputra (Patna)",
+        "ruler_or_system": "Emperor Ashoka Maurya (Piyadasi) & Arthashastra Bureaucracy",
+        "primary_rivers": "Ganga, Indus, Brahmaputra, Mahanadi, Godavari, Krishna",
+        "approximate_area_sqkm": 5000000,
+        "scholarly_disclaimer": "APPROXIMATE SCHOLARLY RECONSTRUCTION: Bound based on the find-spots of Ashoka's Major and Minor Rock Edicts and Pillar Edicts (from Kandahar/Shahbazgarhi to Maski/Brahmagiri). Southern boundary reflects independent friendly Tamil states (Cholas, Pandyas, Cheras) recorded in Rock Edict II.",
+        "citation": "Corpus Inscriptionum Indicarum Vol. I (Edicts of Asoka, E. Hultzsch) & ASI Inscription Survey",
+        "color": "#c2410c",
+        "border_color": "#ea580c",
+        "trade_connections": "Trans-continental links to Hellenistic Kingdoms (Egypt, Syria, Macedonia, Cyrene, Epirus)",
+        "highlights": "First political unification of the subcontinent, Dhamma governance, edicts engraved on rock faces and polished sandstone monoliths, construction of the Grand Trunk precursor."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              62.5,
+              34.5
+            ],
+            [
+              68,
+              36.5
+            ],
+            [
+              75,
+              36.5
+            ],
+            [
+              80,
+              32
+            ],
+            [
+              88.5,
+              28
+            ],
+            [
+              93,
+              26.5
+            ],
+            [
+              92,
+              22.5
+            ],
+            [
+              87,
+              21.5
+            ],
+            [
+              84.5,
+              18
+            ],
+            [
+              80.5,
+              14
+            ],
+            [
+              77,
+              12.5
+            ],
+            [
+              75.5,
+              13.5
+            ],
+            [
+              74,
+              16
+            ],
+            [
+              72.5,
+              21
+            ],
+            [
+              68,
+              23.5
+            ],
+            [
+              64,
+              26
+            ],
+            [
+              61,
+              30.5
+            ],
+            [
+              62.5,
+              34.5
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "gupta",
+      "properties": {
+        "id": "gupta",
+        "name": "Gupta Empire (Classical Golden Age of India)",
+        "era": "c. 350 – 550 CE",
+        "period_group": "classical",
+        "calendar_year": 400,
+        "capital": "Pataliputra & Ujjayini (Dual Imperial Seats)",
+        "ruler_or_system": "Samudragupta, Chandragupta II (Vikramaditya), Kumaragupta I",
+        "primary_rivers": "Ganga, Yamuna, Narmada, Godavari, Brahmaputra",
+        "approximate_area_sqkm": 3500000,
+        "scholarly_disclaimer": "APPROXIMATE SCHOLARLY RECONSTRUCTION: Boundaries derived from the Allahabad Pillar Inscription (Prayag Prashasti) composed by Harishena, detailing directly administered zones and southern tributary alliances.",
+        "citation": "Fleet (Corpus Inscriptionum Indicarum Vol. III) & R.C. Majumdar (The Classical Age)",
+        "color": "#b45309",
+        "border_color": "#f59e0b",
+        "trade_connections": "Maritime connections with Southeast Asia (Suvarnabhumi) and Sasanian Persia / Rome",
+        "highlights": "Zenith of Sanskrit literature (Kalidasa), mathematics (Aryabhata, discovery of zero/decimal system), metallurgy (Iron Pillar of Delhi), and founding of Nalanda Mahavihara."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              69,
+              32.5
+            ],
+            [
+              74,
+              32
+            ],
+            [
+              80,
+              29.5
+            ],
+            [
+              89,
+              26.5
+            ],
+            [
+              93.5,
+              25.5
+            ],
+            [
+              91,
+              22.5
+            ],
+            [
+              87.5,
+              21
+            ],
+            [
+              83,
+              19.5
+            ],
+            [
+              78.5,
+              19
+            ],
+            [
+              74.5,
+              20
+            ],
+            [
+              70,
+              21
+            ],
+            [
+              68.5,
+              24.5
+            ],
+            [
+              69,
+              32.5
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "delhi_sultanate",
+      "properties": {
+        "id": "delhi_sultanate",
+        "name": "Delhi Sultanate (Tughlaq & Khalji Dynasties)",
+        "era": "c. 1206 – 1526 CE",
+        "period_group": "medieval",
+        "calendar_year": 1335,
+        "capital": "Delhi (Qila Rai Pithora / Siri / Tughlaqabad) & Daulatabad",
+        "ruler_or_system": "Alauddin Khalji & Muhammad bin Tughlaq (Zenith expansion)",
+        "primary_rivers": "Ganga, Yamuna, Indus, Narmada, Tapi, Krishna",
+        "approximate_area_sqkm": 3200000,
+        "scholarly_disclaimer": "APPROXIMATE SCHOLARLY RECONSTRUCTION: Outlines show maximum territorial reach of Sultanate garrisons and provincial governors (iqtas) prior to regional fragmentation.",
+        "citation": "Irfan Habib, Peter Jackson (The Delhi Sultanate), Ziauddin Barani (Tarikh-i-Firuz Shahi)",
+        "color": "#0284c7",
+        "border_color": "#38bdf8",
+        "trade_connections": "Silk routes via Central Asia, maritime connections across Arabian Sea and Persian Gulf",
+        "highlights": "Indo-Islamic architectural synthesis (Qutb complex, Alai Darwaza), introduction of paper, spinning wheel, monetization through silver tanka and copper jital."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              68.5,
+              33
+            ],
+            [
+              74,
+              33.5
+            ],
+            [
+              78.5,
+              30.5
+            ],
+            [
+              87,
+              26.5
+            ],
+            [
+              90.5,
+              24.5
+            ],
+            [
+              88.5,
+              22
+            ],
+            [
+              84,
+              18.5
+            ],
+            [
+              79.5,
+              12
+            ],
+            [
+              77.5,
+              10
+            ],
+            [
+              76,
+              11.5
+            ],
+            [
+              73.5,
+              17
+            ],
+            [
+              70.5,
+              21.5
+            ],
+            [
+              67.5,
+              24
+            ],
+            [
+              68.5,
+              33
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "mughal",
+      "properties": {
+        "id": "mughal",
+        "name": "Mughal Empire (Akbar to Aurangzeb Zenith)",
+        "era": "c. 1556 – 1707 CE",
+        "period_group": "early_modern",
+        "calendar_year": 1700,
+        "capital": "Agra / Delhi (Shahjahanabad) / Lahore / Fatehpur Sikri",
+        "ruler_or_system": "Imperial Subahdar System (Ain-i-Akbari administrative framework)",
+        "primary_rivers": "Ganga, Yamuna, Indus, Brahmaputra, Godavari, Krishna, Kaveri",
+        "approximate_area_sqkm": 4000000,
+        "scholarly_disclaimer": "APPROXIMATE SCHOLARLY RECONSTRUCTION: Boundaries follow the 21 Subahs (provinces) mapped in Abul Fazl's Ain-i-Akbari and later Deccan annexations up to 1707.",
+        "citation": "Irfan Habib (An Atlas of the Mughal Empire, Oxford University Press)",
+        "color": "#15803d",
+        "border_color": "#22c55e",
+        "trade_connections": "Global textile exporter producing ~25% of world industrial output (calicoes, muslins, spices)",
+        "highlights": "Monumental architecture (Taj Mahal, Red Fort, Humayun's Tomb, Fatehpur Sikri), standardized silver rupee, revenue assessment under Raja Todar Mal."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              64,
+              34
+            ],
+            [
+              70,
+              36.5
+            ],
+            [
+              76.5,
+              36
+            ],
+            [
+              81,
+              31
+            ],
+            [
+              88.5,
+              27.5
+            ],
+            [
+              93.5,
+              26
+            ],
+            [
+              92,
+              22
+            ],
+            [
+              87.5,
+              21.5
+            ],
+            [
+              83,
+              17.5
+            ],
+            [
+              80,
+              13
+            ],
+            [
+              78.5,
+              11.5
+            ],
+            [
+              76.5,
+              12.5
+            ],
+            [
+              73.5,
+              16.5
+            ],
+            [
+              71.5,
+              21
+            ],
+            [
+              67.5,
+              24
+            ],
+            [
+              62.5,
+              27.5
+            ],
+            [
+              64,
+              34
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "maratha",
+      "properties": {
+        "id": "maratha",
+        "name": "Maratha Confederacy (Hindavi Swarajya & Peshwa Expansion)",
+        "era": "c. 1674 – 1761 CE",
+        "period_group": "early_modern",
+        "calendar_year": 1758,
+        "capital": "Raigad (Chhatrapati Shivaji Maharaj) / Pune (Peshwas) / Satara",
+        "ruler_or_system": "Chhatrapati Sovereignty & Peshwa / Sardar Confederation (Scindia, Holkar, Gaekwad, Bhonsle)",
+        "primary_rivers": "Godavari, Krishna, Narmada, Tapi, Chambal, Mahanadi",
+        "approximate_area_sqkm": 2800000,
+        "scholarly_disclaimer": "APPROXIMATE SCHOLARLY RECONSTRUCTION: Depicts the direct administrative dominions (Swarajya) and Chauth / Sardeshmukhi tributary collection zones at the zenith prior to the Third Battle of Panipat (1761).",
+        "citation": "Stewart Gordon (The Marathas 1600-1818, Cambridge University Press) & Jadunath Sarkar",
+        "color": "#ea580c",
+        "border_color": "#f97316",
+        "trade_connections": "West coast ports (Kalyan, Chaul, Vijaydurg) and inland Deccan-Gangetic caravan routes",
+        "highlights": "Naval power under Kanhoji Angre, light cavalry guerrilla tactics (Ganimi Kava), extensive hill fort architecture across the Western Ghats."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              71,
+              33
+            ],
+            [
+              76,
+              31.5
+            ],
+            [
+              79,
+              27.5
+            ],
+            [
+              84,
+              25
+            ],
+            [
+              86.5,
+              22
+            ],
+            [
+              86,
+              19.5
+            ],
+            [
+              81.5,
+              16.5
+            ],
+            [
+              78,
+              14
+            ],
+            [
+              74,
+              14.5
+            ],
+            [
+              73,
+              18.5
+            ],
+            [
+              70.5,
+              21
+            ],
+            [
+              69,
+              23.5
+            ],
+            [
+              71,
+              33
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "british_1909",
+      "properties": {
+        "id": "british_1909",
+        "name": "British Indian Empire & Princely States",
+        "era": "c. 1858 – 1947 CE",
+        "period_group": "colonial",
+        "calendar_year": 1909,
+        "capital": "Calcutta (until 1911) / New Delhi (from 1911)",
+        "ruler_or_system": "Crown Rule (Viceroy & Governor-General) + ~565 Princely States under Subsidiary Alliances",
+        "primary_rivers": "Indus, Ganga, Brahmaputra, Godavari, Krishna, Irrawaddy",
+        "approximate_area_sqkm": 4600000,
+        "scholarly_disclaimer": "HISTORICAL ADMINISTRATIVE BOUNDARIES: Dual political structure consisting of directly ruled British Presidencies and sovereign Indian Princely States (Sanad treaties under Crown suzerainty).",
+        "citation": "The Imperial Gazetteer of India (Atlas Volume, 1909) & Survey of India Historical Archives",
+        "color": "#be185d",
+        "border_color": "#f43f5e",
+        "trade_connections": "Extensive broad-gauge railway network, major steamship ports (Bombay, Calcutta, Madras, Karachi)",
+        "highlights": "Construction of the Indian Railway network (1853), telegraph lines, Survey of India Great Trigonometrical Survey under Lambton & Everest, codification of Indian Penal Code."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              61.5,
+              25
+            ],
+            [
+              64,
+              30
+            ],
+            [
+              68,
+              35
+            ],
+            [
+              74.5,
+              37
+            ],
+            [
+              80.5,
+              31.5
+            ],
+            [
+              88.5,
+              28
+            ],
+            [
+              95,
+              28.5
+            ],
+            [
+              97.5,
+              25
+            ],
+            [
+              93.5,
+              21.5
+            ],
+            [
+              88.5,
+              21.5
+            ],
+            [
+              80.5,
+              13
+            ],
+            [
+              77.5,
+              8
+            ],
+            [
+              75,
+              12
+            ],
+            [
+              72.5,
+              19
+            ],
+            [
+              68,
+              23.5
+            ],
+            [
+              61.5,
+              25
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "partition_1947",
+      "properties": {
+        "id": "partition_1947",
+        "name": "Independence & Partition of India (1947)",
+        "era": "1947 CE",
+        "period_group": "modern",
+        "calendar_year": 1947,
+        "capital": "New Delhi",
+        "ruler_or_system": "Constituent Assembly of India / Dominion of India (Governor-General & Prime Minister Jawaharlal Nehru)",
+        "primary_rivers": "Ganga, Yamuna, Brahmaputra, Godavari, Krishna, Kaveri, Narmada",
+        "approximate_area_sqkm": 3287263,
+        "scholarly_disclaimer": "HISTORICAL DEMARCATION: Depicts the Radcliffe Line awards in Punjab and Bengal along with the initial accession of 560+ Princely States into the Indian Union orchestrated by Sardar Vallabhbhai Patel.",
+        "citation": "Indian Independence Act 1947 (10 & 11 Geo. 6. c. 30) & White Paper on Indian States (1950)",
+        "color": "#2563eb",
+        "border_color": "#60a5fa",
+        "trade_connections": "National transport integration, resettlement corridors, national highway planning",
+        "highlights": "Birth of the independent sovereign nation (August 15, 1947), integration of Junagadh, Hyderabad (Operation Polo), and Jammu & Kashmir into the Republic."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              68.1,
+              23.7
+            ],
+            [
+              70.5,
+              28
+            ],
+            [
+              74.5,
+              32.5
+            ],
+            [
+              74,
+              36.5
+            ],
+            [
+              79,
+              35.5
+            ],
+            [
+              81,
+              30.5
+            ],
+            [
+              88,
+              27.5
+            ],
+            [
+              97.4,
+              28.5
+            ],
+            [
+              95.5,
+              24.5
+            ],
+            [
+              92.5,
+              21.5
+            ],
+            [
+              89,
+              21.8
+            ],
+            [
+              80.3,
+              13
+            ],
+            [
+              77.5,
+              8.1
+            ],
+            [
+              74,
+              15
+            ],
+            [
+              72.8,
+              19
+            ],
+            [
+              68.1,
+              23.7
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "states_reorg_1956",
+      "properties": {
+        "id": "states_reorg_1956",
+        "name": "Linguistic States Reorganisation (1956)",
+        "era": "1956 CE",
+        "period_group": "modern",
+        "calendar_year": 1956,
+        "capital": "New Delhi",
+        "ruler_or_system": "Republic of India (14 States & 6 Union Territories)",
+        "primary_rivers": "Pan-India Drainage Basins",
+        "approximate_area_sqkm": 3287263,
+        "scholarly_disclaimer": "OFFICIAL CONSTITUTIONAL BOUNDARIES: Based on the States Reorganisation Act 1956 implementing recommendations of the Fazal Ali Commission replacing complex colonial Part A, B, C, D states with cohesive linguistic federations.",
+        "citation": "Ministry of Law & Justice / The States Reorganisation Act, 1956 (Act No. 37 of 1956)",
+        "color": "#7c3aed",
+        "border_color": "#a855f7",
+        "trade_connections": "Five-Year Plan developmental industrial corridors, Bhakra-Nangal, Hirakud, DVC multipurpose dams",
+        "highlights": "Creation of linguistic states (Andhra Pradesh, Mysore, Kerala, Madras, Bombay State, Madhya Pradesh), landmark foundation for modern federal cooperative governance."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              68.1,
+              23.7
+            ],
+            [
+              70.5,
+              28
+            ],
+            [
+              74.5,
+              32.5
+            ],
+            [
+              74,
+              36.5
+            ],
+            [
+              79,
+              35.5
+            ],
+            [
+              81,
+              30.5
+            ],
+            [
+              88,
+              27.5
+            ],
+            [
+              97.4,
+              28.5
+            ],
+            [
+              95.5,
+              24.5
+            ],
+            [
+              92.5,
+              21.5
+            ],
+            [
+              89,
+              21.8
+            ],
+            [
+              80.3,
+              13
+            ],
+            [
+              77.5,
+              8.1
+            ],
+            [
+              74,
+              15
+            ],
+            [
+              72.8,
+              19
+            ],
+            [
+              68.1,
+              23.7
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

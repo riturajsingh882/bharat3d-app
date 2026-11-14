@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MapEngine } from './components/MapEngine';
 import { SidebarNav } from './components/SidebarNav';
 import { TopNavBar } from './components/TopNavBar';
@@ -130,6 +130,44 @@ export function App() {
   };
 
   const activeEraMeta = HISTORICAL_ERAS.find(e => e.id === selectedHistoricalPeriod) || HISTORICAL_ERAS[0];
+
+  // --- Mobile bottom-sheet (feature dossier) drag state ---
+  const SHEET_HALF_VH = 60;
+  const SHEET_FULL_VH = 92;
+  const [sheetExpanded, setSheetExpanded] = useState(false);
+  const [sheetDragVh, setSheetDragVh] = useState<number | null>(null);
+  const sheetDragRef = useRef<{ startY: number; startVh: number; moved: boolean } | null>(null);
+
+  const onSheetTouchStart = (e: any) => {
+    sheetDragRef.current = {
+      startY: e.touches[0].clientY,
+      startVh: sheetExpanded ? SHEET_FULL_VH : SHEET_HALF_VH,
+      moved: false
+    };
+  };
+
+  const onSheetTouchMove = (e: any) => {
+    const ref = sheetDragRef.current;
+    if (!ref) return;
+    const dy = ref.startY - e.touches[0].clientY;
+    if (Math.abs(dy) > 8) ref.moved = true;
+    const vh = (dy / window.innerHeight) * 100;
+    setSheetDragVh(Math.max(SHEET_HALF_VH - 10, Math.min(SHEET_FULL_VH, ref.startVh + vh)));
+  };
+
+  const onSheetTouchEnd = () => {
+    const ref = sheetDragRef.current;
+    if (ref) {
+      if (ref.moved) {
+        const current = sheetDragVh ?? (sheetExpanded ? SHEET_FULL_VH : SHEET_HALF_VH);
+        setSheetExpanded(current > (SHEET_HALF_VH + SHEET_FULL_VH) / 2);
+      } else {
+        setSheetExpanded((v) => !v);
+      }
+    }
+    setSheetDragVh(null);
+    sheetDragRef.current = null;
+  };
 
   return (
     <div className="flex flex-col w-full h-[100dvh] bg-[#030712] overflow-hidden select-none">
@@ -444,13 +482,30 @@ export function App() {
           </div>
         </main>
 
-        {/* Right Information Intelligence Panel (Sliding Dossier Drawer) */}
+        {/* Feature dossier — draggable bottom sheet on mobile, side panel on desktop */}
         {selectedFeature && (
-          <div className="absolute bottom-0 left-0 right-0 z-30 h-[60vh] w-full overflow-hidden rounded-t-2xl transition-all duration-300 shadow-2xl animate-in slide-in-from-bottom-4 sm:relative sm:inset-auto sm:h-full sm:w-96 sm:rounded-none">
-            <InfoPanel
-              feature={selectedFeature}
-              onClose={() => setSelectedFeature(null)}
-            />
+          <div
+            className={`absolute bottom-0 left-0 right-0 z-30 flex w-full flex-col overflow-hidden rounded-t-2xl shadow-2xl sm:relative sm:inset-auto sm:h-full sm:w-96 sm:rounded-none ${sheetDragVh == null ? 'transition-all duration-300' : ''} ${sheetDragVh == null ? (sheetExpanded ? 'h-[92vh]' : 'h-[60vh]') : ''}`}
+            style={sheetDragVh != null ? { height: `${sheetDragVh}vh` } : undefined}
+          >
+            {/* Drag handle (mobile only) */}
+            <div
+              className="sm:hidden flex w-full shrink-0 cursor-grab touch-none flex-col items-center pt-2 pb-1 active:cursor-grabbing"
+              onTouchStart={onSheetTouchStart}
+              onTouchMove={onSheetTouchMove}
+              onTouchEnd={onSheetTouchEnd}
+            >
+              <span className="h-1.5 w-10 rounded-full bg-white/30" />
+              <span className="mt-0.5 text-[10px] font-mono text-neutral-500">
+                {sheetExpanded ? 'Drag down for half view' : 'Drag up for full view'}
+              </span>
+            </div>
+            <div className="min-h-0 flex-1">
+              <InfoPanel
+                feature={selectedFeature}
+                onClose={() => setSelectedFeature(null)}
+              />
+            </div>
           </div>
         )}
       </div>

@@ -127,6 +127,9 @@ export const MapEngine: React.FC<MapEngineProps> = ({
   const flowIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const lastHoverTsRef = useRef<number>(0);
   const lastHoverKeyRef = useRef<string>('');
+  const hoverSupportedRef = useRef<boolean>(
+    typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches
+  );
   const [hoveredTooltip, setHoveredTooltip] = useState<{
     x: number;
     y: number;
@@ -1441,8 +1444,9 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         flowStep = (flowStep + 1) % 16;
       }, 150);
 
-      // Intelligent Mouse Hover
+      // Intelligent Mouse Hover (mouse/pointer devices only — touch selects features)
       map.on('mousemove', (e: MapMouseEvent) => {
+        if (!hoverSupportedRef.current) return;
         // Coalesce rapid pointer events to ~60fps to avoid jank when hovering
         // the large district / state GeoJSON sources.
         const now = performance.now();

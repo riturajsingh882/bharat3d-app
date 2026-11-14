@@ -132,16 +132,21 @@ export function App() {
   const activeEraMeta = HISTORICAL_ERAS.find(e => e.id === selectedHistoricalPeriod) || HISTORICAL_ERAS[0];
 
   // --- Mobile bottom-sheet (feature dossier) drag state ---
-  const SHEET_HALF_VH = 60;
-  const SHEET_FULL_VH = 92;
+  // Heights are percentages of the map area (workspace) so the sheet never
+  // grows above the header — the drag handle always stays reachable.
+  const SHEET_HALF_PCT = 60;
+  const SHEET_FULL_PCT = 100;
   const [sheetExpanded, setSheetExpanded] = useState(false);
-  const [sheetDragVh, setSheetDragVh] = useState<number | null>(null);
-  const sheetDragRef = useRef<{ startY: number; startVh: number; moved: boolean } | null>(null);
+  const [sheetDragPct, setSheetDragPct] = useState<number | null>(null);
+  const sheetDragRef = useRef<{ startY: number; startPct: number; moved: boolean } | null>(null);
+  const workspaceRef = useRef<HTMLDivElement>(null);
+
+  const sheetAreaHeight = () => workspaceRef.current?.clientHeight || window.innerHeight;
 
   const onSheetTouchStart = (e: any) => {
     sheetDragRef.current = {
       startY: e.touches[0].clientY,
-      startVh: sheetExpanded ? SHEET_FULL_VH : SHEET_HALF_VH,
+      startPct: sheetExpanded ? SHEET_FULL_PCT : SHEET_HALF_PCT,
       moved: false
     };
   };
@@ -151,21 +156,21 @@ export function App() {
     if (!ref) return;
     const dy = ref.startY - e.touches[0].clientY;
     if (Math.abs(dy) > 8) ref.moved = true;
-    const vh = (dy / window.innerHeight) * 100;
-    setSheetDragVh(Math.max(SHEET_HALF_VH - 10, Math.min(SHEET_FULL_VH, ref.startVh + vh)));
+    const pct = (dy / sheetAreaHeight()) * 100;
+    setSheetDragPct(Math.max(35, Math.min(SHEET_FULL_PCT, ref.startPct + pct)));
   };
 
   const onSheetTouchEnd = () => {
     const ref = sheetDragRef.current;
     if (ref) {
       if (ref.moved) {
-        const current = sheetDragVh ?? (sheetExpanded ? SHEET_FULL_VH : SHEET_HALF_VH);
-        setSheetExpanded(current > (SHEET_HALF_VH + SHEET_FULL_VH) / 2);
+        const current = sheetDragPct ?? (sheetExpanded ? SHEET_FULL_PCT : SHEET_HALF_PCT);
+        setSheetExpanded(current > (SHEET_HALF_PCT + SHEET_FULL_PCT) / 2);
       } else {
         setSheetExpanded((v) => !v);
       }
     }
-    setSheetDragVh(null);
+    setSheetDragPct(null);
     sheetDragRef.current = null;
   };
 
@@ -192,7 +197,7 @@ export function App() {
       />
 
       {/* Main Workspace Layout */}
-      <div className="flex flex-1 relative overflow-hidden">
+      <div ref={workspaceRef} className="flex flex-1 relative overflow-hidden">
         {/* Collapsible Left Layer Navigation (desktop inline column) */}
         <div className={`hidden md:block transition-all duration-300 relative z-20 ${isSidebarOpen ? 'w-80' : 'w-0'}`}>
           {isSidebarOpen && (
@@ -485,8 +490,8 @@ export function App() {
         {/* Feature dossier — draggable bottom sheet on mobile, side panel on desktop */}
         {selectedFeature && (
           <div
-            className={`absolute bottom-0 left-0 right-0 z-30 flex w-full flex-col overflow-hidden rounded-t-2xl shadow-2xl sm:relative sm:inset-auto sm:h-full sm:w-96 sm:rounded-none ${sheetDragVh == null ? 'transition-all duration-300' : ''} ${sheetDragVh == null ? (sheetExpanded ? 'h-[92vh]' : 'h-[60vh]') : ''}`}
-            style={sheetDragVh != null ? { height: `${sheetDragVh}vh` } : undefined}
+            className={`absolute bottom-0 left-0 right-0 z-30 flex w-full flex-col overflow-hidden rounded-t-2xl shadow-2xl sm:relative sm:inset-auto sm:h-full sm:w-96 sm:rounded-none ${sheetDragPct == null ? 'transition-all duration-300' : ''} ${sheetDragPct == null ? (sheetExpanded ? 'h-full' : 'h-[60%]') : ''}`}
+            style={sheetDragPct != null ? { height: `${sheetDragPct}%` } : undefined}
           >
             {/* Drag handle (mobile only) */}
             <div

@@ -229,7 +229,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
   };
 
   return (
-    <header className="h-14 px-2 md:px-4 bg-[#07090d]/95 backdrop-blur-xl border-b border-white/10 flex items-center justify-between z-30 select-none shadow-[0_4px_30px_rgba(0,0,0,0.8)] font-sans">
+    <header className="h-14 px-2 md:px-4 bg-[#07090d]/95 backdrop-blur-xl border-b border-white/10 flex items-center justify-between gap-1 md:gap-2 z-30 select-none shadow-[0_4px_30px_rgba(0,0,0,0.8)] font-sans">
       {/* Left: Fresh New BHARAT 3D Logo & Breadcrumb Focus */}
       <div className="flex items-center gap-3">
         <BharatLogo size="sm" showSubtitle={false} compactOnMobile />
@@ -308,7 +308,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
       </div>
 
       {/* Right Controls: Views, Basemap, 3D, Exaggeration, Sources */}
-      <div className="flex items-center gap-2 shrink-0 overflow-x-auto no-scrollbar max-w-[55vw] md:max-w-none [&>*]:shrink-0">
+      <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
         {/* Camera Cinema Presets */}
         <div className="relative hidden md:block">
           <button
@@ -629,7 +629,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
         {/* Verified Sources Modal Launcher */}
         <button
           onClick={onOpenSourceModal}
-          className="btn-coral px-4 py-2 rounded-lg text-sm font-sans font-semibold flex items-center gap-2 cursor-pointer"
+          className="btn-coral px-2 md:px-4 py-2 rounded-lg text-sm font-sans font-semibold flex items-center gap-2 cursor-pointer"
           title="View Official Government Data Provenance"
         >
           <ShieldCheck className="w-4 h-4" />

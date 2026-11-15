@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Map, NavigationControl, ScaleControl, setWorkerUrl, type MapMouseEvent } from 'maplibre-gl';
+import { Map, NavigationControl, ScaleControl, setWorkerUrl, type MapMouseEvent, type MapGeoJSONFeature } from 'maplibre-gl';
 import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo } from '../types';
 import { APP_CONFIG } from '../config';
 import { formatElevationDual } from '../utils/elevation';
@@ -93,6 +93,63 @@ function applySearchHighlight(map: Map, target: SearchTarget | null) {
       break;
     }
   }
+}
+
+// Calculate squared distance from point (px, py) to line segment (vx, vy)-(wx, wy) in screen space
+function distToSegmentSquared(px: number, py: number, vx: number, vy: number, wx: number, wy: number): number {
+  const l2 = (vx - wx) * (vx - wx) + (vy - wy) * (vy - wy);
+  if (l2 === 0) return (px - vx) * (px - vx) + (py - wy) * (py - wy);
+  let t = ((px - vx) * (wx - vx) + (py - vy) * (wy - wy)) / l2;
+  t = Math.max(0, Math.min(1, t));
+  const projX = vx + t * (wx - vx);
+  const projY = vy + t * (wy - vy);
+  return (px - projX) * (px - projX) + (py - projY) * (py - projY);
+}
+
+// Sort candidate features by screen proximity to the touch tap point
+function sortFeaturesByProximity(
+  features: MapGeoJSONFeature[],
+  tapPoint: { x: number; y: number },
+  map: Map
+): MapGeoJSONFeature[] {
+  if (features.length <= 1) return features;
+
+  const scored = features.map((feat) => {
+    let minDistSq = Infinity;
+    const geom = feat.geometry;
+
+    if (!geom) return { feat, dist: Infinity };
+
+    if (geom.type === 'Point') {
+      const screenPt = map.project(geom.coordinates as [number, number]);
+      minDistSq = (tapPoint.x - screenPt.x) ** 2 + (tapPoint.y - screenPt.y) ** 2;
+    } else if (geom.type === 'LineString') {
+      const coords = geom.coordinates as [number, number][];
+      for (let i = 0; i < coords.length - 1; i++) {
+        const p1 = map.project(coords[i]);
+        const p2 = map.project(coords[i + 1]);
+        const d = distToSegmentSquared(tapPoint.x, tapPoint.y, p1.x, p1.y, p2.x, p2.y);
+        if (d < minDistSq) minDistSq = d;
+      }
+    } else if (geom.type === 'MultiLineString') {
+      const lines = geom.coordinates as [number, number][][];
+      for (const line of lines) {
+        for (let i = 0; i < line.length - 1; i++) {
+          const p1 = map.project(line[i]);
+          const p2 = map.project(line[i + 1]);
+          const d = distToSegmentSquared(tapPoint.x, tapPoint.y, p1.x, p1.y, p2.x, p2.y);
+          if (d < minDistSq) minDistSq = d;
+        }
+      }
+    } else {
+      minDistSq = 100;
+    }
+
+    return { feat, dist: minDistSq };
+  });
+
+  scored.sort((a, b) => a.dist - b.dist);
+  return scored.map((s) => s.feat);
 }
 
 interface MapEngineProps {
@@ -193,9 +250,11 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     setVis('rivers-core', activeLayers.has('rivers'));
     setVis('rivers-glow', activeLayers.has('rivers'));
     setVis('rivers-flow', activeLayers.has('rivers'));
+    setVis('rivers-hit-target', activeLayers.has('rivers'));
     setVis('rivers-highlight', true);
     setVis('mountains-line', activeLayers.has('mountains'));
     setVis('mountains-glow', activeLayers.has('mountains'));
+    setVis('mountains-hit-target', activeLayers.has('mountains'));
     setVis('mountains-highlight', true);
 
     // 5. Historical Atlas & Time Machine Layers
@@ -218,12 +277,14 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     setVis('trade-core', isTradeActive);
     setVis('trade-flow', isTradeActive);
     setVis('trade-labels', isTradeActive);
+    setVis('trade-hit-target', isTradeActive);
 
     // 7.5 National Highways & Expressways
     const isRoadsActive = activeLayers.has('roads');
     setVis('roads-casing', isRoadsActive);
     setVis('roads-core', isRoadsActive);
     setVis('roads-label', isRoadsActive);
+    setVis('roads-hit-target', isRoadsActive);
     setVis('roads-highlight', true);
 
     // 8. Disaster & Seismic Hazards
@@ -365,7 +426,8 @@ export const MapEngine: React.FC<MapEngineProps> = ({
       pitch: is3D ? 52 : 0,
       bearing: is3D ? -8 : 0,
       maxPitch: 85,
-      attributionControl: false
+      attributionControl: false,
+      clickTolerance: 18 // Generous tap movement tolerance for touchscreens (prevents accidental tap-drag cancellation on mobile)
     });
 
     map.addControl(new NavigationControl({ visualizePitch: true }), 'top-right');
@@ -731,6 +793,23 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         }
       });
 
+      // Mountains Hit Target (Invisible wide interactive hit-target for effortless mobile finger tapping)
+      map.addLayer({
+        id: 'mountains-hit-target',
+        type: 'line',
+        source: 'india-mountains',
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+          visibility: activeLayers.has('mountains') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#000000',
+          'line-width': 32,
+          'line-opacity': 0.001
+        }
+      });
+
       map.addLayer({
         id: 'mountains-highlight',
         type: 'line',
@@ -780,6 +859,23 @@ export const MapEngine: React.FC<MapEngineProps> = ({
           'line-width': 1.6,
           'line-opacity': 0.75,
           'line-dasharray': [0, 4, 3]
+        }
+      });
+
+      // Rivers Hit Target (Invisible wide interactive hit-target for mobile touchscreens)
+      map.addLayer({
+        id: 'rivers-hit-target',
+        type: 'line',
+        source: 'india-rivers',
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+          visibility: activeLayers.has('rivers') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#000000',
+          'line-width': 30,
+          'line-opacity': 0.001
         }
       });
 
@@ -1041,6 +1137,23 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         }
       });
 
+      // Trade Routes Hit Target (Invisible wide interactive hit-target for mobile touchscreens)
+      map.addLayer({
+        id: 'trade-hit-target',
+        type: 'line',
+        source: 'historical-trade-routes',
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+          visibility: activeLayers.has('trade_routes') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#000000',
+          'line-width': 32,
+          'line-opacity': 0.001
+        }
+      });
+
       // ========================================================
       // 3.5 NATIONAL HIGHWAYS, EXPRESSWAYS & ROAD CORRIDORS
       // ========================================================
@@ -1109,6 +1222,23 @@ export const MapEngine: React.FC<MapEngineProps> = ({
           'text-color': '#f8fafc',
           'text-halo-color': '#020617',
           'text-halo-width': 2
+        }
+      });
+
+      // National Highways & Expressways Hit Target (Invisible wide hit-target for effortless single-tap selection on mobile)
+      map.addLayer({
+        id: 'roads-hit-target',
+        type: 'line',
+        source: 'india-highways',
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+          visibility: activeLayers.has('roads') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#000000',
+          'line-width': 32,
+          'line-opacity': 0.001
         }
       });
 
@@ -1519,13 +1649,17 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             'archaeology-inner-pip',
             'earthquake-epicenter-core',
             'seismic-zones-fill',
+            'trade-hit-target',
             'trade-core',
+            'roads-hit-target',
             'roads-core',
             'empires-fill',
             'elevation-natural-summit',
             'elevation-natural-spot-core',
             'urban-nodes-halo',
+            'rivers-hit-target',
             'rivers-core',
+            'mountains-hit-target',
             'mountains-line',
             'soils-fill',
             'districts-fill',
@@ -1552,28 +1686,28 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             metricLabel = 'Approx. Extent';
             metricValue = props.approximate_area_sqkm ? `${props.approximate_area_sqkm.toLocaleString()} km²` : 'Scholarly Reconstruction';
             source = 'Archaeological Survey of India / Historical Atlas';
-          } else if (topFeat.layer.id === 'archaeology-core' || topFeat.layer.id === 'archaeology-inner-pip') {
+          } else if (topFeat.layer.id.startsWith('archaeology-')) {
             featType = 'ARCHAEOLOGICAL SITE';
             title = props.name || 'Archaeological Site';
             subtitle = `${props.category_display || props.category || ''} (${props.period || ''})`;
             metricLabel = 'Discovery';
             metricValue = `${props.excavator || props.excavators || 'ASI Survey'} (${props.discovery_year || ''})`;
             source = 'Archaeological Survey of India (ASI)';
-          } else if (topFeat.layer.id === 'trade-core') {
+          } else if (topFeat.layer.id.startsWith('trade-')) {
             featType = 'HISTORICAL TRADE ROUTE';
             title = props.name || 'Trade Corridor';
             subtitle = props.era_active || 'Ancient Artery';
             metricLabel = 'Commodities';
             metricValue = props.commodities || 'Silk, Spices, Textiles';
             source = 'Historical Chronicles / Periplus of the Erythraean Sea';
-          } else if (topFeat.layer.id === 'roads-core') {
+          } else if (topFeat.layer.id.startsWith('roads-')) {
             featType = props.category === 'Expressway' ? 'EXPRESSWAY' : props.category === 'State Highway' ? 'STATE HIGHWAY' : 'NATIONAL HIGHWAY';
             title = `${props.code ? props.code + ' — ' : ''}${props.name || 'Road Corridor'}`;
             subtitle = `${props.from || ''} → ${props.to || ''}`;
             metricLabel = 'Route Length';
             metricValue = props.length_km ? `${props.length_km.toLocaleString()} km` : (props.corridor || 'Road Corridor');
             source = props.source || 'MoRTH / NHAI';
-          } else if (topFeat.layer.id === 'earthquake-epicenter-core') {
+          } else if (topFeat.layer.id.startsWith('earthquake-epicenter-')) {
             featType = 'HISTORICAL EARTHQUAKE';
             title = `${props.year} ${props.name}`;
             subtitle = `Fault: ${props.fault_system || 'Tectonic Plate Boundary'}`;
@@ -1587,7 +1721,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             metricLabel = 'Peak Ground Accel';
             metricValue = props.peak_ground_accel;
             source = 'Bureau of Indian Standards (BIS 1893:2016)';
-          } else if (topFeat.layer.id === 'elevation-natural-summit' || topFeat.layer.id === 'elevation-natural-spot-core') {
+          } else if (topFeat.layer.id.startsWith('elevation-natural-')) {
             featType = 'NATURAL MOUNTAIN SUMMIT';
             title = props.name || 'Topographic Summit';
             subtitle = `${props.zone || 'Physiographic Feature'} • ${props.category || 'Peak'}`;
@@ -1600,14 +1734,14 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             metricLabel = 'Night Light Hub';
             metricValue = `${props.intensity?.toUpperCase() || 'HIGH'} EMISSION`;
             source = 'NASA Black Marble / ISRO';
-          } else if (topFeat.layer.id === 'rivers-core') {
+          } else if (topFeat.layer.id.startsWith('rivers-')) {
             featType = 'RIVER';
             subtitle = props.river_system || 'River Basin';
             if (props.length_km) {
               metricLabel = 'Course Length';
               metricValue = `${props.length_km.toLocaleString()} km`;
             }
-          } else if (topFeat.layer.id === 'mountains-line') {
+          } else if (topFeat.layer.id.startsWith('mountains-')) {
             featType = 'MOUNTAIN RANGE';
             subtitle = props.type || 'Relief System';
             if (props.peak) {
@@ -1692,24 +1826,66 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         setHoveredTooltip(null);
       });
 
-      // Robust Click Selection
+      // Robust Click Selection with Two-Stage Mobile Hit Resolution
       map.on('click', (e: MapMouseEvent) => {
-        const features = map.queryRenderedFeatures(e.point, {
-          layers: [
-            'archaeology-core',
-            'archaeology-inner-pip',
-            'earthquake-epicenter-core',
-            'seismic-zones-fill',
-            'trade-core',
-            'roads-core',
-            'empires-fill',
-            'rivers-core',
-            'mountains-line',
-            'soils-fill',
-            'districts-fill',
-            'states-fill'
-          ].filter(id => Boolean(map.getLayer(id)))
-        });
+        // Generous touch buffer for mobile fingers (24px radius = 48x48px touch zone)
+        const touchRadius = 24;
+        const touchBbox: [[number, number], [number, number]] = [
+          [e.point.x - touchRadius, e.point.y - touchRadius],
+          [e.point.x + touchRadius, e.point.y + touchRadius]
+        ];
+
+        // 1. High priority linear & discrete point layers (highways, mountains, rivers, trade, archaeological sites, summits)
+        const priorityLinearPointLayers = [
+          'roads-hit-target',
+          'roads-core',
+          'roads-casing',
+          'roads-label',
+          'mountains-hit-target',
+          'mountains-line',
+          'mountains-glow',
+          'rivers-hit-target',
+          'rivers-core',
+          'rivers-glow',
+          'rivers-flow',
+          'trade-hit-target',
+          'trade-core',
+          'trade-glow',
+          'trade-flow',
+          'archaeology-core',
+          'archaeology-inner-pip',
+          'archaeology-glow',
+          'earthquake-epicenter-core',
+          'elevation-natural-summit',
+          'elevation-natural-spot-core'
+        ].filter(id => Boolean(map.getLayer(id)));
+
+        // 2. Low priority background polygon layers (districts, states, soils, empires, seismic zones)
+        const polygonLayers = [
+          'seismic-zones-fill',
+          'empires-fill',
+          'soils-fill',
+          'districts-fill',
+          'states-fill'
+        ].filter(id => Boolean(map.getLayer(id)));
+
+        // Stage 1: Check for direct linear/point hits at tap point
+        const directLinearHits = map.queryRenderedFeatures(e.point, { layers: priorityLinearPointLayers });
+        let features: MapGeoJSONFeature[] = [];
+
+        if (directLinearHits && directLinearHits.length > 0) {
+          features = directLinearHits;
+        } else {
+          // Stage 2: If tap landed slightly off the line (typical mobile touch), search within the 48x48px touch zone
+          const bufferedHits = map.queryRenderedFeatures(touchBbox, { layers: priorityLinearPointLayers });
+          if (bufferedHits && bufferedHits.length > 0) {
+            // Sort by proximity to tap point
+            features = sortFeaturesByProximity(bufferedHits, e.point, map);
+          } else {
+            // Stage 3: Only if no linear/point feature was anywhere near the tap, query background polygon at tap point
+            features = map.queryRenderedFeatures(e.point, { layers: polygonLayers });
+          }
+        }
 
         const clearHighlights = () => {
           if (map.getLayer('states-highlight')) map.setFilter('states-highlight', ['==', 'shapeName', '']);
@@ -1731,31 +1907,31 @@ export const MapEngine: React.FC<MapEngineProps> = ({
           
           let featType: SelectedFeatureInfo['type'] = 'state';
 
-          if (topFeat.layer.id === 'empires-fill') {
-            featType = 'historical_empire';
-          } else if (topFeat.layer.id === 'archaeology-core' || topFeat.layer.id === 'archaeology-inner-pip') {
-            featType = 'archaeological_site';
-          } else if (topFeat.layer.id === 'trade-core') {
-            featType = 'trade_route';
-          } else if (topFeat.layer.id === 'roads-core') {
+          if (topFeat.layer.id.startsWith('roads-')) {
             featType = 'highway';
             if (map.getLayer('roads-highlight')) {
               map.setFilter('roads-highlight', ['==', 'code', props.code || '']);
             }
-          } else if (topFeat.layer.id === 'earthquake-epicenter-core') {
-            featType = 'earthquake_epicenter';
-          } else if (topFeat.layer.id === 'seismic-zones-fill') {
-            featType = 'seismic_zone';
-          } else if (topFeat.layer.id === 'rivers-core') {
-            featType = 'river';
-            if (map.getLayer('rivers-highlight')) {
-              map.setFilter('rivers-highlight', ['==', 'clean_name', props.clean_name || '']);
-            }
-          } else if (topFeat.layer.id === 'mountains-line') {
+          } else if (topFeat.layer.id.startsWith('mountains-')) {
             featType = 'mountain';
             if (map.getLayer('mountains-highlight')) {
               map.setFilter('mountains-highlight', ['==', 'name', props.name || '']);
             }
+          } else if (topFeat.layer.id.startsWith('rivers-')) {
+            featType = 'river';
+            if (map.getLayer('rivers-highlight')) {
+              map.setFilter('rivers-highlight', ['==', 'clean_name', props.clean_name || '']);
+            }
+          } else if (topFeat.layer.id.startsWith('trade-')) {
+            featType = 'trade_route';
+          } else if (topFeat.layer.id.startsWith('archaeology-')) {
+            featType = 'archaeological_site';
+          } else if (topFeat.layer.id.startsWith('earthquake-epicenter-')) {
+            featType = 'earthquake_epicenter';
+          } else if (topFeat.layer.id === 'seismic-zones-fill') {
+            featType = 'seismic_zone';
+          } else if (topFeat.layer.id === 'empires-fill') {
+            featType = 'historical_empire';
           } else if (topFeat.layer.id === 'soils-fill') {
             featType = 'soil';
           } else if (topFeat.layer.id === 'districts-fill') {

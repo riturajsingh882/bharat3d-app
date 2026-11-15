@@ -98,6 +98,22 @@ export const SoilDataModal: React.FC<SoilDataModalProps> = ({ isOpen, onClose })
             </div>
           </div>
 
+          {/* Reference map */}
+          <div className="vista-card p-4">
+            <div className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-300 mb-2 flex items-center gap-1.5">
+              <Layers className="w-4 h-4 text-amber-400" /> Official NBSS&amp;LUP &quot;Soils of India&quot; reference map
+            </div>
+            <img
+              src="/data/soils_of_india_reference.jpg"
+              alt="Official NBSS&LUP Soils of India map"
+              className="w-full max-h-72 object-contain rounded-lg border border-white/10 bg-white"
+            />
+            <div className="text-[10px] text-neutral-500 mt-2 font-mono leading-relaxed">
+              Source: AESRs of India, NBSS&amp;LUP, Nagpur. Shown for visual reference only — this scan is
+              not georeferenced and is not extracted as GIS vector data.
+            </div>
+          </div>
+
           {/* Datasets */}
           <div>
             <div className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-300 mb-2 flex items-center gap-1.5">
@@ -146,6 +162,36 @@ export const SoilDataModal: React.FC<SoilDataModalProps> = ({ isOpen, onClose })
               educational categories; <strong>Saline &amp; Alkaline</strong> and{' '}
               <strong>Peaty &amp; Marshy</strong> soils are not mapped here and require the official
               dataset.
+            </div>
+          </div>
+
+          {/* Class crosswalk */}
+          <div className="p-4 rounded-xl bg-[#12161d] border border-white/10">
+            <div className="text-xs font-mono font-bold uppercase tracking-wider text-neutral-300 mb-2 flex items-center gap-1.5">
+              <Layers className="w-4 h-4 text-emerald-400" /> Official class → educational category crosswalk
+            </div>
+            <div className="space-y-1.5 text-xs font-mono">
+              {[
+                ['Alluvial-derived (with saline phases)', 'Alluvial + Saline/Alkaline'],
+                ['Coastal & Deltaic Alluvium-derived', 'Alluvial'],
+                ['Deep Black / Shallow Black', 'Black / Regur'],
+                ['Mixed Red & Black', 'Red & Yellow (+ Black)'],
+                ['Red Loamy / Red & Yellow', 'Red & Yellow'],
+                ['Red & Lateritic', 'Laterite (+ Red & Yellow)'],
+                ['Brown Forest & Podzolic / Brown & Red Hills', 'Forest & Mountain'],
+                ['Desert (saline) / Grey Brown / Sandy & Littoral', 'Arid / Desert'],
+                ['Saline & sodic', 'Saline & Alkaline'],
+                ['Skeletal / Tarai', 'Forest & Mountain / Alluvial'],
+              ].map(([a, b]) => (
+                <div key={a} className="flex items-start justify-between gap-3 py-1 border-b border-white/5 last:border-0">
+                  <span className="text-neutral-300">{a}</span>
+                  <span className="text-amber-300 font-bold text-right shrink-0">{b}</span>
+                </div>
+              ))}
+            </div>
+            <div className="text-[10px] text-neutral-500 mt-2 font-mono leading-relaxed">
+              Indicative crosswalk derived from the official map legend. Some classes span multiple
+              educational categories; that uncertainty is preserved rather than forced into one class.
             </div>
           </div>
 

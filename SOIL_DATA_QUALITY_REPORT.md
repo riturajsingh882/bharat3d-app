@@ -108,3 +108,36 @@ ICAR-NBSS&LUP maps use scientific **soil taxonomy** (orders, subgroups, associat
 | Identifies limitations where district data unavailable | ✅ Yes (data-sources panel) |
 
 **Honest status: the layer remains a clearly-labelled approximation.** A scientifically defensible, geographically exact soil layer requires the official NBSS&LUP GIS dataset, which needs authorised access.
+
+---
+
+## 10. Official map image review (15 Nov 2026)
+
+The user supplied the official **NBSS&LUP "Soils of India"** map (AESRs of India, NBSS&LUP, Nagpur). It was analysed with Pillow/NumPy:
+
+- Format: **1169 × 1494 JPEG** (low resolution); ~69% white background.
+- Legend: **~16 official soil classes** — Alluvial-derived (with saline phases), Brown Forest & Podzolic, Brown & Red Hills, Coastal & Deltaic Alluvium-derived, Deep Black, Desert (saline), Grey Brown, Mixed Red & Black, Red Loamy, Red & Lateritic, Red & Yellow, Saline & sodic, Sandy & Littoral, Shallow Black, Skeletal, Tarai.
+- **No coordinate grid, no CRS/projection metadata** → cannot be georeferenced accurately.
+- The classes use **very similar earthy oranges/browns/pinks** plus JPEG noise, and are overlaid by labels, boundaries and the legend → vectorising would yield noisy, low-accuracy polygons.
+
+**Decision:** not vectorised (it would be another approximate map). Instead:
+
+- The map is embedded as a **reference image** inside the "Soil Data Sources & Accuracy" panel, with attribution and a "reference only — not extracted as GIS" label.
+- An **official-class → 8 educational-category crosswalk** was added to the panel and below.
+
+### Class crosswalk (indicative)
+
+| Official NBSS&LUP class | Educational category |
+|---|---|
+| Alluvial-derived (with saline phases) | Alluvial + Saline/Alkaline |
+| Coastal & Deltaic Alluvium-derived | Alluvial |
+| Deep Black / Shallow Black | Black / Regur |
+| Mixed Red & Black | Red & Yellow (+ Black) |
+| Red Loamy / Red & Yellow | Red & Yellow |
+| Red & Lateritic | Laterite (+ Red & Yellow) |
+| Brown Forest & Podzolic / Brown & Red Hills | Forest & Mountain |
+| Desert (saline) / Grey Brown / Sandy & Littoral | Arid / Desert |
+| Saline & sodic | Saline & Alkaline |
+| Skeletal / Tarai | Forest & Mountain / Alluvial |
+
+**For accurate extraction**, a **georeferenced GeoTIFF (with CRS)** or the **official Shapefile/GeoPackage** would be required — not a plain image.

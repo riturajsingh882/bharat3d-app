@@ -59,11 +59,11 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
   onOpenSoilSources
 }) => {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
-    historical: true,
-    historyTimeline: true,
-    archaeology: true,
+    historical: false,
+    historyTimeline: false,
+    archaeology: false,
     trade: false,
-    roads: true,
+    roads: false,
     disaster: false,
     political: false,
     soils: false,

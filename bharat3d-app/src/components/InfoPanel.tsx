@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import type { SelectedFeatureInfo } from '../types';
 import { metersToFeetInches } from '../utils/elevation';
+import { STATE_LANDMARKS } from '../data/stateLandmarks';
 
 interface InfoPanelProps {
   feature: SelectedFeatureInfo | null;
@@ -93,6 +94,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
 
   const { type, properties, demographics } = feature;
   const displayName = properties.clean_name || properties.shapeName || properties.name || feature.name;
+  const stateLandmarks = type === 'state' ? STATE_LANDMARKS[properties.shapeName || displayName] : undefined;
 
   return (
     <aside className="w-full h-full bg-[#080a0e]/95 backdrop-blur-2xl border-l border-white/10 flex flex-col z-20 text-neutral-200 select-none shadow-2xl overflow-hidden font-sans">
@@ -740,6 +742,32 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Top 5 Historical & Famous Places (State) */}
+        {type === 'state' && stateLandmarks && stateLandmarks.length > 0 && (
+          <div className="vista-card p-4 font-mono">
+            <div className="text-xs font-bold text-white mb-3 flex items-center justify-between uppercase tracking-wider">
+              <span className="flex items-center gap-1.5">
+                <Landmark className="w-4 h-4 text-amber-400" />
+                Top 5 Historical &amp; Famous Places
+              </span>
+            </div>
+            <ol className="space-y-3 text-sm">
+              {stateLandmarks.map((lm, i) => (
+                <li key={lm.name} className="flex gap-3">
+                  <span className="text-[#C9A227] font-black shrink-0 w-5 text-right">{i + 1}.</span>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-white font-bold">{lm.name}</span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-neutral-300 border border-white/10 font-bold uppercase tracking-wide">{lm.type}</span>
+                    </div>
+                    <div className="text-neutral-400 text-xs leading-relaxed mt-0.5 font-sans">{lm.blurb}</div>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
         )}
 

@@ -15,7 +15,8 @@ import {
   Compass,
   Scroll,
   AlertTriangle,
-  Clock
+  Clock,
+  Info
 } from 'lucide-react';
 import type { ActiveLayer, HistoricalPeriodId, ReligionFilter } from '../types';
 import { HISTORICAL_ERAS } from '../data/historicalEras';
@@ -42,6 +43,7 @@ interface SidebarNavProps {
   isTimelineOpen: boolean;
   onToggleTimeline: () => void;
   onResetLayers?: () => void;
+  onOpenSoilSources?: () => void;
 }
 
 export const SidebarNav: React.FC<SidebarNavProps> = ({
@@ -53,7 +55,8 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
   onSelectEra,
   isTimelineOpen,
   onToggleTimeline,
-  onResetLayers
+  onResetLayers,
+  onOpenSoilSources
 }) => {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     historical: true,
@@ -434,6 +437,15 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
                   <span>8-Fold Classification</span>
                 </div>
                 <span className="text-xs px-2 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-500/40 font-bold">NBSS&LUP</span>
+              </button>
+
+              <button
+                onClick={onOpenSoilSources}
+                className="w-full flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-amber-300 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 transition-colors cursor-pointer"
+                title="Soil data sources, ICAR datasets & accuracy"
+              >
+                <Info className="w-3.5 h-3.5" />
+                <span>Data sources &amp; accuracy</span>
               </button>
               
               {activeLayers.has('soils') && (

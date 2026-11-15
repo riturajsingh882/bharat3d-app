@@ -543,6 +543,11 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
                   <div className="text-neutral-300">{properties.states.join(', ')}</div>
                 </div>
               )}
+
+              <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs font-mono leading-relaxed mt-2">
+                <span className="font-bold block mb-1">Approximate Distribution:</span>
+                Schematic educational representation of the ICAR 8-fold scheme — not official NBSS&amp;LUP soil-resource geometry. Not a parcel-level soil certification.
+              </div>
             </div>
           </div>
         )}

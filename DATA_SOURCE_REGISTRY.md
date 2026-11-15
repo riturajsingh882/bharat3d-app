@@ -122,7 +122,11 @@ To satisfy the core requirement that all factual information originates from ver
 | **Publishing Institution** | ICAR - National Bureau of Soil Survey & Land Use Planning, Nagpur / FAO |
 | **Major Soil Types** | 1. Alluvial Soil<br>2. Black Soil (Regur)<br>3. Red and Yellow Soil<br>4. Laterite Soil<br>5. Arid and Desert Soil<br>6. Mountain & Forest Soil<br>7. Saline and Alkaline Soil<br>8. Peaty and Marshy Soil |
 | **Attributes Recorded** | Scientific soil classification, parent rock, chemical composition, moisture retention, major crops suited, regional distribution |
-| **Format** | Polygons with standardized scientific color conventions |
+| **Official Datasets** | Soil Resource Database (1:1M national), Soil Resource Database (1:250K state), Soil Resource Database (1:50K, ~49–50 districts), Soil Resource Database (1:10K, 114–146 blocks); WRB (1:1M); per-type layers (Alluvial, Black, Red, Mountainous) |
+| **Official Endpoints** | `https://nbsslup.icar.gov.in/`<br>`https://bhoomigeoportal-nbsslup.in/`<br>`https://icar.gov.in/en/landmark-technologies-1` |
+| **Access Status** | **View-only via the BHOOMI Geoportal.** Open vector export (GeoJSON / WFS / Shapefile) is not publicly available; GIS download requires registration or institutional permission. No open API/WFS confirmed. |
+| **Current App Data** | Approximate schematic polygons (6 of the 8 educational categories); **not** official NBSS&LUP geometry. Saline/Alkaline and Peaty/Marshy are not mapped. See `SOIL_DATA_QUALITY_REPORT.md`. |
+| **Format** | Browser GeoJSON (approximate) — official sources are Shapefile / GeoPackage / raster via the geoportal |
 
 ---
 

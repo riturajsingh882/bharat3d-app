@@ -7,7 +7,8 @@ import { SourceModal } from './components/SourceModal';
 import { LoadingScreen } from './components/LoadingScreen';
 import { HistoricalTimeline } from './components/HistoricalTimeline';
 import { StateComparisonModal } from './components/StateComparisonModal';
-import { PanelLeftClose, PanelLeftOpen, Mountain, Landmark, Scroll, Compass, AlertTriangle, Route, ChevronUp, ChevronDown, Clock } from 'lucide-react';
+import { SoilDataModal } from './components/SoilDataModal';
+import { PanelLeftClose, PanelLeftOpen, Mountain, Landmark, Scroll, Compass, AlertTriangle, Route, ChevronUp, ChevronDown, Clock, Info } from 'lucide-react';
 import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo } from './types';
 import { HISTORICAL_ERAS } from './data/historicalEras';
 
@@ -44,6 +45,7 @@ export function App() {
 
   // State Comparison Studio State
   const [isComparisonModalOpen, setIsComparisonModalOpen] = useState<boolean>(false);
+  const [isSoilModalOpen, setIsSoilModalOpen] = useState<boolean>(false);
 
   // Ingest Demographics
   useEffect(() => {
@@ -215,7 +217,7 @@ export function App() {
               }}
               isTimelineOpen={isTimelineOpen}
               onToggleTimeline={() => setIsTimelineOpen(!isTimelineOpen)}
-              onResetLayers={handleResetLayers}
+              onResetLayers={handleResetLayers} onOpenSoilSources={() => setIsSoilModalOpen(true)}
             />
           )}
         </div>
@@ -242,7 +244,7 @@ export function App() {
                 }}
                 isTimelineOpen={isTimelineOpen}
                 onToggleTimeline={() => setIsTimelineOpen(!isTimelineOpen)}
-                onResetLayers={handleResetLayers}
+                onResetLayers={handleResetLayers} onOpenSoilSources={() => setIsSoilModalOpen(true)}
               />
               <button
                 onClick={() => setIsSidebarOpen(false)}
@@ -424,9 +426,19 @@ export function App() {
             {/* Soils Legend */}
             {activeLayers.has('soils') && (
               <div className="glass-panel-glow rounded-xl p-3.5 shadow-2xl text-sm pointer-events-auto min-w-[240px]">
-                <div className="font-bold text-amber-300 text-sm mb-1.5 flex items-center justify-between">
-                  <span>Soil Geography (ICAR)</span>
-                  <span className="text-xs text-neutral-300 font-bold">8 Classifications</span>
+                <div className="font-bold text-amber-300 text-sm mb-1.5 flex items-center justify-between gap-2">
+                  <span className="flex items-center gap-1.5">
+                    <span>Soil Geography (ICAR)</span>
+                    <button
+                      onClick={() => setIsSoilModalOpen(true)}
+                      className="p-0.5 rounded text-amber-400 hover:text-white transition-colors cursor-pointer"
+                      title="Soil data sources & accuracy"
+                      aria-label="Soil data sources and accuracy"
+                    >
+                      <Info className="w-3.5 h-3.5" />
+                    </button>
+                  </span>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-500/40 font-bold">APPROX.</span>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-xs font-bold">
                   <span className="flex items-center gap-1.5 text-yellow-300"><span className="w-3 h-3 rounded bg-[#eab308] inline-block"/>Alluvial</span>
@@ -435,6 +447,11 @@ export function App() {
                   <span className="flex items-center gap-1.5 text-orange-400"><span className="w-3 h-3 rounded bg-[#c2410c] inline-block"/>Laterite</span>
                   <span className="flex items-center gap-1.5 text-amber-300"><span className="w-3 h-3 rounded bg-[#f59e0b] inline-block"/>Arid / Desert</span>
                   <span className="flex items-center gap-1.5 text-green-300"><span className="w-3 h-3 rounded bg-[#15803d] inline-block"/>Mountain</span>
+                  <span className="flex items-center gap-1.5 text-neutral-500"><span className="w-3 h-3 rounded bg-neutral-700 border border-dashed border-neutral-500 inline-block"/>Saline/Alkaline</span>
+                  <span className="flex items-center gap-1.5 text-neutral-500"><span className="w-3 h-3 rounded bg-neutral-700 border border-dashed border-neutral-500 inline-block"/>Peaty/Marshy</span>
+                </div>
+                <div className="mt-2 pt-2 border-t border-white/10 text-[10px] text-amber-200/80 font-mono leading-relaxed">
+                  Schematic approximation — not official NBSS&amp;LUP geometry. Dashed = not mapped.
                 </div>
               </div>
             )}
@@ -559,6 +576,12 @@ export function App() {
       <SourceModal
         isOpen={isSourceModalOpen}
         onClose={() => setIsSourceModalOpen(false)}
+      />
+
+      {/* Soil Data Sources & Accuracy Modal */}
+      <SoilDataModal
+        isOpen={isSoilModalOpen}
+        onClose={() => setIsSoilModalOpen(false)}
       />
     </div>
   );

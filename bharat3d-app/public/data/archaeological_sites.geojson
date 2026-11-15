@@ -17,7 +17,9 @@
         "key_finds": "Great Granary (12 units), Cemetery R-37, Red sandstone male torso, Copper scale, Faience bangles",
         "status": "UNESCO Tentative / National Monument",
         "description": "The type-site of the Indus Civilization situated on the left bank of the Ravi river. Gave its name to the entire Harappan cultural horizon.",
-        "citation": "Archaeological Survey of India (ASI) & Vats, M.S. (1940)"
+        "citation": "Archaeological Survey of India (ASI) & Vats, M.S. (1940)",
+        "color": "#14b8a6",
+        "category_display": "Indus Valley Settlements"
       },
       "geometry": {
         "type": "Point",
@@ -43,7 +45,9 @@
         "key_finds": "Great Bath, Granary, College of Priests, Bronze Dancing Girl, Steatite Priest-King statue, Pashupati seal",
         "status": "UNESCO World Heritage Site (1980)",
         "description": "The largest excavated Bronze Age metropolis in the Indus basin, showcasing monumental public civic architecture and an advanced covered drainage network.",
-        "citation": "Marshall, Sir John (1931, Mohenjo-daro and the Indus Civilization)"
+        "citation": "Marshall, Sir John (1931, Mohenjo-daro and the Indus Civilization)",
+        "color": "#14b8a6",
+        "category_display": "Indus Valley Settlements"
       },
       "geometry": {
         "type": "Point",
@@ -69,7 +73,9 @@
         "key_finds": "Monumental stone reservoirs (water harvesting), 10-symbol Indus Signboard, Tripartite urban plan (Citadel, Middle Town, Lower Town), Check dams on Manhar and Mansar streams",
         "status": "UNESCO World Heritage Site (2021)",
         "description": "Located on Khadir Bet island in the Rann of Kutch, Gujarat. Premier example of hydraulic engineering, stone masonry, and urban defense in the ancient world.",
-        "citation": "Archaeological Survey of India (ASI) Monograph / Bisht, R.S."
+        "citation": "Archaeological Survey of India (ASI) Monograph / Bisht, R.S.",
+        "color": "#14b8a6",
+        "category_display": "Indus Valley Settlements"
       },
       "geometry": {
         "type": "Point",
@@ -95,7 +101,9 @@
         "key_finds": "11 Mounds covering >350 hectares, Mud-brick podiums, Gold foundry, Lapidary workshop, Intact DNA skeletal burials",
         "status": "ASI Protected Monument of National Importance",
         "description": "The largest known settlement of the Indus-Saraswati Civilization located in Hisar district, Haryana. Ancient paleochannel of the Drishadvati river.",
-        "citation": "ASI Excavation Reports & Shinde et al. (Cell, 2019)"
+        "citation": "ASI Excavation Reports & Shinde et al. (Cell, 2019)",
+        "color": "#14b8a6",
+        "category_display": "Indus Valley Settlements"
       },
       "geometry": {
         "type": "Point",
@@ -121,7 +129,9 @@
         "key_finds": "Tidal dockyard basin (214m x 36m) with sluice gate, Bead factory, Persian Gulf button seal, Dual burials",
         "status": "UNESCO Tentative / ASI Monument",
         "description": "World's earliest identified tidal dockyard connecting the Harappan heartland to Arabian Sea maritime trade channels at the head of the Gulf of Khambhat.",
-        "citation": "Rao, S.R. (Lothal and the Indus Civilization, 1973)"
+        "citation": "Rao, S.R. (Lothal and the Indus Civilization, 1973)",
+        "color": "#14b8a6",
+        "category_display": "Indus Valley Settlements"
       },
       "geometry": {
         "type": "Point",
@@ -147,7 +157,9 @@
         "key_finds": "Earliest ploughed agricultural field surface (criss-cross furrows), Row of 7 brick fire-altars (sacrificial platforms)",
         "status": "ASI Protected Monument",
         "description": "Situated on the dried bed of the Ghaggar (ancient Saraswati) in Hanumangarh district, Rajasthan. Shows transition from Early to Mature Harappan phases.",
-        "citation": "ASI Memoirs No. 98 / Lal, B.B. (2003)"
+        "citation": "ASI Memoirs No. 98 / Lal, B.B. (2003)",
+        "color": "#14b8a6",
+        "category_display": "Indus Valley Settlements"
       },
       "geometry": {
         "type": "Point",
@@ -173,7 +185,9 @@
         "key_finds": "Monasteries, Stupas, Temple No. 3, Inscribed seals of Harshavardhana and Devapala, Bronze Buddhist sculptures",
         "status": "UNESCO World Heritage Site (2016)",
         "description": "One of the greatest residential universities of the ancient world. Accommodated 10,000 scholars and 2,000 masters studying philosophy, astronomy, medicine, and logic.",
-        "citation": "Archaeological Survey of India & Xuanzang's Great Tang Records on the Western Regions"
+        "citation": "Archaeological Survey of India & Xuanzang's Great Tang Records on the Western Regions",
+        "color": "#f59e0b",
+        "category_display": "Ancient Universities"
       },
       "geometry": {
         "type": "Point",
@@ -199,7 +213,9 @@
         "key_finds": "Dharmarajika Stupa, Sirkap Greek-style city grid, Jaulian monastery, Silver scrolls, Indo-Greek coinage",
         "status": "UNESCO World Heritage Site (1980)",
         "description": "Legendary seat of Vedic and Buddhist intellectual learning where Chanakya authored the Arthashastra, Panini taught Sanskrit grammar, and Jivaka studied medicine.",
-        "citation": "Marshall, Sir John (Taxila: An Illustrated Account, 1951)"
+        "citation": "Marshall, Sir John (Taxila: An Illustrated Account, 1951)",
+        "color": "#f59e0b",
+        "category_display": "Ancient Universities"
       },
       "geometry": {
         "type": "Point",
@@ -225,7 +241,9 @@
         "key_finds": "Great Stupa hemisphere, Four intricately carved Torana gateways depicting Jataka tales, Ashoka Pillar edict",
         "status": "UNESCO World Heritage Site (1989)",
         "description": "The oldest stone structure in India, commissioned by Emperor Ashoka over the holy relics of the Buddha in Raisen district, Madhya Pradesh.",
-        "citation": "Marshall & Foucher (The Monuments of Sanchi, 1940)"
+        "citation": "Marshall & Foucher (The Monuments of Sanchi, 1940)",
+        "color": "#8b5cf6",
+        "category_display": "Buddhist Monasteries"
       },
       "geometry": {
         "type": "Point",
@@ -251,7 +269,9 @@
         "key_finds": "Lion Capital of Ashoka (National Emblem of India), Dhamek Stupa, Dharmarajika Stupa foundation, Preaching Buddha sculpture",
         "status": "UNESCO Tentative / National Monument",
         "description": "The sacred site where Gautama Buddha delivered his First Sermon (Dhammacakkappavattana Sutta) setting the Wheel of Law into motion.",
-        "citation": "Archaeological Survey of India (ASI)"
+        "citation": "Archaeological Survey of India (ASI)",
+        "color": "#8b5cf6",
+        "category_display": "Buddhist Monasteries"
       },
       "geometry": {
         "type": "Point",
@@ -277,7 +297,9 @@
         "key_finds": "Diamond Throne (Vajrasana) of Ashoka, Sacred Bodhi Tree (Ficus religiosa), 55m grand pyramidal brick temple",
         "status": "UNESCO World Heritage Site (2002)",
         "description": "The most sacred pilgrimage center of Buddhism, where Siddhartha Gautama attained supreme enlightenment under the Bodhi tree in Gaya district, Bihar.",
-        "citation": "UNESCO World Heritage Centre & Cunningham (Mahabodhi, 1892)"
+        "citation": "UNESCO World Heritage Centre & Cunningham (Mahabodhi, 1892)",
+        "color": "#8b5cf6",
+        "category_display": "Buddhist Monasteries"
       },
       "geometry": {
         "type": "Point",
@@ -303,7 +325,9 @@
         "key_finds": "30 rock-cut caves carved into horseshoe basalt cliff, Masterpiece Buddhist tempera murals (Padmapani & Vajrapani)",
         "status": "UNESCO World Heritage Site (1983)",
         "description": "Masterpieces of Buddhist religious art located in Chhatrapati Sambhaji Nagar district, Maharashtra, overlooking the Waghur river ravine.",
-        "citation": "Archaeological Survey of India & UNESCO"
+        "citation": "Archaeological Survey of India & UNESCO",
+        "color": "#f43f5e",
+        "category_display": "Rock-Cut Temples"
       },
       "geometry": {
         "type": "Point",
@@ -329,7 +353,9 @@
         "key_finds": "Cave 16 Kailasa Temple (world's largest monolithic rock excavation: 200,000 tonnes of basalt carved from the top down)",
         "status": "UNESCO World Heritage Site (1983)",
         "description": "34 rock-cut sanctuaries honoring Hindu, Buddhist, and Jain traditions side-by-side, epitomizing the religious tolerance of classical India.",
-        "citation": "ASI Monograph & Fergusson / Burgess (The Cave Temples of India)"
+        "citation": "ASI Monograph & Fergusson / Burgess (The Cave Temples of India)",
+        "color": "#f43f5e",
+        "category_display": "Rock-Cut Temples"
       },
       "geometry": {
         "type": "Point",
@@ -355,7 +381,9 @@
         "key_finds": "Virupaksha Temple, Vijaya Vittala Stone Chariot, Queen's Bath, Lotus Mahal, Stepped Tank (Pushkarani)",
         "status": "UNESCO World Heritage Site (1986)",
         "description": "The grand imperial capital of the Vijayanagara Empire on the banks of the Tungabhadra river. Was the world's second-largest medieval city in 1500 CE.",
-        "citation": "Archaeological Survey of India & Longhurst (Hampi Ruins, 1917)"
+        "citation": "Archaeological Survey of India & Longhurst (Hampi Ruins, 1917)",
+        "color": "#f43f5e",
+        "category_display": "Rock-Cut Temples"
       },
       "geometry": {
         "type": "Point",
@@ -381,7 +409,9 @@
         "key_finds": "66m granite vimana tower, 80-tonne monolithic cupola (Kumbam), Massive monolithic Nandi (bull), Chola fresco paintings",
         "status": "UNESCO World Heritage Site (Great Living Chola Temples)",
         "description": "Peruvudaiyar Kovil, towering Dravidian architectural triumph constructed entirely of interlocking granite blocks without mortar.",
-        "citation": "Archaeological Survey of India (ASI) Southern Circle"
+        "citation": "Archaeological Survey of India (ASI) Southern Circle",
+        "color": "#f43f5e",
+        "category_display": "Rock-Cut Temples"
       },
       "geometry": {
         "type": "Point",
@@ -407,7 +437,9 @@
         "key_finds": "24 colossal stone chariot wheels functioning as precision sundials, 7 stone horses, Kalinga chlorite sculptures",
         "status": "UNESCO World Heritage Site (1984)",
         "description": "Conceived as a colossal celestial chariot for Surya the Sun God emerging from the Bay of Bengal coast in Puri district, Odisha.",
-        "citation": "Archaeological Survey of India & UNESCO"
+        "citation": "Archaeological Survey of India & UNESCO",
+        "color": "#f43f5e",
+        "category_display": "Rock-Cut Temples"
       },
       "geometry": {
         "type": "Point",
@@ -433,7 +465,9 @@
         "key_finds": "Roman amphorae shards, Terra Sigillata, Chera coins, Carnelian intaglio seals, Wharf canoe wood (C-14 dated to 1st c. BCE)",
         "status": "State Heritage Site / Muziris Heritage Project",
         "description": "The celebrated ancient trans-oceanic spice port described in Sangam poetry and Pliny's Natural History as the destination of Roman pepper ships.",
-        "citation": "KCHR Pattanam Excavation Reports & Periplus of the Erythraean Sea"
+        "citation": "KCHR Pattanam Excavation Reports & Periplus of the Erythraean Sea",
+        "color": "#06b6d4",
+        "category_display": "Ancient Ports"
       },
       "geometry": {
         "type": "Point",
@@ -459,7 +493,9 @@
         "key_finds": "Arretine pottery, Roman Mediterranean wine amphorae, Intaglio signet rings, Glass bead manufactory",
         "status": "ASI Protected Monument",
         "description": "Coastal trading emporium near Puducherry on the Ariyankuppam river. Provided the first stratigraphic proof of Indo-Roman commerce in South India.",
-        "citation": "Wheeler, R.E.M. (Ancient India No. 2, 1946, ASI)"
+        "citation": "Wheeler, R.E.M. (Ancient India No. 2, 1946, ASI)",
+        "color": "#06b6d4",
+        "category_display": "Ancient Ports"
       },
       "geometry": {
         "type": "Point",

@@ -183,10 +183,11 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     setVis('states-glow', activeLayers.has('political_states'));
     setVis('states-label', activeLayers.has('state_labels'));
 
-    // Urban Night Light Nodes (Atmospheric Cyber Nodes)
-    setVis('urban-nodes-glow', true);
-    setVis('urban-nodes-halo', true);
-    setVis('urban-nodes-core', true);
+    // Urban Night Light Nodes (Only shown during demographic exploration to prevent map clutter)
+    const showUrbanNodes = isDensityActive || isPopTotalActive;
+    setVis('urban-nodes-glow', showUrbanNodes);
+    setVis('urban-nodes-halo', showUrbanNodes);
+    setVis('urban-nodes-core', showUrbanNodes);
 
     // 4. Physical Overlays
     setVis('rivers-core', activeLayers.has('rivers'));
@@ -208,6 +209,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     const isArchActive = activeLayers.has('archaeological_sites');
     setVis('archaeology-glow', isArchActive);
     setVis('archaeology-core', isArchActive);
+    setVis('archaeology-inner-pip', isArchActive);
     setVis('archaeology-labels', isArchActive);
 
     // 7. Trade Routes
@@ -619,11 +621,14 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         }
       });
 
-      // Urban Night Light Nodes
+      // Urban Night Light Nodes (only displayed during demographic layer exploration)
       map.addLayer({
         id: 'urban-nodes-glow',
         type: 'circle',
         source: 'india-urban-nodes',
+        layout: {
+          visibility: 'none'
+        },
         paint: {
           'circle-radius': [
             'interpolate', ['linear'], ['zoom'],
@@ -641,6 +646,9 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         id: 'urban-nodes-halo',
         type: 'circle',
         source: 'india-urban-nodes',
+        layout: {
+          visibility: 'none'
+        },
         paint: {
           'circle-radius': [
             'interpolate', ['linear'], ['zoom'],
@@ -658,6 +666,9 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         id: 'urban-nodes-core',
         type: 'circle',
         source: 'india-urban-nodes',
+        layout: {
+          visibility: 'none'
+        },
         paint: {
           'circle-radius': [
             'interpolate', ['linear'], ['zoom'],
@@ -858,6 +869,25 @@ export const MapEngine: React.FC<MapEngineProps> = ({
       // 2. ARCHAEOLOGICAL SITES LAYERS
       // ========================================================
 
+      // Color expression dynamically supporting explicit 'color' property or category keys
+      const siteColorExpr: any = [
+        'coalesce',
+        ['get', 'color'],
+        [
+          'match',
+          ['get', 'category'],
+          'ivc_site', '#14b8a6',                      // Teal (Indus Valley Settlements)
+          'ancient_university', '#f59e0b',            // Amber (Ancient Universities)
+          'buddhist_monument', '#8b5cf6',             // Purple (Buddhist Monasteries)
+          'rock_cut_monument', '#f43f5e',             // Rose (Rock-Cut Temples)
+          'medieval_monument', '#f43f5e',             // Rose (Rock-Cut Temples)
+          'ancient_temple', '#f43f5e',                // Rose (Rock-Cut Temples)
+          'ancient_port', '#06b6d4',                  // Cyan (Ancient Ports)
+          '#14b8a6'                                   // Default Teal
+        ]
+      ];
+
+      // 1. Vibrant outer atmospheric glow matching category color
       map.addLayer({
         id: 'archaeology-glow',
         type: 'circle',
@@ -866,19 +896,19 @@ export const MapEngine: React.FC<MapEngineProps> = ({
           visibility: activeLayers.has('archaeological_sites') ? 'visible' : 'none'
         },
         paint: {
-          'circle-radius': 14,
-          'circle-color': ['match', ['get', 'category'],
-            'Indus Valley Civilization', '#14b8a6',
-            'Ancient University', '#f59e0b',
-            'Buddhist Archaeological Site', '#8b5cf6',
-            'Rock-Cut Monument / Ancient Temple', '#f43f5e',
-            '#06b6d4'
+          'circle-radius': [
+            'interpolate', ['linear'], ['zoom'],
+            4, 15,
+            7, 22,
+            10, 28
           ],
-          'circle-blur': 0.8,
-          'circle-opacity': 0.6
+          'circle-color': siteColorExpr,
+          'circle-blur': 0.75,
+          'circle-opacity': 0.75
         }
       });
 
+      // 2. Main Solid Category Dot with crisp white outer ring
       map.addLayer({
         id: 'archaeology-core',
         type: 'circle',
@@ -887,16 +917,36 @@ export const MapEngine: React.FC<MapEngineProps> = ({
           visibility: activeLayers.has('archaeological_sites') ? 'visible' : 'none'
         },
         paint: {
-          'circle-radius': 6.5,
+          'circle-radius': [
+            'interpolate', ['linear'], ['zoom'],
+            4, 7.5,
+            7, 9.5,
+            10, 11.5
+          ],
+          'circle-color': siteColorExpr,
+          'circle-stroke-width': 2.5,
+          'circle-stroke-color': '#ffffff',
+          'circle-opacity': 1.0
+        }
+      });
+
+      // 3. Crisp inner luminous pinpoint for tactile cartographic clarity
+      map.addLayer({
+        id: 'archaeology-inner-pip',
+        type: 'circle',
+        source: 'archaeological-sites',
+        layout: {
+          visibility: activeLayers.has('archaeological_sites') ? 'visible' : 'none'
+        },
+        paint: {
+          'circle-radius': [
+            'interpolate', ['linear'], ['zoom'],
+            4, 2.2,
+            7, 3.0,
+            10, 3.8
+          ],
           'circle-color': '#ffffff',
-          'circle-stroke-width': 3,
-          'circle-stroke-color': ['match', ['get', 'category'],
-            'Indus Valley Civilization', '#14b8a6',
-            'Ancient University', '#f59e0b',
-            'Buddhist Archaeological Site', '#8b5cf6',
-            'Rock-Cut Monument / Ancient Temple', '#f43f5e',
-            '#06b6d4'
-          ]
+          'circle-opacity': 0.95
         }
       });
 
@@ -906,7 +956,12 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         source: 'archaeological-sites',
         layout: {
           'text-field': ['get', 'name'],
-          'text-size': 11,
+          'text-size': [
+            'interpolate', ['linear'], ['zoom'],
+            4, 10.5,
+            7, 12,
+            10, 13.5
+          ],
           'text-offset': [0, 1.4],
           'text-anchor': 'top',
           'text-allow-overlap': false,
@@ -915,7 +970,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         paint: {
           'text-color': '#f8fafc',
           'text-halo-color': '#020617',
-          'text-halo-width': 2
+          'text-halo-width': 2.5
         }
       });
 
@@ -1461,6 +1516,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         const features = map.queryRenderedFeatures(e.point, {
           layers: [
             'archaeology-core',
+            'archaeology-inner-pip',
             'earthquake-epicenter-core',
             'seismic-zones-fill',
             'trade-core',
@@ -1496,12 +1552,12 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             metricLabel = 'Approx. Extent';
             metricValue = props.approximate_area_sqkm ? `${props.approximate_area_sqkm.toLocaleString()} km²` : 'Scholarly Reconstruction';
             source = 'Archaeological Survey of India / Historical Atlas';
-          } else if (topFeat.layer.id === 'archaeology-core') {
+          } else if (topFeat.layer.id === 'archaeology-core' || topFeat.layer.id === 'archaeology-inner-pip') {
             featType = 'ARCHAEOLOGICAL SITE';
             title = props.name || 'Archaeological Site';
-            subtitle = `${props.category || ''} (${props.period || ''})`;
+            subtitle = `${props.category_display || props.category || ''} (${props.period || ''})`;
             metricLabel = 'Discovery';
-            metricValue = `${props.excavators || 'ASI Survey'} (${props.discovery_year || ''})`;
+            metricValue = `${props.excavator || props.excavators || 'ASI Survey'} (${props.discovery_year || ''})`;
             source = 'Archaeological Survey of India (ASI)';
           } else if (topFeat.layer.id === 'trade-core') {
             featType = 'HISTORICAL TRADE ROUTE';
@@ -1641,6 +1697,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         const features = map.queryRenderedFeatures(e.point, {
           layers: [
             'archaeology-core',
+            'archaeology-inner-pip',
             'earthquake-epicenter-core',
             'seismic-zones-fill',
             'trade-core',
@@ -1676,7 +1733,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
 
           if (topFeat.layer.id === 'empires-fill') {
             featType = 'historical_empire';
-          } else if (topFeat.layer.id === 'archaeology-core') {
+          } else if (topFeat.layer.id === 'archaeology-core' || topFeat.layer.id === 'archaeology-inner-pip') {
             featType = 'archaeological_site';
           } else if (topFeat.layer.id === 'trade-core') {
             featType = 'trade_route';

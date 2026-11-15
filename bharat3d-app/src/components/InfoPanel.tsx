@@ -28,13 +28,13 @@ import { STATE_CROPS } from '../data/stateAgriculture';
 import { STATE_WILDLIFE } from '../data/stateWildlife';
 
 const SITE_CATEGORY_LABELS: Record<string, string> = {
-  ivc_site: 'Indus Valley Site',
-  ancient_university: 'Ancient University',
-  buddhist_monument: 'Buddhist Monument',
-  rock_cut_monument: 'Rock-Cut Monument',
-  medieval_monument: 'Medieval Monument',
-  ancient_temple: 'Ancient Temple',
-  ancient_port: 'Ancient Port'
+  ivc_site: 'Indus Valley Settlements',
+  ancient_university: 'Ancient Universities',
+  buddhist_monument: 'Buddhist Monasteries',
+  rock_cut_monument: 'Rock-Cut Temples',
+  medieval_monument: 'Rock-Cut Temples & Monuments',
+  ancient_temple: 'Rock-Cut Temples & Monuments',
+  ancient_port: 'Ancient Ports'
 };
 
 interface InfoPanelProps {

@@ -25,7 +25,7 @@ export function App() {
     new Set<ActiveLayer>()
   );
   const [religionFilter, setReligionFilter] = useState<ReligionFilter>('hindu');
-  const [basemapStyle, setBasemapStyle] = useState<BasemapStyle>('dark');
+  const [basemapStyle, setBasemapStyle] = useState<BasemapStyle>('physical_tactile');
   const [is3D, setIs3D] = useState<boolean>(true);
   const [terrainExaggeration, setTerrainExaggeration] = useState<number>(1.5);
   const [selectedFeature, setSelectedFeature] = useState<SelectedFeatureInfo | null>(null);

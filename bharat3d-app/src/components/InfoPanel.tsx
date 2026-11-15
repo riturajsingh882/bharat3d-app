@@ -22,6 +22,8 @@ import {
 import type { SelectedFeatureInfo } from '../types';
 import { metersToFeetInches } from '../utils/elevation';
 import { STATE_LANDMARKS } from '../data/stateLandmarks';
+import { STATE_CROPS } from '../data/stateAgriculture';
+import { STATE_WILDLIFE } from '../data/stateWildlife';
 
 interface InfoPanelProps {
   feature: SelectedFeatureInfo | null;
@@ -95,6 +97,8 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
   const { type, properties, demographics } = feature;
   const displayName = properties.clean_name || properties.shapeName || properties.name || feature.name;
   const stateLandmarks = type === 'state' ? STATE_LANDMARKS[properties.shapeName || displayName] : undefined;
+  const stateCrops = type === 'state' ? STATE_CROPS[properties.shapeName || displayName] : undefined;
+  const stateWildlife = type === 'state' ? STATE_WILDLIFE[properties.shapeName || displayName] : undefined;
 
   return (
     <aside className="w-full h-full bg-[#080a0e]/95 backdrop-blur-2xl border-l border-white/10 flex flex-col z-20 text-neutral-200 select-none shadow-2xl overflow-hidden font-sans">
@@ -781,6 +785,94 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
                 );
               })}
             </ol>
+          </div>
+        )}
+
+        {/* Agriculture — Top Crops (State) */}
+        {type === 'state' && stateCrops && stateCrops.length > 0 && (
+          <div className="vista-card p-4 font-mono">
+            <div className="text-xs font-bold text-white mb-3 flex items-center justify-between uppercase tracking-wider">
+              <span className="flex items-center gap-1.5">
+                <Trees className="w-4 h-4 text-emerald-400" />
+                Agriculture — Top Crops
+              </span>
+            </div>
+            <ul className="space-y-2.5 text-sm">
+              {stateCrops.map((c) => {
+                const seasonCls =
+                  c.season === 'Kharif'
+                    ? 'bg-emerald-950/60 text-emerald-300 border-emerald-500/30'
+                    : c.season === 'Rabi'
+                      ? 'bg-sky-950/60 text-sky-300 border-sky-500/30'
+                      : c.season === 'Zaid'
+                        ? 'bg-amber-950/60 text-amber-300 border-amber-500/30'
+                        : 'bg-purple-950/60 text-purple-300 border-purple-500/30';
+                return (
+                  <li key={c.crop} className="flex gap-3">
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-white font-bold">{c.crop}</span>
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wide border ${seasonCls}`}>{c.season}</span>
+                      </div>
+                      <div className="text-neutral-400 text-xs leading-relaxed mt-0.5 font-sans">{c.why}</div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
+
+        {/* Wildlife & Protected Areas (State) */}
+        {type === 'state' && stateWildlife && (
+          <div className="vista-card p-4 font-mono">
+            <div className="text-xs font-bold text-white mb-3 flex items-center justify-between uppercase tracking-wider">
+              <span className="flex items-center gap-1.5">
+                <Mountain className="w-4 h-4 text-emerald-400" />
+                Wildlife &amp; Protected Areas
+              </span>
+            </div>
+
+            <div className="mb-3">
+              <div className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider mb-1.5">Sanctuaries / Reserves</div>
+              <div className="flex flex-wrap gap-1.5">
+                {stateWildlife.reserves.map((r) => (
+                  <a
+                    key={r}
+                    href={`https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(r)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-neutral-300 hover:bg-white/15 hover:text-white transition-colors cursor-pointer"
+                    title={`Wikipedia: ${r}`}
+                  >
+                    <span>{r}</span>
+                    <span className="w-3.5 h-3.5 rounded-full bg-white/20 flex items-center justify-center text-[8px] font-black text-white">W</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider mb-1.5">Protected Species</div>
+              <ol className="space-y-2 text-sm">
+                {stateWildlife.species.map((s, i) => (
+                  <li key={s} className="flex items-start gap-2.5">
+                    <span className="text-[#C9A227] font-black shrink-0 w-4 text-right">{i + 1}.</span>
+                    <span className="text-neutral-200 flex-1 min-w-0">{s}</span>
+                    <a
+                      href={`https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(s)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="shrink-0 w-5 h-5 rounded-full bg-white/10 hover:bg-white/30 border border-white/25 flex items-center justify-center text-[10px] font-black text-white transition-colors cursor-pointer"
+                      title={`Wikipedia: ${s}`}
+                      aria-label={`Wikipedia article for ${s}`}
+                    >
+                      W
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </div>
           </div>
         )}
 

@@ -640,34 +640,19 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
           </div>
         )}
 
-        {/* Top 5 Historical & Famous Places (State) */}
-        {type === 'state' && stateLandmarks && stateLandmarks.length > 0 && (
-          <CollapsibleSection title="Top 5 Historical & Famous Places" icon={<Landmark className="w-4 h-4 text-amber-400" />} defaultOpen>
-            <ol className="space-y-3 text-sm">
-              {stateLandmarks.map((lm, i) => {
-                const wikiUrl = `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(lm.name)}`;
-                return (
-                  <li key={lm.name} className="flex gap-3">
-                    <span className="text-[#C9A227] font-black shrink-0 w-5 text-right">{i + 1}.</span>
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-white font-bold">{lm.name}</span>
-                        <a href={wikiUrl} target="_blank" rel="noopener noreferrer" className="shrink-0 w-5 h-5 rounded-full bg-white/10 hover:bg-white/30 border border-white/25 flex items-center justify-center text-[10px] font-black text-white transition-colors cursor-pointer" title={`Read more on Wikipedia: ${lm.name}`} aria-label={`Wikipedia article for ${lm.name}`}>W</a>
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-neutral-300 border border-white/10 font-bold uppercase tracking-wide">{lm.type}</span>
-                      </div>
-                      <div className="text-neutral-400 text-xs leading-relaxed mt-0.5 font-sans">{lm.blurb}</div>
-                    </div>
-                  </li>
-                );
-              })}
-            </ol>
-          </CollapsibleSection>
-        )}
-
         {/* Demographics Details (State or District) with VISTA.IO Style Big Numbers */}
         {demographics && (
-          <CollapsibleSection title="Demographics & Census" icon={<Users className="w-4 h-4 text-[#C9A227]" />} badge={`Census ${demographics.census_year || 2011}`}>
-          <div className="space-y-4">
+          <div className="vista-card p-4">
+            <div className="text-xs font-mono font-bold text-neutral-300 uppercase tracking-wider mb-3 flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <Users className="w-4 h-4 text-[#C9A227]" />
+                Demographic Numbers
+              </span>
+              <span className="text-xs px-2.5 py-0.5 rounded bg-white/10 text-neutral-200 border border-white/15 font-bold">
+                Census {demographics.census_year || 2011}
+              </span>
+            </div>
+            <div className="space-y-4">
             {/* Big Number KPI Counter Block */}
             <div className="vista-card p-4">
               <div className="grid grid-cols-2 gap-3 font-mono">
@@ -790,12 +775,36 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
               </div>
             )}
             </div>
+          </div>
+        )}
+
+        {/* Top 5 Historical & Famous Places (State) */}
+        {type === 'state' && stateLandmarks && stateLandmarks.length > 0 && (
+          <CollapsibleSection title="Top 5 Historical & Famous Places" icon={<Landmark className="w-4 h-4 text-amber-400" />}>
+            <ol className="space-y-3 text-sm">
+              {stateLandmarks.map((lm, i) => {
+                const wikiUrl = `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(lm.name)}`;
+                return (
+                  <li key={lm.name} className="flex gap-3">
+                    <span className="text-[#C9A227] font-black shrink-0 w-5 text-right">{i + 1}.</span>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-white font-bold">{lm.name}</span>
+                        <a href={wikiUrl} target="_blank" rel="noopener noreferrer" className="shrink-0 w-5 h-5 rounded-full bg-white/10 hover:bg-white/30 border border-white/25 flex items-center justify-center text-[10px] font-black text-white transition-colors cursor-pointer" title={`Read more on Wikipedia: ${lm.name}`} aria-label={`Wikipedia article for ${lm.name}`}>W</a>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-neutral-300 border border-white/10 font-bold uppercase tracking-wide">{lm.type}</span>
+                      </div>
+                      <div className="text-neutral-400 text-xs leading-relaxed mt-0.5 font-sans">{lm.blurb}</div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
           </CollapsibleSection>
         )}
 
         {/* Agriculture — Top Crops (State) */}
         {type === 'state' && stateCrops && stateCrops.length > 0 && (
-          <CollapsibleSection title="Agriculture — Top Crops" icon={<Trees className="w-4 h-4 text-emerald-400" />} defaultOpen>
+          <CollapsibleSection title="Agriculture — Top Crops" icon={<Trees className="w-4 h-4 text-emerald-400" />}>
             <ul className="space-y-2.5 text-sm">
               {stateCrops.map((c) => {
                 const wikiUrl = `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(c.crop)}`;
@@ -826,7 +835,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
 
         {/* Wildlife & Protected Areas (State) */}
         {type === 'state' && stateWildlife && (
-          <CollapsibleSection title="Wildlife & Protected Areas" icon={<Mountain className="w-4 h-4 text-emerald-400" />} defaultOpen>
+          <CollapsibleSection title="Wildlife & Protected Areas" icon={<Mountain className="w-4 h-4 text-emerald-400" />}>
             <div className="mb-3">
               <div className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider mb-1.5">Sanctuaries / Reserves</div>
               <div className="flex flex-wrap gap-1.5">

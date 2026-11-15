@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   X, 
   Users, 
@@ -17,7 +17,9 @@ import {
   AlertTriangle,
   Scroll,
   Route,
-  Calendar
+  Calendar,
+  ChevronDown,
+  ChevronRight
 } from 'lucide-react';
 import type { SelectedFeatureInfo } from '../types';
 import { metersToFeetInches } from '../utils/elevation';
@@ -29,6 +31,32 @@ interface InfoPanelProps {
   feature: SelectedFeatureInfo | null;
   onClose: () => void;
 }
+
+// Collapsible section wrapper (accordion) for the dossier panels.
+const CollapsibleSection: React.FC<{
+  title: string;
+  icon: React.ReactNode;
+  badge?: string;
+  defaultOpen?: boolean;
+  children: React.ReactNode;
+}> = ({ title, icon, badge, defaultOpen = false, children }) => {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="vista-card overflow-hidden">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full px-4 py-3 flex items-center justify-between gap-2 text-xs font-bold text-white uppercase tracking-wider hover:bg-white/5 transition-colors cursor-pointer"
+      >
+        <span className="flex items-center gap-1.5 min-w-0">{icon}<span className="truncate">{title}</span></span>
+        <span className="flex items-center gap-2 shrink-0">
+          {badge && <span className="text-[10px] font-mono text-neutral-400 font-bold">{badge}</span>}
+          {open ? <ChevronDown className="w-4 h-4 text-neutral-400" /> : <ChevronRight className="w-4 h-4 text-neutral-400" />}
+        </span>
+      </button>
+      {open && <div className="px-4 pb-4 pt-1">{children}</div>}
+    </div>
+  );
+};
 
 export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
   if (!feature) {
@@ -612,21 +640,36 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
           </div>
         )}
 
+        {/* Top 5 Historical & Famous Places (State) */}
+        {type === 'state' && stateLandmarks && stateLandmarks.length > 0 && (
+          <CollapsibleSection title="Top 5 Historical & Famous Places" icon={<Landmark className="w-4 h-4 text-amber-400" />} defaultOpen>
+            <ol className="space-y-3 text-sm">
+              {stateLandmarks.map((lm, i) => {
+                const wikiUrl = `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(lm.name)}`;
+                return (
+                  <li key={lm.name} className="flex gap-3">
+                    <span className="text-[#C9A227] font-black shrink-0 w-5 text-right">{i + 1}.</span>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-white font-bold">{lm.name}</span>
+                        <a href={wikiUrl} target="_blank" rel="noopener noreferrer" className="shrink-0 w-5 h-5 rounded-full bg-white/10 hover:bg-white/30 border border-white/25 flex items-center justify-center text-[10px] font-black text-white transition-colors cursor-pointer" title={`Read more on Wikipedia: ${lm.name}`} aria-label={`Wikipedia article for ${lm.name}`}>W</a>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-neutral-300 border border-white/10 font-bold uppercase tracking-wide">{lm.type}</span>
+                      </div>
+                      <div className="text-neutral-400 text-xs leading-relaxed mt-0.5 font-sans">{lm.blurb}</div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </CollapsibleSection>
+        )}
+
         {/* Demographics Details (State or District) with VISTA.IO Style Big Numbers */}
         {demographics && (
+          <CollapsibleSection title="Demographics & Census" icon={<Users className="w-4 h-4 text-[#C9A227]" />} badge={`Census ${demographics.census_year || 2011}`}>
           <div className="space-y-4">
             {/* Big Number KPI Counter Block */}
             <div className="vista-card p-4">
-              <div className="text-xs font-mono font-bold text-neutral-300 uppercase tracking-wider mb-3 flex items-center justify-between">
-                <span className="flex items-center gap-1.5">
-                  <Users className="w-4 h-4 text-[#C9A227]" />
-                  Demographic Numbers
-                </span>
-                <span className="text-xs px-2.5 py-0.5 rounded bg-white/10 text-neutral-200 border border-white/15 font-bold">
-                  Census {demographics.census_year || 2011}
-                </span>
-              </div>
-
               <div className="grid grid-cols-2 gap-3 font-mono">
                 {/* Total Population */}
                 <div className="bg-[#161a22] p-3.5 rounded-xl border border-white/5">
@@ -746,59 +789,16 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
                 </div>
               </div>
             )}
-          </div>
-        )}
-
-        {/* Top 5 Historical & Famous Places (State) */}
-        {type === 'state' && stateLandmarks && stateLandmarks.length > 0 && (
-          <div className="vista-card p-4 font-mono">
-            <div className="text-xs font-bold text-white mb-3 flex items-center justify-between uppercase tracking-wider">
-              <span className="flex items-center gap-1.5">
-                <Landmark className="w-4 h-4 text-amber-400" />
-                Top 5 Historical &amp; Famous Places
-              </span>
             </div>
-            <ol className="space-y-3 text-sm">
-              {stateLandmarks.map((lm, i) => {
-                const wikiUrl = `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(lm.name)}`;
-                return (
-                  <li key={lm.name} className="flex gap-3">
-                    <span className="text-[#C9A227] font-black shrink-0 w-5 text-right">{i + 1}.</span>
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-white font-bold">{lm.name}</span>
-                        <a
-                          href={wikiUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="shrink-0 w-5 h-5 rounded-full bg-white/10 hover:bg-white/30 border border-white/25 flex items-center justify-center text-[10px] font-black text-white transition-colors cursor-pointer"
-                          title={`Read more on Wikipedia: ${lm.name}`}
-                          aria-label={`Wikipedia article for ${lm.name}`}
-                        >
-                          W
-                        </a>
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-neutral-300 border border-white/10 font-bold uppercase tracking-wide">{lm.type}</span>
-                      </div>
-                      <div className="text-neutral-400 text-xs leading-relaxed mt-0.5 font-sans">{lm.blurb}</div>
-                    </div>
-                  </li>
-                );
-              })}
-            </ol>
-          </div>
+          </CollapsibleSection>
         )}
 
         {/* Agriculture — Top Crops (State) */}
         {type === 'state' && stateCrops && stateCrops.length > 0 && (
-          <div className="vista-card p-4 font-mono">
-            <div className="text-xs font-bold text-white mb-3 flex items-center justify-between uppercase tracking-wider">
-              <span className="flex items-center gap-1.5">
-                <Trees className="w-4 h-4 text-emerald-400" />
-                Agriculture — Top Crops
-              </span>
-            </div>
+          <CollapsibleSection title="Agriculture — Top Crops" icon={<Trees className="w-4 h-4 text-emerald-400" />} defaultOpen>
             <ul className="space-y-2.5 text-sm">
               {stateCrops.map((c) => {
+                const wikiUrl = `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(c.crop)}`;
                 const seasonCls =
                   c.season === 'Kharif'
                     ? 'bg-emerald-950/60 text-emerald-300 border-emerald-500/30'
@@ -812,6 +812,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
                     <div className="min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-white font-bold">{c.crop}</span>
+                        <a href={wikiUrl} target="_blank" rel="noopener noreferrer" className="shrink-0 w-5 h-5 rounded-full bg-white/10 hover:bg-white/30 border border-white/25 flex items-center justify-center text-[10px] font-black text-white transition-colors cursor-pointer" title={`Wikipedia: ${c.crop}`} aria-label={`Wikipedia article for ${c.crop}`}>W</a>
                         <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wide border ${seasonCls}`}>{c.season}</span>
                       </div>
                       <div className="text-neutral-400 text-xs leading-relaxed mt-0.5 font-sans">{c.why}</div>
@@ -820,19 +821,12 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
                 );
               })}
             </ul>
-          </div>
+          </CollapsibleSection>
         )}
 
         {/* Wildlife & Protected Areas (State) */}
         {type === 'state' && stateWildlife && (
-          <div className="vista-card p-4 font-mono">
-            <div className="text-xs font-bold text-white mb-3 flex items-center justify-between uppercase tracking-wider">
-              <span className="flex items-center gap-1.5">
-                <Mountain className="w-4 h-4 text-emerald-400" />
-                Wildlife &amp; Protected Areas
-              </span>
-            </div>
-
+          <CollapsibleSection title="Wildlife & Protected Areas" icon={<Mountain className="w-4 h-4 text-emerald-400" />} defaultOpen>
             <div className="mb-3">
               <div className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider mb-1.5">Sanctuaries / Reserves</div>
               <div className="flex flex-wrap gap-1.5">
@@ -873,21 +867,19 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
                 ))}
               </ol>
             </div>
-          </div>
+          </CollapsibleSection>
         )}
 
-        {/* Provenance & Source Metadata Card with Coral Indicator */}
-        <div className="p-4 rounded-xl vista-card text-xs font-mono space-y-2 text-neutral-300">
-          <div className="flex items-center gap-2 text-[#C9A227] font-bold text-xs uppercase tracking-wider">
-            <ShieldCheck className="w-4 h-4" />
-            <span>Verified Source Provenance</span>
+        {/* Provenance & Source Metadata */}
+        <CollapsibleSection title="Verified Source Provenance" icon={<ShieldCheck className="w-4 h-4" />}>
+          <div className="text-xs font-mono space-y-2 text-neutral-300">
+            <div><span className="text-white font-bold">Authority:</span> {properties.source || demographics?.source || 'Government of India / ASI / BIS'}</div>
+            <div><span className="text-white font-bold">Baseline Reference:</span> {properties.year || demographics?.census_year || 'Official Record'}</div>
+            <div className="text-xs text-neutral-300 pt-2 border-t border-white/10 leading-relaxed font-sans font-semibold">
+              All factual attributes strictly originate from official government publications, ASI excavation memoirs, and academic peer-reviewed cartography.
+            </div>
           </div>
-          <div><span className="text-white font-bold">Authority:</span> {properties.source || demographics?.source || 'Government of India / ASI / BIS'}</div>
-          <div><span className="text-white font-bold">Baseline Reference:</span> {properties.year || demographics?.census_year || 'Official Record'}</div>
-          <div className="text-xs text-neutral-300 pt-2 border-t border-white/10 leading-relaxed font-sans font-semibold">
-            All factual attributes strictly originate from official government publications, ASI excavation memoirs, and academic peer-reviewed cartography.
-          </div>
-        </div>
+        </CollapsibleSection>
       </div>
     </aside>
   );

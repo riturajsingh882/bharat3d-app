@@ -755,18 +755,31 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
               </span>
             </div>
             <ol className="space-y-3 text-sm">
-              {stateLandmarks.map((lm, i) => (
-                <li key={lm.name} className="flex gap-3">
-                  <span className="text-[#C9A227] font-black shrink-0 w-5 text-right">{i + 1}.</span>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-white font-bold">{lm.name}</span>
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-neutral-300 border border-white/10 font-bold uppercase tracking-wide">{lm.type}</span>
+              {stateLandmarks.map((lm, i) => {
+                const wikiUrl = `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(lm.name)}`;
+                return (
+                  <li key={lm.name} className="flex gap-3">
+                    <span className="text-[#C9A227] font-black shrink-0 w-5 text-right">{i + 1}.</span>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-white font-bold">{lm.name}</span>
+                        <a
+                          href={wikiUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="shrink-0 w-5 h-5 rounded-full bg-white/10 hover:bg-white/30 border border-white/25 flex items-center justify-center text-[10px] font-black text-white transition-colors cursor-pointer"
+                          title={`Read more on Wikipedia: ${lm.name}`}
+                          aria-label={`Wikipedia article for ${lm.name}`}
+                        >
+                          W
+                        </a>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-neutral-300 border border-white/10 font-bold uppercase tracking-wide">{lm.type}</span>
+                      </div>
+                      <div className="text-neutral-400 text-xs leading-relaxed mt-0.5 font-sans">{lm.blurb}</div>
                     </div>
-                    <div className="text-neutral-400 text-xs leading-relaxed mt-0.5 font-sans">{lm.blurb}</div>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ol>
           </div>
         )}

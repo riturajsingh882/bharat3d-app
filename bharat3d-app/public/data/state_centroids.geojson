@@ -1,0 +1,473 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Puducherry"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.80345800529275,
+          10.932819145623162
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Mahārāshtra"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.10766720934559,
+          19.451484758330313
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Nāgāland"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          94.4668730988307,
+          26.062944022160032
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Lakshadweep"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.67832178682734,
+          10.811519799415942
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Uttar Pradesh"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          80.56613502410795,
+          26.923302170801218
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Tamil Nādu"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.40902472681998,
+          11.014599955733521
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Chhattīsgarh"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          82.04113311153898,
+          21.26650184511589
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Gujarāt"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          71.57242214356312,
+          22.699522448531535
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Delhi"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.11548616221593,
+          28.643441317436825
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Sikkim"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          88.47333368840347,
+          27.569809768960514
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Tripura"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          91.73921673631313,
+          23.744959349608333
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "West Bengal"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          87.96878916661699,
+          23.860199689916843
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Odisha"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          84.43032270929544,
+          20.513894322240418
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Bihār"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.60993435990368,
+          25.679475423708368
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Ladākh"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.7964465021095,
+          34.94390030801294
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Rājasthān"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.84972873500905,
+          26.584438050489176
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Telangāna"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.00842698550328,
+          17.800771102243857
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Andhra Pradesh"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.96603334003926,
+          15.75635594763747
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Mizoram"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          92.83176787995033,
+          23.307757948711146
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Arunāchal Pradesh"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          94.67516486519304,
+          28.03602064457618
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Meghālaya"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          91.2772992920068,
+          25.535601636109106
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Jhārkhand"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          85.5640684322105,
+          23.65625863453892
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Assam"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          92.82564636234812,
+          26.3547758917571
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Manipur"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          93.87864688170467,
+          24.73498242131172
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Karnātaka"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.16738050983857,
+          14.71030281048687
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Uttarākhand"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          79.2067115130756,
+          30.15650564710223
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Dādra and Nagar Haveli and Damān and Diu"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          73.0714808764798,
+          20.19305261269968
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Madhya Pradesh"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          78.28903581872197,
+          23.53818522020408
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Goa"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.05402343101424,
+          15.363690193940377
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Kerala"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.40854242353875,
+          10.450691644500624
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Chandīgarh"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.78045735556255,
+          30.729407556334543
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Andaman and Nicobar Islands"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          92.82886078376431,
+          12.602842621931154
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Himāchal Pradesh"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.24459212811273,
+          31.92609018934889
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Jammu and Kashmīr"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          74.85722627299316,
+          33.67245854667309
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Punjab"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          75.41534489364396,
+          30.842464928112957
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "shapeName": "Haryāna"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          76.34024613413608,
+          29.19815710405729
+        ]
+      }
+    }
+  ]
+}

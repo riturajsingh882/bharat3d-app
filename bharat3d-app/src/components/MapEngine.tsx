@@ -388,6 +388,11 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         data: '/data/india_states.geojson'
       });
 
+      map.addSource('state-centroids', {
+        type: 'geojson',
+        data: '/data/state_centroids.geojson'
+      });
+
       map.addSource('india-districts', {
         type: 'geojson',
         data: '/data/india_districts.geojson'
@@ -1171,7 +1176,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
       map.addLayer({
         id: 'states-label',
         type: 'symbol',
-        source: 'india-states',
+        source: 'state-centroids',
         layout: {
           'text-field': ['get', 'shapeName'],
           'text-size': [

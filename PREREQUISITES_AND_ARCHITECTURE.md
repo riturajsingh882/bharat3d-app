@@ -2,7 +2,7 @@
 
 > **A Comprehensive From-Scratch Guide to Replicating, Running, and Understanding Bharat 3D.**
 > 
-> This document details all hardware requirements, software installations, frameworks, libraries, APIs, math formulas, data processing pipelines, and verified sovereign sources required to build and run this interactive 3D geographic intelligence platform.
+> This document details all hardware requirements, software installations, frameworks, libraries, APIs, math formulas, data processing pipelines, touch-event architectures, UI animation models, and verified sovereign sources required to build and run this interactive 3D geographic intelligence platform.
 
 ---
 
@@ -11,20 +11,23 @@
 2. [System Prerequisites & Hardware Requirements](#2-system-prerequisites--hardware-requirements)
 3. [Step-by-Step Installation Guide (From Scratch)](#3-step-by-step-installation-guide-from-scratch)
 4. [Technology Stack & Dependency Reference](#4-technology-stack--dependency-reference)
-   - [Languages & Runtimes](#41-languages--runtimes)
-   - [Frameworks & Build Tools](#42-frameworks--build-tools)
-   - [Geospatial & 3D Rendering Engine](#43-geospatial--3d-rendering-engine)
-   - [Styling, Design System & Typography](#44-styling-design-system--typography)
-   - [Mathematical Scaling & Color Interpolation](#45-mathematical-scaling--color-interpolation)
-   - [UI Iconography](#46-ui-iconography)
+   - [4.1 Languages & Runtimes](#41-languages--runtimes)
+   - [4.2 Frameworks & Build Tools](#42-frameworks--build-tools)
+   - [4.3 Geospatial & 3D Rendering Engine](#43-geospatial--3d-rendering-engine)
+   - [4.4 Styling, Design System & Typography](#44-styling-design-system--typography)
+   - [4.5 Mathematical Scaling & Color Interpolation](#45-mathematical-scaling--color-interpolation)
+   - [4.6 UI Iconography](#46-ui-iconography)
 5. [How the 3D Map Was Built From Scratch (The Technical Recipe)](#5-how-the-3d-map-was-built-from-scratch-the-technical-recipe)
    - [Phase 1: Digital Elevation Model (DEM) & RGB Tile Decoding](#phase-1-digital-elevation-model-dem--rgb-tile-decoding)
    - [Phase 2: 3D Mesh Generation & Terrain Exaggeration](#phase-2-3d-mesh-generation--terrain-exaggeration)
    - [Phase 3: Procedural Natural Mountain Summits (▲)](#phase-3-procedural-natural-mountain-summits-)
-   - [Phase 4: Vector GeoJSON Ingestion & Layering](#phase-4-vector-geojson-ingestion--layering)
-   - [Phase 5: Animated Hydrological Network Shaders](#phase-5-animated-hydrological-network-shaders)
+   - [Phase 4: Vector GeoJSON Ingestion & 11-Layer Architecture](#phase-4-vector-geojson-ingestion--11-layer-architecture)
+   - [Phase 5: Animated Hydrological Network & Trade Route Shaders](#phase-5-animated-hydrological-network--trade-route-shaders)
    - [Phase 6: Census 2011 Data Joining & Dynamic Choropleths](#phase-6-census-2011-data-joining--dynamic-choropleths)
    - [Phase 7: Precision Dual Elevation Converter (Ft & In + Meters)](#phase-7-precision-dual-elevation-converter-ft--in--meters)
+   - [Phase 8: Mobile Touch Target Hit Resolution Architecture](#phase-8-mobile-touch-target-hit-resolution-architecture)
+   - [Phase 9: GPU-Accelerated Spring-Damped Accordion Engine](#phase-9-gpu-accelerated-spring-damped-accordion-engine)
+   - [Phase 10: State Comparison Matrix & Analytical Logic](#phase-10-state-comparison-matrix--analytical-logic)
 6. [APIs, External Tile Services & Network Endpoints](#6-apis-external-tile-services--network-endpoints)
 7. [Official Sovereign Data Sources & Provenance Registry](#7-official-sovereign-data-sources--provenance-registry)
 8. [Codebase Architecture & File Roles](#8-codebase-architecture--file-roles)
@@ -35,12 +38,15 @@
 
 ## 1. Executive Summary
 
-**Bharat 3D** is a production-grade 3D Geographic Information System (GIS) and socio-demographic intelligence platform focused on the Republic of India. Unlike conventional commercial web maps that present static 2D tiles or generic world views, Bharat 3D delivers:
-- **True Hardware-Accelerated 3D Terrain**: Interactive pitch up to $85^\circ$ with continuous elevation contours.
-- **Micro-Scale Administrative Boundaries**: 36 States & UTs (ADM1) and 735 Districts (ADM2).
+**Bharat 3D** is a production-grade 3D Geographic Information System (GIS), civilizational atlas, and socio-demographic intelligence platform focused on the Republic of India. Unlike conventional commercial web maps that present static 2D tiles or generic world views, Bharat 3D delivers:
+- **True Hardware-Accelerated 3D Terrain**: Interactive pitch up to $85^\circ$ with continuous elevation contours from AWS/SRTM elevation data.
+- **Administrative & Demographic Intelligence**: 36 States & UTs (ADM1) and 735 Districts (ADM2) coupled with Census 2011 Primary Census Abstract and Table C-01 Religious demographics.
 - **Physical & Hydrological Systems**: 10 animated river basins, ICAR 8-fold soil geography, and tectonic mountain orogeny.
-- **Socio-Demographic Baselines**: Census of India Primary Census Abstract (PCA) and Table C-01 Religious Demographics.
-- **Absolute Geographic Integrity**: **Zero AI Hallucination**. Every single coordinate and statistic is verified against official government publications.
+- **Historical Atlas & Time Machine**: 13 historical eras from the Indus Valley Civilization to the modern day with a docked interactive timeline.
+- **Archaeological & Cultural Explorer**: 18 ASI-verified sites with excavation histories and category color coding.
+- **National Infrastructure**: 28 curated expressway and national highway corridors.
+- **Disaster Risk Intelligence**: BIS 1893:2016 seismic zones and historical M7+ earthquake epicenters.
+- **Absolute Geographic Integrity**: **Zero AI Hallucination**. Every coordinate, length, and statistic is verified against official government publications.
 
 ---
 
@@ -56,7 +62,7 @@ Before running or developing Bharat 3D, ensure your development workstation meet
 ### Hardware & GPU:
 - **GPU (Graphics Processing Unit)**: Dedicated GPU (NVIDIA GTX 1050+, AMD Radeon RX 560+, Apple Silicon GPU) or modern integrated GPU (Intel Iris Xe, AMD Vega) with full **WebGL 2.0** support.
 - **RAM**: Minimum 4 GB RAM (8 GB or higher strongly recommended for seamless 3D terrain meshing).
-- **Display**: Minimum $1280 \times 720$ resolution; calibrated for $1920 \times 1080$ Full HD.
+- **Display**: Minimum $1280 \times 720$ resolution; calibrated for $1920 \times 1080$ Full HD and mobile viewports down to $360\text{px}$.
 
 ### Software Runtimes:
 - **Node.js**: **v18.18.0 or higher** (Node.js **v20 LTS** or **v22 LTS** recommended). Check with:
@@ -100,83 +106,42 @@ pnpm install
 npm install
 ```
 
-### Step 3.4: Start the Local Development Server
-Launch the live development server with hot-module replacement (HMR):
+### Step 3.4: Launch the Local Development Server
+Start the development server with Hot Module Replacement (HMR):
 ```bash
-pnpm run dev
+pnpm dev
 ```
-*(Or if using standard npm)*:
-```bash
-npm run dev
+Terminal output will show:
 ```
-The terminal will display:
-```
-  VITE v8.3.8  ready in 320 ms
+  VITE v6.x.x  ready in 240 ms
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
 ```
+Hold `Ctrl` and click the link (or open your browser to `http://localhost:5173/`).
 
-### Step 3.5: Access the Application
-Open your browser and navigate to:
-**`http://localhost:5173/`**
-
-### Step 3.6: One-Click Windows Launch (Optional)
-If running on Windows, you can alternatively double-click the included batch script in the root directory:
-```
-start-bharat3d.bat
-```
-This batch file automatically sets the path, opens `http://localhost:5173` in your default browser, and starts the Vite development server.
-
-### Step 3.7: Production Build & High-Performance Preview
-To build optimized, minified production assets and preview them:
+### Step 3.5: Build for Production
+To generate a type-checked, minified production build:
 ```bash
-pnpm run build
-pnpm run preview
+pnpm build
+```
+To preview the production bundle locally:
+```bash
+pnpm preview
 ```
 
 ---
 
 ## 4. Technology Stack & Dependency Reference
 
-Here is the exact breakdown of every library, framework, and package used in Bharat 3D, why it was chosen, and which parts of the application utilize it:
-
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│                        BHARAT 3D APPLICATION                          │
-│                                                                        │
-│   ┌────────────────────────────────────────────────────────────────┐   │
-│   │                        USER INTERFACE                          │   │
-│   │   React 19 + TypeScript 5.8 + Tailwind CSS v4                  │   │
-│   │   Cormorant Garamond Typography + Lucide React                 │   │
-│   └────────────────────────────────┬───────────────────────────────┘   │
-│                                    │                                   │
-│   ┌────────────────────────────────┴───────────────────────────────┐   │
-│   │                    3D MAP & CARTOGRAPHY ENGINE                 │   │
-│   │   MapLibre GL JS v4 (WebGL2 Shaders & 3D Terrain Meshing)      │   │
-│   │   AWS Terrarium DEM Decoding + Raster Tile Repositories        │   │
-│   └────────────────────────────────┬───────────────────────────────┘   │
-│                                    │                                   │
-│   ┌────────────────────────────────┴───────────────────────────────┐   │
-│   │                 MATHEMATICAL SCALING & COLOR RAMPS             │   │
-│   │   D3-Scale + D3-Interpolate (Choropleths & Classification)     │   │
-│   └────────────────────────────────┬───────────────────────────────┘   │
-│                                    │                                   │
-│   ┌────────────────────────────────┴───────────────────────────────┐   │
-│   │                     AUTHENTIC DATA INGESTION                   │   │
-│   │   GeoJSON Vector Layers + Census of India Demographic JSON    │   │
-│   └────────────────────────────────────────────────────────────────┘   │
-└────────────────────────────────────────────────────────────────────────┘
-```
-
 ### 4.1 Languages & Runtimes
 - **TypeScript 5.8+ (`typescript`)**:
   - *Where used*: Across the entire application (`src/**/*.ts`, `src/**/*.tsx`).
-  - *Why used*: Provides strict type definitions for GeoJSON properties, demographic census objects, camera states, and basemap styles, preventing runtime reference errors.
+  - *Why used*: Provides strict type definitions for GeoJSON properties, demographic census objects, camera states, historical eras, and basemap styles, preventing runtime reference errors.
 
 ### 4.2 Frameworks & Build Tools
 - **React 19 (`react`, `react-dom`)**:
-  - *Where used*: Application root (`src/App.tsx`), UI components (`TopNavBar.tsx`, `SidebarNav.tsx`, `InfoPanel.tsx`, `SourceModal.tsx`, `BharatLogo.tsx`).
+  - *Where used*: Application root (`src/App.tsx`), UI components (`TopNavBar.tsx`, `SidebarNav.tsx`, `InfoPanel.tsx`, `HistoricalTimeline.tsx`, `StateComparisonModal.tsx`, `SourceModal.tsx`, `BharatLogo.tsx`).
   - *Why used*: Provides declarative UI state synchronization for layer toggles, selected features, camera flying, and modal popups.
 - **Vite 6 (`vite`, `@vitejs/plugin-react`)**:
   - *Where used*: Root configuration (`vite.config.ts`, `package.json`).
@@ -203,13 +168,11 @@ Here is the exact breakdown of every library, framework, and package used in Bha
 ### 4.6 UI Iconography
 - **Lucide React (`lucide-react`)**:
   - *Where used*: Navigation buttons, sidebar accordions, modal cards, and feature profiles.
-  - *Why used*: Clean, scalable SVG icons (`Mountain`, `Waves`, `Compass`, `ShieldCheck`, `Users`, `TreePine`, `PieChart`, etc.).
+  - *Why used*: Clean, scalable SVG icons (`Mountain`, `Waves`, `Compass`, `ShieldCheck`, `Users`, `TreePine`, `PieChart`, `Route`, `Landmark`, `Scale`, `Clock`, `AlertTriangle`, etc.).
 
 ---
 
 ## 5. How the 3D Map Was Built From Scratch (The Technical Recipe)
-
-Understanding how this project converts raw geographic numbers into a live 3D world is essential for any developer or cartographer. Here is the step-by-step engineering pipeline:
 
 ### Phase 1: Digital Elevation Model (DEM) & RGB Tile Decoding
 Standard web maps are flat images. To make the terrain physical and three-dimensional, Bharat 3D uses **AWS Open Data Terrarium RGB Elevation Tiles**.
@@ -247,21 +210,35 @@ To avoid artificial or floating needle spires, Bharat 3D generates grounded, aut
 5. Ingests the canvas as a MapLibre sprite icon (`natural-summit-peak`).
 6. Binds each peak to `elevation_high_points.json` coordinates (e.g., *Mt. Kangchenjunga* at 8,586m / 28,169 ft 3 in, *Anamudi* at 2,695m / 8,842 ft).
 
-### Phase 4: Vector GeoJSON Ingestion & Layering
+### Phase 4: Vector GeoJSON Ingestion & 11-Layer Architecture
 Local geospatial vector files (`public/data/*.geojson`) are ingested asynchronously:
 1. **Administrative Boundaries**:
-   - `india_states.geojson`: 36 States and Union Territories.
-   - `india_districts.geojson`: 735 Districts.
+   - `india_states.geojson`: 36 States and Union Territories (ADM1).
+   - `india_districts.geojson`: 735 Districts (ADM2).
 2. **Pedological Data**:
    - `india_soils.geojson`: 8 ICAR soil zones rendered with scientific color values.
 3. **Hydrological Data**:
    - `india_rivers.geojson`: Vector polylines for the 10 major river systems.
 4. **Orogenic Data**:
    - `india_mountains.geojson`: Major mountain chain arcs.
+5. **National Highways & Expressways**:
+   - `india_highways.geojson`: 28 Curated national highway and expressway corridors.
+6. **Historical Atlas & Dynastic Empires**:
+   - `historical_empires.geojson`: 13 Historical era territorial reconstructions.
+7. **Ancient Civilizations & Archaeology**:
+   - `archaeological_sites.geojson`: 18 ASI-verified monumental sites.
+8. **Historical Trade Routes**:
+   - `historical_trade_routes.geojson`: Uttarapatha, Dakshinapatha, and Maritime Spice network.
+9. **Disaster & Seismic Risk Intelligence**:
+   - `disaster_seismic_zones.geojson`: BIS 1893:2016 seismic hazard zones & historic M7+ earthquake epicenters.
+10. **Demographic Lookup Tables**:
+    - `census_demographics.json`: Census 2011 PCA + Table C-01 statistics.
+11. **Unified Search Index**:
+    - `search_index.json`: Pre-indexed search tokens for instantaneous search.
 
-### Phase 5: Animated Hydrological Network Shaders
-To simulate moving water currents through river channels:
-- A base glowing cyan river line is drawn (`line-color: '#38bdf8'`).
+### Phase 5: Animated Hydrological Network & Trade Route Shaders
+To simulate moving water currents through river channels and merchant movements along trade corridors:
+- A base glowing line is drawn.
 - An animated overlay line uses an animated dasharray pattern:
 ```typescript
 let step = 0;
@@ -276,7 +253,7 @@ const animateRivers = () => {
   requestAnimationFrame(animateRivers);
 };
 ```
-This produces smooth, pulsing flow vectors along all river courses.
+This produces smooth, pulsing flow vectors along all river courses and trade routes without WebGL re-binding overhead.
 
 ### Phase 6: Census 2011 Data Joining & Dynamic Choropleths
 Socio-demographic data (`census_demographics.json`) is keyed by district and state ID codes:
@@ -284,7 +261,7 @@ Socio-demographic data (`census_demographics.json`) is keyed by district and sta
 - This creates instant, hardware-accelerated choropleths across all 735 districts without lag.
 
 ### Phase 7: Precision Dual Elevation Converter (Ft & In + Meters)
-In [src/utils/elevation.ts](file:///c:/Users/ritur/Downloads/INTERACTIVE%20INDIA%203D%20DATA/bharat3d-app/src/utils/elevation.ts), an exact mathematical converter ensures that elevations are displayed in both imperial and metric systems:
+In `src/utils/elevation.ts`, an exact mathematical converter ensures that elevations are displayed in both imperial and metric systems:
 ```typescript
 export function metersToFeetInches(meters: number): string {
   const totalInches = meters * 39.37007874;
@@ -294,6 +271,54 @@ export function metersToFeetInches(meters: number): string {
 }
 ```
 *(e.g., $8,586\text{ meters} \longrightarrow \mathbf{28,169\text{ ft } 3\text{ in } (8,586\text{ m})}$)*.
+
+### Phase 8: Mobile Touch Target Hit Resolution Architecture
+On touchscreen devices, fine lines (highways, rivers, mountain ridges) can be frustratingly hard to tap with finger pads:
+1. **Invisible Wide Hit Buffers**: The engine adds transparent wide line layers underneath each visible vector:
+   ```typescript
+   map.addLayer({
+     id: 'highways-hit-target',
+     type: 'line',
+     source: 'highways-source',
+     paint: {
+       'line-width': isMobile ? 32 : 18,
+       'line-opacity': 0.001 // Invisible yet detectable by GPU picking
+     }
+   });
+   ```
+2. **Touch-Slop Bounding Box Query**: On tap, the engine queries an expanded $24 \times 24$ pixel bounding box around the touch coordinate:
+   ```typescript
+   const bbox: [maplibregl.PointLike, maplibregl.PointLike] = [
+     [e.point.x - 12, e.point.y - 12],
+     [e.point.x + 12, e.point.y + 12]
+   ];
+   const features = map.queryRenderedFeatures(bbox, { layers: interactiveLayers });
+   ```
+3. **Proximity-Based Hit Sorting (`sortFeaturesByProximity`)**: When multiple features intersect the bounding box, the algorithm computes the minimum Euclidean distance between the tap point and each candidate's geometry, instantly picking the nearest feature on the **first tap**.
+
+### Phase 9: GPU-Accelerated Spring-Damped Accordion Engine
+Rather than jarring show/hide snaps, accordions use CSS Grid fractional row interpolation:
+```css
+.accordion-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.accordion-content.expanded {
+  grid-template-rows: 1fr;
+}
+.accordion-inner {
+  overflow: hidden;
+}
+```
+This guarantees 60 FPS transitions without triggering CPU-bound reflow loops on the MapLibre canvas.
+
+### Phase 10: State Comparison Matrix & Analytical Logic
+The State Comparison Studio dynamically correlates two state objects from the Census 2011 baseline:
+- Computes relative percentage differentials:
+  $$\Delta \% = \frac{\text{Value}_A - \text{Value}_B}{\text{Value}_B} \times 100$$
+- Normalizes population densities and decadal growth rates.
+- Renders side-by-side SVG comparative distribution bars and Table C-01 faith community bars with zero external chart library overhead.
 
 ---
 
@@ -311,7 +336,7 @@ Bharat 3D accesses the following audited open endpoints:
 | **Google Fonts API** | Cormorant Garamond Typography | `https://fonts.googleapis.com/css2?family=Cormorant+Garamond:...` | Google Fonts |
 
 > [!TIP]
-> All primary geographic boundaries, census statistics, and river coordinates are bundled **locally** in `bharat3d-app/public/data/`. Only the background basemap raster tiles and DEM elevation tiles stream over the network.
+> All primary geographic boundaries, census statistics, highway networks, archaeological sites, and river coordinates are bundled **locally** in `bharat3d-app/public/data/`. Only the background basemap raster tiles and DEM elevation tiles stream over the network.
 
 ---
 
@@ -347,6 +372,22 @@ Every data layer in Bharat 3D strictly references verified sovereign baselines:
    - *Authority*: **Geological Survey of India (GSI)** & **Survey of India**.
    - *Coverage*: Himalayas, Western Ghats, Eastern Ghats, Aravalli, Vindhyas, Satpura.
    - *License*: Government of India Mapping Products.
+8. **National Highways & Expressways**:
+   - *Authority*: **Ministry of Road Transport & Highways (MoRTH)** & **National Highways Authority of India (NHAI)**.
+   - *Coverage*: 28 principal national expressways, NH grid lines, and scenic corridors.
+   - *License*: MoRTH Open Data.
+9. **Archaeological Sites & Monumental Heritage**:
+   - *Authority*: **Archaeological Survey of India (ASI)** & **UNESCO World Heritage Centre**.
+   - *Coverage*: 18 verified monumental archaeological excavations and ancient university centers.
+   - *License*: AMASR Act / ASI Official Excavation Reports.
+10. **Natural Disasters & Seismic Risk Hazard**:
+    - *Authority*: **Bureau of Indian Standards (BIS IS 1893:2016 Part 1)** & **National Centre for Seismology (NCS / MoES)**.
+    - *Coverage*: Seismic Zones V, IV, and III + Historical M7+ earthquake epicenters.
+    - *License*: BIS / MoES Public Domain Hazard Documentation.
+11. **Historical Atlas & Dynastic Frontiers**:
+    - *Authority*: **Schwartzberg Historical Atlas of South Asia (University of Chicago)** & **ASI Archaeological Records**.
+    - *Coverage*: 13 historical eras (Indus Valley to present day).
+    - *Scholarly Note*: Explicitly classified as approximate territorial reconstructions.
 
 ---
 
@@ -356,7 +397,7 @@ Below is the directory map of the application and the responsibility of every fi
 
 ```
 INTERACTIVE INDIA 3D DATA/
-├── README.md                              <- High-level introduction
+├── README.md                              <- High-level introduction & architecture overview
 ├── USER_GUIDE.md                          <- Complete operational user manual
 ├── PREREQUISITES_AND_ARCHITECTURE.md     <- This file (developer & prerequisites manual)
 ├── DATA_SOURCE_REGISTRY.md                <- Detailed scientific audit of all data sources
@@ -367,21 +408,33 @@ INTERACTIVE INDIA 3D DATA/
     ├── vite.config.ts                     <- Vite configuration & React/Tailwind plugins
     ├── tsconfig.json                      <- TypeScript compilation settings
     ├── index.html                         <- HTML entry point & Google Fonts loader
+    ├── scripts/
+    │   └── build-search-index.mjs         <- Node script compiling search_index.json from GeoJSONs
     ├── public/
+    │   ├── maplibre-gl-worker.mjs         <- Local MapLibre Web Worker bundle
     │   └── data/
     │       ├── india_states.geojson       <- 36 States & UT boundaries (ADM1)
     │       ├── india_districts.geojson    <- 735 District boundary polygons (ADM2)
     │       ├── india_rivers.geojson       <- 10 Major river basins & streams
     │       ├── india_soils.geojson        <- ICAR 8-fold soil classifications
     │       ├── india_mountains.geojson    <- Major mountain orogenic arcs
+    │       ├── india_highways.geojson     <- 28 NH & Expressway corridors (MoRTH/NHAI)
+    │       ├── historical_empires.geojson <- 13 Dynastic era territorial reconstructions
+    │       ├── archaeological_sites.geojson <- 18 ASI-verified monumental sites
+    │       ├── historical_trade_routes.geojson <- Uttarapatha, Dakshinapatha & Spice routes
+    │       ├── disaster_seismic_zones.geojson <- BIS 1893 seismic zones & M7+ epicenters
+    │       ├── india_urban_nodes.geojson  <- Major urban city centers
     │       ├── elevation_high_points.json <- Precision summit coordinates & ft/in data
-    │       └── census_demographics.json   <- Census 2011 PCA + C-01 demographic data
+    │       ├── census_demographics.json   <- Census 2011 PCA + C-01 demographic data
+    │       └── search_index.json          <- Pre-compiled search lookup index
     └── src/
         ├── main.tsx                       <- React application root bootstrapping
-        ├── App.tsx                        <- Main state orchestrator, layout & legends
-        ├── index.css                      <- Tailwind v4, custom theme & font rules
+        ├── App.tsx                        <- Main state orchestrator, layout, legends & modals
+        ├── index.css                      <- Tailwind v4, custom theme, accordion animations & fonts
         ├── types.ts                       <- TypeScript interfaces for all data models
         ├── config.ts                      <- Default coordinates, colors & layer presets
+        ├── data/
+        │   └── historicalEras.ts          <- 13 Historical era metadata, rulers, and dates
         ├── utils/
         │   └── elevation.ts               <- Dual feet/inches & metric elevation converter
         └── components/
@@ -390,6 +443,8 @@ INTERACTIVE INDIA 3D DATA/
             ├── SidebarNav.tsx             <- Left layer control drawer & accordions
             ├── MapEngine.tsx              <- Core MapLibre GL 3D WebGL engine & canvas
             ├── InfoPanel.tsx              <- Right intelligence dossier & KPI dashboard
+            ├── HistoricalTimeline.tsx     <- Docked bottom timeline scrubber & play controls
+            ├── StateComparisonModal.tsx   <- Side-by-side dual-state comparison studio
             ├── SourceModal.tsx            <- Official Provenance & Data Registry dialog
             └── LoadingScreen.tsx          <- Initializing cinematic splash screen
 ```
@@ -428,10 +483,11 @@ When adding new features, datasets, or visual themes in future iterations, adher
 
 1. **Adding a New Thematic Layer**:
    - Place the GeoJSON in `bharat3d-app/public/data/`.
-   - Declare the layer type in [src/types.ts](file:///c:/Users/ritur/Downloads/INTERACTIVE%20INDIA%203D%20DATA/bharat3d-app/src/types.ts).
-   - Add the toggle control in [src/components/SidebarNav.tsx](file:///c:/Users/ritur/Downloads/INTERACTIVE%20INDIA%203D%20DATA/bharat3d-app/src/components/SidebarNav.tsx).
-   - Implement the MapLibre layer in [src/components/MapEngine.tsx](file:///c:/Users/ritur/Downloads/INTERACTIVE%20INDIA%203D%20DATA/bharat3d-app/src/components/MapEngine.tsx).
-   - Document the official publishing authority in [src/components/SourceModal.tsx](file:///c:/Users/ritur/Downloads/INTERACTIVE%20INDIA%203D%20DATA/bharat3d-app/src/components/SourceModal.tsx) and [DATA_SOURCE_REGISTRY.md](file:///c:/Users/ritur/Downloads/INTERACTIVE%20INDIA%203D%20DATA/DATA_SOURCE_REGISTRY.md).
+   - Declare the layer type in `src/types.ts`.
+   - Add the toggle control and status dot logic in `src/components/SidebarNav.tsx`.
+   - Implement the MapLibre layer in `src/components/MapEngine.tsx`.
+   - Re-run `node scripts/build-search-index.mjs` to include new feature names in the search bar.
+   - Document the official publishing authority in `src/components/SourceModal.tsx` and `DATA_SOURCE_REGISTRY.md`.
 2. **Preserving Typography**:
    - Ensure all new UI components inherit `'Cormorant Garamond'` with strong font weights (`font-bold`, `font-extrabold`) and adequate size (`text-sm` or larger) for dark-theme clarity.
 3. **Data Integrity Principle**:

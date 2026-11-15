@@ -163,3 +163,56 @@ To satisfy the core requirement that all factual information originates from ver
 | **Attributes Recorded** | Route designation (code), terminal points, length (km), states served, lanes, toll/access, corridor class, operational status |
 | **Format** | GeoJSON LineStrings (schematic, approximate corridors) |
 | **Provenance Note** | Geometry is a curated schematic of principal corridors (approximate city-to-city alignment), not surveyed road centerlines. |
+
+
+---
+
+### J. Historical Atlas & Dynastic Empires (Time Machine)
+
+| Property | Details |
+| :--- | :--- |
+| **Repository Name** | Historical Atlas of South Asia (Joseph E. Schwartzberg) & ASI Historical Records |
+| **Publishing Institution** | Archaeological Survey of India (ASI) / Digital South Asia Library (DSAL, University of Chicago) |
+| **Coverage** | 13 Major Subcontinental Historical Periods: Indus Valley Civilization, Sixteen Mahajanapadas, Maurya Empire, Gupta Empire, Delhi Sultanate, Mughal Empire, Maratha Confederacy, British Indian Empire (1909), Partition (1947), States Reorganisation (1956), Creation of 2000 States, Telangana (2014), and Contemporary Republic |
+| **Attributes Recorded** | Dynasty name, approximate era range, imperial capital(s), prominent rulers, territorial extent in $km^2$, primary commodities, cultural impact |
+| **Format** | GeoJSON Polygons (territorial reconstructions) & Points (capitals) |
+| **Provenance Note** | Ancient and medieval boundaries are explicitly labeled as **approximate scholarly reconstructions** based on archaeological finds, stone edicts, and classical texts. They are strictly distinguished from modern surveyed borders. |
+
+---
+
+### K. Ancient Civilizations & Archaeological Sites
+
+| Property | Details |
+| :--- | :--- |
+| **Repository Name** | Archaeological Survey of India (ASI) Monuments of National Importance & UNESCO World Heritage Database |
+| **Publishing Institution** | Archaeological Survey of India (ASI, Ministry of Culture, Government of India) & UNESCO |
+| **Coverage** | 18 Monumental Sites classified into 5 categories: Indus Valley Settlements (Harappa, Mohenjo-daro, Rakhigarhi, Dholavira, Lothal, Kalibangan), Ancient Universities (Nalanda, Takshashila, Vikramashila), Buddhist Monasteries (Sanchi, Ajanta), Rock-Cut Temples (Ellora, Konark, Brihadisvara, Elephanta, Hampi), Ancient Ports (Muziris, Arikamedu, Poompuhar) |
+| **Attributes Recorded** | Site name, ancient civilization, chronological period, principal excavator, discovery year, key archaeological finds, UNESCO status, institutional citation |
+| **Format** | GeoJSON Points with category attributes |
+| **Provenance Note** | All excavation dates, findings, and geographic coordinates originate from official ASI excavation memoirs, AMASR Act records, and UNESCO evaluation dossiers. |
+
+---
+
+### L. Historical Trade Routes & Connectivity
+
+| Property | Details |
+| :--- | :--- |
+| **Repository Name** | Ancient Indian Trade Corridors & Maritime Networks |
+| **Publishing Institution** | Ministry of Culture (Project Mausam), Archaeological Survey of India (ASI), UNESCO Silk Roads Programme |
+| **Coverage** | Principal historical arteries: Uttarapatha (Northern High Road, Taxila to Tamralipti), Dakshinapatha (Transpeninsular Highway, Pataliputra to Pratishthana), Monsoon Maritime Spice Route (Malabar/Coromandel to Red Sea and Southeast Asia) |
+| **Attributes Recorded** | Route designation, era of peak activity, route type (terrestrial vs maritime), estimated length (km), terminal points, major caravan/port stations, commodities exchanged, ancient travelogue accounts |
+| **Format** | GeoJSON LineStrings with directional flow shaders |
+| **Provenance Note** | Schematic corridor reconstructions based on epigraphic evidence, numismatic hoard distributions, and classical traveler accounts (*Megasthenes*, *Xuanzang*, *Periplus of the Erythraean Sea*). |
+
+---
+
+### M. Natural Disasters & Seismic Hazard Intelligence
+
+| Property | Details |
+| :--- | :--- |
+| **Repository Name** | Seismic Hazard Map of India (IS 1893:2016 Part 1) & Historical Earthquake Catalog |
+| **Publishing Institution** | Bureau of Indian Standards (BIS, Ministry of Consumer Affairs) & National Centre for Seismology (NCS, Ministry of Earth Sciences) |
+| **Coverage** | National Seismic Zones: Zone V (Very High Damage Risk, $Z = 0.36$), Zone IV (High Damage Risk, $Z = 0.24$), Zone III (Moderate Damage Risk, $Z = 0.16$); 9 Major Historical Earthquake Epicenters (M6.2 to M9.1) |
+| **Attributes Recorded** | Zone factor ($Z$), peak ground acceleration (PGA), seismic intensity (MSK scale), tectonic fault mechanisms, epicenter coordinates, focal depth (km), Richter magnitude, recorded fatalities |
+| **Format** | GeoJSON MultiPolygons (seismic hazard zones) & Points (earthquake epicenters) |
+| **Provenance Note** | Zone boundaries and epicenter parameters conform strictly to BIS IS 1893:2016 and published NCS seismic bulletins. |

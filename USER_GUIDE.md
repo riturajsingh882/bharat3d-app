@@ -1,8 +1,8 @@
 # BHARAT 3D — Comprehensive User Guide & Operation Manual
 
-> **Welcome to BHARAT 3D**: An authentic, cinematic 3D Geographic Intelligence & Demographic Visualization Platform for the Republic of India.
+> **Welcome to BHARAT 3D**: An authentic, cinematic 3D Geographic Intelligence, Civilizational Atlas, and Socio-Demographic Visualization Platform for the Republic of India.
 > 
-> Grounded in the sovereign principle of **Zero AI Assumption of Geographic Facts**, every boundary, river network, soil polygon, elevation contour, and demographic metric originates strictly from verified Government of India publications and audited scientific baselines.
+> Grounded in the sovereign principle of **Zero AI Assumption of Geographic Facts**, every boundary, river network, soil polygon, elevation contour, highway corridor, archaeological site, seismic fault line, and demographic metric originates strictly from verified Government of India publications, official scientific surveys, and audited academic baselines.
 
 ---
 
@@ -10,72 +10,74 @@
 1. [Platform Overview & Philosophy](#1-platform-overview--philosophy)
 2. [Quick-Start Navigation & Camera Controls](#2-quick-start-navigation--camera-controls)
 3. [Top Navigation Bar](#3-top-navigation-bar)
-   - [BHARAT 3D Brand & Subcontinent Reset](#31-bharat-3d-brand--subcontinent-reset)
-   - [Universal Search & Fly-To Autocomplete](#32-universal-search--fly-to-autocomplete)
-   - [Cinematic Camera Perspectives ("Views")](#33-cinematic-camera-perspectives-views)
-   - [Basemap Style Switcher](#34-basemap-style-switcher)
-   - [3D Relief & Elevation Controls](#35-3d-relief--elevation-controls)
-   - [Official Data Source Registry & Provenance Modal](#36-official-data-source-registry--provenance-modal)
-4. [Left Layer Control Sidebar](#4-left-layer-control-sidebar)
-   - [Political Boundaries & Administrative Units](#41-political-boundaries--administrative-units)
-   - [Soil Geography (ICAR 8-Fold Classification)](#42-soil-geography-icar-8-fold-classification)
-   - [Demographic Intelligence (Census of India PCA)](#43-demographic-intelligence-census-of-india-pca)
-   - [Religious Demographics Explorer (Census Table C-01)](#44-religious-demographics-explorer-census-table-c-01)
-   - [Hydrological Networks & Animated River Systems](#45-hydrological-networks--animated-river-systems)
-   - [Orography & Mountain Ranges (GSI / SOI)](#46-orography--mountain-ranges-gsi--soi)
-   - [Sidebar Collapsing & Overlay Reset](#47-sidebar-collapsing--overlay-reset)
-5. [Interactive 3D Map Canvas & Tooltips](#5-interactive-3d-map-canvas--tooltips)
-   - [Natural Topographic Mountain Summits (▲)](#51-natural-topographic-mountain-summits-)
-   - [Dynamic Interactive Hover Cards](#52-dynamic-interactive-hover-cards)
-   - [High-Contrast Zoom & Rotation Compass](#53-high-contrast-zoom--rotation-compass)
-6. [Right Intelligence Dossier Panel](#6-right-intelligence-dossier-panel)
-   - [Feature Selection & Dossier Header](#61-feature-selection--dossier-header)
-   - [Big KPI Demographic Counter Blocks](#62-big-kpi-demographic-counter-blocks)
-   - [Literacy & Sex Ratio Progress Metrics](#63-literacy--sex-ratio-progress-metrics)
-   - [Faith Communities Distribution Breakdown](#64-faith-communities-distribution-breakdown)
-   - [Pedological & Hydrological Feature Cards](#65-pedological--hydrological-feature-cards)
-   - [Verified Source Provenance Verification Box](#66-verified-source-provenance-verification-box)
-7. [On-Screen Active Legends Overlay](#7-on-screen-active-legends-overlay)
-8. [Practical Use Cases & Workflows](#8-practical-use-cases--workflows)
-   - [Educational & Classroom Instruction](#81-educational--classroom-instruction)
-   - [Academic & Geospatial Research](#82-academic--geospatial-research)
-   - [Policy Planning & Demographic Analysis](#83-policy-planning--demographic-analysis)
+   - [3.1 BHARAT 3D Brand & Subcontinent Reset](#31-bharat-3d-brand--subcontinent-reset)
+   - [3.2 Universal Search & Fly-To Autocomplete](#32-universal-search--fly-to-autocomplete)
+   - [3.3 State vs State Comparison Studio](#33-state-vs-state-comparison-studio)
+   - [3.4 Cinematic Camera Perspectives ("Views")](#34-cinematic-camera-perspectives-views)
+   - [3.5 Basemap Style Switcher](#35-basemap-style-switcher)
+   - [3.6 3D Relief & Elevation Controls](#36-3d-relief--elevation-controls)
+   - [3.7 Official Data Source Registry & Provenance Modal](#37-official-data-source-registry--provenance-modal)
+4. [Left Layer Control Sidebar (11 Thematic Modules)](#4-left-layer-control-sidebar-11-thematic-modules)
+   - [4.1 Historical Atlas & Time Machine (13 Dynastic Eras)](#41-historical-atlas--time-machine-13-dynastic-eras)
+   - [4.2 Ancient Civilizations & Archaeological Explorer (ASI Sites)](#42-ancient-civilizations--archaeological-explorer-asi-sites)
+   - [4.3 Historical Trade Routes & Maritime Connectivity](#43-historical-trade-routes--maritime-connectivity)
+   - [4.4 National Highways & Expressways (MoRTH / NHAI Corridors)](#44-national-highways--expressways-morth--nhai-corridors)
+   - [4.5 Natural Disasters & Seismic Risk Intelligence (BIS IS 1893)](#45-natural-disasters--seismic-risk-intelligence-bis-is-1893)
+   - [4.6 Political Boundaries & Administrative Units](#46-political-boundaries--administrative-units)
+   - [4.7 Soil Geography (ICAR 8-Fold Classification)](#47-soil-geography-icar-8-fold-classification)
+   - [4.8 Demographic Intelligence (Census of India PCA)](#48-demographic-intelligence-census-of-india-pca)
+   - [4.9 Religious Demographics Explorer (Census Table C-01)](#49-religious-demographics-explorer-census-table-c-01)
+   - [4.10 Hydrological Networks & Animated River Systems](#410-hydrological-networks--animated-river-systems)
+   - [4.11 Orography & Mountain Ranges (GSI / SOI)](#411-orography--mountain-ranges-gsi--soi)
+   - [4.12 Sidebar Status Dots, Collapsing & Overlay Reset](#412-sidebar-status-dots-collapsing--overlay-reset)
+5. [Docked Historical Timeline & Time Machine Scrubber](#5-docked-historical-timeline--time-machine-scrubber)
+6. [State Comparison Studio (Side-by-Side Analytics)](#6-state-comparison-studio-side-by-side-analytics)
+7. [Mobile Touch Interaction & Proximity Picking](#7-mobile-touch-interaction--proximity-picking)
+8. [Smooth Spring-Damped Accordion & Drawer Animations](#8-smooth-spring-damped-accordion--drawer-animations)
+9. [Interactive 3D Map Canvas & Tooltips](#9-interactive-3d-map-canvas--tooltips)
+   - [9.1 Natural Topographic Mountain Summits (▲)](#91-natural-topographic-mountain-summits-)
+   - [9.2 Dynamic Interactive Hover Cards](#92-dynamic-interactive-hover-cards)
+   - [9.3 High-Contrast Zoom & Rotation Compass](#93-high-contrast-zoom--rotation-compass)
+10. [Right Intelligence Dossier Panel](#10-right-intelligence-dossier-panel)
+11. [On-Screen Active Legends Overlay](#11-on-screen-active-legends-overlay)
+12. [Practical Use Cases & Workflows](#12-practical-use-cases--workflows)
 
 ---
 
 ## 1. Platform Overview & Philosophy
 
-**Bharat 3D** merges cutting-edge 3D WebGL computer graphics with rigid geospatial authenticity. Built upon **React 19**, **TypeScript**, **Tailwind CSS v4**, and **MapLibre GL JS**, it delivers real-time 3D terrain rendering across the entire Indian subcontinent.
+**Bharat 3D** merges cutting-edge 3D WebGL computer graphics with rigid geospatial authenticity. Built upon **React 19**, **TypeScript**, **Tailwind CSS v4**, and **MapLibre GL JS**, it delivers real-time 3D terrain rendering across the entire Indian subcontinent and surrounding maritime frontiers.
 
 ### Core Architectural Principles:
-- **Zero AI Assumption**: No boundary, population number, elevation, or river path is generated by artificial intelligence. Every data point is strictly anchored in Government of India (Census 2011, Survey of India, Central Water Commission, Geological Survey of India, ICAR) and NASA SRTM/ISRO DEM datasets.
-- **Academic Atlas Aesthetic**: A refined deep-ink theme with an antique-gold accent, **Cormorant Garamond** display typography, clean **Inter** UI text, and **JetBrains Mono** for data and labels.
+- **Zero AI Assumption**: No boundary, population number, elevation, highway length, or river path is generated by artificial intelligence. Every data point is strictly anchored in Government of India (Census 2011, Survey of India, Central Water Commission, Geological Survey of India, ICAR, MoRTH, NHAI, BIS, Archaeological Survey of India) and NASA SRTM/ISRO DEM datasets.
+- **Academic Atlas Aesthetic**: A refined deep-ink theme with an antique-gold accent, **Cormorant Garamond** display typography, clean **Inter** UI text, and **JetBrains Mono** for data metrics and labels.
 - **Tactile 3D Physical Relief**: Visualizes topography through authentic shaded relief, continuous elevation tiles, and physical hypsometric tints.
+- **Approximate Scholarly Reconstructions for Antiquity**: Historical boundaries, trade routes, and highway corridors are explicitly labeled as approximate scholarly or cartographic reconstructions, preserving academic rigor and historical truth without claiming modern surveyed precision.
 
 ---
 
 ## 2. Quick-Start Navigation & Camera Controls
 
-The 3D map canvas is fully interactive and supports hardware-accelerated pan, tilt, pitch, and zoom.
+The 3D map canvas is fully interactive and supports hardware-accelerated pan, tilt, pitch, and zoom across both desktop mice/trackpads and mobile touchscreens.
 
 | Action | Mouse Control | Touchpad / Touch Screen | Keyboard Shortcut |
 | :--- | :--- | :--- | :--- |
 | **Pan / Move Map** | Left-click + Drag | Single-finger drag | Arrow keys ($\leftarrow$, $\rightarrow$, $\uparrow$, $\downarrow$) |
-| **Zoom In / Out** | Scroll wheel (or Double Left-click to zoom in) | Two-finger pinch / spread | `+` / `-` keys |
+| **Zoom In / Out** | Scroll wheel (or Double Left-click) | Two-finger pinch / spread | `+` / `-` keys |
 | **Tilt / Pitch (3D View)** | **Right-click + Drag up/down** or **Ctrl + Left-click + Drag** | Two-finger vertical drag | Hold `Shift` + Arrow $\uparrow$ / $\downarrow$ |
 | **Rotate Bearing (Heading)** | **Right-click + Drag left/right** or **Ctrl + Left-click + Drag** | Two-finger rotate | Hold `Shift` + Arrow $\leftarrow$ / $\rightarrow$ |
 | **Reset Camera to North** | Click the Compass icon in the top right | Tap compass icon | Press `N` or click reset compass |
-| **Inspect Any Feature** | Single Left-click on any State, District, River, or Mountain | Single tap | — |
+| **Inspect Any Feature** | Single Left-click on any State, District, River, Highway, Mountain, or Site | Single tap (with wide touch-target buffering) | — |
 
 ---
 
 ## 3. Top Navigation Bar
 
-The top navigation bar acts as the central command hub for global views, basemaps, 3D relief settings, search, and official provenance.
+The top navigation bar acts as the central command hub for global views, state comparison, basemaps, 3D relief settings, universal search, and official provenance.
 
 ### 3.1 BHARAT 3D Brand & Subcontinent Reset
 - **Spatial Network Emblem**: Displays a glowing gold node-and-axis network emblem representing national spatial intelligence.
-- **Brand Title**: Displays `BHARAT 3D` in bold Cormorant Garamond small-caps.
+- **Brand Title**: Displays `BHARAT 3D` in bold Cormorant Garamond typography.
 - **Breadcrumb Hub**: 
   - When no specific feature is selected, it displays `Subcontinent`.
   - When you select a State, Union Territory, or District (e.g. *Mahārāshtra*), it displays a high-contrast gold breadcrumb `Subcontinent > Mahārāshtra (Mumbai)`.
@@ -83,11 +85,15 @@ The top navigation bar acts as the central command hub for global views, basemap
 
 ### 3.2 Universal Search & Fly-To Autocomplete
 - Located in the center of the navigation bar.
-- **Search Capabilities**: A data-driven index searches **States, Union Territories, Districts, Cities, Rivers, Mountain Ranges, Peaks, Archaeological Sites, National Highways (e.g. `NH 44`), Historical Empires, and Trade Routes** (e.g., `Maharashtra`, `Mumbai`, `Pune`, `Ganga`, `Kangchenjunga`, `Thar Desert`).
-- **Live Autocomplete**: A dropdown opens instantly with ranked, color-coded type badges (State / District / City / River / Road …) and subtitles.
-- **Fly-To & Highlight**: Click a suggestion or press `Enter` to fly/fit the camera to the target **and highlight the exact feature on the map** — a gold outline for areas/lines and a gold marker for points. The highlight clears when you search again or click the map.
+- **Search Capabilities**: A data-driven pre-indexed search engine indexed across **States, Union Territories, Districts, Cities, Rivers, Mountain Ranges, Peaks, Archaeological Sites, National Highways (e.g. `NH 44`, `Delhi-Mumbai Expressway`), Historical Empires, and Trade Routes**.
+- **Live Autocomplete**: A dropdown opens instantly with ranked, diacritic-insensitive fuzzy matches, showing category badges (e.g., `STATE`, `DISTRICT`, `RIVER`, `HIGHWAY`, `ARCHAEOLOGY`, `TRADE ROUTE`) and secondary regional metadata.
+- **Fly-To & Exact Highlight**: Selecting any result flies and fits the 3D camera to the target coordinates **and places an illuminated gold vector highlight** (gold contour for polygons/lines and a pulsating marker for point sites). The highlight clears automatically upon subsequent searches or canvas clicks.
 
-### 3.3 Cinematic Camera Perspectives ("Views")
+### 3.3 State vs State Comparison Studio
+- Click the **Compare** button (scale icon, between **Basemap** and **3D Relief**) to open the dedicated comparison modal.
+- Compare any two Indian states side-by-side across Population, Surface Area, Population Density, Literacy Rate, Sex Ratio, Decadal Growth, and Religious Distribution.
+
+### 3.4 Cinematic Camera Perspectives ("Views")
 Click the **Views** button (camera icon) to open curated national vantage points:
 1. **Pan-India Overview**: High national perspective covering the entire landmass, islands, and coastlines.
 2. **Himalayan Ridge & Karakoram**: Dramatic low-angle 3D perspective ($75^\circ$ pitch) gazing across the snowcapped northern orogenic arc.
@@ -96,7 +102,7 @@ Click the **Views** button (camera icon) to open curated national vantage points
 5. **Western Ghats Escarpment**: Steep-pitch oblique viewpoint over the Sahyadri biodiversity corridor and Arabian Sea slopes.
 6. **Northeast & Brahmaputra Valley**: Sweeping vista overlooking the river loop through Assam and eastern Himalayan foothills.
 
-### 3.4 Basemap Style Switcher
+### 3.5 Basemap Style Switcher
 Click the **Basemap** button (layers icon) to change the background cartographic raster tile service:
 - **Tactile Physical Relief (Fine Art)**: Fine-art earthen terrain style with natural greens, sandstone plateaus, and illuminated terracotta high ridges.
 - **Dark Gray Canvas (ESRI)**: Matte obsidian minimalist backdrop emphasizing glowing borders, river vectors, and choropleth polygons.
@@ -104,7 +110,7 @@ Click the **Basemap** button (layers icon) to change the background cartographic
 - **OpenStreetMap Standard**: Traditional multi-colored street and boundary cartography.
 - **Geoapify Dark Matter**: Deep ultraviolet-infused nighttime theme.
 
-### 3.5 3D Relief & Elevation Controls
+### 3.6 3D Relief & Elevation Controls
 Click the **3D Relief** button (mountain icon) to reveal the 3D elevation modal:
 - **Terrain Perspective Toggle**: Instant one-click switch between **3D Active** (elevated mesh) and **2D Planar** (flat map projection).
 - **Relief Exaggeration Slider**: A precision slider spanning **0.5x to 3.5x**:
@@ -115,24 +121,91 @@ Click the **3D Relief** button (mountain icon) to reveal the 3D elevation modal:
 - **Tactile Fine Art Theme Toggle**: Quickly switch the fine-art physical relief style on or off.
 - **Natural Elevation Highlighting**: One-click toggle that activates authentic hypsometric shading across all of India and turns on high-summit markers. When active, an ambient indicator light glows on the 3D Relief button.
 
-### 3.6 Official Data Source Registry & Provenance Modal
+### 3.7 Official Data Source Registry & Provenance Modal
 Click the gold **[Verified Sources]** button in the top right to open the complete auditing dossier. It outlines every institutional authority, dataset specification, and open-data license.
-
-### 3.7 State Comparison Studio
-Click the **Compare** button (scale icon, between **Basemap** and **3D Relief**) to open the State vs State Comparison Studio. Compare any two states side-by-side across population, area, density, literacy, sex ratio, decadal growth, and religious composition (Census 2011 & Survey of India baseline).
 
 ---
 
-## 4. Left Layer Control Sidebar
+## 4. Left Layer Control Sidebar (11 Thematic Modules)
 
-The collapsible left sidebar houses all interactive vector layers and thematic choropleths.
+The collapsible left sidebar houses all interactive vector layers, thematic choropleths, and temporal controls. Each section features a status indicator dot (green when any layer inside is active, red when inactive) and smooth spring-damped accordion expansion.
 
-### 4.1 Political Boundaries & Administrative Units
-- **State & UT Boundaries (36 Units)**: Toggles sovereign state boundary borders with glowing outlines.
+### 4.1 Historical Atlas & Time Machine (13 Dynastic Eras)
+Allows users to step through Indian history from Bronze Age urbanism to the modern republic:
+- **Territorial Extents**: Renders approximate reconstructed territorial limits for each imperial era.
+- **Imperial Capitals**: Displays prominent historical capitals (e.g., Pataliputra, Ujjayini, Delhi, Raigad, Tanjore, Harappa).
+- **13 Dynastic Eras Supported**:
+  1. *Indus Valley Civilization* (c. 2600–1900 BCE)
+  2. *Sixteen Mahajanapadas* (c. 600–320 BCE)
+  3. *Maurya Empire* (c. 322–185 BCE)
+  4. *Gupta Empire* (c. 320–550 CE)
+  5. *Delhi Sultanate* (c. 1206–1526 CE)
+  6. *Mughal Empire* (c. 1526–1707 CE)
+  7. *Maratha Confederacy* (c. 1674–1818 CE)
+  8. *British Indian Empire* (1909 CE)
+  9. *Independence & Partition* (1947 CE)
+  10. *States Reorganisation* (1956 CE)
+  11. *Creation of 2000 States* (2000 CE — Chhattisgarh, Uttarakhand, Jharkhand)
+  12. *Bifurcation of Telangana* (2014 CE)
+  13. *Republic of India (Present Day)*
+- **Bottom Timeline Scrubber**: Open the docked bottom timeline bar to play through history chronologically or scrub directly to any era.
+
+> [!NOTE]
+> All ancient and medieval territorial boundaries represent approximate scholarly reconstructions based on historical literature and archaeological distributions. They are explicitly distinguished from modern geodetic surveyed borders.
+
+### 4.2 Ancient Civilizations & Archaeological Explorer (ASI Sites)
+Overlays 18 verified monumental archaeological sites documented by the **Archaeological Survey of India (ASI)** and UNESCO World Heritage Centre. Each site features a color-coded halo ring and category badge:
+- **Indus Valley Settlements** (Teal `#2dd4bf`): Harappa, Mohenjo-daro, Rakhigarhi, Dholavira, Lothal, Kalibangan.
+- **Ancient Universities** (Amber `#f59e0b`): Nalanda Mahavihara, Takshashila (Taxila), Vikramashila.
+- **Buddhist Monasteries** (Violet `#a855f7`): Great Stupa at Sanchi, Ajanta Rock-Cut Caves.
+- **Rock-Cut Temples & Monuments** (Rose `#f43f5e`): Ellora Kailash Temple, Sun Temple at Konark, Brihadisvara Temple (Thanjavur), Elephanta Caves, Hampi (Vijayanagara).
+- **Ancient Maritime Ports** (Sky Blue `#0ea5e9`): Muziris (Pattanam), Arikamedu, Poompuhar (Kaveripattinam).
+
+Clicking any archaeological site opens an in-depth dossier detailing its historical period, excavators, discovery year, key excavated artifacts, UNESCO designation, and official ASI citations.
+
+### 4.3 Historical Trade Routes & Maritime Connectivity
+Visualizes the great transcontinental highways and maritime spice corridors that linked the Indian subcontinent to world trade:
+- **Uttarapatha (Northern High Road / Grand Trunk Precursor)**: From Taxila in the northwest across the Punjab and Gangetic plains to Pataliputra and the Bengal delta port of Tamralipti (~2,500 km).
+- **Dakshinapatha (Southern Transpeninsular Route)**: Connecting Pataliputra and Ujjain through the Narmada and Godavari crossings to Pratishthana, Amaravati, and southern trading emporia (~1,800 km).
+- **Monsoon Maritime Spice Network**: The ancient Indian Ocean maritime trade routes linking the Malabar and Coromandel coasts to the Red Sea, Persian Gulf, Sri Lanka, and the Malacca Strait (~4,200 km).
+- **Dynamic Water & Caravan Animation**: Features animated directional dasharrays simulating caravan and merchant vessel movements. Clicking a route reveals historical commodities traded (spices, silk, muslin, pepper, lapis lazuli), terminal ports, and accounts from Megasthenes, Xuanzang, and the *Periplus of the Erythraean Sea*.
+
+### 4.4 National Highways & Expressways (MoRTH / NHAI Corridors)
+Overlays 28 curated major national transport corridors classified into three visual tiers:
+- **Expressways (Tolled, Access-Controlled)** (Emerald Green `#10b981`): Delhi–Mumbai Expressway (NE-4), Samruddhi Mahamarg, Purvanchal Expressway, Yamuna Expressway, Agra–Lucknow Expressway, Bangalore–Mysore Expressway, Eastern Peripheral Expressway.
+- **National Highways (The Core NH Grid)** (Amber `#f59e0b`):
+  - *North–South Arteries*: NH 44 (Srinagar to Kanyakumari — India's longest highway, 3,745 km).
+  - *Golden Quadrilateral*: NH 48 (Delhi–Mumbai–Chennai), NH 16 (Kolkata–Chennai), NH 19 (Delhi–Kolkata).
+  - *East–West Artery*: NH 27 (Porbandar to Silchar).
+  - *Coastal & Regional Corridors*: NH 66 (Panvel to Kanyakumari along the Konkan/Malabar coast), NH 53 (Hajira–Kolkata), NH 9 (Pune–Machilipatnam), NH 15 (Samakhiali–Pathankot).
+- **State Highways & Scenic Corridors** (Slate / Cyan `#94a3b8`): East Coast Road (ECR Tamil Nadu), Jodhpur–Jaisalmer Corridor.
+
+Clicking any highway opens its Corridor Profile displaying total route length, terminal cities, connecting states, lane count, and toll status.
+
+### 4.5 Natural Disasters & Seismic Risk Intelligence (BIS IS 1893)
+Displays India's official seismic hazard zoning according to the **Bureau of Indian Standards (IS 1893:2016 Part 1)** along with historical high-magnitude earthquake epicenters:
+- **Seismic Zone V (Very High Damage Risk — Factor $Z = 0.36$, MSK IX+)**: Highlighted in vivid red (`#dc2626`). Covers the entire Northeast, Kashmir, Western & Central Himalayas (Himachal, Uttarakhand), North Bihar, and the Rann of Kutch.
+- **Seismic Zone IV (High Damage Risk — Factor $Z = 0.24$, MSK VIII)**: Highlighted in amber (`#f59e0b`). Covers Delhi NCR, parts of UP, Punjab, Haryana, and the Koyna fault zone in Maharashtra.
+- **Seismic Zone III (Moderate Damage Risk — Factor $Z = 0.16$, MSK VII)**: Highlighted in yellow (`#eab308`). Covers large sections of Central India and the Deccan shield.
+- **Historical Major Earthquake Epicenters**: Marked with pulsating warning glyphs across the map:
+  - *1819 Rann of Kutch* (M7.8, Allah Bund fault scarp)
+  - *1897 Great Assam Earthquake* (M8.1, Shillong Plateau)
+  - *1905 Kangra Earthquake* (M7.8, Himachal Pradesh)
+  - *1934 Bihar–Nepal Earthquake* (M8.0, massive Gangetic liquefaction)
+  - *1950 Assam–Tibet Earthquake* (M8.6, largest subcontinental instrumented event)
+  - *1993 Latur Earthquake* (M6.2, intraplate Killari disaster)
+  - *2001 Bhuj Earthquake* (M7.7, Republic Day Gujarat tragedy)
+  - *2004 Sumatra–Andaman Megathrust & Tsunami* (M9.1)
+  - *2005 Kashmir Earthquake* (M7.6, Muzaffarabad / Uri)
+
+Clicking an epicenter opens its Seismic Event Dossier detailing Richter magnitude, hypocentral depth, fatalities, and geotectonic fault mechanisms.
+
+### 4.6 Political Boundaries & Administrative Units
+- **State & UT Boundaries (36 Units)**: Toggles sovereign state borders with glowing outlines.
 - **State Name Labels (Typography)**: Renders elegant, zoom-responsive typographic labels directly onto the map canvas.
 - **District Polygons (735 Units)**: Overlays official district boundary borders across all 36 States and UTs.
 
-### 4.2 Soil Geography (ICAR 8-Fold Classification)
+### 4.7 Soil Geography (ICAR 8-Fold Classification)
 Activates the scientific pedological classification established by the **ICAR - National Bureau of Soil Survey & Land Use Planning (NBSS&LUP)**:
 - **Alluvial Soils**: Indo-Gangetic plains and coastal deltas.
 - **Black / Regur Soils**: Volcanic basaltic Deccan plateau (cotton soils).
@@ -141,7 +214,7 @@ Activates the scientific pedological classification established by the **ICAR - 
 - **Arid / Desert Soils**: Western Thar Desert formations.
 - **Mountain & Forest Soils**: Himalayan and hill slope humic soils.
 
-### 4.3 Demographic Intelligence (Census of India PCA)
+### 4.8 Demographic Intelligence (Census of India PCA)
 Enables single-click district-level demographic choropleths sourced from the Census of India:
 - **Population Density**: Persons per square kilometer ($persons/km^2$), from under 30 in high Ladakh/Arunachal to over 10,000 in urban Delhi/Mumbai.
 - **Total Population**: Graduated choropleth reflecting absolute population mass per district.
@@ -151,7 +224,7 @@ Enables single-click district-level demographic choropleths sourced from the Cen
 > [!NOTE]
 > Demographic choropleths and Soil Geography feature smart mutual exclusivity: activating a demographic fill automatically clears soil fills to prevent visual clashing.
 
-### 4.4 Religious Demographics Explorer (Census Table C-01)
+### 4.9 Religious Demographics Explorer (Census Table C-01)
 Clicking **Show Religion Choropleth** displays the geographic concentration of India's major faith communities by district from Census 2011 Table C-01:
 - **Hindu Population**: Regional concentration throughout northern, western, central, and southern basins.
 - **Muslim Population**: Distributions across the Kashmir Valley, Indo-Gangetic belt, Assam, and Kerala.
@@ -160,46 +233,100 @@ Clicking **Show Religion Choropleth** displays the geographic concentration of I
 - **Buddhist Population**: Concentrations in Ladakh, Sikkim, and Maharashtra.
 - **Jain Population**: Concentrations in Rajasthan, Gujarat, and urban Maharashtra.
 
-### 4.5 Hydrological Networks & Animated River Systems
+### 4.10 Hydrological Networks & Animated River Systems
 Activates glowing hydrological vector networks for India's 10 major river basins (Ganga, Brahmaputra, Indus, Godavari, Krishna, Kaveri, Mahanadi, Narmada, Tapi, Sabarmati):
 - Features animated dasharray pulse vectors indicating flow direction from mountain headwaters to delta outflows.
 - Selecting any river displays its full physical length, dams, confluences, and riparian states.
 
-### 4.6 Orography & Mountain Ranges (GSI / SOI)
+### 4.11 Orography & Mountain Ranges (GSI / SOI)
 Overlays major tectonic and geological mountain ranges:
 - Great Himalayas, Karakoram, and Pir Panjal.
 - Western Ghats (Sahyadri) and Eastern Ghats.
 - Ancient Aravalli Range, Vindhya Range, and Satpura Range.
 
-### 4.7 Sidebar Collapsing & Overlay Reset
-- **Collapse Button**: Click the chevron drawer button to hide the left sidebar for a full-screen cinematic map view.
-- **Reset Overlays**: Click the bottom `Reset Overlays` button to instantly **untick every layer** (and close the timeline), leaving a clean basemap for you to re-select layers.
-- **Start state**: The app loads with **all layers unticked** — select layers individually from the sidebar.
-
-### 4.8 National Highways & Expressways
-Overlays the national road network (28 curated corridors, MoRTH / NHAI) color-coded by category:
-- **Expressways** (green): access-controlled, tolled (e.g. Delhi–Mumbai, Samruddhi, Purvanchal, Yamuna).
-- **National Highways** (amber): the NH grid incl. North–South (NH 44), Golden Quadrilateral (NH 48/16/19), East–West (NH 27), and West Coast (NH 66).
-- **State Highways / coastal corridors** (slate): e.g. East Coast Road, Jodhpur–Jaisalmer.
-Clicking any route opens its Road Corridor Profile (designation, terminals, length, states, lanes, toll/access).
+### 4.12 Sidebar Status Dots, Collapsing & Overlay Reset
+- **Active Status Indicator Dots**: Each section header features a round indicator dot:
+  - **Glowing Emerald Green**: At least one layer in this group is currently toggled on and rendered on the map.
+  - **Ruby Red**: All layers in this group are currently inactive.
+- **Collapse Button**: Click the left chevron drawer button to hide the sidebar for a full-screen cinematic map view.
+- **Reset Overlays**: Click the bottom `Reset Overlays` button to instantly **untick every layer** and dismiss any active timeline, leaving a clean basemap.
 
 ---
 
-## 5. Interactive 3D Map Canvas & Tooltips
+## 5. Docked Historical Timeline & Time Machine Scrubber
 
-### 5.1 Natural Topographic Mountain Summits (▲)
+When the **Historical Atlas & Time Machine** module is active:
+1. A docked temporal control deck appears at the bottom center of the 3D map canvas.
+2. **Current Era Card**: Shows the active historical period, approximate year range, imperial capital, and notable rulers.
+3. **Timeline Scrubber Slider**: A continuous horizontal slider allowing you to drag smoothly through history from 2600 BCE to 2026 CE.
+4. **Play / Pause Auto-Tour**: Click the **Play** button to automatically step through all 13 eras in sequence with smooth cross-fading of territorial boundaries.
+5. **Step Controls**: Jump backward or forward one era at a time using the `‹` and `›` buttons.
+6. **Scholarly Notice**: The timeline displays an explicit notation reminding users that ancient and medieval borders represent approximate scholarly territorial reconstructions.
+7. **Close Button**: Tap `✕` on the timeline bar at any time to dock the scrubber.
+
+---
+
+## 6. State Comparison Studio (Side-by-Side Analytics)
+
+The **State Comparison Studio** enables deep comparative analysis between any two of India's 36 States and Union Territories:
+
+### How to Use the Comparison Studio:
+1. Click the **Compare** button (scale icon) in the top navigation bar.
+2. The modal dialog opens with two customizable selectors: **State A** (left) and **State B** (right).
+3. Use the searchable dropdowns to select any two states (e.g. *Maharashtra* vs *Uttar Pradesh*, or *Kerala* vs *Bihar*).
+4. The studio renders an instant comparative dashboard:
+   - **Key Metrics Comparison Grid**: Side-by-side tiles for Population, Land Area, Population Density, Literacy Rate, Sex Ratio, and Decadal Growth Rate.
+   - **Differential Badges**: Dynamic indicator badges indicating relative differentials (e.g. `+32.4% higher density`, `+14.2% higher literacy`).
+   - **Demographic Distribution Bars**: Comparative horizontal percentage progress bars contrasting rural vs urban ratios.
+   - **Religious Demographics Matrix**: Side-by-side breakdown of Census Table C-01 percentages across both states.
+5. Click anywhere outside the modal or tap `Esc` / `✕` to return to the 3D map.
+
+---
+
+## 7. Mobile Touch Interaction & Proximity Picking
+
+Bharat 3D is engineered for seamless operation on mobile smartphones and tablets:
+
+### 1-Tap Responsive Touch Selection
+On mobile screens, narrow linear features (such as National Highways, river vectors, and mountain ridgelines) are normally difficult to select due to touch finger radius:
+- **Dual-Layer Touch Buffers**: The rendering engine generates invisible, wide touch-target buffers (`24px` to `32px` wide) underneath all linear features (`highways-hit-target`, `rivers-hit-target`, `trade-routes-hit-target`, `mountains-hit-target`).
+- **Touch-Slop Bounding Box Query**: Tapping the screen queries a $24 \times 24$ pixel bounding box around the touch coordinate.
+- **Proximity-Based Hit Sorting (`sortFeaturesByProximity`)**: If multiple features fall within the touch radius, the engine computes the exact Euclidean distance to the tap point and selects the nearest feature on the very **first tap**, eliminating the frustration of needing multiple repeated taps.
+
+### Responsive Bottom Sheets & Collapsible Drawers
+- On mobile devices, selecting any feature slides up an ergonomic bottom intelligence sheet.
+- The sidebar can be collapsed to maximize 3D canvas viewport space.
+
+---
+
+## 8. Smooth Spring-Damped Accordion & Drawer Animations
+
+All expandable accordions and drawers across both the left sidebar and right intelligence dossier feature smooth, GPU-accelerated spring animations:
+- **CSS Grid Smooth Expansion**: Rather than abrupt show/hide snaps, accordions use CSS Grid interpolation:
+  ```css
+  grid-template-rows: 0fr -> 1fr;
+  transition: grid-template-rows 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  ```
+- **Rotating Indicator Chevrons**: Section header arrows smoothly rotate $180^\circ$ on toggle with hardware-accelerated transforms (`transition-transform duration-300`).
+- **Zero Layout Thrashing**: Animations are strictly decoupled from map WebGL render loops, preserving a locked 60 FPS camera frame rate.
+
+---
+
+## 9. Interactive 3D Map Canvas & Tooltips
+
+### 9.1 Natural Topographic Mountain Summits (▲)
 When 3D Relief or Natural Elevation Highlighting is active:
 - Major summits (e.g., *Mt. Kangchenjunga*, *Anamudi*, *Nanda Devi*, *K2*, *Kamet*, *Trisul*, *Guru Shikhar*, *Arma Konda*) are marked with **authentic faceted mountain glyphs (`▲`)** and grounded spot heights.
 - Each peak is procedurally rendered with a sunward ivory facet, an alpine shadow facet, and a snowcap summit.
 - Hovering over any peak displays its name, orogeny, and **dual elevation** (both Feet & Inches and Metric meters).
 
-### 5.2 Dynamic Interactive Hover Cards
-Hovering over any boundary, river, soil zone, or summit reveals an interactive obsidian card displaying:
-- Category badge (e.g. `STATE`, `DISTRICT`, `RIVER`, `ICAR SOIL`, `SUMMIT`).
+### 9.2 Dynamic Interactive Hover Cards
+Hovering over any boundary, river, highway, soil zone, archaeological site, or summit reveals an interactive obsidian card displaying:
+- Category badge (e.g. `STATE`, `DISTRICT`, `HIGHWAY`, `ARCHAEOLOGY`, `SEISMIC ZONE`, `RIVER`, `ICAR SOIL`, `SUMMIT`).
 - Title and subtitle.
-- Verified metric value (e.g. `Population: 112.37M`, `Elevation: 28,169 ft 3 in (8,586 m)`).
+- Verified metric value (e.g. `Population: 112.37M`, `Elevation: 28,169 ft 3 in (8,586 m)`, `Toll: Yes (Access-Controlled)`).
 
-### 5.3 High-Contrast Zoom & Rotation Compass
+### 9.3 High-Contrast Zoom & Rotation Compass
 Located on the top right of the map canvas:
 - **`+` Zoom In** button.
 - **`-` Zoom Out** button.
@@ -207,59 +334,53 @@ Located on the top right of the map canvas:
 
 ---
 
-## 6. Right Intelligence Dossier Panel
+## 10. Right Intelligence Dossier Panel
 
-Clicking any State, District, River, Soil, or Mountain automatically slides out the in-depth Intelligence Dossier.
+Clicking any feature on the map automatically opens the in-depth Intelligence Dossier on the right:
 
-### 6.1 Feature Selection & Dossier Header
-- Category badge (`STATE INTELLIGENCE`, `DISTRICT INTELLIGENCE`, etc.).
-- Feature name in large bold Cormorant Garamond typography.
-- Official capital city, river basin, or state name.
+### Dossier Profiles Supported:
+1. **State & Union Territory Dossier**: Capital city, total population, area ($km^2$), population density, decadal growth rate, literacy rate, sex ratio, rural vs urban split, and religious community breakdown.
+2. **District Intelligence Dossier**: District headquarters, state affiliation, Census 2011 population metrics, density, literacy, sex ratio, and faith distribution.
+3. **National Highway & Expressway Profile**: Corridor designation, terminal cities, length in kilometers, connecting states, lane count, toll classification, and governing authority (NHAI / MoRTH).
+4. **Historical Empire Dossier**: Reigning dynastic era, approximate active years, historical capital, notable rulers/founders, territorial extent, primary trade commodities, and cultural significance.
+5. **Archaeological Site Dossier**: Historical era/civilization, excavators, discovery year, key excavated artifacts, UNESCO designation, geographic coordinates, and official ASI citations.
+6. **Historical Trade Route Dossier**: Route classification, termini, historical mileage, major trade stations, commodities transported, and accounts from ancient travelers.
+7. **Natural Disaster & Seismic Risk Dossier**: BIS 1893 seismic zone classification, zone factor $Z$, peak ground acceleration, fault dynamics, historical earthquake records with magnitude, focal depth, and impact analysis.
+8. **Hydrological River Basin Dossier**: Total length, origin elevation, outflow destination, major dams, confluences, and riparian states.
+9. **Soil Geography Dossier**: ICAR classification, parent rock, chemical composition, moisture retention capacity, agricultural suitability, and geographic extent.
+10. **Mountain Peak Dossier**: Dual elevation (feet & inches and meters), tectonic orogeny, geological age, and major mountain passes.
 
-### 6.2 Big KPI Demographic Counter Blocks
-- **Population KPI**: Prominent counter formatted in millions (`M`) or thousands, with decadal growth percentage (`+15.99% decadal`).
-- **Density KPI**: Persons per square kilometer ($persons/km^2$).
-- **Geographic Surface Area**: Official surveyed land area in $km^2$.
-
-### 6.3 Literacy & Sex Ratio Progress Metrics
-- **Literacy Rate**: High-contrast progress bar indicating district/state literacy compared against national averages.
-- **Sex Ratio**: Highlighted gender proportion badge ($F/1000M$).
-- **Rural vs Urban Split**: Dual-colored comparative bar chart showing rural vs urban populace percentages.
-
-### 6.4 Faith Communities Distribution Breakdown
-Displays exact percentage breakdowns for faith communities according to Census 2011 Table C-01 with individual color-coded progress bars.
-
-### 6.5 Pedological & Hydrological Feature Cards
-- **For Rivers**: Total course length, river basin, origin elevation, outflow destination, dams, and major riparian cities.
-- **For Soils**: Percentage coverage of India, chemical composition, crop suitability, and geological age.
-- **For Mountains**: Highest peak, maximum elevation in feet & inches and meters, strike extent, and ecological passes.
-
-### 6.6 Verified Source Provenance Verification Box
-Every panel ends with an official citation box detailing the publishing agency (e.g., *Census of India 2011 (ORGI / data.gov.in)*), baseline reference year, and data compliance statement.
+Every dossier concludes with an official **Verified Source Provenance Verification Box** citing the exact institutional publisher and open-data license.
 
 ---
 
-## 7. On-Screen Active Legends Overlay
+## 11. On-Screen Active Legends Overlay
 
 Located on the bottom right of the screen, dynamic floating legend cards update in real time based on active layers:
 - **Pan-India Natural Elevation**: Displays the hypsometric relief bar from $-7\text{ ft}$ (Kuttanad) to $28,169\text{ ft } 3\text{ in}$ (Kangchenjunga).
 - **Population Density**: 7-stop plasma gradient legend ($<30$ to $10,000+\text{ persons}/km^2$).
 - **Soil Geography (ICAR)**: Color chips for the 8 primary soil classifications.
-- **Literacy & Sex Ratio Scales**: Visual gradient references for rapid cartographic interpretation.
-- **National Highways & Expressways**: Color key for Expressway (green), National Highway (amber), and State Highway/corridor (slate) routes.
+- **National Highways & Expressways**: Color key for Expressways (green), National Highways (amber), and State Highways/corridors (slate).
+- **Civilizations & Archaeology**: Category chips for Indus Valley Settlements (teal), Ancient Universities (amber), Buddhist Monasteries (violet), Rock-Cut Temples (rose), and Ancient Ports (sky blue).
+- **Disaster & Seismic Risk**: Risk factor color scale for Zone V (red), Zone IV (amber), Zone III (yellow), and Epicenter glyphs.
+- **Historical Trade Routes**: Legend indicating terrestrial highways and maritime spice corridors.
 
 ---
 
-## 8. Practical Use Cases & Workflows
+## 12. Practical Use Cases & Workflows
 
-### 8.1 Educational & Classroom Instruction
-- **Teaching Physiography**: Turn on *3D Relief* at $2.5\times$ exaggeration and fly to the *Himalayan Ridge & Karakoram* view to demonstrate tectonic convergence between the Indian and Eurasian plates.
-- **Teaching River Basins**: Activate *Animated River Networks* to trace the drainage systems of the Ganga and Brahmaputra rivers from their glacier sources to the Sundarbans Delta.
+### 12.1 Civilizational & Historical Education
+- **Tracking Subcontinental Urbanization**: Compare the *Indus Valley Civilization* (2600 BCE) with the *Maurya Empire* (322 BCE) using the bottom timeline slider to show the spatial shift from the Indus-Saraswati basin to the Gangetic plains.
+- **Visualizing Ancient Trade Arteries**: Turn on *Historical Trade Routes* alongside *Civilizations & Archaeology* to observe how ports like Muziris and Arikamedu connected the peninsular interior to Roman and Southeast Asian trade networks.
 
-### 8.2 Academic & Geospatial Research
-- **Correlating Soil & Agriculture**: Overlay *Soil Geography (ICAR)* on the Deccan Plateau to observe the exact spatial distribution of Black Regur soils and its relationship with cotton cultivation zones.
-- **Demographic Studies**: Toggle between *Population Density* and *Literacy Rate* across districts to identify regional socioeconomic trends with authentic 2011 Census baselines.
+### 12.2 Modern Infrastructure & Logistics Research
+- **Examining the National Freight Spine**: Activate *National Highways & Expressways* and fly to the *Indo-Gangetic Basin* view to study the alignment of the Golden Quadrilateral (NH 19/48) and the new Delhi–Mumbai Expressway.
+- **State Comparative Studies**: Use the *State Comparison Studio* to evaluate infrastructure, density, and literacy differentials between coastal states (e.g. Maharashtra, Tamil Nadu) and landlocked states (e.g. Madhya Pradesh, Bihar).
 
-### 8.3 Policy Planning & Demographic Analysis
-- **District Demographic Audits**: Click on any of India's 735 districts to immediately review its population, density, sex ratio, and religious composition without leaving the 3D map environment.
-- **Verifiable Proof**: Use the *[Verified Sources]* modal and the *Verified Source Provenance* box in any dossier to directly trace and cite official government portal references for papers, reports, and presentations.
+### 12.3 Disaster Risk & Seismotectonic Audits
+- **Himalayan Seismic Exposure**: Overlay *Disaster & Seismic Risk* with *3D Relief* at $2.5\times$ exaggeration to visualize the alignment of Zone V seismic hazards and historic M7+ earthquake epicenters along the Himalayan thrust belt.
+- **Urban Hazard Assessment**: Identify major metropolitan centers located in Seismic Zone IV (e.g., Delhi NCR) and evaluate their demographic density risks.
+
+### 12.4 Academic & Geospatial Research
+- **Pedology & Crop Suitability**: Overlay *Soil Geography (ICAR)* on the Deccan Traps to inspect the spatial footprint of Black Cotton Soils.
+- **Water Resource Planning**: Activate *Hydrological Networks* to trace the drainage systems of the Krishna and Godavari river basins across their riparian states.

@@ -72,7 +72,6 @@ export function App() {
           next.delete('historical_atlas');
         } else {
           next.add('historical_atlas');
-          setIsTimelineOpen(true);
         }
         return next;
       }

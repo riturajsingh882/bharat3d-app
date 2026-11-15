@@ -8,7 +8,7 @@ import { LoadingScreen } from './components/LoadingScreen';
 import { HistoricalTimeline } from './components/HistoricalTimeline';
 import { StateComparisonModal } from './components/StateComparisonModal';
 import { SoilDataModal } from './components/SoilDataModal';
-import { PanelLeftClose, PanelLeftOpen, Mountain, Landmark, Scroll, Compass, AlertTriangle, Route, ChevronUp, ChevronDown, Clock, Info } from 'lucide-react';
+import { PanelLeftClose, PanelLeftOpen, Mountain, Landmark, Scroll, Compass, AlertTriangle, Route, ChevronUp, Clock, Info } from 'lucide-react';
 import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo } from './types';
 import { HISTORICAL_ERAS } from './data/historicalEras';
 
@@ -199,9 +199,13 @@ export function App() {
 
       {/* Main Workspace Layout */}
       <div ref={workspaceRef} className="flex flex-1 relative overflow-hidden">
-        {/* Collapsible Left Layer Navigation (desktop inline column) */}
-        <div className={`hidden md:block transition-all duration-300 relative z-20 ${isSidebarOpen ? 'w-80' : 'w-0'}`}>
-          {isSidebarOpen && (
+        {/* Collapsible Left Layer Navigation (desktop inline column with snappy smooth slide) */}
+        <div
+          className={`hidden md:block transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] relative z-20 overflow-hidden ${
+            isSidebarOpen ? 'w-80 opacity-100' : 'w-0 opacity-0 pointer-events-none'
+          }`}
+        >
+          <div className="w-80 h-full">
             <SidebarNav
               activeLayers={activeLayers}
               toggleLayer={toggleLayer}
@@ -216,50 +220,60 @@ export function App() {
               }}
               isTimelineOpen={isTimelineOpen}
               onToggleTimeline={() => setIsTimelineOpen(!isTimelineOpen)}
-              onResetLayers={handleResetLayers} onOpenSoilSources={() => setIsSoilModalOpen(true)}
+              onResetLayers={handleResetLayers}
+              onOpenSoilSources={() => setIsSoilModalOpen(true)}
             />
-          )}
+          </div>
         </div>
 
-        {/* Mobile Sidebar Drawer */}
-        {isSidebarOpen && (
-          <div className="md:hidden fixed inset-0 z-40">
-            <div
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-              onClick={() => setIsSidebarOpen(false)}
+        {/* Mobile Sidebar Drawer with Backdrop */}
+        <div
+          className={`md:hidden fixed inset-0 z-40 transition-opacity duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            isSidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+        >
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+          <div
+            className={`absolute left-0 top-0 bottom-0 w-[85vw] max-w-[320px] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-2xl ${
+              isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            }`}
+          >
+            <SidebarNav
+              activeLayers={activeLayers}
+              toggleLayer={toggleLayer}
+              religionFilter={religionFilter}
+              setReligionFilter={setReligionFilter}
+              selectedEraId={selectedHistoricalPeriod}
+              onSelectEra={(era) => {
+                setSelectedHistoricalPeriod(era);
+                if (!activeLayers.has('historical_atlas')) {
+                  toggleLayer('historical_atlas');
+                }
+              }}
+              isTimelineOpen={isTimelineOpen}
+              onToggleTimeline={() => setIsTimelineOpen(!isTimelineOpen)}
+              onResetLayers={handleResetLayers}
+              onOpenSoilSources={() => setIsSoilModalOpen(true)}
             />
-            <div className="absolute left-0 top-0 bottom-0 w-[85vw] max-w-[320px]">
-              <SidebarNav
-                activeLayers={activeLayers}
-                toggleLayer={toggleLayer}
-                religionFilter={religionFilter}
-                setReligionFilter={setReligionFilter}
-                selectedEraId={selectedHistoricalPeriod}
-                onSelectEra={(era) => {
-                  setSelectedHistoricalPeriod(era);
-                  if (!activeLayers.has('historical_atlas')) {
-                    toggleLayer('historical_atlas');
-                  }
-                }}
-                isTimelineOpen={isTimelineOpen}
-                onToggleTimeline={() => setIsTimelineOpen(!isTimelineOpen)}
-                onResetLayers={handleResetLayers} onOpenSoilSources={() => setIsSoilModalOpen(true)}
-              />
-              <button
-                onClick={() => setIsSidebarOpen(false)}
-                className="absolute top-3 right-3 z-50 p-1.5 rounded-lg bg-slate-900/90 text-neutral-300 border border-white/10 hover:text-white transition-colors"
-                aria-label="Close menu"
-              >
-                <PanelLeftClose className="w-4 h-4" />
-              </button>
-            </div>
+            <button
+              onClick={() => setIsSidebarOpen(false)}
+              className="absolute top-3 right-3 z-50 p-1.5 rounded-lg bg-slate-900/90 text-neutral-300 border border-white/10 hover:text-white transition-colors cursor-pointer"
+              aria-label="Close menu"
+            >
+              <PanelLeftClose className="w-4 h-4" />
+            </button>
           </div>
-        )}
+        </div>
 
         {/* Sidebar Toggle Button */}
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className={`absolute z-50 top-3 left-3 ${isSidebarOpen ? 'hidden md:flex md:left-[324px]' : 'flex'} p-1.5 rounded-lg bg-slate-900/90 text-[#C9A227] border border-[#C9A227]/40 hover:bg-slate-800 transition-all shadow-xl backdrop-blur-md cursor-pointer`}
+          className={`absolute z-50 top-3 ${
+            isSidebarOpen ? 'hidden md:flex left-[324px]' : 'flex left-3'
+          } p-1.5 rounded-lg bg-slate-900/90 text-[#C9A227] border border-[#C9A227]/40 hover:bg-slate-800 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-xl backdrop-blur-md cursor-pointer`}
           title={isSidebarOpen ? 'Collapse Sidebar' : 'Open Sidebar'}
         >
           {isSidebarOpen ? <PanelLeftClose className="w-4 h-4" /> : <PanelLeftOpen className="w-4 h-4" />}
@@ -503,10 +517,10 @@ export function App() {
           </div>
         </main>
 
-        {/* Feature dossier — draggable bottom sheet on mobile, side panel on desktop */}
+        {/* Feature dossier — draggable bottom sheet on mobile, side panel on desktop with silky entrance */}
         {selectedFeature && (
           <div
-            className={`absolute bottom-0 left-0 right-0 z-30 flex w-full flex-col overflow-hidden rounded-t-2xl shadow-2xl sm:relative sm:inset-auto sm:h-full sm:w-96 sm:rounded-none ${sheetDragPct == null ? 'transition-all duration-300' : ''} ${sheetDragPct == null ? (sheetExpanded ? 'h-full' : 'h-[60%]') : ''}`}
+            className={`absolute bottom-0 left-0 right-0 z-30 flex w-full flex-col overflow-hidden rounded-t-2xl shadow-2xl sm:relative sm:inset-auto sm:h-full sm:w-96 sm:rounded-none sm:slide-in-from-right max-sm:slide-in-from-bottom-4 ${sheetDragPct == null ? 'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]' : ''} ${sheetDragPct == null ? (sheetExpanded ? 'h-full' : 'h-[60%]') : ''}`}
             style={sheetDragPct != null ? { height: `${sheetDragPct}%` } : undefined}
           >
             {/* Drag handle (mobile only) */}
@@ -533,40 +547,42 @@ export function App() {
 
       {/* Universal Historical Timeline Slider - Docked at Bottom Center */}
       {isTimelineOpen && (
-        <div className="fixed bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-40 w-[94%] max-w-4xl flex flex-col items-center gap-1.5">
+        <div className="fixed bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-40 w-[94%] max-w-4xl flex flex-col items-center gap-1.5 slide-in-from-bottom-4">
           {/* Small collapse / expand toggle, sitting above the timeline bar */}
           <button
             onClick={() => setIsTimelineCollapsed((v) => !v)}
-            className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/90 text-[#C9A227] border border-[#C9A227]/40 hover:bg-slate-800 transition-colors shadow-lg backdrop-blur-md text-xs font-semibold"
+            className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/90 text-[#C9A227] border border-[#C9A227]/40 hover:bg-slate-800 transition-colors shadow-lg backdrop-blur-md text-xs font-semibold cursor-pointer select-none"
             title={isTimelineCollapsed ? 'Expand timeline' : 'Collapse timeline'}
           >
-            {isTimelineCollapsed ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            <ChevronUp className={`w-3.5 h-3.5 transition-transform duration-300 ease-out ${isTimelineCollapsed ? '' : 'rotate-180'}`} />
             <span>{isTimelineCollapsed ? 'Show Timeline' : 'Hide Timeline'}</span>
           </button>
 
-          {isTimelineCollapsed ? (
-            <button
-              onClick={() => setIsTimelineCollapsed(false)}
-              className="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl glass-panel-glow border border-amber-500/40 text-left"
-            >
-              <span className="flex items-center gap-2 text-amber-300 font-semibold truncate text-sm min-w-0">
-                <Clock className="w-4 h-4 shrink-0" />
-                <span className="truncate">{activeEraMeta.name}</span>
-              </span>
-              <span className="text-xs text-neutral-400 font-mono shrink-0">{activeEraMeta.yearApprox}</span>
-            </button>
-          ) : (
-            <HistoricalTimeline
-              currentEraId={selectedHistoricalPeriod}
-              onSelectEra={(era) => {
-                setSelectedHistoricalPeriod(era);
-                if (!activeLayers.has('historical_atlas')) {
-                  toggleLayer('historical_atlas');
-                }
-              }}
-              onClose={() => setIsTimelineOpen(false)}
-            />
-          )}
+          <div className="w-full overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]">
+            {isTimelineCollapsed ? (
+              <button
+                onClick={() => setIsTimelineCollapsed(false)}
+                className="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl glass-panel-glow border border-amber-500/40 text-left transition-all duration-300 hover:border-amber-400 cursor-pointer"
+              >
+                <span className="flex items-center gap-2 text-amber-300 font-semibold truncate text-sm min-w-0">
+                  <Clock className="w-4 h-4 shrink-0" />
+                  <span className="truncate">{activeEraMeta.name}</span>
+                </span>
+                <span className="text-xs text-neutral-400 font-mono shrink-0">{activeEraMeta.yearApprox}</span>
+              </button>
+            ) : (
+              <HistoricalTimeline
+                currentEraId={selectedHistoricalPeriod}
+                onSelectEra={(era) => {
+                  setSelectedHistoricalPeriod(era);
+                  if (!activeLayers.has('historical_atlas')) {
+                    toggleLayer('historical_atlas');
+                  }
+                }}
+                onClose={() => setIsTimelineOpen(false)}
+              />
+            )}
+          </div>
         </div>
       )}
 

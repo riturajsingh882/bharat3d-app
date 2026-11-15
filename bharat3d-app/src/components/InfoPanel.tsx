@@ -18,8 +18,7 @@ import {
   Scroll,
   Route,
   Calendar,
-  ChevronDown,
-  ChevronRight
+  ChevronDown
 } from 'lucide-react';
 import type { SelectedFeatureInfo } from '../types';
 import { metersToFeetInches } from '../utils/elevation';
@@ -42,7 +41,7 @@ interface InfoPanelProps {
   onClose: () => void;
 }
 
-// Collapsible section wrapper (accordion) for the dossier panels.
+// Collapsible section wrapper (accordion) for the dossier panels with silky-smooth snappy transitions.
 const CollapsibleSection: React.FC<{
   title: string;
   icon: React.ReactNode;
@@ -55,15 +54,19 @@ const CollapsibleSection: React.FC<{
     <div className="vista-card overflow-hidden">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="w-full px-4 py-3 flex items-center justify-between gap-2 text-xs font-bold text-white uppercase tracking-wider hover:bg-white/5 transition-colors cursor-pointer"
+        className="w-full px-4 py-3 flex items-center justify-between gap-2 text-xs font-bold text-white uppercase tracking-wider hover:bg-white/5 transition-colors cursor-pointer select-none"
       >
         <span className="flex items-center gap-1.5 min-w-0">{icon}<span className="truncate">{title}</span></span>
         <span className="flex items-center gap-2 shrink-0">
           {badge && <span className="text-[10px] font-mono text-neutral-400 font-bold">{badge}</span>}
-          {open ? <ChevronDown className="w-4 h-4 text-neutral-400" /> : <ChevronRight className="w-4 h-4 text-neutral-400" />}
+          <ChevronDown className={`w-4 h-4 text-neutral-400 chevron-rotate ${open ? 'is-open text-white' : ''}`} />
         </span>
       </button>
-      {open && <div className="px-4 pb-4 pt-1">{children}</div>}
+      <div className={`accordion-collapse ${open ? 'is-open' : ''}`}>
+        <div>
+          <div className="px-4 pb-4 pt-1">{children}</div>
+        </div>
+      </div>
     </div>
   );
 };

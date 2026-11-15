@@ -876,6 +876,279 @@
           ]
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "modern_states_2000",
+        "name": "Republic of India — New States of 2000",
+        "era": "2000 CE",
+        "period_group": "modern",
+        "calendar_year": 2000,
+        "capital": "New Delhi",
+        "ruler_or_system": "Parliamentary Federal Republic (Uttarakhand, Chhattisgarh & Jharkhand created)",
+        "primary_rivers": "Pan-India Drainage Basins",
+        "approximate_area_sqkm": 3287263,
+        "scholarly_disclaimer": "Sovereign boundaries of the Republic of India per Survey of India. External boundary is essentially unchanged from 1956; only internal state reorganisation differs.",
+        "citation": "Survey of India / States Reorganisation & subsequent Acts",
+        "color": "#0891b2",
+        "border_color": "#0ea5e9",
+        "trade_connections": "Modern pan-India transport corridors and maritime trade",
+        "highlights": "Creation of Uttarakhand, Chhattisgarh and Jharkhand (2000)."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              68.1,
+              23.7
+            ],
+            [
+              70.5,
+              28
+            ],
+            [
+              74.5,
+              32.5
+            ],
+            [
+              74,
+              36.5
+            ],
+            [
+              79,
+              35.5
+            ],
+            [
+              81,
+              30.5
+            ],
+            [
+              88,
+              27.5
+            ],
+            [
+              97.4,
+              28.5
+            ],
+            [
+              95.5,
+              24.5
+            ],
+            [
+              92.5,
+              21.5
+            ],
+            [
+              89,
+              21.8
+            ],
+            [
+              80.3,
+              13
+            ],
+            [
+              77.5,
+              8.1
+            ],
+            [
+              74,
+              15
+            ],
+            [
+              72.8,
+              19
+            ],
+            [
+              68.1,
+              23.7
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "telangana_2014",
+        "name": "Republic of India — Bifurcation of Telangana (2014)",
+        "era": "2014 CE",
+        "period_group": "modern",
+        "calendar_year": 2014,
+        "capital": "New Delhi",
+        "ruler_or_system": "Parliamentary Federal Republic (Telangana carved from Andhra Pradesh)",
+        "primary_rivers": "Pan-India Drainage Basins",
+        "approximate_area_sqkm": 3287263,
+        "scholarly_disclaimer": "Sovereign boundaries of the Republic of India per Survey of India. External boundary is essentially unchanged from 1956; only internal state reorganisation differs.",
+        "citation": "Survey of India / States Reorganisation & subsequent Acts",
+        "color": "#7c3aed",
+        "border_color": "#8b5cf6",
+        "trade_connections": "Modern pan-India transport corridors and maritime trade",
+        "highlights": "Telangana created as the 29th state (2014)."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              68.1,
+              23.7
+            ],
+            [
+              70.5,
+              28
+            ],
+            [
+              74.5,
+              32.5
+            ],
+            [
+              74,
+              36.5
+            ],
+            [
+              79,
+              35.5
+            ],
+            [
+              81,
+              30.5
+            ],
+            [
+              88,
+              27.5
+            ],
+            [
+              97.4,
+              28.5
+            ],
+            [
+              95.5,
+              24.5
+            ],
+            [
+              92.5,
+              21.5
+            ],
+            [
+              89,
+              21.8
+            ],
+            [
+              80.3,
+              13
+            ],
+            [
+              77.5,
+              8.1
+            ],
+            [
+              74,
+              15
+            ],
+            [
+              72.8,
+              19
+            ],
+            [
+              68.1,
+              23.7
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "present",
+        "name": "Republic of India (Present Day)",
+        "era": "Present (2026)",
+        "period_group": "modern",
+        "calendar_year": 2026,
+        "capital": "New Delhi",
+        "ruler_or_system": "Parliamentary Federal Republic — 28 States & 8 Union Territories",
+        "primary_rivers": "Pan-India Drainage Basins",
+        "approximate_area_sqkm": 3287263,
+        "scholarly_disclaimer": "Sovereign boundaries of the Republic of India per Survey of India. External boundary is essentially unchanged from 1956; only internal state reorganisation differs.",
+        "citation": "Survey of India / States Reorganisation & subsequent Acts",
+        "color": "#C9A227",
+        "border_color": "#D9B23C",
+        "trade_connections": "Modern pan-India transport corridors and maritime trade",
+        "highlights": "28 States and 8 Union Territories; sovereign baseline per Survey of India."
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              68.1,
+              23.7
+            ],
+            [
+              70.5,
+              28
+            ],
+            [
+              74.5,
+              32.5
+            ],
+            [
+              74,
+              36.5
+            ],
+            [
+              79,
+              35.5
+            ],
+            [
+              81,
+              30.5
+            ],
+            [
+              88,
+              27.5
+            ],
+            [
+              97.4,
+              28.5
+            ],
+            [
+              95.5,
+              24.5
+            ],
+            [
+              92.5,
+              21.5
+            ],
+            [
+              89,
+              21.8
+            ],
+            [
+              80.3,
+              13
+            ],
+            [
+              77.5,
+              8.1
+            ],
+            [
+              74,
+              15
+            ],
+            [
+              72.8,
+              19
+            ],
+            [
+              68.1,
+              23.7
+            ]
+          ]
+        ]
+      }
     }
   ]
 }

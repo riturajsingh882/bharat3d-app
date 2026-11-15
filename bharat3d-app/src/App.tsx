@@ -559,7 +559,12 @@ export function App() {
           ) : (
             <HistoricalTimeline
               currentEraId={selectedHistoricalPeriod}
-              onSelectEra={(era) => setSelectedHistoricalPeriod(era)}
+              onSelectEra={(era) => {
+                setSelectedHistoricalPeriod(era);
+                if (!activeLayers.has('historical_atlas')) {
+                  toggleLayer('historical_atlas');
+                }
+              }}
               onClose={() => setIsTimelineOpen(false)}
             />
           )}

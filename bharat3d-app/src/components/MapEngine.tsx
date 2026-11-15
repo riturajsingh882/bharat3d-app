@@ -790,7 +790,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         layout: {
           visibility: activeLayers.has('historical_atlas') ? 'visible' : 'none'
         },
-        filter: ['==', 'period_id', selectedHistoricalPeriod],
+        filter: ['==', 'id', selectedHistoricalPeriod],
         paint: {
           'fill-color': ['coalesce', ['get', 'color'], '#c2410c'],
           'fill-opacity': 0.42
@@ -804,7 +804,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         layout: {
           visibility: activeLayers.has('historical_atlas') ? 'visible' : 'none'
         },
-        filter: ['==', 'period_id', selectedHistoricalPeriod],
+        filter: ['==', 'id', selectedHistoricalPeriod],
         paint: {
           'line-color': ['coalesce', ['get', 'color'], '#c2410c'],
           'line-width': 8,
@@ -820,7 +820,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         layout: {
           visibility: activeLayers.has('historical_atlas') ? 'visible' : 'none'
         },
-        filter: ['==', 'period_id', selectedHistoricalPeriod],
+        filter: ['==', 'id', selectedHistoricalPeriod],
         paint: {
           'line-color': '#ffffff',
           'line-width': 2.8,
@@ -841,7 +841,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
           'text-allow-overlap': false,
           visibility: activeLayers.has('historical_atlas') ? 'visible' : 'none'
         },
-        filter: ['==', 'period_id', selectedHistoricalPeriod],
+        filter: ['==', 'id', selectedHistoricalPeriod],
         paint: {
           'text-color': '#fffbeb',
           'text-halo-color': '#0f172a',
@@ -1487,9 +1487,9 @@ export const MapEngine: React.FC<MapEngineProps> = ({
           if (topFeat.layer.id === 'empires-fill') {
             featType = 'HISTORICAL EMPIRE';
             title = props.name || 'Historical Empire';
-            subtitle = `${props.period || ''} • Capital: ${props.capital || ''}`;
+            subtitle = `${props.era || ''} • Capital: ${props.capital || ''}`;
             metricLabel = 'Approx. Extent';
-            metricValue = props.extent_approx_sqkm ? `${props.extent_approx_sqkm.toLocaleString()} km²` : 'Scholarly Reconstruction';
+            metricValue = props.approximate_area_sqkm ? `${props.approximate_area_sqkm.toLocaleString()} km²` : 'Scholarly Reconstruction';
             source = 'Archaeological Survey of India / Historical Atlas';
           } else if (topFeat.layer.id === 'archaeology-core') {
             featType = 'ARCHAEOLOGICAL SITE';
@@ -1778,7 +1778,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     if (!map || !map.isStyleLoaded()) return;
 
     try {
-      const empireFilter: any = ['==', 'period_id', selectedHistoricalPeriod];
+      const empireFilter: any = ['==', 'id', selectedHistoricalPeriod];
       ['empires-fill', 'empires-glow', 'empires-border', 'empires-capitals'].forEach(layerId => {
         if (map.getLayer(layerId)) {
           map.setFilter(layerId, empireFilter);

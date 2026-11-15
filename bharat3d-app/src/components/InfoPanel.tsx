@@ -165,30 +165,30 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
                     <span className="font-bold text-[#C9A227] text-sm">{properties.capital}</span>
                   </div>
                 )}
-                {properties.ruler_notable && (
+                {properties.ruler_or_system && (
                   <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Notable Monarch(s):</span>
-                    <span className="font-bold text-amber-300 text-sm">{properties.ruler_notable}</span>
+                    <span className="text-neutral-400">Ruler / System:</span>
+                    <span className="font-bold text-amber-300 text-sm">{properties.ruler_or_system}</span>
                   </div>
                 )}
-                {properties.extent_approx_sqkm && (
+                {properties.approximate_area_sqkm && (
                   <div className="flex justify-between py-1.5 border-b border-white/5">
                     <span className="text-neutral-400">Approx. Territorial Extent:</span>
                     <span className="font-bold text-emerald-400 text-sm">
-                      {properties.extent_approx_sqkm.toLocaleString()} km²
+                      {properties.approximate_area_sqkm.toLocaleString()} km²
                     </span>
                   </div>
                 )}
-                {properties.key_edicts && (
+                {properties.highlights && (
                   <div className="py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400 block text-[11px]">Key Edicts / Monuments:</span>
-                    <span className="text-neutral-200">{properties.key_edicts}</span>
+                    <span className="text-neutral-400 block text-[11px]">Highlights:</span>
+                    <span className="text-neutral-200">{properties.highlights}</span>
                   </div>
                 )}
-                {properties.major_trade_centers && (
+                {properties.trade_connections && (
                   <div className="py-1.5">
-                    <span className="text-neutral-400 block text-[11px]">Primary Trade Centers:</span>
-                    <span className="text-sky-300">{properties.major_trade_centers}</span>
+                    <span className="text-neutral-400 block text-[11px]">Trade Connections:</span>
+                    <span className="text-sky-300">{properties.trade_connections}</span>
                   </div>
                 )}
               </div>

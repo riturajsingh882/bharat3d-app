@@ -27,6 +27,16 @@ import { STATE_LANDMARKS } from '../data/stateLandmarks';
 import { STATE_CROPS } from '../data/stateAgriculture';
 import { STATE_WILDLIFE } from '../data/stateWildlife';
 
+const SITE_CATEGORY_LABELS: Record<string, string> = {
+  ivc_site: 'Indus Valley Site',
+  ancient_university: 'Ancient University',
+  buddhist_monument: 'Buddhist Monument',
+  rock_cut_monument: 'Rock-Cut Monument',
+  medieval_monument: 'Medieval Monument',
+  ancient_temple: 'Ancient Temple',
+  ancient_port: 'Ancient Port'
+};
+
 interface InfoPanelProps {
   feature: SelectedFeatureInfo | null;
   onClose: () => void;
@@ -124,6 +134,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
 
   const { type, properties, demographics } = feature;
   const displayName = properties.clean_name || properties.shapeName || properties.name || feature.name;
+  const wikiName = (properties.name || displayName || '').replace(/\s*\([^)]*\)\s*$/, '').trim();
   const stateLandmarks = type === 'state' ? STATE_LANDMARKS[properties.shapeName || displayName] : undefined;
   const stateCrops = type === 'state' ? STATE_CROPS[properties.shapeName || displayName] : undefined;
   const stateWildlife = type === 'state' ? STATE_WILDLIFE[properties.shapeName || displayName] : undefined;
@@ -245,36 +256,41 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
                   <Scroll className="w-4 h-4 text-teal-400" />
                   <span>Archaeological Profile</span>
                 </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-teal-950/80 text-teal-300 border border-teal-500/30 font-bold">
-                  ASI MONUMENT
+                <span className="flex items-center gap-1.5">
+                  <a href={`https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(wikiName)}`} target="_blank" rel="noopener noreferrer" className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/30 border border-white/25 flex items-center justify-center text-xs font-black text-white transition-colors cursor-pointer" title={`Wikipedia: ${wikiName}`} aria-label={`Wikipedia article for ${wikiName}`}>W</a>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-teal-950/80 text-teal-300 border border-teal-500/30 font-bold">
+                    ASI MONUMENT
+                  </span>
                 </span>
               </div>
 
+              {properties.description && (
+                <p className="text-xs font-mono text-neutral-200 leading-relaxed">{properties.description}</p>
+              )}
+
               <div className="space-y-2 text-xs font-mono">
+                {properties.civilization && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">Civilization:</span>
+                    <span className="font-bold text-teal-300 text-sm text-right ml-2">{properties.civilization}</span>
+                  </div>
+                )}
                 {properties.category && (
                   <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Civilizational Category:</span>
-                    <span className="font-bold text-teal-300 text-sm">{properties.category}</span>
+                    <span className="text-neutral-400">Category:</span>
+                    <span className="font-bold text-teal-300 text-sm">{SITE_CATEGORY_LABELS[properties.category] || properties.category}</span>
                   </div>
                 )}
                 {properties.period && (
                   <div className="flex justify-between py-1.5 border-b border-white/5">
                     <span className="text-neutral-400">Chronological Period:</span>
-                    <span className="font-bold text-white text-sm">{properties.period}</span>
+                    <span className="font-bold text-white text-sm text-right ml-2">{properties.period}</span>
                   </div>
                 )}
-                {properties.modern_state && (
+                {properties.excavator && (
                   <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Present Location:</span>
-                    <span className="font-bold text-[#C9A227] text-sm">
-                      {properties.modern_district ? `${properties.modern_district}, ` : ''}{properties.modern_state}
-                    </span>
-                  </div>
-                )}
-                {properties.excavators && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Excavators & Team:</span>
-                    <span className="font-bold text-amber-300 text-xs">{properties.excavators}</span>
+                    <span className="text-neutral-400">Excavator / Team:</span>
+                    <span className="font-bold text-amber-300 text-xs text-right ml-2">{properties.excavator}</span>
                   </div>
                 )}
                 {properties.discovery_year && (
@@ -283,18 +299,22 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
                     <span className="font-bold text-white">{properties.discovery_year}</span>
                   </div>
                 )}
-                {properties.key_features && (
+                {properties.key_finds && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Key Archaeological Finds:</span>
-                    <span className="text-neutral-200 leading-relaxed">{properties.key_features}</span>
+                    <span className="text-neutral-200 leading-relaxed">{properties.key_finds}</span>
                   </div>
                 )}
-                {properties.coordinates && (
+                {properties.status && (
                   <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Coordinates:</span>
-                    <span className="text-neutral-300 font-mono">
-                      {properties.coordinates[1]?.toFixed(4)}° N, {properties.coordinates[0]?.toFixed(4)}° E
-                    </span>
+                    <span className="text-neutral-400">Protection Status:</span>
+                    <span className="font-bold text-emerald-300 text-xs text-right ml-2">{properties.status}</span>
+                  </div>
+                )}
+                {properties.citation && (
+                  <div className="py-1.5">
+                    <span className="text-neutral-400 block text-[11px]">Citation / Source:</span>
+                    <span className="text-neutral-300 text-[11px] leading-relaxed">{properties.citation}</span>
                   </div>
                 )}
               </div>

@@ -60,6 +60,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
 }) => {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     historical: true,
+    historyTimeline: true,
     archaeology: true,
     trade: false,
     roads: true,
@@ -89,7 +90,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
       {/* Layer Navigation Scroll Area */}
       <div className="flex-1 overflow-y-auto px-3 py-3 space-y-3">
         {/* ======================================================== */}
-        {/* 1. HISTORICAL ATLAS & TIME MACHINE */}
+        {/* 1. HISTORICAL ATLAS */}
         {/* ======================================================== */}
         <div className="vista-card overflow-hidden border border-amber-500/30">
           <button
@@ -99,7 +100,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
             <span className="flex items-center gap-2">
               <ActiveDot on={sectionActive(['historical_atlas'])} />
               <Landmark className="w-4 h-4 text-amber-400" />
-              <span>Historical Atlas & Time Machine</span>
+              <span>Historical Atlas</span>
             </span>
             {openSections.historical ? <ChevronDown className="w-4 h-4 text-neutral-400" /> : <ChevronRight className="w-4 h-4 text-neutral-400" />}
           </button>
@@ -120,22 +121,6 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
                   <span>Show Historical Empires</span>
                 </div>
                 <span className="text-xs px-2 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-500/40 font-bold">12 Eras</span>
-              </button>
-
-              {/* Bottom Timeline Launcher Button */}
-              <button
-                onClick={onToggleTimeline}
-                className={`w-full px-3 py-2 rounded-lg text-xs font-mono font-bold flex items-center justify-between transition-all cursor-pointer border ${
-                  isTimelineOpen 
-                    ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-[0_0_12px_rgba(245,158,11,0.4)]'
-                    : 'bg-white/5 hover:bg-white/10 text-amber-300 border-amber-500/30'
-                }`}
-              >
-                <span className="flex items-center gap-2">
-                  <Clock className="w-3.5 h-3.5" />
-                  <span>{isTimelineOpen ? 'Hide Universal Timeline' : 'Open Universal Timeline'}</span>
-                </span>
-                <span className="text-[10px] px-1.5 py-0.2 rounded bg-black/30 font-bold">SLIDER</span>
               </button>
 
               {/* Quick Era Selector List */}
@@ -165,6 +150,45 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
                     </button>
                   ))}
                 </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* ======================================================== */}
+        {/* 1.5 INDIAN HISTORY TIMELINE */}
+        {/* ======================================================== */}
+        <div className="vista-card overflow-hidden border border-indigo-500/30">
+          <button
+            onClick={() => toggleSection('historyTimeline')}
+            className="w-full px-3.5 py-3 flex items-center justify-between text-sm font-serif font-semibold uppercase tracking-wide text-indigo-300 hover:text-indigo-200 transition-colors bg-[#12101d]"
+          >
+            <span className="flex items-center gap-2">
+              <ActiveDot on={isTimelineOpen} />
+              <Clock className="w-4 h-4 text-indigo-400" />
+              <span>Indian History Timeline</span>
+            </span>
+            {openSections.historyTimeline ? <ChevronDown className="w-4 h-4 text-neutral-400" /> : <ChevronRight className="w-4 h-4 text-neutral-400" />}
+          </button>
+
+          {openSections.historyTimeline && (
+            <div className="p-2 space-y-1.5 bg-[#0d1016]">
+              <button
+                onClick={onToggleTimeline}
+                className={`w-full px-3 py-2 rounded-lg text-xs font-mono font-bold flex items-center justify-between transition-all cursor-pointer border ${
+                  isTimelineOpen
+                    ? 'bg-indigo-500 text-slate-950 border-indigo-400 shadow-[0_0_12px_rgba(129,140,248,0.4)]'
+                    : 'bg-white/5 hover:bg-white/10 text-indigo-300 border-indigo-500/30'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>{isTimelineOpen ? 'Hide Timeline' : 'Open Timeline'}</span>
+                </span>
+                <span className="text-[10px] px-1.5 py-0.2 rounded bg-black/30 font-bold">SLIDER</span>
+              </button>
+              <div className="px-3 py-2 text-xs font-mono font-semibold text-neutral-300 leading-relaxed bg-[#131720] rounded-lg">
+                Scroll through 13 eras, from the Indus Valley to the present-day Republic.
               </div>
             </div>
           )}

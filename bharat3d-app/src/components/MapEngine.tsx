@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Map, NavigationControl, ScaleControl, setWorkerUrl, type MapMouseEvent, type MapGeoJSONFeature } from 'maplibre-gl';
+import { Map, NavigationControl, ScaleControl, setWorkerUrl, Marker, type MapMouseEvent, type MapGeoJSONFeature } from 'maplibre-gl';
 import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory, EnvironmentalPillar, EnvironmentalComparisonConfig, DisasterHazardType, DisasterRegion, InfrastructureCategory } from '../types';
 import { APP_CONFIG } from '../config';
 import { formatElevationDual } from '../utils/elevation';
@@ -33,7 +33,392 @@ const SEARCH_HIGHLIGHT_SOURCE: Record<string, { source: string; field: string } 
   infrastructure_urban: { source: 'infrastructure-economic', field: 'id' }
 };
 
+// Generates crisp 44x44 high-DPI canvas icon badges for map symbols
+function createCategoryIconCanvas(category: string, bg: string): ImageData | null {
+  const size = 44;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return null;
+  const cx = size / 2;
+  const cy = size / 2;
+
+  // Ground shadow
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+  ctx.beginPath();
+  ctx.arc(cx, cy + 1.5, 17, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Outer circle with category color
+  ctx.fillStyle = bg;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+  ctx.fill();
+
+  // White border
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 2.2;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Dark inner circle
+  ctx.fillStyle = '#060a12';
+  ctx.beginPath();
+  ctx.arc(cx, cy, 14.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Center vector glyph in white
+  ctx.fillStyle = '#ffffff';
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 1.6;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  if (category === 'railways') {
+    // Train locomotive
+    ctx.beginPath();
+    ctx.roundRect(cx - 7, cy - 8, 14, 13, 2.5);
+    ctx.fill();
+    ctx.fillStyle = bg;
+    ctx.fillRect(cx - 5, cy - 6, 10, 4);
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(cx, cy + 1, 1.8, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(cx - 4, cy + 6.5, 1.5, 0, Math.PI * 2);
+    ctx.arc(cx + 4, cy + 6.5, 1.5, 0, Math.PI * 2);
+    ctx.fill();
+  } else if (category === 'airports') {
+    // Climbing passenger airplane
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - 8);
+    ctx.lineTo(cx + 2, cy - 1);
+    ctx.lineTo(cx + 9, cy + 2);
+    ctx.lineTo(cx + 9, cy + 4);
+    ctx.lineTo(cx + 2, cy + 2.5);
+    ctx.lineTo(cx + 1.5, cy + 7);
+    ctx.lineTo(cx + 4.5, cy + 9);
+    ctx.lineTo(cx + 4.5, cy + 10);
+    ctx.lineTo(cx, cy + 8.5);
+    ctx.lineTo(cx - 4.5, cy + 10);
+    ctx.lineTo(cx - 4.5, cy + 9);
+    ctx.lineTo(cx - 1.5, cy + 7);
+    ctx.lineTo(cx - 2, cy + 2.5);
+    ctx.lineTo(cx - 9, cy + 4);
+    ctx.lineTo(cx - 9, cy + 2);
+    ctx.lineTo(cx - 2, cy - 1);
+    ctx.closePath();
+    ctx.fill();
+  } else if (category === 'seaports') {
+    // Anchor
+    ctx.beginPath();
+    ctx.arc(cx, cy - 6, 2.5, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - 3.5);
+    ctx.lineTo(cx, cy + 6);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(cx - 5, cy - 2);
+    ctx.lineTo(cx + 5, cy - 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(cx, cy + 2, 6, 0.2 * Math.PI, 0.8 * Math.PI, false);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(cx - 6, cy + 4);
+    ctx.lineTo(cx - 6, cy + 2);
+    ctx.moveTo(cx + 6, cy + 4);
+    ctx.lineTo(cx + 6, cy + 2);
+    ctx.stroke();
+  } else if (category === 'power_plants') {
+    // Lightning bolt
+    ctx.fillStyle = '#fef08a';
+    ctx.beginPath();
+    ctx.moveTo(cx + 2, cy - 8);
+    ctx.lineTo(cx - 5, cy - 0.5);
+    ctx.lineTo(cx - 1, cy - 0.5);
+    ctx.lineTo(cx - 3, cy + 8);
+    ctx.lineTo(cx + 5, cy + 0.5);
+    ctx.lineTo(cx + 1, cy + 0.5);
+    ctx.closePath();
+    ctx.fill();
+  } else if (category === 'dams') {
+    // Dam wall & water waves
+    ctx.fillStyle = '#bae6fd';
+    ctx.beginPath();
+    ctx.moveTo(cx - 5, cy - 7);
+    ctx.lineTo(cx + 5, cy - 7);
+    ctx.lineTo(cx + 7, cy + 2);
+    ctx.lineTo(cx - 7, cy + 2);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(cx - 7, cy + 5);
+    ctx.quadraticCurveTo(cx - 3.5, cy + 3.5, cx, cy + 5);
+    ctx.quadraticCurveTo(cx + 3.5, cy + 6.5, cx + 7, cy + 5);
+    ctx.stroke();
+  } else if (category === 'industrial_corridors') {
+    // Factory sawtooth
+    ctx.fillStyle = '#f0abfc';
+    ctx.beginPath();
+    ctx.moveTo(cx - 7, cy + 6);
+    ctx.lineTo(cx - 7, cy - 2);
+    ctx.lineTo(cx - 2, cy + 1);
+    ctx.lineTo(cx - 2, cy - 4);
+    ctx.lineTo(cx + 3, cy - 1);
+    ctx.lineTo(cx + 3, cy - 7);
+    ctx.lineTo(cx + 6, cy - 7);
+    ctx.lineTo(cx + 6, cy + 6);
+    ctx.closePath();
+    ctx.fill();
+  } else if (category === 'economic_zones') {
+    // Skyscraper high-rise
+    ctx.fillStyle = '#6ee7b7';
+    ctx.fillRect(cx - 6, cy - 4, 4, 10);
+    ctx.fillRect(cx - 1, cy - 8, 4, 14);
+    ctx.fillRect(cx + 4, cy - 2, 3, 8);
+  } else if (category === 'urban_centres') {
+    // Megacity skyline
+    ctx.fillStyle = '#fed7aa';
+    ctx.fillRect(cx - 7, cy - 3, 3, 9);
+    ctx.fillRect(cx - 3, cy - 7, 4, 13);
+    ctx.beginPath();
+    ctx.moveTo(cx - 1, cy - 7);
+    ctx.lineTo(cx - 1, cy - 10);
+    ctx.stroke();
+    ctx.fillRect(cx + 2, cy - 5, 5, 11);
+  } else {
+    // Highway shield
+    ctx.fillStyle = '#fde68a';
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - 7);
+    ctx.lineTo(cx + 6, cy - 4);
+    ctx.lineTo(cx + 4.5, cy + 3);
+    ctx.lineTo(cx, cy + 7);
+    ctx.lineTo(cx - 4.5, cy + 3);
+    ctx.lineTo(cx - 6, cy - 4);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  return ctx.getImageData(0, 0, size, size);
+}
+
+function getCategorySvgIcon(category: string): string {
+  switch (category) {
+    case 'railways':
+      return `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="3" rx="2.5"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="m8 19-2 3"/><path d="m18 22-2-3"/><circle cx="8" cy="15" r="1.2" fill="currentColor"/><circle cx="16" cy="15" r="1.2" fill="currentColor"/></svg>`;
+    case 'airports':
+      return `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>`;
+    case 'seaports':
+      return `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><line x1="12" x2="12" y1="22" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>`;
+    case 'industrial_corridors':
+      return `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg>`;
+    case 'dams':
+      return `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></svg>`;
+    case 'power_plants':
+      return `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>`;
+    case 'economic_zones':
+      return `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>`;
+    case 'urban_centres':
+      return `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>`;
+    default:
+      return `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg>`;
+  }
+}
+
+function getCategoryBadgeMeta(category: string): { label: string; emoji: string } {
+  switch (category) {
+    case 'railways':
+      return { label: 'INDIAN RAILWAYS', emoji: '🚆' };
+    case 'airports':
+      return { label: 'AAI / INTERNATIONAL AIRPORT', emoji: '✈️' };
+    case 'seaports':
+      return { label: 'SAGARMALA MAJOR PORT', emoji: '⚓' };
+    case 'industrial_corridors':
+      return { label: 'NICDC INDUSTRIAL CORRIDOR', emoji: '🏭' };
+    case 'dams':
+      return { label: 'CWC MULTIPURPOSE DAM', emoji: '💧' };
+    case 'power_plants':
+      return { label: 'CEA / NTPC MEGA POWER', emoji: '⚡' };
+    case 'economic_zones':
+      return { label: 'DPIIT SPECIAL ECONOMIC ZONE', emoji: '🏢' };
+    case 'urban_centres':
+      return { label: 'METROPOLITAN MEGACITY', emoji: '🏙️' };
+    default:
+      return { label: 'NHAI / MoRTH CORRIDOR', emoji: '🛣️' };
+  }
+}
+
+function createInfrastructureMarkerElement(opts: {
+  name: string;
+  category: string;
+  subType?: string;
+  metricText?: string;
+  color?: string;
+}): HTMLElement {
+  const color = opts.color || '#38bdf8';
+  const badgeMeta = getCategoryBadgeMeta(opts.category);
+  const svgIcon = getCategorySvgIcon(opts.category);
+
+  const container = document.createElement('div');
+  container.className = 'infra-exact-marker-root flex flex-col items-center select-none pointer-events-none';
+  container.style.cssText = 'position: relative; display: flex; flex-direction: column; align-items: center; pointer-events: none; z-index: 1000;';
+
+  container.innerHTML = `
+    <!-- Floating Illuminated Billboard Card -->
+    <div style="
+      background: rgba(8, 12, 20, 0.94);
+      border: 1.5px solid ${color}80;
+      box-shadow: 0 0 24px ${color}50, 0 12px 28px rgba(0,0,0,0.85);
+      border-radius: 12px;
+      padding: 8px 12px 9px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 8px;
+      min-width: 175px;
+      max-width: 280px;
+      position: relative;
+      backdrop-filter: blur(12px);
+    ">
+      <!-- Category Badge Pill -->
+      <div style="
+        background: ${color}22;
+        color: ${color};
+        border: 1px solid ${color}60;
+        font-family: monospace;
+        font-size: 9.5px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 2px 7px;
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-bottom: 4px;
+        white-space: nowrap;
+      ">
+        <span>${badgeMeta.emoji}</span>
+        <span>${badgeMeta.label}</span>
+      </div>
+
+      <!-- Asset Name -->
+      <div style="
+        color: #ffffff;
+        font-family: sans-serif;
+        font-size: 12.5px;
+        font-weight: 800;
+        line-height: 1.25;
+        text-align: center;
+        letter-spacing: -0.01em;
+        margin-bottom: 3px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      ">
+        ${opts.name}
+      </div>
+
+      <!-- Key Metric / Subtitle -->
+      ${opts.metricText ? `
+        <div style="
+          color: #cbd5e1;
+          font-family: monospace;
+          font-size: 10px;
+          font-weight: 600;
+          text-align: center;
+          line-height: 1.2;
+        ">
+          ${opts.metricText}
+        </div>
+      ` : ''}
+
+      <!-- Bottom Triangle Pointer -->
+      <div style="
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+        width: 10px;
+        height: 10px;
+        background: rgba(8, 12, 20, 0.95);
+        border-right: 1.5px solid ${color}80;
+        border-bottom: 1.5px solid ${color}80;
+      "></div>
+    </div>
+
+    <!-- The 3D Ground Pin Beacon -->
+    <div style="position: relative; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;">
+      <!-- Outer pulsing animated radar ring -->
+      <div style="
+        position: absolute;
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        background: ${color}30;
+        border: 2px solid ${color};
+        animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+      "></div>
+
+      <!-- Concentric secondary glow ring -->
+      <div style="
+        position: absolute;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        box-shadow: 0 0 18px ${color}, inset 0 0 10px ${color}80;
+      "></div>
+
+      <!-- Glossy 3D Teardrop Pin Body with Detailed Logo -->
+      <div style="
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 35%, ${color}, #050912 85%);
+        border: 2.8px solid #ffffff;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.9), 0 0 20px ${color}90;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 10;
+      ">
+        ${svgIcon}
+      </div>
+
+      <!-- Ground Needle Anchor -->
+      <div style="
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 3px;
+        height: 8px;
+        background: #ffffff;
+        border-radius: 0 0 2px 2px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        z-index: 9;
+      "></div>
+    </div>
+  `;
+
+  return container;
+}
+
 function clearSearchHighlight(map: Map) {
+  if ((map as any)._activeInfraMarker) {
+    try {
+      (map as any)._activeInfraMarker.remove();
+    } catch {}
+    (map as any)._activeInfraMarker = null;
+  }
   if (map.getLayer('states-highlight')) map.setFilter('states-highlight', ['==', 'shapeName', '']);
   if (map.getLayer('states-highlight-fill')) map.setFilter('states-highlight-fill', ['==', 'shapeName', '']);
   if (map.getLayer('districts-highlight-line')) map.setFilter('districts-highlight-line', ['==', 'shapeName', '']);
@@ -422,7 +807,7 @@ function createDisasterImpactFeatures(match: any, target: { name?: string; key?:
 
 function applySearchHighlight(map: Map, target: SearchTarget | null) {
   clearSearchHighlight(map);
-  if (!target || !target.type || !map.isStyleLoaded()) return;
+  if (!target || !target.type || !map) return;
 
   const setPoint = () => {
     if (target.lng === undefined || target.lat === undefined) return;
@@ -609,11 +994,13 @@ function applySearchHighlight(map: Map, target: SearchTarget | null) {
       const src = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
       if (match) {
         const p = match.properties;
-        const color = p.color || '#f59e0b';
+        const color = p.color || '#38bdf8';
         const hlFeatures: any[] = [];
+        let anchorCoords: [number, number] | undefined = p.coordinates;
 
         if (match.geometry.type === 'Point') {
           const pt = match.geometry.coordinates as [number, number];
+          anchorCoords = anchorCoords || pt;
           const haloCircle = createGeodesicCircle(pt[0], pt[1], 15, 64);
           hlFeatures.push({
             type: 'Feature',
@@ -627,18 +1014,11 @@ function applySearchHighlight(map: Map, target: SearchTarget | null) {
               stroke_width: 2.5
             }
           });
-          hlFeatures.push({
-            type: 'Feature',
-            geometry: match.geometry,
-            properties: {
-              id: (match.id || 'infra') + '_beacon',
-              name: p.name,
-              label_text: `🏗️ ${p.name}`,
-              color: color,
-              pulse_color: color
-            }
-          });
-        } else {
+        } else if (match.geometry.type === 'LineString') {
+          const pts = match.geometry.coordinates as [number, number][];
+          if (!anchorCoords && pts.length > 0) {
+            anchorCoords = pts[Math.floor(pts.length / 2)];
+          }
           hlFeatures.push({
             type: 'Feature',
             geometry: match.geometry,
@@ -647,8 +1027,8 @@ function applySearchHighlight(map: Map, target: SearchTarget | null) {
               name: p.name,
               color: color,
               border_color: '#ffffff',
-              fill_opacity: 0.45,
-              stroke_width: 4.5
+              fill_opacity: 0.8,
+              stroke_width: 5.5
             }
           });
         }
@@ -658,6 +1038,28 @@ function applySearchHighlight(map: Map, target: SearchTarget | null) {
             type: 'FeatureCollection',
             features: hlFeatures
           });
+        }
+
+        if (anchorCoords) {
+          if ((map as any)._activeInfraMarker) {
+            try { (map as any)._activeInfraMarker.remove(); } catch {}
+            (map as any)._activeInfraMarker = null;
+          }
+          try {
+            const markerEl = createInfrastructureMarkerElement({
+              name: p.name,
+              category: p.category || 'railways',
+              subType: p.sub_type,
+              metricText: p.route_type || p.summary || (p.length_km ? `${p.length_km} km` : undefined),
+              color: color
+            });
+            const marker = new Marker({ element: markerEl, anchor: 'bottom' })
+              .setLngLat(anchorCoords)
+              .addTo(map);
+            (map as any)._activeInfraMarker = marker;
+          } catch (e) {
+            console.warn('Marker placement error in applySearchHighlight:', e);
+          }
         }
       } else {
         setPoint();
@@ -791,6 +1193,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map | null>(null);
+  const activeMarkerRef = useRef<Marker | null>(null);
   const flowIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const lastHoverTsRef = useRef<number>(0);
   const lastHoverKeyRef = useRef<string>('');
@@ -1041,6 +1444,10 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     setVis('infra-railways-core', isRailwaysActive);
     setVis('infra-railways-labels', isRailwaysActive);
     setVis('infra-railways-hit-target', isRailwaysActive);
+    setVis('infra-railways-points-halo', isRailwaysActive);
+    setVis('infra-railways-points-core', isRailwaysActive);
+    setVis('infra-railways-points-labels', isRailwaysActive);
+    setVis('infra-railways-points-hit-target', isRailwaysActive);
 
     const isCorridorsActive = isInfraActive && (!infrastructureCategories || infrastructureCategories.has('industrial_corridors'));
     setVis('infra-corridors-glow', isCorridorsActive);
@@ -1342,6 +1749,27 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     map.addControl(new ScaleControl({ unit: 'metric' }), 'bottom-left');
 
     map.on('load', () => {
+      // Register custom category icons for map layers
+      const CATEGORY_ICONS: Array<{ id: string; category: string; color: string }> = [
+        { id: 'infra-icon-railways', category: 'railways', color: '#0284c7' },
+        { id: 'infra-icon-airports', category: 'airports', color: '#4f46e5' },
+        { id: 'infra-icon-seaports', category: 'seaports', color: '#0891b2' },
+        { id: 'infra-icon-industrial_corridors', category: 'industrial_corridors', color: '#c026d3' },
+        { id: 'infra-icon-dams', category: 'dams', color: '#0369a1' },
+        { id: 'infra-icon-power_plants', category: 'power_plants', color: '#ca8a04' },
+        { id: 'infra-icon-economic_zones', category: 'economic_zones', color: '#059669' },
+        { id: 'infra-icon-urban_centres', category: 'urban_centres', color: '#c2410c' },
+        { id: 'infra-icon-highways', category: 'highways', color: '#d97706' },
+      ];
+      for (const ic of CATEGORY_ICONS) {
+        try {
+          const imgData = createCategoryIconCanvas(ic.category, ic.color);
+          if (imgData && !map.hasImage(ic.id)) {
+            map.addImage(ic.id, imgData);
+          }
+        } catch {}
+      }
+
       // 1. Enable 3D Terrain
       try {
         if (is3D) {
@@ -2680,6 +3108,68 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         }
       });
 
+      // --- RAILWAYS POINT HUBS & TERMINALS ---
+      map.addLayer({
+        id: 'infra-railways-points-halo',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'railways']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 14,
+          'circle-color': '#38bdf8',
+          'circle-blur': 0.8,
+          'circle-opacity': 0.7
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-railways-points-core',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'railways']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 6.0,
+          'circle-color': '#ffffff',
+          'circle-stroke-width': 2.5,
+          'circle-stroke-color': '#0284c7'
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-railways-points-labels',
+        type: 'symbol',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'railways']],
+        layout: {
+          'text-field': ['concat', '🚆 ', ['get', 'name']],
+          'text-size': 10,
+          'text-offset': [0, -1.4],
+          'text-anchor': 'bottom',
+          'text-allow-overlap': false,
+          visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#e0f2fe',
+          'text-halo-color': '#0f172a',
+          'text-halo-width': 2
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-railways-points-hit-target',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'railways']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 24,
+          'circle-color': '#000000',
+          'circle-opacity': 0.001
+        }
+      });
+
       // --- INDUSTRIAL CORRIDORS ---
       map.addLayer({
         id: 'infra-corridors-glow',
@@ -3909,6 +4399,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             'disaster-tsunami-fill',
             'disaster-heatwaves-fill',
             'infra-railways-hit-target',
+            'infra-railways-points-hit-target',
             'infra-corridors-hit-target',
             'infra-airports-hit-target',
             'infra-seaports-hit-target',
@@ -4192,6 +4683,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         // 1. High priority linear & discrete point layers (highways, mountains, rivers, trade, archaeological sites, summits)
         const priorityLinearPointLayers = [
           'infra-railways-hit-target',
+          'infra-railways-points-hit-target',
           'infra-corridors-hit-target',
           'infra-airports-hit-target',
           'infra-seaports-hit-target',
@@ -4200,6 +4692,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
           'infra-sez-hit-target',
           'infra-urban-hit-target',
           'infra-railways-core',
+          'infra-railways-points-core',
           'infra-corridors-core',
           'infra-airports-core',
           'infra-seaports-core',
@@ -4539,6 +5032,10 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     mapRef.current = map;
 
     return () => {
+      if (activeMarkerRef.current) {
+        try { activeMarkerRef.current.remove(); } catch {}
+        activeMarkerRef.current = null;
+      }
       if (flowIntervalRef.current) {
         clearInterval(flowIntervalRef.current);
         flowIntervalRef.current = null;
@@ -4551,7 +5048,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
   // Sync Historical Empire layer filter when selectedHistoricalPeriod changes
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !map.isStyleLoaded()) return;
+    if (!map) return;
 
     try {
       const empireFilter: any = ['==', 'id', selectedHistoricalPeriod];
@@ -4712,7 +5209,16 @@ export const MapEngine: React.FC<MapEngineProps> = ({
   // Sync Highlights when selectedFeature changes from search or outside
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !map.isStyleLoaded()) return;
+    if (!map) return;
+
+    if (activeMarkerRef.current) {
+      try { activeMarkerRef.current.remove(); } catch {}
+      activeMarkerRef.current = null;
+    }
+    if ((map as any)._activeInfraMarker) {
+      try { (map as any)._activeInfraMarker.remove(); } catch {}
+      (map as any)._activeInfraMarker = null;
+    }
 
     if (!selectedFeature) {
       if (map.getLayer('states-highlight')) map.setFilter('states-highlight', ['==', 'shapeName', '']);
@@ -4744,8 +5250,107 @@ export const MapEngine: React.FC<MapEngineProps> = ({
       if (map.getLayer('rivers-highlight')) map.setFilter('rivers-highlight', ['==', 'clean_name', properties.clean_name || featName]);
     } else if (type === 'mountain') {
       if (map.getLayer('mountains-highlight')) map.setFilter('mountains-highlight', ['==', 'name', properties.name || featName]);
-    } else if (type === 'highway') {
-      if (map.getLayer('roads-highlight')) map.setFilter('roads-highlight', ['==', 'code', properties.code || featName]);
+    } else if (
+      type === 'highway' ||
+      type === 'infrastructure_item' ||
+      type === 'infrastructure_highway' ||
+      type === 'infrastructure_railway' ||
+      type === 'infrastructure_airport' ||
+      type === 'infrastructure_seaport' ||
+      type === 'infrastructure_corridor' ||
+      type === 'infrastructure_dam' ||
+      type === 'infrastructure_power' ||
+      type === 'infrastructure_sez' ||
+      type === 'infrastructure_urban'
+    ) {
+      if (properties?.code && map.getLayer('roads-highlight')) {
+        map.setFilter('roads-highlight', ['==', 'code', properties.code]);
+      } else if (featName && map.getLayer('roads-highlight')) {
+        map.setFilter('roads-highlight', ['==', 'code', featName]);
+      }
+
+      const featId = properties.id || properties.code || properties.key || '';
+      let match = selectedFeature.geometry 
+        ? { type: 'Feature', geometry: selectedFeature.geometry, properties: selectedFeature.properties }
+        : (featId ? INFRASTRUCTURE_BY_ID[featId] : undefined);
+
+      if (!match && featName) {
+        const tName = featName.toLowerCase();
+        match = INFRASTRUCTURE_GEOJSON.features.find((f: any) => {
+          const fName = (f.properties?.name || '').toLowerCase();
+          return fName.includes(tName) || tName.includes(fName);
+        });
+      }
+
+      const p = match?.properties || properties;
+      const color = p.color || (type === 'highway' ? '#f59e0b' : '#38bdf8');
+      const hlFeatures: any[] = [];
+      let anchorCoords: [number, number] | undefined = selectedFeature.coordinates || p.coordinates;
+
+      const geom = match?.geometry || selectedFeature.geometry;
+      if (geom) {
+        if (geom.type === 'Point') {
+          const pt = geom.coordinates as [number, number];
+          anchorCoords = anchorCoords || pt;
+          const haloCircle = createGeodesicCircle(pt[0], pt[1], 15, 64);
+          hlFeatures.push({
+            type: 'Feature',
+            geometry: haloCircle,
+            properties: {
+              id: (featId || 'infra') + '_halo',
+              name: featName,
+              color: color,
+              border_color: '#ffffff',
+              fill_opacity: 0.35,
+              stroke_width: 2.5
+            }
+          });
+        } else if (geom.type === 'LineString') {
+          const pts = geom.coordinates as [number, number][];
+          if (!anchorCoords && pts.length > 0) {
+            anchorCoords = pts[Math.floor(pts.length / 2)];
+          }
+          hlFeatures.push({
+            type: 'Feature',
+            geometry: geom,
+            properties: {
+              id: (featId || 'infra') + '_line',
+              name: featName,
+              color: color,
+              border_color: '#ffffff',
+              fill_opacity: 0.8,
+              stroke_width: 5.5
+            }
+          });
+        }
+      }
+
+      const src = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+      if (src && typeof src.setData === 'function' && hlFeatures.length > 0) {
+        src.setData({
+          type: 'FeatureCollection',
+          features: hlFeatures
+        });
+      }
+
+      if (anchorCoords) {
+        try {
+          const markerEl = createInfrastructureMarkerElement({
+            name: featName || p.name || 'Asset',
+            category: p.category || (type === 'highway' ? 'highways' : 'railways'),
+            subType: p.sub_type,
+            metricText: p.route_type || p.summary || (p.length_km ? `${p.length_km} km` : undefined),
+            color: color
+          });
+          const marker = new Marker({ element: markerEl, anchor: 'bottom' })
+            .setLngLat(anchorCoords)
+            .addTo(map);
+          activeMarkerRef.current = marker;
+          (map as any)._activeInfraMarker = marker;
+        } catch (e) {
+          console.warn('Marker placement error in selectedFeature effect:', e);
+        }
+      }
     } else if (type === 'environmental_change') {
       const featId = properties.id || '';
       const envFilter: any = featId

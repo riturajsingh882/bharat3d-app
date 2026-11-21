@@ -744,7 +744,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
                     <span className="font-semibold text-left">Show Infrastructure &amp; Economic Grid</span>
                   </div>
                   <span className="text-[10px] px-2 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-500/40 font-bold shrink-0">
-                    128 Assets
+                    138 Assets
                   </span>
                 </button>
 
@@ -774,7 +774,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
                 <div className="space-y-1">
                   {[
                     { id: 'highways' as InfrastructureCategory, name: 'National Highways & Expressways', count: '28 Corridors', icon: Route, color: '#f59e0b', authority: 'NHAI / MoRTH' },
-                    { id: 'railways' as InfrastructureCategory, name: 'Railways & Freight Corridors (DFCs)', count: '8 Trunk Corridors', icon: Train, color: '#38bdf8', authority: 'IR / DFCCIL' },
+                    { id: 'railways' as InfrastructureCategory, name: 'Railways & Major Hubs (DFCs)', count: '18 Hubs & Routes', icon: Train, color: '#38bdf8', authority: 'IR / DFCCIL' },
                     { id: 'airports' as InfrastructureCategory, name: 'Major Hub & International Airports', count: '20 Hubs', icon: Plane, color: '#818cf8', authority: 'AAI / DGCA' },
                     { id: 'seaports' as InfrastructureCategory, name: 'Major Seaports & Deepwater Harbors', count: '15 Ports', icon: Anchor, color: '#06b6d4', authority: 'MoPSW / Sagarmala' },
                     { id: 'industrial_corridors' as InfrastructureCategory, name: 'National Industrial Corridors (NICDC)', count: '7 Mega Corridors', icon: Factory, color: '#d946ef', authority: 'NICDC / DPIIT' },

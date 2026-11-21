@@ -1950,7 +1950,8 @@ export const INFRASTRUCTURE_GEOJSON: InfrastructureCollection = {
       "electrification_pct": 100,
       "route_type": "Double-stack container freight corridor (25-tonne axle load)",
       "summary": "Spans 1,504 km connecting Dadri (UP) to Jawaharlal Nehru Port (JNPT, Navi Mumbai). Designed for 100 km/h double-stack container trains.",
-      "description": "Western Dedicated Freight Corridor (WDFC) (1504 km): Operates on 1676 mm (Broad Gauge) with 100% electrification. Key asset under Dedicated Freight Corridor Corporation of India (DFCCIL)."
+      "description": "Western Dedicated Freight Corridor (WDFC) (1504 km): Operates on 1676 mm (Broad Gauge) with 100% electrification. Key asset under Dedicated Freight Corridor Corporation of India (DFCCIL).",
+      "coordinates": [75.8, 26.9]
     },
     "geometry": {
       "type": "LineString",
@@ -2015,7 +2016,8 @@ export const INFRASTRUCTURE_GEOJSON: InfrastructureCollection = {
       "electrification_pct": 100,
       "route_type": "Heavy-haul bulk freight corridor (coal and minerals)",
       "summary": "Spans 1,875 km connecting Sahnewal (Ludhiana) to Dankuni (Kolkata). Speeds coal transport from eastern coalfields to northern power plants.",
-      "description": "Eastern Dedicated Freight Corridor (EDFC) (1875 km): Operates on 1676 mm (Broad Gauge) with 100% electrification. Key asset under Dedicated Freight Corridor Corporation of India (DFCCIL)."
+      "description": "Eastern Dedicated Freight Corridor (EDFC) (1875 km): Operates on 1676 mm (Broad Gauge) with 100% electrification. Key asset under Dedicated Freight Corridor Corporation of India (DFCCIL).",
+      "coordinates": [81.8, 25.4]
     },
     "geometry": {
       "type": "LineString",
@@ -2088,7 +2090,8 @@ export const INFRASTRUCTURE_GEOJSON: InfrastructureCollection = {
       "electrification_pct": 100,
       "route_type": "E5 Series Shinkansen (Design Speed: 350 km/h, Operating: 320 km/h)",
       "summary": "India's flagship bullet train corridor connecting BKC Mumbai to Sabarmati Ahmedabad in 2 hours 7 minutes, featuring 12 stations and a 21 km undersea tunnel.",
-      "description": "Mumbai–Ahmedabad High-Speed Rail (MAHSR Bullet Train) (508 km): Operates on 1435 mm (Standard Gauge) with 100% electrification. Key asset under National High Speed Rail Corporation (NHSRCL) / JICA."
+      "description": "Mumbai–Ahmedabad High-Speed Rail (MAHSR Bullet Train) (508 km): Operates on 1435 mm (Standard Gauge) with 100% electrification. Key asset under National High Speed Rail Corporation (NHSRCL) / JICA.",
+      "coordinates": [72.85, 21.2]
     },
     "geometry": {
       "type": "LineString",
@@ -2157,7 +2160,8 @@ export const INFRASTRUCTURE_GEOJSON: InfrastructureCollection = {
       "electrification_pct": 100,
       "route_type": "Mission Raftaar 160 km/h upgraded trunk line",
       "summary": "The busiest and most critical passenger and freight mainline in India, linking New Delhi to Kolkata via Kanpur, Prayagraj, Pt. Deen Dayal Upadhyaya, Gaya, and Dhanbad.",
-      "description": "Delhi–Howrah Grand Chord Trunk Route (1445 km): Operates on 1676 mm with 100% electrification. Key asset under Indian Railways (Northern, North Central, East Central & Eastern Zones)."
+      "description": "Delhi–Howrah Grand Chord Trunk Route (1445 km): Operates on 1676 mm with 100% electrification. Key asset under Indian Railways (Northern, North Central, East Central & Eastern Zones).",
+      "coordinates": [85.0, 24.8]
     },
     "geometry": {
       "type": "LineString",
@@ -2226,7 +2230,8 @@ export const INFRASTRUCTURE_GEOJSON: InfrastructureCollection = {
       "electrification_pct": 100,
       "route_type": "Mission Raftaar 160 km/h semi-high speed passenger route",
       "summary": "Connects New Delhi to Mumbai Central via Mathura, Kota, Ratlam, Vadodara, and Surat. Host of the premier Rajdhani Express.",
-      "description": "Delhi–Mumbai Central Trunk Rail Route (1384 km): Operates on 1676 mm with 100% electrification. Key asset under Indian Railways (Western & West Central Railway)."
+      "description": "Delhi–Mumbai Central Trunk Rail Route (1384 km): Operates on 1676 mm with 100% electrification. Key asset under Indian Railways (Western & West Central Railway).",
+      "coordinates": [75.8, 25.1]
     },
     "geometry": {
       "type": "LineString",
@@ -2295,7 +2300,8 @@ export const INFRASTRUCTURE_GEOJSON: InfrastructureCollection = {
       "electrification_pct": 100,
       "route_type": "High-speed scenic coastal railway with 91 tunnels and 2,000 bridges",
       "summary": "Engineered by E. Sreedharan through rugged Western Ghats terrain, linking Roha to Thokur/Mangaluru. Reduced Mumbai–Mangalore travel time by 26 hours.",
-      "description": "Konkan Railway Coastal Corridor (KRCL) (741 km): Operates on 1676 mm with 100% electrification. Key asset under Konkan Railway Corporation Limited (KRCL)."
+      "description": "Konkan Railway Coastal Corridor (KRCL) (741 km): Operates on 1676 mm with 100% electrification. Key asset under Konkan Railway Corporation Limited (KRCL).",
+      "coordinates": [73.5, 16.5]
     },
     "geometry": {
       "type": "LineString",
@@ -2356,7 +2362,8 @@ export const INFRASTRUCTURE_GEOJSON: InfrastructureCollection = {
       "electrification_pct": 100,
       "route_type": "Double-track fully electrified coastal trunk line",
       "summary": "Major East Coast rail corridor connecting Kolkata to Chennai via Kharagpur, Cuttack, Bhubaneswar, Visakhapatnam, and Vijayawada.",
-      "description": "Howrah–Chennai Coastal Mainline (1661 km): Operates on 1676 mm with 100% electrification. Key asset under Indian Railways (South Eastern & East Coast Railway)."
+      "description": "Howrah–Chennai Coastal Mainline (1661 km): Operates on 1676 mm with 100% electrification. Key asset under Indian Railways (South Eastern & East Coast Railway).",
+      "coordinates": [83.3, 17.72]
     },
     "geometry": {
       "type": "LineString",
@@ -2425,7 +2432,8 @@ export const INFRASTRUCTURE_GEOJSON: InfrastructureCollection = {
       "electrification_pct": 100,
       "route_type": "Himalayan mountain railway featuring the 359m Chenab Bridge and Pir Panjal Tunnel",
       "summary": "Integrates Kashmir Valley with the national Indian Railway network. Features the world's highest railway arch bridge over the Chenab River (359 m above river bed).",
-      "description": "Udhampur–Srinagar–Baramulla Rail Link (USBRL) (272 km): Operates on 1676 mm with 100% electrification. Key asset under Northern Railway & Konkan Railway Corporation."
+      "description": "Udhampur–Srinagar–Baramulla Rail Link (USBRL) (272 km): Operates on 1676 mm with 100% electrification. Key asset under Northern Railway & Konkan Railway Corporation.",
+      "coordinates": [74.88, 33.18]
     },
     "geometry": {
       "type": "LineString",
@@ -2459,6 +2467,246 @@ export const INFRASTRUCTURE_GEOJSON: InfrastructureCollection = {
           34.2
         ]
       ]
+    }
+  },
+  {
+    "type": "Feature",
+    "id": "rail_hub_ndls",
+    "properties": {
+      "id": "rail_hub_ndls",
+      "name": "New Delhi Railway Hub (NDLS)",
+      "category": "railways",
+      "sub_type": "Major Railway Hub & Terminal",
+      "state": "Delhi NCR",
+      "authority": "Northern Railway (NR) / Indian Railways",
+      "official_reference": "Indian Railways Year Book 2023-24",
+      "color": "#38bdf8",
+      "gauge": "1676 mm (Broad Gauge)",
+      "electrification_pct": 100,
+      "route_type": "Intermodal Mega Junction (16 Platforms, 500k+ Daily Passengers)",
+      "summary": "New Delhi Railway Station (NDLS): 16 platforms, handling over 500,000 daily passengers and 350+ trains. Headquarters of Northern Railway zone.",
+      "description": "Busiest railway hub in India and major terminus for Rajdhani, Vande Bharat, and Shatabdi express networks, directly integrated with Airport Express Metro.",
+      "coordinates": [77.2197, 28.6431]
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [77.2197, 28.6431]
+    }
+  },
+  {
+    "type": "Feature",
+    "id": "rail_hub_csmt",
+    "properties": {
+      "id": "rail_hub_csmt",
+      "name": "Chhatrapati Shivaji Maharaj Terminus (CSMT)",
+      "category": "railways",
+      "sub_type": "Major Railway Hub & Terminal",
+      "state": "Maharashtra",
+      "authority": "Central Railway (CR) / Indian Railways",
+      "official_reference": "UNESCO World Heritage / Central Railway Atlas",
+      "color": "#38bdf8",
+      "gauge": "1676 mm (Broad Gauge)",
+      "electrification_pct": 100,
+      "route_type": "UNESCO World Heritage Rail Terminal (18 Platforms)",
+      "summary": "Chhatrapati Shivaji Maharaj Terminus (CSMT, Mumbai): UNESCO World Heritage site and historic headquarters of Central Railway, serving 18 platforms and 3M+ suburban commuters daily.",
+      "description": "Masterpiece of Victorian Gothic Revival architecture in India, serving as the southern terminus of the Central Railway trunk lines and Mumbai suburban network.",
+      "coordinates": [72.8358, 18.9400]
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [72.8358, 18.9400]
+    }
+  },
+  {
+    "type": "Feature",
+    "id": "rail_hub_howrah",
+    "properties": {
+      "id": "rail_hub_howrah",
+      "name": "Howrah Junction Railway Hub (HWH)",
+      "category": "railways",
+      "sub_type": "Major Railway Hub & Terminal",
+      "state": "West Bengal",
+      "authority": "Eastern Railway (ER) / South Eastern Railway (SER)",
+      "official_reference": "Eastern Railway Statistical Digest 2024",
+      "color": "#38bdf8",
+      "gauge": "1676 mm (Broad Gauge)",
+      "electrification_pct": 100,
+      "route_type": "India's Largest Railway Complex (23 Platforms, 1M+ Daily Commuters)",
+      "summary": "Howrah Junction (HWH, Kolkata): Oldest and largest operating railway terminal in India with 23 operational platforms, serving over 1 Million passengers daily.",
+      "description": "Gateway to Eastern and North-Eastern India, situated on the bank of Hooghly River, connected via the Howrah Bridge and underwater Kolkata Metro.",
+      "coordinates": [88.3426, 22.5839]
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [88.3426, 22.5839]
+    }
+  },
+  {
+    "type": "Feature",
+    "id": "rail_hub_mas",
+    "properties": {
+      "id": "rail_hub_mas",
+      "name": "Puratchi Thalaivar Dr. MGR Chennai Central (MAS)",
+      "category": "railways",
+      "sub_type": "Major Railway Hub & Terminal",
+      "state": "Tamil Nadu",
+      "authority": "Southern Railway (SR) / Indian Railways",
+      "official_reference": "Southern Railway Infrastructure Directory",
+      "color": "#38bdf8",
+      "gauge": "1676 mm (Broad Gauge)",
+      "electrification_pct": 100,
+      "route_type": "Southern Trunk Gateway Terminal (17 Platforms)",
+      "summary": "Chennai Central (MAS): Primary railway terminus in South India, headquarters of Southern Railway, operating 17 platforms powered by 100% solar and green energy.",
+      "description": "Historic Indo-Saracenic Romanesque terminus connecting peninsular South India to North, West, and East trunk corridors.",
+      "coordinates": [80.2755, 13.0827]
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [80.2755, 13.0827]
+    }
+  },
+  {
+    "type": "Feature",
+    "id": "rail_hub_sbc",
+    "properties": {
+      "id": "rail_hub_sbc",
+      "name": "KSR Bengaluru City Railway Hub (SBC)",
+      "category": "railways",
+      "sub_type": "Major Railway Hub & Terminal",
+      "state": "Karnataka",
+      "authority": "South Western Railway (SWR) / Indian Railways",
+      "official_reference": "SWR Hubli-Bengaluru Operations",
+      "color": "#38bdf8",
+      "gauge": "1676 mm (Broad Gauge)",
+      "electrification_pct": 100,
+      "route_type": "Silicon Valley Passenger Hub (10 Platforms)",
+      "summary": "Krantivira Sangolli Rayanna (Bengaluru City / SBC): 10 platforms connecting India's Silicon Valley to all major metropolitan axes and Vande Bharat routes.",
+      "description": "Centrally integrated with Namma Metro Majestic interchange, serving over 250,000 daily interstate and regional travelers.",
+      "coordinates": [77.5703, 12.9781]
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [77.5703, 12.9781]
+    }
+  },
+  {
+    "type": "Feature",
+    "id": "rail_hub_adi",
+    "properties": {
+      "id": "rail_hub_adi",
+      "name": "Ahmedabad Junction Railway Hub (ADI)",
+      "category": "railways",
+      "sub_type": "Major Railway Hub & Terminal",
+      "state": "Gujarat",
+      "authority": "Western Railway (WR) / NHSRCL",
+      "official_reference": "Western Railway / MAHSR Bullet Train Project",
+      "color": "#38bdf8",
+      "gauge": "1676 mm (Broad Gauge)",
+      "electrification_pct": 100,
+      "route_type": "High-Speed Rail & Broad Gauge Mega Hub (12 Platforms)",
+      "summary": "Ahmedabad Junction (Kalupur / ADI): Primary Western Railway hub and northern terminal for the Mumbai-Ahmedabad High-Speed Bullet Train (MAHSR).",
+      "description": "Major intermodal station with multimodal integration with Ahmedabad Metro and the under-construction underground Bullet Train Sabarmati-Kalupur node.",
+      "coordinates": [72.6006, 23.0232]
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [72.6006, 23.0232]
+    }
+  },
+  {
+    "type": "Feature",
+    "id": "rail_hub_pryj",
+    "properties": {
+      "id": "rail_hub_pryj",
+      "name": "Prayagraj Junction Mega Terminal (PRYJ)",
+      "category": "railways",
+      "sub_type": "Major Railway Hub & Terminal",
+      "state": "Uttar Pradesh",
+      "authority": "North Central Railway (NCR) / Indian Railways",
+      "official_reference": "North Central Railway HQ / EDFC Corridor Node",
+      "color": "#38bdf8",
+      "gauge": "1676 mm (Broad Gauge)",
+      "electrification_pct": 100,
+      "route_type": "Grand Chord & Freight Corridor Nexus (10 Platforms)",
+      "summary": "Prayagraj Junction (PRYJ): Headquarters of North Central Railway and pivotal intersection of Delhi-Howrah Trunk, Grand Chord, and Eastern Dedicated Freight Corridor.",
+      "description": "Critical national transportation crossroads at the confluence of Ganga and Yamuna, operating advanced electronic interlocking and high-density freight bypass lines.",
+      "coordinates": [81.8267, 25.4475]
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [81.8267, 25.4475]
+    }
+  },
+  {
+    "type": "Feature",
+    "id": "rail_hub_sc",
+    "properties": {
+      "id": "rail_hub_sc",
+      "name": "Secunderabad Junction Railway Hub (SC)",
+      "category": "railways",
+      "sub_type": "Major Railway Hub & Terminal",
+      "state": "Telangana",
+      "authority": "South Central Railway (SCR) / Indian Railways",
+      "official_reference": "South Central Railway Annual Overview",
+      "color": "#38bdf8",
+      "gauge": "1676 mm (Broad Gauge)",
+      "electrification_pct": 100,
+      "route_type": "South Central Zone Headquarters (10 Platforms)",
+      "summary": "Secunderabad Junction (SC, Hyderabad): Headquarters of South Central Railway, operating 10 platforms and Platinum-rated green station infrastructure.",
+      "description": "Hub connecting Telangana and Deccan plateau to all four corners of India, undergoing world-class redevelopment with multi-tier concourses.",
+      "coordinates": [78.5036, 17.4344]
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [78.5036, 17.4344]
+    }
+  },
+  {
+    "type": "Feature",
+    "id": "rail_hub_gkp",
+    "properties": {
+      "id": "rail_hub_gkp",
+      "name": "Gorakhpur Junction Railway Hub (GKP)",
+      "category": "railways",
+      "sub_type": "Major Railway Hub & Terminal",
+      "state": "Uttar Pradesh",
+      "authority": "North Eastern Railway (NER) / Indian Railways",
+      "official_reference": "North Eastern Railway System Map",
+      "color": "#38bdf8",
+      "gauge": "1676 mm (Broad Gauge)",
+      "electrification_pct": 100,
+      "route_type": "World-Record Length Platform Hub (1,366m Platform, 10 Platforms)",
+      "summary": "Gorakhpur Junction (GKP): Headquarters of North Eastern Railway, historically featuring the world's longest continuous platform at 1,366.33 meters.",
+      "description": "Crucial transit gateway to Nepal and Northern/Eastern India, operating as a 10-platform junction with 100% electrified broad-gauge double tracks.",
+      "coordinates": [83.3768, 26.7588]
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [83.3768, 26.7588]
+    }
+  },
+  {
+    "type": "Feature",
+    "id": "rail_hub_bsb",
+    "properties": {
+      "id": "rail_hub_bsb",
+      "name": "Varanasi Junction Cantt Hub (BSB)",
+      "category": "railways",
+      "sub_type": "Major Railway Hub & Terminal",
+      "state": "Uttar Pradesh",
+      "authority": "Northern Railway (NR) / North Eastern Railway (NER)",
+      "official_reference": "Northern Railway Lucknow Division",
+      "color": "#38bdf8",
+      "gauge": "1676 mm (Broad Gauge)",
+      "electrification_pct": 100,
+      "route_type": "Heritage Intermodal Hub (9 Platforms)",
+      "summary": "Varanasi Cantt (BSB): Major cultural and transit terminal serving Kashi, operating 9 platforms and directly connected to Banaras and Deen Dayal Upadhyaya junctions.",
+      "description": "India's premier heritage city junction, equipped with executive lounges, modern passenger amenities, and direct Vande Bharat connectivity to New Delhi.",
+      "coordinates": [82.9739, 25.3263]
+    },
+    "geometry": {
+      "type": "Point",
+      "coordinates": [82.9739, 25.3263]
     }
   },
   {

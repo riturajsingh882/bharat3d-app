@@ -11,6 +11,8 @@ import {
   X, 
   ChevronUp, 
   ChevronDown, 
+  ChevronLeft,
+  ChevronRight,
   Calendar as CalendarIcon, 
   Activity, 
   ShieldCheck, 
@@ -331,6 +333,55 @@ export const EnvironmentalComparisonDeck: React.FC<EnvironmentalComparisonDeckPr
   const [isCalendarAOpen, setIsCalendarAOpen] = useState<boolean>(false);
   const [isCalendarBOpen, setIsCalendarBOpen] = useState<boolean>(false);
 
+  // Horizontal scroll refs & states for Pillar Switcher and Sites Hotspots
+  const pillarScrollRef = useRef<HTMLDivElement>(null);
+  const sitesScrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollPillarsLeft, setCanScrollPillarsLeft] = useState<boolean>(false);
+  const [canScrollPillarsRight, setCanScrollPillarsRight] = useState<boolean>(false);
+  const [canScrollSitesLeft, setCanScrollSitesLeft] = useState<boolean>(false);
+  const [canScrollSitesRight, setCanScrollSitesRight] = useState<boolean>(false);
+
+  const updatePillarScroll = () => {
+    const el = pillarScrollRef.current;
+    if (el) {
+      setCanScrollPillarsLeft(el.scrollLeft > 4);
+      setCanScrollPillarsRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+    }
+  };
+
+  const updateSitesScroll = () => {
+    const el = sitesScrollRef.current;
+    if (el) {
+      setCanScrollSitesLeft(el.scrollLeft > 4);
+      setCanScrollSitesRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+    }
+  };
+
+  useEffect(() => {
+    // Check after brief render tick
+    const timer = setTimeout(() => {
+      updatePillarScroll();
+      updateSitesScroll();
+    }, 100);
+    window.addEventListener('resize', updatePillarScroll);
+    window.addEventListener('resize', updateSitesScroll);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', updatePillarScroll);
+      window.removeEventListener('resize', updateSitesScroll);
+    };
+  }, [isOpen, activePillar]);
+
+  const scrollContainer = (ref: React.RefObject<HTMLDivElement | null>, offset: number) => {
+    if (ref.current) {
+      ref.current.scrollBy({ left: offset, behavior: 'smooth' });
+      setTimeout(() => {
+        updatePillarScroll();
+        updateSitesScroll();
+      }, 250);
+    }
+  };
+
   if (!isOpen) return null;
 
   const currentMeta = ENVIRONMENTAL_PILLARS[activePillar];
@@ -444,7 +495,7 @@ export const EnvironmentalComparisonDeck: React.FC<EnvironmentalComparisonDeckPr
 
   // --- COMPACT FLOATING DECK VIEW (Ergonomic, low-height profile) ---
   return (
-    <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 w-[95%] max-w-2xl sm:max-w-2xl md:max-w-3xl transition-all duration-300 font-sans pointer-events-auto animate-snappy-pop">
+    <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 w-[96%] max-w-4xl lg:max-w-5xl transition-all duration-300 font-sans pointer-events-auto animate-snappy-pop">
       <div className="bg-[#091014]/94 backdrop-blur-2xl border border-emerald-500/40 rounded-2xl shadow-2xl overflow-visible shadow-emerald-950/60">
         
         {/* Sleek, Low-Profile Header Bar */}
@@ -502,33 +553,70 @@ export const EnvironmentalComparisonDeck: React.FC<EnvironmentalComparisonDeckPr
         {/* Compact Main Control Body */}
         <div className="p-2.5 sm:p-3 space-y-2.5">
           
-          {/* Horizontal Low-Profile Pillar Switcher Bar */}
-          <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
-            {ALL_ENVIRONMENTAL_PILLARS.map(pId => {
-              const meta = ENVIRONMENTAL_PILLARS[pId];
-              const isSelected = activePillar === pId;
-              return (
+          {/* Horizontal Low-Profile Pillar Switcher Bar with Left/Right Scroller */}
+          <div className="relative group/pillars">
+            {/* Left Scroll Arrow */}
+            {canScrollPillarsLeft && (
+              <>
                 <button
-                  key={pId}
-                  onClick={() => {
-                    onSelectPillar(pId);
-                    onUpdateConfig({
-                      pillar: pId,
-                      yearA: meta.availableYears[0],
-                      yearB: meta.availableYears[meta.availableYears.length - 1]
-                    });
-                  }}
-                  className={`px-2.5 py-1 rounded-lg text-[11px] font-sans font-bold flex items-center gap-1.5 whitespace-nowrap transition-all cursor-pointer border ${
-                    isSelected 
-                      ? 'bg-emerald-950/90 border-emerald-400 text-white shadow-md shadow-emerald-950/40 scale-[1.02]' 
-                      : 'bg-[#10171d]/60 border-white/5 text-neutral-400 hover:bg-white/10 hover:text-white'
-                  }`}
+                  onClick={() => scrollContainer(pillarScrollRef, -200)}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-6 h-6 rounded-full bg-[#0a1318]/95 border border-emerald-500/50 text-emerald-300 hover:text-white hover:bg-emerald-950 flex items-center justify-center shadow-lg backdrop-blur-md transition-all cursor-pointer"
+                  aria-label="Scroll pillars left"
+                  title="Scroll left"
                 >
-                  {getPillarIcon(pId)}
-                  <span>{meta.shortTitle}</span>
+                  <ChevronLeft className="w-3.5 h-3.5" />
                 </button>
-              );
-            })}
+                <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#091014] to-transparent pointer-events-none z-10" />
+              </>
+            )}
+
+            {/* Pillar Buttons */}
+            <div 
+              ref={pillarScrollRef}
+              onScroll={updatePillarScroll}
+              className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 scroll-smooth touch-pan-x px-1"
+            >
+              {ALL_ENVIRONMENTAL_PILLARS.map(pId => {
+                const meta = ENVIRONMENTAL_PILLARS[pId];
+                const isSelected = activePillar === pId;
+                return (
+                  <button
+                    key={pId}
+                    onClick={() => {
+                      onSelectPillar(pId);
+                      onUpdateConfig({
+                        pillar: pId,
+                        yearA: meta.availableYears[0],
+                        yearB: meta.availableYears[meta.availableYears.length - 1]
+                      });
+                    }}
+                    className={`px-3 py-1 rounded-lg text-[11px] font-sans font-bold flex items-center gap-1.5 whitespace-nowrap shrink-0 transition-all cursor-pointer border ${
+                      isSelected 
+                        ? 'bg-emerald-950/90 border-emerald-400 text-white shadow-md shadow-emerald-950/40 scale-[1.02]' 
+                        : 'bg-[#10171d]/70 border-white/5 text-neutral-400 hover:bg-white/10 hover:text-white'
+                    }`}
+                  >
+                    {getPillarIcon(pId)}
+                    <span>{meta.shortTitle}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Right Scroll Arrow */}
+            {canScrollPillarsRight && (
+              <>
+                <button
+                  onClick={() => scrollContainer(pillarScrollRef, 200)}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-6 h-6 rounded-full bg-[#0a1318]/95 border border-emerald-500/50 text-emerald-300 hover:text-white hover:bg-emerald-950 flex items-center justify-center shadow-lg backdrop-blur-md transition-all cursor-pointer"
+                  aria-label="Scroll pillars right"
+                  title="Scroll right"
+                >
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+                <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#091014] to-transparent pointer-events-none z-10" />
+              </>
+            )}
           </div>
 
           {/* Temporal Calendar Date Comparison & Mode Controls */}
@@ -657,28 +745,69 @@ export const EnvironmentalComparisonDeck: React.FC<EnvironmentalComparisonDeckPr
             </span>
           </div>
 
-          {/* Quick Fly-To Monitored Hotspot Pills (Single-line compact chips) */}
+          {/* Quick Fly-To Monitored Hotspot Pills with Left/Right Scroller */}
           {hotspots.length > 0 && (
-            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+            <div className="relative group/sites flex items-center gap-1.5 pt-0.5">
               <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1 shrink-0">
                 <MapPin className="w-3 h-3 text-emerald-400" />
                 <span>Sites:</span>
               </span>
-              {hotspots.map(h => (
-                <button
-                  key={h.id || h.name}
-                  onClick={() => {
-                    if (onSelectHotspot) {
-                      onSelectHotspot(h);
-                    } else {
-                      onFlyToCoordinates?.(h.lat, h.lng, h.zoom);
-                    }
-                  }}
-                  className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#111b21] text-neutral-300 hover:text-emerald-300 hover:bg-emerald-950/70 border border-white/5 hover:border-emerald-500/30 whitespace-nowrap transition-all cursor-pointer"
+
+              <div className="relative flex-1 overflow-hidden min-w-0">
+                {/* Left Scroll Arrow */}
+                {canScrollSitesLeft && (
+                  <>
+                    <button
+                      onClick={() => scrollContainer(sitesScrollRef, -160)}
+                      className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-5 h-5 rounded-full bg-[#0a1318]/95 border border-emerald-500/50 text-emerald-300 hover:text-white hover:bg-emerald-950 flex items-center justify-center shadow-md backdrop-blur-md transition-all cursor-pointer"
+                      aria-label="Scroll sites left"
+                      title="Scroll left"
+                    >
+                      <ChevronLeft className="w-3 h-3" />
+                    </button>
+                    <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-[#091014] to-transparent pointer-events-none z-10" />
+                  </>
+                )}
+
+                {/* Hotspot Chips */}
+                <div
+                  ref={sitesScrollRef}
+                  onScroll={updateSitesScroll}
+                  className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 scroll-smooth touch-pan-x px-1"
                 >
-                  <span>{h.name}</span>
-                </button>
-              ))}
+                  {hotspots.map(h => (
+                    <button
+                      key={h.id || h.name}
+                      onClick={() => {
+                        if (onSelectHotspot) {
+                          onSelectHotspot(h);
+                        } else {
+                          onFlyToCoordinates?.(h.lat, h.lng, h.zoom);
+                        }
+                      }}
+                      className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#111b21] text-neutral-300 hover:text-emerald-300 hover:bg-emerald-950/70 border border-white/10 hover:border-emerald-500/30 whitespace-nowrap shrink-0 transition-all cursor-pointer shadow-sm"
+                      title={`Inspect ${h.name}`}
+                    >
+                      <span>{h.name}</span>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Right Scroll Arrow */}
+                {canScrollSitesRight && (
+                  <>
+                    <button
+                      onClick={() => scrollContainer(sitesScrollRef, 160)}
+                      className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-5 h-5 rounded-full bg-[#0a1318]/95 border border-emerald-500/50 text-emerald-300 hover:text-white hover:bg-emerald-950 flex items-center justify-center shadow-md backdrop-blur-md transition-all cursor-pointer"
+                      aria-label="Scroll sites right"
+                      title="Scroll right"
+                    >
+                      <ChevronRight className="w-3 h-3" />
+                    </button>
+                    <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-[#091014] to-transparent pointer-events-none z-10" />
+                  </>
+                )}
+              </div>
             </div>
           )}
 

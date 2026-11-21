@@ -217,3 +217,80 @@ export const PILLAR_OBSERVATION_DATES: Record<EnvironmentalPillar, Record<string
     '2022': { year: '2022', month: 'October', monthIndex: 9, day: 10, label: 'Oct 2022', season: 'Post-Monsoon', sensor: 'Sentinel-2 & CWC Fluvial Records', cycleName: 'Contemporary Braided River Geometry' }
   }
 };
+
+export interface PillarViewport {
+  lat: number;
+  lng: number;
+  zoom: number;
+  pitch: number;
+  bearing: number;
+  description: string;
+}
+
+export const PILLAR_VIEWPORTS: Record<EnvironmentalPillar, PillarViewport> = {
+  forest_change: {
+    lat: 13.85,
+    lng: 75.35,
+    zoom: 6.8,
+    pitch: 45,
+    bearing: -8,
+    description: 'Western Ghats Montane Forest Corridor'
+  },
+  glacier_retreat: {
+    lat: 31.05,
+    lng: 78.95,
+    zoom: 7.8,
+    pitch: 55,
+    bearing: 25,
+    description: 'Himalayan Glaciers & Gangotri-Gaumukh Snout'
+  },
+  urban_expansion: {
+    lat: 28.61,
+    lng: 77.23,
+    zoom: 8.5,
+    pitch: 48,
+    bearing: -12,
+    description: 'Delhi-NCR Megalopolis & Built-up Sprawl Corridor'
+  },
+  coastal_erosion: {
+    lat: 21.65,
+    lng: 87.85,
+    zoom: 8.0,
+    pitch: 42,
+    bearing: 10,
+    description: 'Sagar Island & Northern Bay of Bengal Coastal Front'
+  },
+  wetland_change: {
+    lat: 19.72,
+    lng: 85.32,
+    zoom: 8.8,
+    pitch: 45,
+    bearing: -5,
+    description: 'Chilika Lake Lagoon & Ramsar Estuarine Wetland'
+  },
+  desertification: {
+    lat: 26.65,
+    lng: 72.85,
+    zoom: 7.2,
+    pitch: 45,
+    bearing: 18,
+    description: 'Thar Desert Eastern Transition Fringe & Aravalli Sand Drift Gaps'
+  },
+  groundwater_stress: {
+    lat: 30.25,
+    lng: 75.85,
+    zoom: 7.5,
+    pitch: 48,
+    bearing: -10,
+    description: 'Indo-Gangetic Northwestern Granary Aquifers & Over-Exploited Blocks'
+  },
+  river_avulsion: {
+    lat: 25.95,
+    lng: 86.85,
+    zoom: 8.2,
+    pitch: 50,
+    bearing: 15,
+    description: 'Kosi River 120 km Avulsion Fan & 2008 Kusaha Breach Corridor'
+  }
+};
+

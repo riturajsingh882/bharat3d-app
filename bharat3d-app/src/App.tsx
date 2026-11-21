@@ -12,7 +12,7 @@ import { EnvironmentalComparisonDeck } from './components/EnvironmentalCompariso
 import { PanelLeftClose, PanelLeftOpen, Mountain, Leaf, Landmark, Scroll, Compass, AlertTriangle, Route, ChevronUp, Clock, Info } from 'lucide-react';
 import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory, EnvironmentalPillar, EnvironmentalComparisonConfig } from './types';
 import { HISTORICAL_ERAS } from './data/historicalEras';
-import { ALL_ENVIRONMENTAL_PILLARS } from './data/environmentalChange';
+import { ALL_ENVIRONMENTAL_PILLARS, PILLAR_VIEWPORTS } from './data/environmentalChange';
 
 const DEMOGRAPHIC_LAYERS: ActiveLayer[] = [
   'pop_density',
@@ -104,6 +104,7 @@ export function App() {
   });
 
   const toggleEnvironmentalPillar = (pillar: EnvironmentalPillar) => {
+    const isCurrentlyActive = environmentalPillars.has(pillar);
     setEnvironmentalPillars(prev => {
       const next = new Set(prev);
       if (next.has(pillar)) {
@@ -115,6 +116,20 @@ export function App() {
     });
     if (!activeLayers.has('environmental_change')) {
       setActiveLayers(prev => new Set(prev).add('environmental_change'));
+    }
+    if (!isCurrentlyActive) {
+      const vp = PILLAR_VIEWPORTS[pillar];
+      if (vp) {
+        setSearchTarget({
+          name: vp.description,
+          lat: vp.lat,
+          lng: vp.lng,
+          zoom: vp.zoom,
+          pitch: vp.pitch,
+          bearing: vp.bearing,
+          type: 'environmental_change'
+        });
+      }
     }
   };
 
@@ -131,6 +146,47 @@ export function App() {
 
   const updateComparisonConfig = (newConfig: Partial<EnvironmentalComparisonConfig>) => {
     setComparisonConfig(prev => ({ ...prev, ...newConfig }));
+  };
+
+  const openEcoComparison = (targetPillar?: EnvironmentalPillar) => {
+    const p = targetPillar || comparisonConfig.pillar;
+    setIsEcoComparisonOpen(true);
+    if (!activeLayers.has('environmental_change')) {
+      setActiveLayers(prev => new Set(prev).add('environmental_change'));
+    }
+    setEnvironmentalPillars(new Set([p]));
+    const vp = PILLAR_VIEWPORTS[p];
+    if (vp) {
+      setSearchTarget({
+        name: vp.description,
+        lat: vp.lat,
+        lng: vp.lng,
+        zoom: vp.zoom,
+        pitch: vp.pitch,
+        bearing: vp.bearing,
+        type: 'environmental_change'
+      });
+    }
+  };
+
+  const handleSelectPillarFromDeck = (pillar: EnvironmentalPillar) => {
+    updateComparisonConfig({ pillar });
+    if (!activeLayers.has('environmental_change')) {
+      setActiveLayers(prev => new Set(prev).add('environmental_change'));
+    }
+    setEnvironmentalPillars(new Set([pillar]));
+    const vp = PILLAR_VIEWPORTS[pillar];
+    if (vp) {
+      setSearchTarget({
+        name: vp.description,
+        lat: vp.lat,
+        lng: vp.lng,
+        zoom: vp.zoom,
+        pitch: vp.pitch,
+        bearing: vp.bearing,
+        type: 'environmental_change'
+      });
+    }
   };
 
   const [environmentalFeatures, setEnvironmentalFeatures] = useState<any[]>([]);
@@ -159,11 +215,15 @@ export function App() {
   }, []);
 
   const handleSelectHotspot = (hotspot: { name: string; lat: number; lng: number; zoom?: number }) => {
+    if (!activeLayers.has('environmental_change')) {
+      setActiveLayers(prev => new Set(prev).add('environmental_change'));
+    }
     setSearchTarget({
       name: hotspot.name,
       lat: hotspot.lat,
       lng: hotspot.lng,
       zoom: hotspot.zoom || 9,
+      pitch: 50,
       type: 'environmental_change'
     });
 
@@ -328,8 +388,14 @@ export function App() {
         onResetView={handleResetView}
         onOpenSourceModal={() => setIsSourceModalOpen(true)}
         onOpenComparison={() => setIsComparisonModalOpen(true)}
-          onOpenEcoComparison={() => setIsEcoComparisonOpen(prev => !prev)}
-          isEcoComparisonOpen={isEcoComparisonOpen}
+        onOpenEcoComparison={() => {
+          if (isEcoComparisonOpen) {
+            setIsEcoComparisonOpen(false);
+          } else {
+            openEcoComparison();
+          }
+        }}
+        isEcoComparisonOpen={isEcoComparisonOpen}
         selectedFeature={selectedFeature}
         isElevationHighlight={isElevationHighlight}
         setIsElevationHighlight={setIsElevationHighlight}
@@ -368,7 +434,7 @@ export function App() {
               toggleEnvironmentalPillar={toggleEnvironmentalPillar}
               onSelectAllEnvironmentalPillars={selectAllEnvironmentalPillars}
               onClearEnvironmentalPillars={clearEnvironmentalPillars}
-              onOpenComparisonDeck={() => setIsEcoComparisonOpen(true)}
+              onOpenComparisonDeck={() => openEcoComparison()}
             />
           </div>
         </div>
@@ -412,7 +478,7 @@ export function App() {
               toggleEnvironmentalPillar={toggleEnvironmentalPillar}
               onSelectAllEnvironmentalPillars={selectAllEnvironmentalPillars}
               onClearEnvironmentalPillars={clearEnvironmentalPillars}
-              onOpenComparisonDeck={() => setIsEcoComparisonOpen(true)}
+              onOpenComparisonDeck={() => openEcoComparison()}
             />
             <button
               onClick={() => setIsSidebarOpen(false)}
@@ -785,16 +851,21 @@ export function App() {
         isOpen={isEcoComparisonOpen}
         onClose={() => setIsEcoComparisonOpen(false)}
         activePillar={comparisonConfig.pillar}
-        onSelectPillar={(pillar) => updateComparisonConfig({ pillar })}
+        onSelectPillar={handleSelectPillarFromDeck}
         comparisonConfig={comparisonConfig}
         onUpdateConfig={updateComparisonConfig}
         onSelectHotspot={handleSelectHotspot}
         onFlyToCoordinates={(lat: number, lng: number, zoom?: number) => {
+          if (!activeLayers.has('environmental_change')) {
+            setActiveLayers(prev => new Set(prev).add('environmental_change'));
+          }
           setSearchTarget({
             name: 'Environmental Site',
             lat,
             lng,
-            zoom: zoom || 9
+            zoom: zoom || 9,
+            pitch: 50,
+            type: 'environmental_change'
           });
         }}
       />

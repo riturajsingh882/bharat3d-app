@@ -3606,10 +3606,12 @@ export const MapEngine: React.FC<MapEngineProps> = ({
           style={{ left: `${hoveredTooltip.x}px`, top: `${hoveredTooltip.y}px` }}
         >
           <div className="flex items-center justify-between gap-2.5 mb-1.5">
-            <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#C9A227]/20 text-[#C9A227] border border-[#C9A227]/40">
+            <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#C9A227]/20 text-[#C9A227] border border-[#C9A227]/40 shrink-0">
               {hoveredTooltip.type}
             </span>
-            <span className="text-xs text-neutral-300 font-semibold truncate">{hoveredTooltip.source}</span>
+            <span className="text-xs text-neutral-300 font-semibold truncate text-right min-w-0 flex-1" title={hoveredTooltip.source}>
+              {hoveredTooltip.source}
+            </span>
           </div>
 
           <div className="font-extrabold text-base text-white tracking-tight">{hoveredTooltip.title}</div>

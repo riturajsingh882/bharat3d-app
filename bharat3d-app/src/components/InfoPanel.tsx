@@ -48,6 +48,34 @@ const SITE_CATEGORY_LABELS: Record<string, string> = {
   ancient_port: 'Ancient Ports'
 };
 
+// Compact, elegant authority & classification badge for hazard cards
+const getDisasterShortBadge = (type: string, properties: Record<string, any>): string => {
+  if (type === 'cyclone_track' || properties.hazard_type === 'cyclone') return 'IMD CYCLONE';
+  if (type === 'flood_zone' || properties.hazard_type === 'flood') return 'CWC FLOOD';
+  if (type === 'landslide_zone' || properties.hazard_type === 'landslide') return 'GSI NLSM';
+  if (type === 'drought_zone' || properties.hazard_type === 'drought') return 'CWC / NITI';
+  if (type === 'tsunami_zone' || properties.hazard_type === 'tsunami') return 'INCOIS';
+  if (type === 'heatwave_zone' || properties.hazard_type === 'heatwave') return 'IMD / NDMA';
+  if (type === 'earthquake_epicenter' || properties.hazard_type === 'earthquake') {
+    return properties.magnitude_mw ? `M ${properties.magnitude_mw}` : 'EARTHQUAKE';
+  }
+  if (properties.zone_code) return properties.zone_code;
+
+  const rawAuth = properties.authority ? properties.authority.split('(')[0].trim() : '';
+  if (!rawAuth) return 'BIS 1893';
+  if (/NITI.*Water|CWC/i.test(rawAuth)) return 'CWC / NITI';
+  if (/INCOIS/i.test(rawAuth)) return 'INCOIS';
+  if (/Bureau of Indian Standards|BIS/i.test(rawAuth)) return 'BIS IS 1893';
+  if (/Geological Survey|GSI/i.test(rawAuth)) return 'GSI NLSM';
+  if (/National Centre for Seismology|NCS/i.test(rawAuth)) return 'NCS / MoES';
+  if (/NDMA.*IMD|IMD.*NDMA/i.test(rawAuth)) return 'IMD / NDMA';
+  if (/NDMA/i.test(rawAuth)) return 'NDMA';
+  if (/IMD/i.test(rawAuth)) return 'IMD';
+  if (/Central Water Commission/i.test(rawAuth)) return 'CWC';
+  if (rawAuth.length <= 12) return rawAuth.toUpperCase();
+  return rawAuth.slice(0, 11).toUpperCase() + '…';
+};
+
 interface InfoPanelProps {
   feature: SelectedFeatureInfo | null;
   onClose: () => void;
@@ -161,34 +189,34 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
   return (
     <aside className="w-full h-full bg-[#080a0e]/95 backdrop-blur-2xl border-l border-white/10 flex flex-col z-20 text-neutral-200 select-none shadow-2xl overflow-hidden font-sans">
       {/* Header */}
-      <div className="p-4 border-b border-white/10 bg-[#0a0d14]/90 flex items-start justify-between">
-        <div>
+      <div className="p-4 border-b border-white/10 bg-[#0a0d14]/90 flex items-start justify-between gap-3 shrink-0">
+        <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 font-mono text-xs font-bold tracking-widest uppercase text-[#C9A227]">
-            <span>{type.replace('_', ' ')} Intelligence</span>
-            {properties.shapeGroup && <span className="text-neutral-400">• {properties.shapeGroup}</span>}
+            <span className="truncate">{type.replace('_', ' ')} Intelligence</span>
+            {properties.shapeGroup && <span className="text-neutral-400 truncate">• {properties.shapeGroup}</span>}
           </div>
-          <h2 className="font-serif text-3xl font-semibold text-white tracking-tight mt-1">{displayName}</h2>
+          <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-white tracking-tight mt-1 break-words">{displayName}</h2>
           
           {properties.capital && (
-            <p className="font-mono text-sm text-neutral-200 font-bold flex items-center gap-1.5 mt-1">
-              <Building className="w-4 h-4 text-[#C9A227]" />
-              Capital: {properties.capital}
+            <p className="font-mono text-sm text-neutral-200 font-bold flex items-center gap-1.5 mt-1 break-words">
+              <Building className="w-4 h-4 text-[#C9A227] shrink-0" />
+              <span>Capital: {properties.capital}</span>
             </p>
           )}
           {properties.period && (
-            <p className="font-mono text-sm text-amber-400 font-bold mt-1 flex items-center gap-1.5">
-              <Calendar className="w-4 h-4" />
-              {properties.period}
+            <p className="font-mono text-sm text-amber-400 font-bold mt-1 flex items-center gap-1.5 break-words">
+              <Calendar className="w-4 h-4 shrink-0" />
+              <span>{properties.period}</span>
             </p>
           )}
           {properties.river_system && (
-            <p className="font-mono text-sm text-sky-400 font-bold mt-1">{properties.river_system}</p>
+            <p className="font-mono text-sm text-sky-400 font-bold mt-1 break-words">{properties.river_system}</p>
           )}
           {properties.category && (
-            <p className="font-mono text-sm text-amber-400 font-bold mt-1">{properties.category}</p>
+            <p className="font-mono text-sm text-amber-400 font-bold mt-1 break-words">{properties.category}</p>
           )}
           {properties.state_name && type === 'district' && (
-            <p className="font-mono text-sm text-neutral-300 font-bold mt-1">State: {properties.state_name}</p>
+            <p className="font-mono text-sm text-neutral-300 font-bold mt-1 break-words">State: {properties.state_name}</p>
           )}
 
           {/* Direct Wikipedia Reference Button with Serif 'W' Badge */}
@@ -201,18 +229,18 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
                 className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40 text-xs font-mono font-bold transition-all shadow-sm cursor-pointer group"
                 title={`Open Wikipedia article for ${displayName}`}
               >
-                <span className="w-4 h-4 rounded bg-white text-black font-serif font-black text-[11px] flex items-center justify-center leading-none select-none">
+                <span className="w-4 h-4 rounded bg-white text-black font-serif font-black text-[11px] flex items-center justify-center leading-none select-none shrink-0">
                   W
                 </span>
                 <span className="group-hover:underline font-sans text-xs">Wikipedia</span>
-                <ExternalLink className="w-3 h-3 text-neutral-400 group-hover:text-white ml-0.5" />
+                <ExternalLink className="w-3 h-3 text-neutral-400 group-hover:text-white ml-0.5 shrink-0" />
               </a>
             </div>
           )}
         </div>
         <button
           onClick={onClose}
-          className="p-1.5 rounded-lg text-neutral-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+          className="p-1.5 rounded-lg text-neutral-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer shrink-0"
           title="Close Panel"
         >
           <X className="w-5 h-5" />
@@ -225,39 +253,39 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
         {type === 'historical_empire' && (
           <div className="space-y-3">
             <div className="vista-card p-4 space-y-3">
-              <div className="text-xs font-mono font-bold text-white flex items-center justify-between uppercase tracking-wider">
-                <span className="flex items-center gap-1.5">
-                  <Landmark className="w-4 h-4 text-amber-500" />
-                  <span>Imperial Chronology</span>
+              <div className="flex items-center justify-between gap-2 pb-2 border-b border-white/10 text-xs font-mono font-bold text-white uppercase tracking-wider">
+                <span className="flex items-center gap-1.5 min-w-0 flex-1">
+                  <Landmark className="w-4 h-4 text-amber-500 shrink-0" />
+                  <span className="truncate">Imperial Chronology</span>
                 </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-500/30 font-bold">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-500/30 font-bold shrink-0 max-w-[120px] truncate">
                   {properties.period_id?.toUpperCase() || 'HISTORICAL'}
                 </span>
               </div>
 
               <div className="space-y-2 text-xs font-mono">
                 {properties.era && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Era / Horizon:</span>
-                    <span className="font-bold text-white text-sm">{properties.era}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Era / Horizon:</span>
+                    <span className="font-bold text-white text-sm text-right min-w-0 break-words">{properties.era}</span>
                   </div>
                 )}
                 {properties.capital && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Dynastic Capital:</span>
-                    <span className="font-bold text-[#C9A227] text-sm">{properties.capital}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Dynastic Capital:</span>
+                    <span className="font-bold text-[#C9A227] text-sm text-right min-w-0 break-words">{properties.capital}</span>
                   </div>
                 )}
                 {properties.ruler_or_system && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Ruler / System:</span>
-                    <span className="font-bold text-amber-300 text-sm">{properties.ruler_or_system}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Ruler / System:</span>
+                    <span className="font-bold text-amber-300 text-sm text-right min-w-0 break-words">{properties.ruler_or_system}</span>
                   </div>
                 )}
                 {properties.approximate_area_sqkm && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Approx. Territorial Extent:</span>
-                    <span className="font-bold text-emerald-400 text-sm">
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Approx. Territorial Extent:</span>
+                    <span className="font-bold text-emerald-400 text-sm text-right min-w-0 break-words">
                       {properties.approximate_area_sqkm.toLocaleString()} km²
                     </span>
                   </div>
@@ -265,19 +293,19 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
                 {properties.highlights && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Highlights:</span>
-                    <span className="text-neutral-200">{properties.highlights}</span>
+                    <span className="text-neutral-200 break-words leading-relaxed">{properties.highlights}</span>
                   </div>
                 )}
                 {properties.trade_connections && (
                   <div className="py-1.5">
                     <span className="text-neutral-400 block text-[11px]">Trade Connections:</span>
-                    <span className="text-sky-300">{properties.trade_connections}</span>
+                    <span className="text-sky-300 break-words leading-relaxed">{properties.trade_connections}</span>
                   </div>
                 )}
               </div>
 
               {/* Approximate Reconstruction Disclaimer */}
-              <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs font-mono leading-relaxed mt-2">
+              <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs font-mono leading-relaxed mt-2 break-words">
                 <span className="font-bold block mb-1">⚠️ Cartographic Disclaimer:</span>
                 Boundaries represent approximate scholarly reconstructions of core domains and tributary spheres based on ASI and Imperial records. Not surveyed borders.
               </div>
@@ -289,70 +317,70 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
         {type === 'archaeological_site' && (
           <div className="space-y-3">
             <div className="vista-card p-4 space-y-3">
-              <div className="text-xs font-mono font-bold text-white flex items-center justify-between uppercase tracking-wider">
-                <span className="flex items-center gap-1.5">
-                  <Scroll className="w-4 h-4 text-teal-400" />
-                  <span>Archaeological Profile</span>
+              <div className="flex items-center justify-between gap-2 pb-2 border-b border-white/10 text-xs font-mono font-bold text-white uppercase tracking-wider">
+                <span className="flex items-center gap-1.5 min-w-0 flex-1">
+                  <Scroll className="w-4 h-4 text-teal-400 shrink-0" />
+                  <span className="truncate">Archaeological Profile</span>
                 </span>
-                <span className="flex items-center gap-1.5">
-                  <a href={`https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(wikiName)}`} target="_blank" rel="noopener noreferrer" className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/30 border border-white/25 flex items-center justify-center text-xs font-black text-white transition-colors cursor-pointer" title={`Wikipedia: ${wikiName}`} aria-label={`Wikipedia article for ${wikiName}`}>W</a>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-teal-950/80 text-teal-300 border border-teal-500/30 font-bold">
+                <span className="flex items-center gap-1.5 shrink-0">
+                  <a href={`https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(wikiName)}`} target="_blank" rel="noopener noreferrer" className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/30 border border-white/25 flex items-center justify-center text-xs font-black text-white transition-colors cursor-pointer shrink-0" title={`Wikipedia: ${wikiName}`} aria-label={`Wikipedia article for ${wikiName}`}>W</a>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-teal-950/80 text-teal-300 border border-teal-500/30 font-bold shrink-0">
                     ASI MONUMENT
                   </span>
                 </span>
               </div>
 
               {properties.description && (
-                <p className="text-xs font-mono text-neutral-200 leading-relaxed">{properties.description}</p>
+                <p className="text-xs font-mono text-neutral-200 leading-relaxed break-words">{properties.description}</p>
               )}
 
               <div className="space-y-2 text-xs font-mono">
                 {properties.civilization && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Civilization:</span>
-                    <span className="font-bold text-teal-300 text-sm text-right ml-2">{properties.civilization}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Civilization:</span>
+                    <span className="font-bold text-teal-300 text-sm text-right ml-2 min-w-0 break-words">{properties.civilization}</span>
                   </div>
                 )}
                 {properties.category && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Category:</span>
-                    <span className="font-bold text-teal-300 text-sm">{SITE_CATEGORY_LABELS[properties.category] || properties.category}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Category:</span>
+                    <span className="font-bold text-teal-300 text-sm text-right ml-2 min-w-0 break-words">{SITE_CATEGORY_LABELS[properties.category] || properties.category}</span>
                   </div>
                 )}
                 {properties.period && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Chronological Period:</span>
-                    <span className="font-bold text-white text-sm text-right ml-2">{properties.period}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Chronological Period:</span>
+                    <span className="font-bold text-white text-sm text-right ml-2 min-w-0 break-words">{properties.period}</span>
                   </div>
                 )}
                 {properties.excavator && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Excavator / Team:</span>
-                    <span className="font-bold text-amber-300 text-xs text-right ml-2">{properties.excavator}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Excavator / Team:</span>
+                    <span className="font-bold text-amber-300 text-xs text-right ml-2 min-w-0 break-words">{properties.excavator}</span>
                   </div>
                 )}
                 {properties.discovery_year && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Discovery Year:</span>
-                    <span className="font-bold text-white">{properties.discovery_year}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Discovery Year:</span>
+                    <span className="font-bold text-white text-right ml-2 min-w-0 break-words">{properties.discovery_year}</span>
                   </div>
                 )}
                 {properties.key_finds && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Key Archaeological Finds:</span>
-                    <span className="text-neutral-200 leading-relaxed">{properties.key_finds}</span>
+                    <span className="text-neutral-200 leading-relaxed break-words">{properties.key_finds}</span>
                   </div>
                 )}
                 {properties.status && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Protection Status:</span>
-                    <span className="font-bold text-emerald-300 text-xs text-right ml-2">{properties.status}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Protection Status:</span>
+                    <span className="font-bold text-emerald-300 text-xs text-right ml-2 min-w-0 break-words">{properties.status}</span>
                   </div>
                 )}
                 {properties.citation && (
                   <div className="py-1.5">
                     <span className="text-neutral-400 block text-[11px]">Citation / Source:</span>
-                    <span className="text-neutral-300 text-[11px] leading-relaxed">{properties.citation}</span>
+                    <span className="text-neutral-300 text-[11px] leading-relaxed break-words">{properties.citation}</span>
                   </div>
                 )}
               </div>
@@ -364,28 +392,28 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
         {type === 'trade_route' && (
           <div className="space-y-3">
             <div className="vista-card p-4 space-y-3 border border-sky-500/30">
-              <div className="text-xs font-mono font-bold text-white flex items-center justify-between uppercase tracking-wider">
-                <span className="flex items-center gap-1.5">
+              <div className="flex items-center justify-between gap-2 pb-2 border-b border-white/10 text-xs font-mono font-bold text-white uppercase tracking-wider">
+                <span className="flex items-center gap-1.5 min-w-0 flex-1">
                   {properties.category === 'ancient_port' ? (
-                    <Anchor className="w-4 h-4 text-amber-300" />
+                    <Anchor className="w-4 h-4 text-amber-300 shrink-0" />
                   ) : properties.category === 'historical_railway' ? (
-                    <Train className="w-4 h-4 text-rose-400" />
+                    <Train className="w-4 h-4 text-rose-400 shrink-0" />
                   ) : properties.category === 'maritime_route' ? (
-                    <Waves className="w-4 h-4 text-sky-400" />
+                    <Waves className="w-4 h-4 text-sky-400 shrink-0" />
                   ) : properties.category === 'silk_road' ? (
-                    <Mountain className="w-4 h-4 text-purple-400" />
+                    <Mountain className="w-4 h-4 text-purple-400 shrink-0" />
                   ) : properties.category === 'spice_route' ? (
-                    <Trees className="w-4 h-4 text-emerald-400" />
+                    <Trees className="w-4 h-4 text-emerald-400 shrink-0" />
                   ) : properties.category === 'colonial_network' ? (
-                    <Globe className="w-4 h-4 text-indigo-400" />
+                    <Globe className="w-4 h-4 text-indigo-400 shrink-0" />
                   ) : (
-                    <Compass className="w-4 h-4 text-amber-400" />
+                    <Compass className="w-4 h-4 text-amber-400 shrink-0" />
                   )}
-                  <span className="text-white">
+                  <span className="text-white truncate">
                     {properties.category_display || (properties.category === 'ancient_port' ? 'Ancient Port & Emporium' : 'Trade & Connectivity Artery')}
                   </span>
                 </span>
-                <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold border ${
+                <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold border shrink-0 max-w-[130px] truncate ${
                   properties.category === 'ancient_port'
                     ? 'bg-amber-950/80 text-amber-300 border-amber-400/40'
                     : properties.category === 'historical_railway'
@@ -404,57 +432,57 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
 
               <div className="space-y-2 text-xs font-mono">
                 {(properties.era || properties.era_active) && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Epoch / Active Era:</span>
-                    <span className="font-bold text-white text-sm">{properties.era || properties.era_active}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Epoch / Active Era:</span>
+                    <span className="font-bold text-white text-sm text-right min-w-0 break-words">{properties.era || properties.era_active}</span>
                   </div>
                 )}
                 {properties.total_length_km && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Total Route Length:</span>
-                    <span className="font-bold text-sky-300">{properties.total_length_km.toLocaleString()} km</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Total Route Length:</span>
+                    <span className="font-bold text-sky-300 text-right min-w-0 break-words">{properties.total_length_km.toLocaleString()} km</span>
                   </div>
                 )}
                 {properties.termini && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Termini &amp; Coastal Endpoints:</span>
-                    <span className="text-neutral-200">{properties.termini}</span>
+                    <span className="text-neutral-200 break-words leading-relaxed">{properties.termini}</span>
                   </div>
                 )}
                 {properties.location_desc && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Geographical Location:</span>
-                    <span className="text-amber-300 font-sans">{properties.location_desc}</span>
+                    <span className="text-amber-300 font-sans break-words leading-relaxed">{properties.location_desc}</span>
                   </div>
                 )}
                 {(properties.connected_nodes || properties.key_stations) && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Connected Hubs, Ports &amp; Stations:</span>
-                    <span className="text-amber-400 leading-relaxed font-sans">{properties.connected_nodes || properties.key_stations}</span>
+                    <span className="text-amber-400 leading-relaxed font-sans break-words">{properties.connected_nodes || properties.key_stations}</span>
                   </div>
                 )}
                 {properties.commodities && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Principal Commodities &amp; Cargo:</span>
-                    <span className="text-emerald-400 font-bold leading-relaxed font-sans">{properties.commodities}</span>
+                    <span className="text-emerald-400 font-bold leading-relaxed font-sans break-words">{properties.commodities}</span>
                   </div>
                 )}
                 {(properties.chronicles || properties.historical_accounts) && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Historical Chroniclers &amp; Primary Accounts:</span>
-                    <span className="text-neutral-300 italic font-sans">{properties.chronicles || properties.historical_accounts}</span>
+                    <span className="text-neutral-300 italic font-sans break-words leading-relaxed">{properties.chronicles || properties.historical_accounts}</span>
                   </div>
                 )}
                 {properties.significance && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Historical Significance &amp; Impact:</span>
-                    <span className="text-neutral-200 text-[11px] leading-relaxed font-sans">{properties.significance}</span>
+                    <span className="text-neutral-200 text-[11px] leading-relaxed font-sans break-words">{properties.significance}</span>
                   </div>
                 )}
                 {properties.citation && (
                   <div className="pt-1.5">
                     <span className="text-neutral-500 block text-[10px] uppercase tracking-wider">Official Institutional Citation:</span>
-                    <span className="text-sky-300 text-[11px] leading-relaxed">{properties.citation}</span>
+                    <span className="text-sky-300 text-[11px] leading-relaxed break-words">{properties.citation}</span>
                   </div>
                 )}
               </div>
@@ -466,61 +494,61 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
         {type === 'highway' && (
           <div className="space-y-3">
             <div className="vista-card p-4 space-y-3">
-              <div className="text-xs font-mono font-bold text-white flex items-center justify-between uppercase tracking-wider">
-                <span className="flex items-center gap-1.5">
-                  <Route className="w-4 h-4 text-orange-400" />
-                  <span>Road Corridor Profile</span>
+              <div className="flex items-center justify-between gap-2 pb-2 border-b border-white/10 text-xs font-mono font-bold text-white uppercase tracking-wider">
+                <span className="flex items-center gap-1.5 min-w-0 flex-1">
+                  <Route className="w-4 h-4 text-orange-400 shrink-0" />
+                  <span className="truncate">Road Corridor Profile</span>
                 </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-orange-950/80 text-orange-300 border border-orange-500/30 font-bold">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-orange-950/80 text-orange-300 border border-orange-500/30 font-bold shrink-0 max-w-[120px] truncate">
                   {properties.category || 'HIGHWAY'}
                 </span>
               </div>
 
               <div className="space-y-2 text-xs font-mono">
                 {properties.code && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Route Designation:</span>
-                    <span className="font-bold text-orange-300 text-sm">{properties.code}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Route Designation:</span>
+                    <span className="font-bold text-orange-300 text-sm text-right min-w-0 break-words">{properties.code}</span>
                   </div>
                 )}
                 {properties.from && properties.to && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Terminal Points:</span>
-                    <span className="text-neutral-200">{properties.from} → {properties.to}</span>
+                    <span className="text-neutral-200 break-words leading-relaxed">{properties.from} → {properties.to}</span>
                   </div>
                 )}
                 {properties.length_km && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Route Length:</span>
-                    <span className="font-bold text-[#C9A227] text-sm">{properties.length_km.toLocaleString()} km</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Route Length:</span>
+                    <span className="font-bold text-[#C9A227] text-sm text-right min-w-0 break-words">{properties.length_km.toLocaleString()} km</span>
                   </div>
                 )}
                 {properties.states && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">States Served:</span>
-                    <span className="text-amber-300">{properties.states}</span>
+                    <span className="text-amber-300 break-words leading-relaxed">{properties.states}</span>
                   </div>
                 )}
                 {properties.corridor && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Corridor Class:</span>
-                    <span className="font-bold text-white text-sm">{properties.corridor}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Corridor Class:</span>
+                    <span className="font-bold text-white text-sm text-right min-w-0 break-words">{properties.corridor}</span>
                   </div>
                 )}
-                <div className="flex justify-between py-1.5 border-b border-white/5">
-                  <span className="text-neutral-400">Configuration:</span>
-                  <span className="font-bold text-neutral-200">{properties.lanes || '—'} lanes</span>
+                <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                  <span className="text-neutral-400 shrink-0">Configuration:</span>
+                  <span className="font-bold text-neutral-200 text-right min-w-0 break-words">{properties.lanes || '—'} lanes</span>
                 </div>
-                <div className="flex justify-between py-1.5">
-                  <span className="text-neutral-400">Tolled / Access:</span>
-                  <span className={`font-bold text-sm ${properties.toll ? 'text-emerald-400' : 'text-slate-300'}`}>
+                <div className="flex justify-between items-start py-1.5 gap-2">
+                  <span className="text-neutral-400 shrink-0">Tolled / Access:</span>
+                  <span className={`font-bold text-sm text-right min-w-0 break-words ${properties.toll ? 'text-emerald-400' : 'text-slate-300'}`}>
                     {properties.toll ? 'Tolled · Access-Controlled' : 'Open Access'}
                   </span>
                 </div>
                 {properties.status && (
                   <div className="pt-1.5 border-t border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Status:</span>
-                    <span className="text-emerald-300 font-bold">{properties.status}</span>
+                    <span className="text-emerald-300 font-bold break-words leading-relaxed">{properties.status}</span>
                   </div>
                 )}
               </div>
@@ -540,26 +568,26 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
           type === 'heatwave_zone') && (
           <div className="space-y-3">
             <div className="vista-card p-4 space-y-3 border border-rose-500/40 bg-[#14080b]/90">
-              <div className="text-xs font-mono font-bold text-white flex items-center justify-between uppercase tracking-wider">
-                <span className="flex items-center gap-1.5">
+              <div className="flex items-start justify-between gap-2 pb-2 border-b border-white/10">
+                <div className="flex items-start gap-1.5 min-w-0 flex-1 text-xs font-mono font-bold text-white uppercase tracking-wider">
                   {type === 'cyclone_track' || properties.hazard_type === 'cyclone' ? (
-                    <Wind className="w-4 h-4 text-fuchsia-400" />
+                    <Wind className="w-4 h-4 text-fuchsia-400 shrink-0 mt-0.5" />
                   ) : type === 'flood_zone' || properties.hazard_type === 'flood' ? (
-                    <Waves className="w-4 h-4 text-sky-400" />
+                    <Waves className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
                   ) : type === 'landslide_zone' || properties.hazard_type === 'landslide' ? (
-                    <Mountain className="w-4 h-4 text-amber-400" />
+                    <Mountain className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                   ) : type === 'drought_zone' || properties.hazard_type === 'drought' ? (
-                    <Sun className="w-4 h-4 text-yellow-400" />
+                    <Sun className="w-4 h-4 text-yellow-400 shrink-0 mt-0.5" />
                   ) : type === 'tsunami_zone' || properties.hazard_type === 'tsunami' ? (
-                    <Waves className="w-4 h-4 text-teal-400" />
+                    <Waves className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
                   ) : type === 'heatwave_zone' || properties.hazard_type === 'heatwave' ? (
-                    <Flame className="w-4 h-4 text-rose-400" />
+                    <Flame className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
                   ) : type === 'earthquake_epicenter' || properties.hazard_type === 'earthquake' ? (
-                    <Activity className="w-4 h-4 text-rose-500" />
+                    <Activity className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
                   ) : (
-                    <AlertTriangle className="w-4 h-4 text-rose-500" />
+                    <AlertTriangle className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
                   )}
-                  <span>
+                  <span className="leading-snug break-words">
                     {type === 'cyclone_track' || properties.hazard_type === 'cyclone'
                       ? 'Tropical Cyclone Track & Landfall'
                       : type === 'flood_zone' || properties.hazard_type === 'flood'
@@ -576,218 +604,221 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
                       ? 'Historical Earthquake Event'
                       : 'BIS Seismic Hazard Zone'}
                   </span>
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-950/80 text-rose-300 border border-rose-500/30 font-bold shrink-0">
-                  {properties.authority ? properties.authority.split('(')[0].trim() : 'NDMA / BIS'}
+                </div>
+                <span 
+                  className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-950/80 text-rose-300 border border-rose-500/30 font-bold shrink-0 max-w-[125px] text-center tracking-normal whitespace-nowrap mt-0.5"
+                  title={properties.authority ? properties.authority.split('(')[0].trim() : 'NDMA / BIS'}
+                >
+                  {getDisasterShortBadge(type, properties)}
                 </span>
               </div>
 
               <div className="space-y-2 text-xs font-mono">
                 {/* Seismic Fields */}
                 {(properties.zone_code || properties.zone_name) && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Seismic Hazard Zone:</span>
-                    <span className="font-bold text-rose-400 text-sm">{properties.zone_code || properties.zone_name} ({properties.hazard_level || 'Zone V'})</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Seismic Hazard Zone:</span>
+                    <span className="font-bold text-rose-400 text-sm text-right min-w-0 break-words">{properties.zone_code || properties.zone_name} ({properties.hazard_level || 'Zone V'})</span>
                   </div>
                 )}
                 {properties.zone_factor_z && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Zone Factor (Z) &amp; PGA:</span>
-                    <span className="font-bold text-white text-sm">{properties.zone_factor_z} ({properties.peak_ground_accel || 'High Acceleration'})</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Zone Factor (Z) &amp; PGA:</span>
+                    <span className="font-bold text-white text-sm text-right min-w-0 break-words">{properties.zone_factor_z} ({properties.peak_ground_accel || 'High Acceleration'})</span>
                   </div>
                 )}
                 {properties.seismic_intensity && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Expected Ground Shaking:</span>
-                    <span className="font-bold text-amber-300">{properties.seismic_intensity}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Expected Ground Shaking:</span>
+                    <span className="font-bold text-amber-300 text-right min-w-0 break-words">{properties.seismic_intensity}</span>
                   </div>
                 )}
                 {properties.building_code_mandate && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Building Code Mandate:</span>
-                    <span className="text-rose-300 font-semibold">{properties.building_code_mandate}</span>
+                    <span className="text-rose-300 font-semibold break-words leading-relaxed">{properties.building_code_mandate}</span>
                   </div>
                 )}
 
                 {/* Earthquake Fields */}
                 {properties.year && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Event Year / Date:</span>
-                    <span className="font-bold text-white text-sm">{properties.date_str || properties.year}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Event Year / Date:</span>
+                    <span className="font-bold text-white text-sm text-right min-w-0 break-words">{properties.date_str || properties.year}</span>
                   </div>
                 )}
                 {(properties.magnitude_mw || properties.magnitude) && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Moment Magnitude (Mw):</span>
-                    <span className="font-black text-rose-400 text-lg">M {properties.magnitude_mw || properties.magnitude}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Moment Magnitude (Mw):</span>
+                    <span className="font-black text-rose-400 text-lg text-right min-w-0 break-words">M {properties.magnitude_mw || properties.magnitude}</span>
                   </div>
                 )}
                 {properties.depth_km && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Focal Depth:</span>
-                    <span className="font-bold text-neutral-200">{properties.depth_km} km</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Focal Depth:</span>
+                    <span className="font-bold text-neutral-200 text-right min-w-0 break-words">{properties.depth_km} km</span>
                   </div>
                 )}
                 {(properties.fatalities_approx || properties.casualties) && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Human Casualties / Impact:</span>
-                    <span className="font-bold text-red-400">{properties.casualties || Number(properties.fatalities_approx).toLocaleString()}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Human Casualties / Impact:</span>
+                    <span className="font-bold text-red-400 text-right min-w-0 break-words">{properties.casualties || Number(properties.fatalities_approx).toLocaleString()}</span>
                   </div>
                 )}
                 {(properties.fault_system || properties.tectonic_setting) && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Tectonic Fault / Mechanism:</span>
-                    <span className="text-amber-300">{properties.fault_system || properties.tectonic_setting}</span>
+                    <span className="text-amber-300 break-words leading-relaxed">{properties.fault_system || properties.tectonic_setting}</span>
                   </div>
                 )}
 
                 {/* Cyclone Fields */}
                 {properties.cyclone_category && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Storm Intensity Category:</span>
-                    <span className="font-bold text-fuchsia-300">{properties.cyclone_category}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Storm Intensity Category:</span>
+                    <span className="font-bold text-fuchsia-300 text-right min-w-0 break-words">{properties.cyclone_category}</span>
                   </div>
                 )}
                 {properties.wind_speed_kmh && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Peak 3-Min Sustained Winds:</span>
-                    <span className="font-black text-rose-400 text-base">{properties.wind_speed_kmh} km/h</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Peak 3-Min Sustained Winds:</span>
+                    <span className="font-black text-rose-400 text-base text-right min-w-0 break-words">{properties.wind_speed_kmh} km/h</span>
                   </div>
                 )}
                 {properties.central_pressure_hpa && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Central Barometric Pressure:</span>
-                    <span className="font-bold text-neutral-200">{properties.central_pressure_hpa} hPa</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Central Barometric Pressure:</span>
+                    <span className="font-bold text-neutral-200 text-right min-w-0 break-words">{properties.central_pressure_hpa} hPa</span>
                   </div>
                 )}
                 {properties.storm_surge_m && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Storm Surge Inundation:</span>
-                    <span className="font-bold text-teal-300">{properties.storm_surge_m} meters above normal tide</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Storm Surge Inundation:</span>
+                    <span className="font-bold text-teal-300 text-right min-w-0 break-words">{properties.storm_surge_m} m above normal tide</span>
                   </div>
                 )}
                 {properties.landfall_point && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Coastal Landfall:</span>
-                    <span className="font-bold text-amber-300">{properties.landfall_point}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Coastal Landfall:</span>
+                    <span className="font-bold text-amber-300 text-right min-w-0 break-words">{properties.landfall_point}</span>
                   </div>
                 )}
                 {properties.evacuation_count && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Civil Defense Evacuation:</span>
-                    <span className="text-emerald-400 font-semibold">{properties.evacuation_count}</span>
+                    <span className="text-emerald-400 font-semibold break-words leading-relaxed">{properties.evacuation_count}</span>
                   </div>
                 )}
 
                 {/* Flood Fields */}
                 {properties.basin_name && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">River Basin Catchment:</span>
-                    <span className="font-bold text-sky-300">{properties.basin_name}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">River Basin Catchment:</span>
+                    <span className="font-bold text-sky-300 text-right min-w-0 break-words">{properties.basin_name}</span>
                   </div>
                 )}
                 {properties.inundated_sqkm && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Inundated Flood Area:</span>
-                    <span className="font-bold text-sky-400">{properties.inundated_sqkm.toLocaleString()} sq km</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Inundated Flood Area:</span>
+                    <span className="font-bold text-sky-400 text-right min-w-0 break-words">{properties.inundated_sqkm.toLocaleString()} sq km</span>
                   </div>
                 )}
                 {properties.vulnerable_population && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Vulnerable Population:</span>
-                    <span className="font-bold text-rose-300">{properties.vulnerable_population}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Vulnerable Population:</span>
+                    <span className="font-bold text-rose-300 text-right min-w-0 break-words">{properties.vulnerable_population}</span>
                   </div>
                 )}
                 {properties.return_period && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Flood Frequency / Recurrence:</span>
-                    <span className="font-semibold text-neutral-300">{properties.return_period}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Flood Recurrence:</span>
+                    <span className="font-semibold text-neutral-300 text-right min-w-0 break-words">{properties.return_period}</span>
                   </div>
                 )}
 
                 {/* Landslide Fields */}
                 {properties.susceptibility_rating && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">GSI NLSM Susceptibility:</span>
-                    <span className="font-bold text-orange-400">{properties.susceptibility_rating}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">GSI NLSM Susceptibility:</span>
+                    <span className="font-bold text-orange-400 text-right min-w-0 break-words">{properties.susceptibility_rating}</span>
                   </div>
                 )}
                 {properties.rock_formation && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Geological Lithology &amp; Bedrock:</span>
-                    <span className="text-neutral-200">{properties.rock_formation}</span>
+                    <span className="text-neutral-200 break-words leading-relaxed">{properties.rock_formation}</span>
                   </div>
                 )}
                 {properties.trigger_mechanisms && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Primary Trigger Factors:</span>
-                    <span className="text-amber-300">{properties.trigger_mechanisms}</span>
+                    <span className="text-amber-300 break-words leading-relaxed">{properties.trigger_mechanisms}</span>
                   </div>
                 )}
 
                 {/* Drought Fields */}
                 {properties.aridity_index && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Aridity &amp; Drought Index:</span>
-                    <span className="font-bold text-amber-400">{properties.aridity_index}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Aridity &amp; Drought Index:</span>
+                    <span className="font-bold text-amber-400 text-right min-w-0 break-words">{properties.aridity_index}</span>
                   </div>
                 )}
                 {properties.rainfall_deficit_pct && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Rainfall Deficit / Pattern:</span>
-                    <span className="text-rose-300 font-semibold">{properties.rainfall_deficit_pct}</span>
+                    <span className="text-rose-300 font-semibold break-words leading-relaxed">{properties.rainfall_deficit_pct}</span>
                   </div>
                 )}
                 {properties.mitigation_scheme && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Mitigation &amp; Water Security:</span>
-                    <span className="text-emerald-400">{properties.mitigation_scheme}</span>
+                    <span className="text-emerald-400 break-words leading-relaxed">{properties.mitigation_scheme}</span>
                   </div>
                 )}
 
                 {/* Tsunami Fields */}
                 {properties.inundation_buffer_km && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Coastal Inundation Buffer:</span>
-                    <span className="font-bold text-teal-300">{properties.inundation_buffer_km} km inland</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Coastal Inundation Buffer:</span>
+                    <span className="font-bold text-teal-300 text-right min-w-0 break-words">{properties.inundation_buffer_km} km inland</span>
                   </div>
                 )}
                 {properties.max_runup_m && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Maximum Run-Up Height:</span>
-                    <span className="font-bold text-teal-400 text-base">{properties.max_runup_m} meters</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Maximum Run-Up Height:</span>
+                    <span className="font-bold text-teal-400 text-base text-right min-w-0 break-words">{properties.max_runup_m} meters</span>
                   </div>
                 )}
                 {properties.early_warning_time_min && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">ITEWC Lead Warning Window:</span>
-                    <span className="font-bold text-amber-300">~{properties.early_warning_time_min} minutes</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">ITEWC Lead Warning Window:</span>
+                    <span className="font-bold text-amber-300 text-right min-w-0 break-words">~{properties.early_warning_time_min} minutes</span>
                   </div>
                 )}
 
                 {/* Heatwave Fields */}
                 {properties.max_recorded_temp_c && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">All-Time Peak Temperature:</span>
-                    <span className="font-black text-rose-400 text-lg">{properties.max_recorded_temp_c} °C</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">All-Time Peak Temperature:</span>
+                    <span className="font-black text-rose-400 text-lg text-right min-w-0 break-words">{properties.max_recorded_temp_c} °C</span>
                   </div>
                 )}
                 {properties.avg_heatwave_days && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Annual Heatwave Days:</span>
-                    <span className="font-bold text-amber-400">{properties.avg_heatwave_days} days / summer</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Annual Heatwave Days:</span>
+                    <span className="font-bold text-amber-400 text-right min-w-0 break-words">{properties.avg_heatwave_days} days / summer</span>
                   </div>
                 )}
                 {properties.wet_bulb_risk && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Wet-Bulb Thermal Stress:</span>
-                    <span className="text-rose-300 font-semibold">{properties.wet_bulb_risk}</span>
+                    <span className="text-rose-300 font-semibold break-words leading-relaxed">{properties.wet_bulb_risk}</span>
                   </div>
                 )}
                 {properties.action_plan_framework && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Heat Action Plan Protocol:</span>
-                    <span className="text-emerald-400">{properties.action_plan_framework}</span>
+                    <span className="text-emerald-400 break-words leading-relaxed">{properties.action_plan_framework}</span>
                   </div>
                 )}
 
@@ -797,7 +828,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
                     <span className="text-neutral-400 block text-[11px] mb-1 font-sans uppercase font-bold tracking-wider">
                       Intelligence Assessment &amp; Hazard Brief:
                     </span>
-                    <p className="text-neutral-300 font-sans text-xs leading-relaxed bg-black/40 p-2.5 rounded-lg border border-white/5">
+                    <p className="text-neutral-300 font-sans text-xs leading-relaxed bg-black/40 p-2.5 rounded-lg border border-white/5 break-words">
                       {properties.summary || properties.description}
                     </p>
                   </div>
@@ -805,9 +836,9 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
 
                 {/* Official Authority & Citation */}
                 {(properties.official_reference || properties.authority) && (
-                  <div className="pt-1.5 flex items-start gap-1.5 text-[10px] text-neutral-400 font-mono">
+                  <div className="pt-2 flex items-start gap-1.5 text-[10px] text-neutral-400 font-mono border-t border-white/5">
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                    <span>
+                    <span className="break-words leading-relaxed min-w-0 flex-1">
                       Authority: <strong className="text-neutral-200">{properties.authority}</strong>
                       {properties.official_reference && <> • Reference: <em>{properties.official_reference}</em></>}
                     </span>
@@ -823,30 +854,30 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
         {type === 'environmental_change' && (
           <div className="space-y-3">
             <div className="vista-card p-4 space-y-3 border border-emerald-500/40 bg-[#0a1518]/90">
-              <div className="text-xs font-mono font-bold text-white flex items-center justify-between uppercase tracking-wider">
-                <span className="flex items-center gap-1.5">
+              <div className="flex items-start justify-between gap-2 pb-2 border-b border-white/10 text-xs font-mono font-bold text-white uppercase tracking-wider">
+                <div className="flex items-start gap-1.5 min-w-0 flex-1">
                   {properties.pillar === 'forest_change' ? (
-                    <TreePine className="w-4 h-4 text-emerald-400" />
+                    <TreePine className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   ) : properties.pillar === 'glacier_retreat' ? (
-                    <Mountain className="w-4 h-4 text-cyan-400" />
+                    <Mountain className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
                   ) : properties.pillar === 'urban_expansion' ? (
-                    <Building2 className="w-4 h-4 text-orange-400" />
+                    <Building2 className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
                   ) : properties.pillar === 'coastal_erosion' ? (
-                    <Waves className="w-4 h-4 text-rose-400" />
+                    <Waves className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
                   ) : properties.pillar === 'wetland_change' ? (
-                    <Droplets className="w-4 h-4 text-blue-400" />
+                    <Droplets className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
                   ) : properties.pillar === 'desertification' ? (
-                    <Sun className="w-4 h-4 text-yellow-400" />
+                    <Sun className="w-4 h-4 text-yellow-400 shrink-0 mt-0.5" />
                   ) : properties.pillar === 'groundwater_stress' ? (
-                    <Gauge className="w-4 h-4 text-purple-400" />
+                    <Gauge className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
                   ) : (
-                    <Compass className="w-4 h-4 text-teal-400" />
+                    <Compass className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
                   )}
-                  <span className="text-white">
+                  <span className="text-white leading-snug break-words">
                     {properties.category_name || 'Environmental Change'}
                   </span>
-                </span>
-                <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold border ${
+                </div>
+                <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold border shrink-0 max-w-[120px] whitespace-nowrap text-center mt-0.5 ${
                   properties.severity_code === 'severe'
                     ? 'bg-rose-950/80 text-rose-300 border-rose-500/40'
                     : properties.severity_code === 'high'
@@ -863,7 +894,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
                 {properties.region && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Geographical Region / Jurisdiction:</span>
-                    <span className="text-white font-sans font-bold">{properties.region}</span>
+                    <span className="text-white font-sans font-bold break-words leading-relaxed">{properties.region}</span>
                   </div>
                 )}
 
@@ -877,13 +908,13 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
 
                   return (
                     <div className="p-3 bg-[#071114] border border-white/10 rounded-lg space-y-2.5 my-2">
-                      <div className="flex items-center justify-between border-b border-white/10 pb-1.5">
-                        <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1">
-                          <Activity className="w-3 h-3 text-emerald-400" />
-                          <span>Temporal Comparison Assessment</span>
+                      <div className="flex items-center justify-between border-b border-white/10 pb-1.5 gap-2">
+                        <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1 min-w-0 flex-1">
+                          <Activity className="w-3 h-3 text-emerald-400 shrink-0" />
+                          <span className="truncate">Comparative Assessment</span>
                         </span>
-                        <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 font-bold">
-                          {temporal.timeSpanYears} Year Interval ({temporal.yearA} → {temporal.yearB})
+                        <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 font-bold shrink-0">
+                          {temporal.timeSpanYears}y ({temporal.yearA} → {temporal.yearB})
                         </span>
                       </div>
 
@@ -895,7 +926,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
                               Baseline ({temporal.yearA}):
                             </span>
                           </div>
-                          <div className="text-amber-200 font-bold text-[11px] font-sans">
+                          <div className="text-amber-200 font-bold text-[11px] font-sans break-words leading-tight">
                             {temporal.textA}
                           </div>
                           {temporal.contextA && (
@@ -915,7 +946,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
                               Compare ({temporal.yearB}):
                             </span>
                           </div>
-                          <div className="text-emerald-200 font-bold text-[11px] font-sans">
+                          <div className="text-emerald-200 font-bold text-[11px] font-sans break-words leading-tight">
                             {temporal.textB}
                           </div>
                           {temporal.contextB && (
@@ -930,9 +961,9 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
                       </div>
 
                       {/* Net Variance */}
-                      <div className="pt-1.5 border-t border-white/10 flex justify-between items-center text-xs">
-                        <span className="text-neutral-400 text-[11px]">Recorded Net Variance (Δ):</span>
-                        <span className={`font-bold px-2 py-0.5 rounded text-[11px] ${
+                      <div className="pt-1.5 border-t border-white/10 flex justify-between items-center text-xs gap-2">
+                        <span className="text-neutral-400 text-[11px] shrink-0">Recorded Net Variance (Δ):</span>
+                        <span className={`font-bold px-2 py-0.5 rounded text-[11px] shrink-0 ${
                           temporal.severityCode === 'severe'
                             ? 'bg-rose-950 text-rose-300 border border-rose-500/30'
                             : temporal.severityCode === 'positive'
@@ -944,18 +975,18 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
                       </div>
 
                       {/* Annual Change Rate */}
-                      <div className="pt-1.5 border-t border-white/10 flex justify-between items-center text-xs">
-                        <span className="text-amber-400 font-bold flex items-center gap-1 text-[11px]">
-                          <Activity className="w-3.5 h-3.5 text-amber-400" />
+                      <div className="pt-1.5 border-t border-white/10 flex justify-between items-center text-xs gap-2">
+                        <span className="text-amber-400 font-bold flex items-center gap-1 text-[11px] shrink-0">
+                          <Activity className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                           <span>Annual Change Rate:</span>
                         </span>
-                        <span className="font-extrabold text-amber-200 font-mono text-[11px] bg-amber-950/70 px-2 py-0.5 rounded border border-amber-500/30">
+                        <span className="font-extrabold text-amber-200 font-mono text-[11px] bg-amber-950/70 px-2 py-0.5 rounded border border-amber-500/30 shrink-0">
                           {temporal.annualRateText}
                         </span>
                       </div>
 
                       {/* Dynamic Assessment Narrative */}
-                      <div className="pt-1.5 border-t border-white/10 text-[10.5px] text-neutral-300 leading-relaxed font-sans bg-white/[0.02] p-1.5 rounded">
+                      <div className="pt-1.5 border-t border-white/10 text-[10.5px] text-neutral-300 leading-relaxed font-sans bg-white/[0.02] p-1.5 rounded break-words">
                         <span className="text-emerald-400 font-bold block mb-0.5 uppercase text-[9px] font-mono">
                           Epoch Assessment ({temporal.yearA} → {temporal.yearB}):
                         </span>
@@ -968,21 +999,21 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
                 {properties.primary_driver && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Primary Driver &amp; Forcing Mechanism:</span>
-                    <span className="text-amber-300 leading-relaxed font-sans">{properties.primary_driver}</span>
+                    <span className="text-amber-300 leading-relaxed font-sans break-words">{properties.primary_driver}</span>
                   </div>
                 )}
 
                 {properties.ecological_impact && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Ecological Impact &amp; Environmental Consequences:</span>
-                    <span className="text-neutral-200 text-[11px] leading-relaxed font-sans">{properties.ecological_impact}</span>
+                    <span className="text-neutral-200 text-[11px] leading-relaxed font-sans break-words">{properties.ecological_impact}</span>
                   </div>
                 )}
 
                 {properties.citation && (
                   <div className="pt-1.5">
                     <span className="text-neutral-500 block text-[10px] uppercase tracking-wider">Official Publishing Authority:</span>
-                    <span className="text-emerald-300 text-[11px] leading-relaxed">{properties.citation}</span>
+                    <span className="text-emerald-300 text-[11px] leading-relaxed break-words">{properties.citation}</span>
                   </div>
                 )}
               </div>
@@ -994,57 +1025,57 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
         {type === 'river' && (
           <div className="space-y-3">
             <div className="vista-card p-4 space-y-3">
-              <div className="text-xs font-mono font-bold text-white mb-2 flex items-center gap-2 uppercase tracking-wider">
-                <Droplet className="w-4 h-4 text-sky-400" />
-                <span>Hydrological Profile (CWC / WRIS)</span>
+              <div className="text-xs font-mono font-bold text-white mb-2 flex items-center gap-2 uppercase tracking-wider pb-2 border-b border-white/10">
+                <Droplet className="w-4 h-4 text-sky-400 shrink-0" />
+                <span className="truncate">Hydrological Profile (CWC / WRIS)</span>
               </div>
               <div className="space-y-2 text-xs font-mono">
                 {properties.length_km && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Total Course Length</span>
-                    <span className="font-bold text-[#C9A227] text-sm">{properties.length_km.toLocaleString()} km</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Total Course Length:</span>
+                    <span className="font-bold text-[#C9A227] text-sm text-right min-w-0 break-words">{properties.length_km.toLocaleString()} km</span>
                   </div>
                 )}
                 {properties.river_system && (
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">River Basin</span>
-                    <span className="font-bold text-white text-sm">{properties.river_system}</span>
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">River Basin:</span>
+                    <span className="font-bold text-white text-sm text-right min-w-0 break-words">{properties.river_system}</span>
                   </div>
                 )}
                 {properties.origin && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Geographic Origin:</span>
-                    <span className="text-neutral-200 font-medium">{properties.origin}</span>
+                    <span className="text-neutral-200 font-medium break-words leading-relaxed">{properties.origin}</span>
                   </div>
                 )}
                 {properties.outflow && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Outflow / Destination:</span>
-                    <span className="text-neutral-200 font-medium">{properties.outflow}</span>
+                    <span className="text-neutral-200 font-medium break-words leading-relaxed">{properties.outflow}</span>
                   </div>
                 )}
                 {properties.states_covered && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Riparian States:</span>
-                    <span className="text-neutral-300">{properties.states_covered}</span>
+                    <span className="text-neutral-300 break-words leading-relaxed">{properties.states_covered}</span>
                   </div>
                 )}
                 {properties.dams && (
                   <div className="py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400 block text-[11px]">Major Dams & Reservoirs:</span>
-                    <span className="text-emerald-400 font-medium">{properties.dams}</span>
+                    <span className="text-neutral-400 block text-[11px]">Major Dams &amp; Reservoirs:</span>
+                    <span className="text-emerald-400 font-medium break-words leading-relaxed">{properties.dams}</span>
                   </div>
                 )}
                 {properties.major_cities && (
                   <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Key Cities along Course:</span>
-                    <span className="text-amber-400 font-medium">{properties.major_cities}</span>
+                    <span className="text-amber-400 font-medium break-words leading-relaxed">{properties.major_cities}</span>
                   </div>
                 )}
                 {properties.tributaries && (
                   <div className="py-1.5">
                     <span className="text-neutral-400 block text-[11px]">Major Tributaries:</span>
-                    <span className="text-neutral-300">{properties.tributaries}</span>
+                    <span className="text-neutral-300 break-words leading-relaxed">{properties.tributaries}</span>
                   </div>
                 )}
               </div>
@@ -1056,45 +1087,45 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
         {type === 'soil' && (
           <div className="space-y-3">
             <div className="vista-card p-4 space-y-3">
-              <div className="text-xs font-mono font-bold text-white flex items-center justify-between uppercase tracking-wider">
-                <span className="flex items-center gap-1.5">
-                  <Trees className="w-4 h-4 text-amber-500" />
-                  <span>Pedological Profile</span>
+              <div className="flex items-center justify-between gap-2 pb-2 border-b border-white/10 text-xs font-mono font-bold text-white uppercase tracking-wider">
+                <span className="flex items-center gap-1.5 min-w-0 flex-1">
+                  <Trees className="w-4 h-4 text-amber-500 shrink-0" />
+                  <span className="truncate">Pedological Profile</span>
                 </span>
                 {properties.area_pct && (
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-500/30 font-bold">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-500/30 font-bold shrink-0">
                     {properties.area_pct}% of India
                   </span>
                 )}
               </div>
 
               {properties.coverage_sqkm && (
-                <div className="text-xs font-mono text-neutral-400 flex justify-between py-1.5 border-b border-white/5">
-                  <span>Geographic Area:</span>
-                  <span className="text-neutral-200 font-bold">{properties.coverage_sqkm.toLocaleString()} km²</span>
+                <div className="text-xs font-mono text-neutral-400 flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                  <span className="shrink-0">Geographic Area:</span>
+                  <span className="text-neutral-200 font-bold text-right min-w-0 break-words">{properties.coverage_sqkm.toLocaleString()} km²</span>
                 </div>
               )}
 
-              <p className="text-xs text-neutral-300 leading-relaxed font-sans pt-1">{properties.composition}</p>
+              <p className="text-xs text-neutral-300 leading-relaxed font-sans pt-1 break-words">{properties.composition}</p>
 
               <div className="pt-2 border-t border-white/5 text-xs font-mono space-y-1">
                 <div className="text-neutral-400">Crop Suitability:</div>
-                <div className="text-emerald-400 font-bold">{properties.suitability}</div>
+                <div className="text-emerald-400 font-bold break-words leading-relaxed">{properties.suitability}</div>
               </div>
 
               <div className="pt-2 border-t border-white/5 text-xs font-mono space-y-1">
                 <div className="text-neutral-400">Geological Genesis:</div>
-                <div className="text-neutral-300">{properties.geology}</div>
+                <div className="text-neutral-300 break-words leading-relaxed">{properties.geology}</div>
               </div>
 
               {properties.states && (
                 <div className="pt-2 border-t border-white/5 text-xs font-mono space-y-1">
                   <div className="text-neutral-400">Predominant Regions:</div>
-                  <div className="text-neutral-300">{properties.states.join(', ')}</div>
+                  <div className="text-neutral-300 break-words leading-relaxed">{properties.states.join(', ')}</div>
                 </div>
               )}
 
-              <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs font-mono leading-relaxed mt-2">
+              <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs font-mono leading-relaxed mt-2 break-words">
                 <span className="font-bold block mb-1">Approximate Distribution:</span>
                 Schematic educational representation of the ICAR 8-fold scheme — not official NBSS&amp;LUP soil-resource geometry. Not a parcel-level soil certification.
               </div>
@@ -1106,50 +1137,50 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
         {type === 'mountain' && (
           <div className="space-y-3">
             <div className="vista-card p-4 space-y-3">
-              <div className="text-xs font-mono font-bold text-white flex items-center justify-between uppercase tracking-wider">
-                <span className="flex items-center gap-1.5">
-                  <Mountain className="w-4 h-4 text-emerald-400" />
-                  <span>Orogenic & Relief Profile</span>
+              <div className="flex items-center justify-between gap-2 pb-2 border-b border-white/10 text-xs font-mono font-bold text-white uppercase tracking-wider">
+                <span className="flex items-center gap-1.5 min-w-0 flex-1">
+                  <Mountain className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span className="truncate">Orogenic &amp; Relief Profile</span>
                 </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 font-bold">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 font-bold shrink-0">
                   GSI Survey
                 </span>
               </div>
 
-              <div className="flex justify-between text-xs font-mono py-1.5 border-b border-white/5">
-                <span className="text-neutral-400">Highest Peak</span>
-                <span className="font-bold text-amber-400 text-sm">{properties.peak}</span>
+              <div className="flex justify-between items-start text-xs font-mono py-1.5 border-b border-white/5 gap-2">
+                <span className="text-neutral-400 shrink-0">Highest Peak:</span>
+                <span className="font-bold text-amber-400 text-sm text-right min-w-0 break-words">{properties.peak}</span>
               </div>
-              <div className="flex justify-between text-xs font-mono py-1.5 border-b border-white/5">
-                <span className="text-neutral-400">Max Elevation (Ft & In)</span>
-                <span className="font-bold text-[#C9A227] text-sm">
+              <div className="flex justify-between items-start text-xs font-mono py-1.5 border-b border-white/5 gap-2">
+                <span className="text-neutral-400 shrink-0">Max Elevation (Ft &amp; In):</span>
+                <span className="font-bold text-[#C9A227] text-sm text-right min-w-0 break-words">
                   {properties.elevation_m ? metersToFeetInches(properties.elevation_m) : 'N/A'}
                 </span>
               </div>
-              <div className="flex justify-between text-xs font-mono py-1.5 border-b border-white/5">
-                <span className="text-neutral-400">Metric Elevation</span>
-                <span className="font-bold text-neutral-300 text-xs">{properties.elevation_m} m</span>
+              <div className="flex justify-between items-start text-xs font-mono py-1.5 border-b border-white/5 gap-2">
+                <span className="text-neutral-400 shrink-0">Metric Elevation:</span>
+                <span className="font-bold text-neutral-300 text-xs text-right min-w-0 break-words">{properties.elevation_m} m</span>
               </div>
               {properties.extent && (
-                <div className="flex justify-between text-xs font-mono py-1.5 border-b border-white/5">
-                  <span className="text-neutral-400">Strike Extent</span>
-                  <span className="text-neutral-200">{properties.extent}</span>
+                <div className="flex justify-between items-start text-xs font-mono py-1.5 border-b border-white/5 gap-2">
+                  <span className="text-neutral-400 shrink-0">Strike Extent:</span>
+                  <span className="text-neutral-200 text-right min-w-0 break-words">{properties.extent}</span>
                 </div>
               )}
 
-              <p className="text-xs text-neutral-300 leading-relaxed font-sans pt-1">{properties.geology}</p>
+              <p className="text-xs text-neutral-300 leading-relaxed font-sans pt-1 break-words">{properties.geology}</p>
 
               {properties.passes && (
                 <div className="pt-2 border-t border-white/5 text-xs font-mono">
                   <span className="text-neutral-400 block">Mountain Passes:</span>
-                  <span className="text-amber-400">{properties.passes.join(', ')}</span>
+                  <span className="text-amber-400 break-words leading-relaxed">{properties.passes.join(', ')}</span>
                 </div>
               )}
 
               {properties.biodiversity && (
                 <div className="pt-2 border-t border-white/5 text-xs font-mono">
                   <span className="text-neutral-400 block">Ecological Significance:</span>
-                  <span className="text-emerald-400">{properties.biodiversity}</span>
+                  <span className="text-emerald-400 break-words leading-relaxed">{properties.biodiversity}</span>
                 </div>
               )}
             </div>
@@ -1159,12 +1190,12 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
         {/* Demographics Details (State or District) with VISTA.IO Style Big Numbers */}
         {demographics && (
           <div className="vista-card p-4">
-            <div className="text-xs font-mono font-bold text-neutral-300 uppercase tracking-wider mb-3 flex items-center justify-between">
-              <span className="flex items-center gap-1.5">
-                <Users className="w-4 h-4 text-[#C9A227]" />
-                Demographic Numbers
+            <div className="text-xs font-mono font-bold text-neutral-300 uppercase tracking-wider mb-3 flex items-center justify-between gap-2 pb-2 border-b border-white/10">
+              <span className="flex items-center gap-1.5 min-w-0 flex-1">
+                <Users className="w-4 h-4 text-[#C9A227] shrink-0" />
+                <span className="truncate">Demographic Numbers</span>
               </span>
-              <span className="text-xs px-2.5 py-0.5 rounded bg-white/10 text-neutral-200 border border-white/15 font-bold">
+              <span className="text-xs px-2.5 py-0.5 rounded bg-white/10 text-neutral-200 border border-white/15 font-bold shrink-0">
                 Census {demographics.census_year || 2011}
               </span>
             </div>
@@ -1196,9 +1227,9 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
               </div>
 
               {demographics.area_sqkm && (
-                <div className="mt-3 text-sm font-mono text-neutral-300 flex justify-between py-1.5 border-t border-white/10 font-bold">
-                  <span className="text-neutral-400 font-semibold">Geographic Surface Area:</span>
-                  <span className="text-white font-bold">{demographics.area_sqkm.toLocaleString()} km²</span>
+                <div className="mt-3 text-sm font-mono text-neutral-300 flex justify-between items-start py-1.5 border-t border-white/10 font-bold gap-2">
+                  <span className="text-neutral-400 font-semibold shrink-0">Geographic Surface Area:</span>
+                  <span className="text-white font-bold text-right min-w-0 break-words">{demographics.area_sqkm.toLocaleString()} km²</span>
                 </div>
               )}
             </div>
@@ -1207,16 +1238,16 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
             <div className="vista-card p-4 space-y-3 font-mono">
               <div className="text-xs font-bold text-white flex items-center justify-between uppercase tracking-wider">
                 <span className="flex items-center gap-1.5">
-                  <BookOpen className="w-4 h-4 text-emerald-400" />
-                  Literacy & Sex Ratio
+                  <BookOpen className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>Literacy &amp; Sex Ratio</span>
                 </span>
               </div>
 
               {demographics.literacy_rate !== undefined && (
                 <div>
-                  <div className="flex justify-between text-sm mb-1.5 font-bold">
-                    <span className="text-neutral-300">Literacy Rate:</span>
-                    <span className="font-extrabold text-emerald-400 text-base">{demographics.literacy_rate}%</span>
+                  <div className="flex justify-between items-start text-sm mb-1.5 font-bold gap-2">
+                    <span className="text-neutral-300 shrink-0">Literacy Rate:</span>
+                    <span className="font-extrabold text-emerald-400 text-base text-right min-w-0 break-words">{demographics.literacy_rate}%</span>
                   </div>
                   <div className="w-full bg-[#181d26] h-2.5 rounded-full overflow-hidden border border-white/10">
                     <div 
@@ -1228,12 +1259,12 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
               )}
 
               {demographics.sex_ratio !== undefined && (
-                <div className="pt-2.5 border-t border-white/10 flex justify-between items-center text-sm font-bold">
-                  <span className="text-neutral-300 flex items-center gap-1.5 font-semibold">
-                    <Heart className="w-4 h-4 text-rose-400" />
+                <div className="pt-2.5 border-t border-white/10 flex justify-between items-center text-sm font-bold gap-2">
+                  <span className="text-neutral-300 flex items-center gap-1.5 font-semibold shrink-0">
+                    <Heart className="w-4 h-4 text-rose-400 shrink-0" />
                     Sex Ratio:
                   </span>
-                  <span className="font-bold text-rose-300 px-2.5 py-0.5 rounded bg-rose-950/60 border border-rose-500/40">
+                  <span className="font-bold text-rose-300 px-2.5 py-0.5 rounded bg-rose-950/60 border border-rose-500/40 shrink-0">
                     {demographics.sex_ratio} F / 1000 M
                   </span>
                 </div>
@@ -1260,8 +1291,8 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
               <div className="vista-card p-4 font-mono">
                 <div className="text-xs font-bold text-white mb-3 flex items-center justify-between uppercase tracking-wider">
                   <span className="flex items-center gap-1.5">
-                    <PieChart className="w-4 h-4 text-purple-400" />
-                    Faith Communities (C-01)
+                    <PieChart className="w-4 h-4 text-purple-400 shrink-0" />
+                    <span>Faith Communities (C-01)</span>
                   </span>
                 </div>
 
@@ -1398,9 +1429,9 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
         {/* Provenance & Source Metadata */}
         <CollapsibleSection title="Verified Source Provenance" icon={<ShieldCheck className="w-4 h-4" />}>
           <div className="text-xs font-mono space-y-2 text-neutral-300">
-            <div><span className="text-white font-bold">Authority:</span> {properties.source || demographics?.source || 'Government of India / ASI / BIS'}</div>
-            <div><span className="text-white font-bold">Baseline Reference:</span> {properties.year || demographics?.census_year || 'Official Record'}</div>
-            <div className="text-xs text-neutral-300 pt-2 border-t border-white/10 leading-relaxed font-sans font-semibold">
+            <div className="break-words leading-relaxed"><span className="text-white font-bold">Authority:</span> {properties.source || demographics?.source || 'Government of India / ASI / BIS'}</div>
+            <div className="break-words leading-relaxed"><span className="text-white font-bold">Baseline Reference:</span> {properties.year || demographics?.census_year || 'Official Record'}</div>
+            <div className="text-xs text-neutral-300 pt-2 border-t border-white/10 leading-relaxed font-sans font-semibold break-words">
               All factual attributes strictly originate from official government publications, ASI excavation memoirs, and academic peer-reviewed cartography.
             </div>
           </div>

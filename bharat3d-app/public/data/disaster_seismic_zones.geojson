@@ -5,48 +5,36 @@
       "type": "Feature",
       "id": "seismic_zone_5_northeast",
       "properties": {
+        "id": "seismic_zone_5_northeast",
+        "name": "Seismic Zone V (Eastern Himalayas & Northeast)",
+        "hazard_type": "seismic_zone",
+        "hazard_level": "Very High Risk",
+        "region_group": "northeast",
+        "region_name": "Northeast India & Eastern Himalaya",
         "zone_id": "ZONE_V",
+        "zone_code": "Zone V",
         "zone_name": "Seismic Zone V (Very High Damage Risk)",
         "seismic_intensity": "MSK IX or greater",
         "zone_factor_z": 0.36,
-        "color": "#dc2626",
-        "border_color": "#ef4444",
+        "peak_ground_accel": "0.36g (PGA >= 0.36g)",
+        "building_code_mandate": "IS 1893:2016 ductile detailing mandatory (IS 13920)",
+        "color": "#ef4444",
+        "border_color": "#dc2626",
         "description": "Subduction and thrust zone along the Eastern Himalayan syntaxis, Dauki fault, and Indo-Burmese wedge. Highest seismic hazard in India.",
-        "regions_covered": "Entire Northeastern States (Assam, Meghalaya, Arunachal, Nagaland, Manipur, Mizoram, Tripura), Andaman & Nicobar, North Bihar, Kangra (HP), Chamoli/Uttarkashi (UK), Rann of Kutch (Gujarat).",
+        "regions_covered": "Entire Northeastern States (Assam, Meghalaya, Arunachal, Nagaland, Manipur, Mizoram, Tripura), Andaman & Nicobar, North Bihar.",
         "authority": "Bureau of Indian Standards (IS 1893: 2002/2016 Part 1)"
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
-            [
-              89.5,
-              26
-            ],
-            [
-              92,
-              28
-            ],
-            [
-              97.5,
-              29
-            ],
-            [
-              97.5,
-              24
-            ],
-            [
-              93,
-              22
-            ],
-            [
-              91,
-              24.5
-            ],
-            [
-              89.5,
-              26
-            ]
+            [89.5, 26],
+            [92, 28],
+            [97.5, 29],
+            [97.5, 24],
+            [93, 22],
+            [91, 24.5],
+            [89.5, 26]
           ]
         ]
       }
@@ -55,12 +43,21 @@
       "type": "Feature",
       "id": "seismic_zone_5_kutch",
       "properties": {
+        "id": "seismic_zone_5_kutch",
+        "name": "Seismic Zone V (Kutch Fault Belt)",
+        "hazard_type": "seismic_zone",
+        "hazard_level": "Very High Risk",
+        "region_group": "peninsular",
+        "region_name": "Gujarat / Kutch Basin",
         "zone_id": "ZONE_V",
+        "zone_code": "Zone V",
         "zone_name": "Seismic Zone V (Kutch Fault Belt)",
         "seismic_intensity": "MSK IX or greater",
         "zone_factor_z": 0.36,
-        "color": "#dc2626",
-        "border_color": "#ef4444",
+        "peak_ground_accel": "0.36g (PGA >= 0.36g)",
+        "building_code_mandate": "IS 1893:2016 ductile detailing mandatory",
+        "color": "#ef4444",
+        "border_color": "#dc2626",
         "description": "Intraplate rifting zone along the Kutch Mainland Fault, Allah Bund, and Island Belt Fault.",
         "regions_covered": "Kutch District, Bhuj, Anjar, Gandhidham (Gujarat).",
         "authority": "Bureau of Indian Standards (IS 1893: 2016)"
@@ -69,26 +66,51 @@
         "type": "Polygon",
         "coordinates": [
           [
-            [
-              68.5,
-              23
-            ],
-            [
-              71,
-              23
-            ],
-            [
-              71.2,
-              24.5
-            ],
-            [
-              68.5,
-              24.5
-            ],
-            [
-              68.5,
-              23
-            ]
+            [68.5, 23],
+            [71, 23],
+            [71.2, 24.5],
+            [68.5, 24.5],
+            [68.5, 23]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "seismic_zone_5_himalayas",
+      "properties": {
+        "id": "seismic_zone_5_himalayas",
+        "name": "Seismic Zone V (Central & Western Himalayan Arc)",
+        "hazard_type": "seismic_zone",
+        "hazard_level": "Very High Risk",
+        "region_group": "himalayan",
+        "region_name": "Himalayan Arc / Kashmir to Uttarakhand",
+        "zone_id": "ZONE_V",
+        "zone_code": "Zone V",
+        "zone_name": "Seismic Zone V (Western Himalayan Syntaxis)",
+        "seismic_intensity": "MSK IX or greater",
+        "zone_factor_z": 0.36,
+        "peak_ground_accel": "0.36g (PGA >= 0.36g)",
+        "building_code_mandate": "IS 1893:2016 ductile detailing mandatory (IS 13920)",
+        "color": "#ef4444",
+        "border_color": "#dc2626",
+        "description": "Main Himalayan Frontal Thrust (MFT) and Main Boundary Thrust (MBT) compression corridor with high seismic slip deficit.",
+        "regions_covered": "Kashmir Valley, Kangra & Mandi (HP), Chamoli, Uttarkashi, Pithoragarh (Uttarakhand), North Bihar border belt.",
+        "authority": "Bureau of Indian Standards (BIS IS 1893: 2016)"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [74, 34.8],
+            [76, 34],
+            [77.5, 32.5],
+            [80, 30.5],
+            [81, 29.8],
+            [79.5, 29.5],
+            [76.5, 31.8],
+            [74.2, 33.2],
+            [74, 34.8]
           ]
         ]
       }
@@ -97,10 +119,19 @@
       "type": "Feature",
       "id": "seismic_zone_4_belt",
       "properties": {
+        "id": "seismic_zone_4_belt",
+        "name": "Seismic Zone IV (High Damage Risk)",
+        "hazard_type": "seismic_zone",
+        "hazard_level": "High Risk",
+        "region_group": "gangetic",
+        "region_name": "Indo-Gangetic Plains & Sub-Himalaya",
         "zone_id": "ZONE_IV",
+        "zone_code": "Zone IV",
         "zone_name": "Seismic Zone IV (High Damage Risk)",
         "seismic_intensity": "MSK VIII",
         "zone_factor_z": 0.24,
+        "peak_ground_accel": "0.24g (PGA = 0.24g)",
+        "building_code_mandate": "Seismic design for high-rise structures & soft soil amplification",
         "color": "#ea580c",
         "border_color": "#f97316",
         "description": "Main Himalayan Frontal Thrust belt, Delhi-Haridwar ridge, and active tectonic fault zones.",
@@ -111,46 +142,134 @@
         "type": "Polygon",
         "coordinates": [
           [
-            [
-              74,
-              32.5
-            ],
-            [
-              78,
-              31
-            ],
-            [
-              82,
-              28.5
-            ],
-            [
-              88,
-              26.5
-            ],
-            [
-              88.5,
-              22.5
-            ],
-            [
-              86,
-              24
-            ],
-            [
-              80,
-              27
-            ],
-            [
-              76.5,
-              28
-            ],
-            [
-              74.5,
-              30.5
-            ],
-            [
-              74,
-              32.5
-            ]
+            [74, 32.5],
+            [78, 31],
+            [82, 28.5],
+            [88, 26.5],
+            [88.5, 22.5],
+            [86, 24],
+            [80, 27],
+            [76.5, 28],
+            [74.5, 30.5],
+            [74, 32.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "seismic_zone_4_koyna",
+      "properties": {
+        "id": "seismic_zone_4_koyna",
+        "name": "Seismic Zone IV (Koyna Fault System)",
+        "hazard_type": "seismic_zone",
+        "hazard_level": "High Risk",
+        "region_group": "peninsular",
+        "region_name": "Maharashtra / Western Ghats",
+        "zone_id": "ZONE_IV",
+        "zone_code": "Zone IV",
+        "zone_name": "Seismic Zone IV (Koyna Fault System)",
+        "seismic_intensity": "MSK VIII",
+        "zone_factor_z": 0.24,
+        "peak_ground_accel": "0.24g",
+        "building_code_mandate": "Mandatory seismic reinforcement for Western Maharashtra dams & infrastructure",
+        "color": "#f97316",
+        "border_color": "#ea580c",
+        "description": "Classic global example of Reservoir-Triggered Seismicity (RTS) along the Koyna-Warna intraplate basement faults.",
+        "regions_covered": "Satara, Sangli, Ratnagiri, Kolhapur districts (Maharashtra).",
+        "authority": "Bureau of Indian Standards & NGRI"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [73.5, 17],
+            [74.2, 17],
+            [74.2, 17.8],
+            [73.5, 17.8],
+            [73.5, 17]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "seismic_zone_3_peninsular",
+      "properties": {
+        "id": "seismic_zone_3_peninsular",
+        "name": "Seismic Zone III (Moderate Damage Risk)",
+        "hazard_type": "seismic_zone",
+        "hazard_level": "Moderate Risk",
+        "region_group": "peninsular",
+        "region_name": "Peninsular India & Coastal Margins",
+        "zone_id": "ZONE_III",
+        "zone_code": "Zone III",
+        "zone_name": "Seismic Zone III (Moderate Damage Risk)",
+        "seismic_intensity": "MSK VII",
+        "zone_factor_z": 0.16,
+        "peak_ground_accel": "0.16g",
+        "building_code_mandate": "IS 1893 ductile design for municipal public buildings & bridges",
+        "color": "#eab308",
+        "border_color": "#ca8a04",
+        "description": "Moderate seismic hazard covering major industrial and metropolitan corridors along peninsular rift faults and coastlines.",
+        "regions_covered": "Mumbai, Thane, Pune, Chennai, Kolkata, Ahmedabad, Surat, Kochi, Goa, Lakshadweep, Narmada-Tapi rift zones.",
+        "authority": "Bureau of Indian Standards (BIS IS 1893: 2016)"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [71.5, 22],
+            [76, 22.5],
+            [79, 21],
+            [84, 21.5],
+            [87.5, 22],
+            [85, 18],
+            [80.5, 14.5],
+            [79, 11.5],
+            [76, 9.5],
+            [74, 14],
+            [72.5, 19],
+            [71.5, 22]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "seismic_zone_2_shield",
+      "properties": {
+        "id": "seismic_zone_2_shield",
+        "name": "Seismic Zone II (Low Damage Risk / Cratonic Core)",
+        "hazard_type": "seismic_zone",
+        "hazard_level": "Low Risk",
+        "region_group": "peninsular",
+        "region_name": "Central Deccan Craton & Southern Shield",
+        "zone_id": "ZONE_II",
+        "zone_code": "Zone II",
+        "zone_name": "Seismic Zone II (Low Damage Risk)",
+        "seismic_intensity": "MSK VI or less",
+        "zone_factor_z": 0.1,
+        "peak_ground_accel": "0.10g",
+        "building_code_mandate": "Basic structural tying & masonry integrity",
+        "color": "#3b82f6",
+        "border_color": "#2563eb",
+        "description": "Archean Dharwar, Bastar, and Singhbhum cratonic cores of the stable peninsular shield.",
+        "regions_covered": "Bengaluru, Hyderabad, Raipur, Nagpur, Bhopal, Visakhapatnam, Central Deccan Plateau.",
+        "authority": "Bureau of Indian Standards (BIS IS 1893: 2016)"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [75, 19.5],
+            [79.5, 23],
+            [83.5, 23.5],
+            [84, 19.5],
+            [80, 16],
+            [78, 13],
+            [76, 15],
+            [75, 19.5]
           ]
         ]
       }
@@ -161,22 +280,25 @@
       "properties": {
         "id": "eq_shillong_1897",
         "name": "1897 Great Shillong Earthquake",
+        "hazard_type": "earthquake",
+        "region_group": "northeast",
+        "region_name": "Shillong Plateau / Meghalaya",
         "year": 1897,
         "magnitude": 8.1,
+        "magnitude_mw": 8.1,
         "depth_km": 35,
         "lat": 26,
         "lng": 91,
         "casualties": "~1,542 casualties",
+        "fatalities_approx": 1542,
         "tectonic_setting": "Oldham Fault rupture beneath the Shillong Plateau",
+        "fault_system": "Oldham Blind Thrust Fault",
         "significance": "Richard Dixon Oldham used records of this earthquake to discover P, S, and surface seismic waves.",
         "authority": "Geological Survey of India (GSI Memoirs Vol. XXIX)"
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          91,
-          26
-        ]
+        "coordinates": [91, 26]
       }
     },
     {
@@ -185,22 +307,25 @@
       "properties": {
         "id": "eq_kangra_1905",
         "name": "1905 Kangra Earthquake",
+        "hazard_type": "earthquake",
+        "region_group": "himalayan",
+        "region_name": "Kangra / Himachal Pradesh",
         "year": 1905,
         "magnitude": 7.8,
+        "magnitude_mw": 7.8,
         "depth_km": 25,
         "lat": 32,
         "lng": 76.3,
         "casualties": ">20,000 casualties",
+        "fatalities_approx": 20000,
         "tectonic_setting": "Main Boundary Thrust (MBT), Western Himalaya",
+        "fault_system": "Main Boundary Thrust (MBT)",
         "significance": "Destroyed Kangra Fort and Dharamshala; led to early structural seismic regulations in India.",
         "authority": "Geological Survey of India (Middlemiss, 1910)"
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          76.3,
-          32
-        ]
+        "coordinates": [76.3, 32]
       }
     },
     {
@@ -209,22 +334,25 @@
       "properties": {
         "id": "eq_bihar_nepal_1934",
         "name": "1934 Bihar–Nepal Earthquake",
+        "hazard_type": "earthquake",
+        "region_group": "gangetic",
+        "region_name": "North Bihar & Nepal Terai",
         "year": 1934,
         "magnitude": 8,
+        "magnitude_mw": 8.0,
         "depth_km": 15,
         "lat": 26.5,
         "lng": 86.5,
         "casualties": ">10,700 casualties",
+        "fatalities_approx": 10700,
         "tectonic_setting": "Main Frontal Thrust (MFT) / Indo-Gangetic Plains",
+        "fault_system": "Himalayan Frontal Thrust",
         "significance": "Extensive liquefaction across North Bihar (Munger, Muzaffarpur); Mahatma Gandhi visited for relief.",
         "authority": "Geological Survey of India (Dunn et al., 1939)"
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          86.5,
-          26.5
-        ]
+        "coordinates": [86.5, 26.5]
       }
     },
     {
@@ -233,22 +361,49 @@
       "properties": {
         "id": "eq_assam_1950",
         "name": "1950 Great Assam–Tibet Earthquake",
+        "hazard_type": "earthquake",
+        "region_group": "northeast",
+        "region_name": "Mishmi Hills / Upper Assam",
         "year": 1950,
         "magnitude": 8.6,
+        "magnitude_mw": 8.6,
         "depth_km": 15,
         "lat": 28.5,
         "lng": 96.5,
         "casualties": ">4,800 casualties",
+        "fatalities_approx": 4800,
         "tectonic_setting": "Eastern Himalayan Syntaxis strike-slip and thrust",
+        "fault_system": "Mishmi Thrust",
         "significance": "Largest known terrestrial intra-continental earthquake; dammed Subansiri river, altered Brahmaputra bed.",
         "authority": "Geological Survey of India & USGS"
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          96.5,
-          28.5
-        ]
+        "coordinates": [96.5, 28.5]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "eq_uttarkashi_1991",
+      "properties": {
+        "id": "eq_uttarkashi_1991",
+        "name": "1991 Uttarkashi Earthquake",
+        "hazard_type": "earthquake",
+        "region_group": "himalayan",
+        "region_name": "Garhwal / Uttarakhand",
+        "year": 1991,
+        "magnitude": 6.8,
+        "magnitude_mw": 6.8,
+        "depth_km": 10,
+        "casualties": "~1,000 casualties",
+        "fatalities_approx": 1000,
+        "tectonic_setting": "Main Central Thrust (MCT), Garhwal Himalaya",
+        "fault_system": "Main Central Thrust",
+        "authority": "National Centre for Seismology & GSI"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [78.8, 30.7]
       }
     },
     {
@@ -257,22 +412,73 @@
       "properties": {
         "id": "eq_latur_1993",
         "name": "1993 Latur (Killari) Earthquake",
+        "hazard_type": "earthquake",
+        "region_group": "peninsular",
+        "region_name": "Marathwada / Maharashtra",
         "year": 1993,
         "magnitude": 6.2,
+        "magnitude_mw": 6.2,
         "depth_km": 7,
         "lat": 18.06,
         "lng": 76.58,
         "casualties": "~9,748 casualties",
+        "fatalities_approx": 9748,
         "tectonic_setting": "Stable Continental Region (SCR) intraplate thrust beneath Deccan Traps",
+        "fault_system": "Kurduvadi Rift",
         "significance": "Disproved the assumption that Peninsular India was entirely aseismic; revised national seismic code IS 1893.",
         "authority": "Geological Survey of India & IMD"
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          76.58,
-          18.06
-        ]
+        "coordinates": [76.58, 18.06]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "eq_jabalpur_1997",
+      "properties": {
+        "id": "eq_jabalpur_1997",
+        "name": "1997 Jabalpur Earthquake",
+        "hazard_type": "earthquake",
+        "region_group": "peninsular",
+        "region_name": "Madhya Pradesh / Narmada Valley",
+        "year": 1997,
+        "magnitude": 5.8,
+        "magnitude_mw": 5.8,
+        "depth_km": 36,
+        "casualties": "55 casualties",
+        "fatalities_approx": 55,
+        "tectonic_setting": "Narmada-Son Lineament (NSL) deep crustal shear",
+        "fault_system": "Narmada South Fault",
+        "authority": "National Centre for Seismology & IMD"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [80.06, 23.08]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "eq_chamoli_1999",
+      "properties": {
+        "id": "eq_chamoli_1999",
+        "name": "1999 Chamoli Earthquake",
+        "hazard_type": "earthquake",
+        "region_group": "himalayan",
+        "region_name": "Chamoli / Uttarakhand",
+        "year": 1999,
+        "magnitude": 6.8,
+        "magnitude_mw": 6.8,
+        "depth_km": 15,
+        "casualties": "~103 casualties",
+        "fatalities_approx": 103,
+        "tectonic_setting": "Alaknanda Fault / Main Central Thrust",
+        "fault_system": "Chamoli Thrust",
+        "authority": "National Centre for Seismology & GSI"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [79.4, 30.4]
       }
     },
     {
@@ -281,22 +487,25 @@
       "properties": {
         "id": "eq_bhuj_2001",
         "name": "2001 Bhuj (Gujarat) Earthquake",
+        "hazard_type": "earthquake",
+        "region_group": "peninsular",
+        "region_name": "Kutch / Gujarat",
         "year": 2001,
         "magnitude": 7.7,
+        "magnitude_mw": 7.7,
         "depth_km": 16,
         "lat": 23.419,
         "lng": 70.232,
         "casualties": "~20,085 casualties",
+        "fatalities_approx": 20085,
         "tectonic_setting": "South Wagad Fault / Kutch rift basin",
+        "fault_system": "South Wagad Thrust Fault",
         "significance": "Occurred on Republic Day 2001; prompted the establishment of the Gujarat State Disaster Management Authority (GSDMA) and NDMA.",
         "authority": "National Disaster Management Authority (NDMA) & IMD"
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          70.232,
-          23.419
-        ]
+        "coordinates": [70.232, 23.419]
       }
     },
     {
@@ -305,21 +514,902 @@
       "properties": {
         "id": "eq_tsunami_2004",
         "name": "2004 Indian Ocean Tsunami & Megathrust",
+        "hazard_type": "earthquake",
+        "region_group": "coastal",
+        "region_name": "Indian Ocean / Andaman & Nicobar / Coromandel Coast",
         "year": 2004,
         "magnitude": 9.1,
+        "magnitude_mw": 9.1,
         "depth_km": 30,
         "lat": 3.316,
         "lng": 95.854,
         "casualties": ">16,000 casualties in India",
+        "fatalities_approx": 16000,
         "tectonic_setting": "Sunda Megathrust plate boundary subduction",
+        "fault_system": "Sunda Trench Megathrust",
         "significance": "Generated catastrophic tsunami waves across Tamil Nadu, Andhra Pradesh, Kerala, and Andaman & Nicobar; led to India establishing the Indian Tsunami Early Warning Centre (ITEWC) at INCOIS Hyderabad.",
         "authority": "INCOIS / Ministry of Earth Sciences & USGS"
       },
       "geometry": {
         "type": "Point",
+        "coordinates": [95.854, 3.316]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "eq_kashmir_2005",
+      "properties": {
+        "id": "eq_kashmir_2005",
+        "name": "2005 Kashmir (Uri / Muzaffarabad) Earthquake",
+        "hazard_type": "earthquake",
+        "region_group": "himalayan",
+        "region_name": "Kashmir / Pir Panjal Range",
+        "year": 2005,
+        "magnitude": 7.6,
+        "magnitude_mw": 7.6,
+        "depth_km": 26,
+        "casualties": ">86,000 total (>1,400 in J&K, India)",
+        "fatalities_approx": 1400,
+        "tectonic_setting": "Balakot-Bagh Fault / Western Himalayan Syntaxis",
+        "fault_system": "Balakot-Bagh Fault",
+        "authority": "National Centre for Seismology & IMD"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [73.6, 34.4]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "eq_sikkim_2011",
+      "properties": {
+        "id": "eq_sikkim_2011",
+        "name": "2011 Sikkim Earthquake",
+        "hazard_type": "earthquake",
+        "region_group": "himalayan",
+        "region_name": "Sikkim / Kanchenjunga Range",
+        "year": 2011,
+        "magnitude": 6.9,
+        "magnitude_mw": 6.9,
+        "depth_km": 19.7,
+        "casualties": "111 casualties (60 in Sikkim)",
+        "fatalities_approx": 111,
+        "tectonic_setting": "Kanchenjunga strike-slip fault system",
+        "fault_system": "Kanchenjunga Fault",
+        "authority": "Geological Survey of India & NDMA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [88.2, 27.7]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "eq_nepal_bihar_2015",
+      "properties": {
+        "id": "eq_nepal_bihar_2015",
+        "name": "2015 Gorkha (Nepal–North Bihar) Earthquake",
+        "hazard_type": "earthquake",
+        "region_group": "gangetic",
+        "region_name": "North Bihar & Himalayan Foothills",
+        "year": 2015,
+        "magnitude": 7.8,
+        "magnitude_mw": 7.8,
+        "depth_km": 8.2,
+        "casualties": "8,964 total (~100 in Bihar/UP)",
+        "fatalities_approx": 100,
+        "tectonic_setting": "Main Himalayan Thrust (MHT) decollement rupture",
+        "fault_system": "Main Himalayan Thrust",
+        "authority": "National Centre for Seismology & NDMA"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [84.7, 28.2]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "cyclone_odisha_1999_track",
+      "properties": {
+        "id": "cyclone_odisha_1999_track",
+        "name": "1999 Odisha Super Cyclone (BOB 06)",
+        "hazard_type": "cyclone",
+        "region_group": "coastal",
+        "region_name": "Odisha Coast / Bay of Bengal",
+        "year": 1999,
+        "cyclone_category": "Category 5 Super Cyclonic Storm",
+        "wind_speed_kmh": 260,
+        "central_pressure_hpa": 912,
+        "storm_surge_m": 6.0,
+        "landfall_point": "Paradip, Jagatsinghpur (Odisha)",
+        "casualties": "9,887 confirmed fatalities",
+        "fatalities_approx": 9887,
+        "authority": "India Meteorological Department (IMD) / OSDMA",
+        "color": "#c026d3"
+      },
+      "geometry": {
+        "type": "LineString",
         "coordinates": [
-          95.854,
-          3.316
+          [98.5, 9.5],
+          [95, 11.5],
+          [92, 13.5],
+          [89.5, 15.5],
+          [87.5, 17.5],
+          [86.7, 20.3],
+          [86.2, 20.8],
+          [85.8, 20.5],
+          [86, 19.8]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "cyclone_phailin_2013_track",
+      "properties": {
+        "id": "cyclone_phailin_2013_track",
+        "name": "2013 Cyclone Phailin",
+        "hazard_type": "cyclone",
+        "region_group": "coastal",
+        "region_name": "Odisha & Andhra Pradesh Coast",
+        "year": 2013,
+        "cyclone_category": "Very Severe Cyclonic Storm (Cat 4/5 equivalent)",
+        "wind_speed_kmh": 215,
+        "central_pressure_hpa": 940,
+        "storm_surge_m": 3.5,
+        "landfall_point": "Gopalpur, Ganjam (Odisha)",
+        "casualties": "45 casualties",
+        "fatalities_approx": 45,
+        "authority": "India Meteorological Department (IMD) & OSDMA",
+        "color": "#a855f7"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [96, 11],
+          [92.5, 13],
+          [89, 15],
+          [86.5, 17.5],
+          [85, 19.3],
+          [83.5, 21],
+          [82, 23]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "cyclone_hudhud_2014_track",
+      "properties": {
+        "id": "cyclone_hudhud_2014_track",
+        "name": "2014 Cyclone Hudhud",
+        "hazard_type": "cyclone",
+        "region_group": "coastal",
+        "region_name": "Andhra Pradesh / Visakhapatnam",
+        "year": 2014,
+        "cyclone_category": "Extremely Severe Cyclonic Storm",
+        "wind_speed_kmh": 185,
+        "central_pressure_hpa": 960,
+        "storm_surge_m": 2.0,
+        "landfall_point": "Visakhapatnam City (Andhra Pradesh)",
+        "casualties": "124 casualties",
+        "fatalities_approx": 124,
+        "authority": "India Meteorological Department (IMD) & APSDMA",
+        "color": "#8b5cf6"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [93, 12],
+          [90, 13.5],
+          [87, 15],
+          [84.5, 16.5],
+          [83.3, 17.7],
+          [82, 19.5],
+          [81, 21.5]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "cyclone_fani_2019_track",
+      "properties": {
+        "id": "cyclone_fani_2019_track",
+        "name": "2019 Cyclone Fani",
+        "hazard_type": "cyclone",
+        "region_group": "coastal",
+        "region_name": "Odisha Coast / Puri",
+        "year": 2019,
+        "cyclone_category": "Extremely Severe Cyclonic Storm (Cat 4)",
+        "wind_speed_kmh": 215,
+        "central_pressure_hpa": 932,
+        "storm_surge_m": 5.0,
+        "landfall_point": "Puri (Odisha)",
+        "casualties": "89 casualties",
+        "fatalities_approx": 89,
+        "authority": "India Meteorological Department (IMD) & NDMA",
+        "color": "#ec4899"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [88, 5],
+          [86.5, 8.5],
+          [84.5, 12],
+          [84, 15],
+          [85, 18],
+          [85.8, 19.8],
+          [86.5, 20.8],
+          [88, 22.5],
+          [89.5, 24.5]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "cyclone_amphan_2020_track",
+      "properties": {
+        "id": "cyclone_amphan_2020_track",
+        "name": "2020 Super Cyclone Amphan",
+        "hazard_type": "cyclone",
+        "region_group": "gangetic",
+        "region_name": "West Bengal & Sundarbans Delta",
+        "year": 2020,
+        "cyclone_category": "Category 5 Super Cyclonic Storm",
+        "wind_speed_kmh": 260,
+        "central_pressure_hpa": 920,
+        "storm_surge_m": 5.0,
+        "landfall_point": "Bakkhali / Sagar Island (West Bengal)",
+        "casualties": "128 casualties",
+        "fatalities_approx": 128,
+        "authority": "India Meteorological Department (IMD) & WB DMA",
+        "color": "#c026d3"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [86.5, 10.5],
+          [86, 13],
+          [86.5, 16],
+          [87, 19],
+          [88.3, 21.6],
+          [88.5, 23],
+          [89.5, 25.5]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "cyclone_tauktae_2021_track",
+      "properties": {
+        "id": "cyclone_tauktae_2021_track",
+        "name": "2021 Cyclone Tauktae",
+        "hazard_type": "cyclone",
+        "region_group": "coastal",
+        "region_name": "Arabian Sea / West Coast to Gujarat",
+        "year": 2021,
+        "cyclone_category": "Extremely Severe Cyclonic Storm (Cat 4)",
+        "wind_speed_kmh": 220,
+        "central_pressure_hpa": 950,
+        "storm_surge_m": 3.5,
+        "landfall_point": "Una / Diu Coast (Gujarat)",
+        "casualties": "169 casualties",
+        "fatalities_approx": 169,
+        "authority": "India Meteorological Department (IMD) & GSDMA",
+        "color": "#f43f5e"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [73, 10],
+          [72.5, 13],
+          [71.5, 16],
+          [71, 18.5],
+          [71.1, 20.8],
+          [71.5, 22.5],
+          [73, 25]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "cyclone_biparjoy_2023_track",
+      "properties": {
+        "id": "cyclone_biparjoy_2023_track",
+        "name": "2023 Cyclone Biparjoy",
+        "hazard_type": "cyclone",
+        "region_group": "coastal",
+        "region_name": "Arabian Sea / Kutch Coast",
+        "year": 2023,
+        "cyclone_category": "Very Severe Cyclonic Storm",
+        "wind_speed_kmh": 165,
+        "central_pressure_hpa": 966,
+        "storm_surge_m": 2.5,
+        "landfall_point": "Jakhau Port, Kutch (Gujarat)",
+        "casualties": "2 casualties",
+        "fatalities_approx": 2,
+        "authority": "India Meteorological Department (IMD) & NDMA",
+        "color": "#e11d48"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [66.5, 12],
+          [66, 15],
+          [67, 18],
+          [67.5, 20.5],
+          [68.6, 23.2],
+          [70.5, 24.5],
+          [72.5, 25.5]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "flood_brahmaputra_basin",
+      "properties": {
+        "id": "flood_brahmaputra_basin",
+        "name": "Brahmaputra Valley & Kaziranga Floodplain",
+        "hazard_type": "flood",
+        "hazard_level": "Chronic High Risk",
+        "region_group": "northeast",
+        "region_name": "Assam Valley",
+        "basin_name": "Brahmaputra River Basin",
+        "inundated_sqkm": 38200,
+        "vulnerable_population": "31 Million",
+        "authority": "Brahmaputra Board & Central Water Commission",
+        "color": "#0284c7"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [90, 26.2],
+            [92.5, 26.7],
+            [95, 27.5],
+            [95.8, 27.8],
+            [95.5, 27.2],
+            [93.5, 26.5],
+            [91.5, 26],
+            [90, 26],
+            [90, 26.2]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "flood_north_bihar_kosi",
+      "properties": {
+        "id": "flood_north_bihar_kosi",
+        "name": "North Bihar Plains (Kosi–Gandak Avulsion Basin)",
+        "hazard_type": "flood",
+        "hazard_level": "Extremely High Risk",
+        "region_group": "gangetic",
+        "region_name": "North Bihar",
+        "basin_name": "Kosi, Gandak, Bagmati Rivers",
+        "inundated_sqkm": 68800,
+        "vulnerable_population": "76% of North Bihar population",
+        "authority": "Central Water Commission & Bihar WRD",
+        "color": "#0284c7"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [84.5, 27.2],
+            [86.5, 26.8],
+            [87.8, 26.4],
+            [87.8, 25.4],
+            [86, 25.3],
+            [84.5, 25.6],
+            [84.5, 27.2]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "flood_mahanadi_delta",
+      "properties": {
+        "id": "flood_mahanadi_delta",
+        "name": "Mahanadi Delta & Coastal Floodplains",
+        "hazard_type": "flood",
+        "hazard_level": "High Risk",
+        "region_group": "coastal",
+        "region_name": "Coastal Odisha",
+        "basin_name": "Mahanadi–Brahmani Delta",
+        "inundated_sqkm": 14500,
+        "vulnerable_population": "12 Million",
+        "authority": "Central Water Commission & Odisha WRD",
+        "color": "#0284c7"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [85.6, 20.6],
+            [86.8, 20.8],
+            [87, 20.2],
+            [86.2, 19.8],
+            [85.6, 20.6]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "flood_kerala_periyar_2018",
+      "properties": {
+        "id": "flood_kerala_periyar_2018",
+        "name": "Kerala Periyar & Pamba Basins (2018 Deluge Zone)",
+        "hazard_type": "flood",
+        "hazard_level": "Very High Risk",
+        "region_group": "coastal",
+        "region_name": "Central Kerala",
+        "basin_name": "Periyar, Pamba, Chalakudy Rivers",
+        "inundated_sqkm": 5500,
+        "vulnerable_population": "5.4 Million",
+        "authority": "Central Water Commission & KSDMA",
+        "color": "#0284c7"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [76.2, 10.3],
+            [76.8, 10.2],
+            [77, 9.4],
+            [76.4, 9.2],
+            [76.2, 10.3]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "flood_mumbai_mithi",
+      "properties": {
+        "id": "flood_mumbai_mithi",
+        "name": "Mumbai Mithi River & Coastal Lowland Flood Basin",
+        "hazard_type": "flood",
+        "hazard_level": "High Urban Risk",
+        "region_group": "coastal",
+        "region_name": "Mumbai Metropolitan Region",
+        "basin_name": "Mithi River & Coastal Estuaries",
+        "inundated_sqkm": 600,
+        "vulnerable_population": "14 Million MMR urban residents",
+        "authority": "Brihanmumbai Municipal Corporation & NDMA",
+        "color": "#0284c7"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [72.78, 19.25],
+            [72.98, 19.25],
+            [72.98, 18.9],
+            [72.78, 18.9],
+            [72.78, 19.25]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "landslide_wayanad_escarpment",
+      "properties": {
+        "id": "landslide_wayanad_escarpment",
+        "name": "Wayanad Escarpment (July 2024 Debris Flow Zone)",
+        "hazard_type": "landslide",
+        "hazard_level": "Very High Susceptibility",
+        "region_group": "peninsular",
+        "region_name": "Western Ghats / Wayanad, Kerala",
+        "susceptibility_rating": "GSI NLSM Very High Susceptibility Zone",
+        "rock_formation": "Charnockite & Gneiss with thick lateritic soil mantle",
+        "authority": "Geological Survey of India (GSI) & KSDMA",
+        "color": "#ea580c"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [76.05, 11.45],
+            [76.25, 11.6],
+            [76.35, 11.48],
+            [76.15, 11.35],
+            [76.05, 11.45]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "landslide_garhwal_kedarnath",
+      "properties": {
+        "id": "landslide_garhwal_kedarnath",
+        "name": "Garhwal MCT Corridor (Kedarnath–Joshimath Axis)",
+        "hazard_type": "landslide",
+        "hazard_level": "Very High Susceptibility",
+        "region_group": "himalayan",
+        "region_name": "Garhwal Himalaya / Uttarakhand",
+        "susceptibility_rating": "GSI NLSM Very High Susceptibility Zone",
+        "rock_formation": "Central Crystallines cut by Main Central Thrust",
+        "authority": "Geological Survey of India & WIHG",
+        "color": "#ea580c"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [78.8, 30.5],
+            [79.8, 30.9],
+            [79.9, 30.4],
+            [79, 30.1],
+            [78.8, 30.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "landslide_himachal_beas",
+      "properties": {
+        "id": "landslide_himachal_beas",
+        "name": "Kangra–Kullu–Mandi Corridor (Beas Valley)",
+        "hazard_type": "landslide",
+        "hazard_level": "High to Very High",
+        "region_group": "himalayan",
+        "region_name": "Himachal Pradesh",
+        "susceptibility_rating": "GSI NLSM High Susceptibility Zone",
+        "rock_formation": "Siwaliks & Lesser Himalayan meta-sediments",
+        "authority": "Geological Survey of India & HPSDMA",
+        "color": "#ea580c"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [76.8, 32.2],
+            [77.4, 32.3],
+            [77.3, 31.5],
+            [76.7, 31.6],
+            [76.8, 32.2]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "landslide_sikkim_teesta",
+      "properties": {
+        "id": "landslide_sikkim_teesta",
+        "name": "Teesta Valley & Darjeeling Sub-Himalaya",
+        "hazard_type": "landslide",
+        "hazard_level": "Very High Susceptibility",
+        "region_group": "himalayan",
+        "region_name": "Sikkim & North Bengal",
+        "susceptibility_rating": "GSI NLSM Very High Susceptibility Zone",
+        "rock_formation": "Daling Group phyllites and quartzites",
+        "authority": "Geological Survey of India & Sikkim SDMA",
+        "color": "#ea580c"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [88.3, 27.5],
+            [88.7, 27.6],
+            [88.6, 26.9],
+            [88.2, 27],
+            [88.3, 27.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "drought_marathwada_vidarbha",
+      "properties": {
+        "id": "drought_marathwada_vidarbha",
+        "name": "Marathwada & Western Vidarbha Drought Belt",
+        "hazard_type": "drought",
+        "hazard_level": "Chronic Severe Drought",
+        "region_group": "peninsular",
+        "region_name": "Maharashtra Plateau",
+        "aridity_index": "Semi-Arid (0.20 to 0.50)",
+        "affected_districts_count": 8,
+        "authority": "Central Water Commission & Maharashtra WRD",
+        "color": "#b45309"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [75, 19.8],
+            [77.5, 20.2],
+            [78.5, 19.5],
+            [77, 18],
+            [75.2, 18.2],
+            [75, 19.8]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "drought_rayalaseema",
+      "properties": {
+        "id": "drought_rayalaseema",
+        "name": "Rayalaseema Semi-Arid Core",
+        "hazard_type": "drought",
+        "hazard_level": "Chronic Severe Drought",
+        "region_group": "peninsular",
+        "region_name": "Andhra Pradesh Interior",
+        "aridity_index": "Arid to Semi-Arid (0.15 to 0.35)",
+        "affected_districts_count": 4,
+        "authority": "Central Water Commission & IMD",
+        "color": "#b45309"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [76.8, 15.5],
+            [78.5, 15.5],
+            [79, 13.5],
+            [77.5, 13.5],
+            [76.8, 15.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "drought_thar_rajasthan",
+      "properties": {
+        "id": "drought_thar_rajasthan",
+        "name": "Thar Desert Core & Western Rajasthan",
+        "hazard_type": "drought",
+        "hazard_level": "Hyper-Arid Drought Risk",
+        "region_group": "peninsular",
+        "region_name": "Western Rajasthan",
+        "aridity_index": "Hyper-Arid (<0.05 to 0.15)",
+        "affected_districts_count": 10,
+        "authority": "CAZRI & Central Water Commission",
+        "color": "#b45309"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [69.5, 27.5],
+            [73.5, 28.5],
+            [74, 26],
+            [71, 24.5],
+            [69.5, 27.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "drought_bundelkhand",
+      "properties": {
+        "id": "drought_bundelkhand",
+        "name": "Bundelkhand Gneissic Plateau",
+        "hazard_type": "drought",
+        "hazard_level": "Severe Multi-Year Drought",
+        "region_group": "gangetic",
+        "region_name": "UP & MP Border Region",
+        "aridity_index": "Semi-Arid (0.28 to 0.42)",
+        "affected_districts_count": 13,
+        "authority": "NITI Aayog & Central Water Commission",
+        "color": "#b45309"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [78, 25.5],
+            [80.5, 25.5],
+            [80.5, 24.2],
+            [78.2, 24.2],
+            [78, 25.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "tsunami_coromandel_coast",
+      "properties": {
+        "id": "tsunami_coromandel_coast",
+        "name": "Coromandel Coastal Tsunami Inundation Buffer",
+        "hazard_type": "tsunami",
+        "hazard_level": "Very High Tsunami Hazard",
+        "region_group": "coastal",
+        "region_name": "Tamil Nadu & Puducherry Coast",
+        "inundation_buffer_km": 1.5,
+        "max_runup_m": 10.0,
+        "authority": "INCOIS (Indian Tsunami Early Warning Centre)",
+        "color": "#06b6d4"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [80.3, 13.5],
+          [80.25, 13.08],
+          [80, 12],
+          [79.85, 11],
+          [79.85, 10.5],
+          [79.4, 9.8],
+          [79.3, 9.2]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "tsunami_andaman_nicobar",
+      "properties": {
+        "id": "tsunami_andaman_nicobar",
+        "name": "Andaman & Nicobar Trench Subduction Margin",
+        "hazard_type": "tsunami",
+        "hazard_level": "Extreme Near-Field Tsunami Hazard",
+        "region_group": "coastal",
+        "region_name": "Andaman & Nicobar Islands",
+        "inundation_buffer_km": 3.0,
+        "max_runup_m": 12.0,
+        "authority": "INCOIS & Survey of India",
+        "color": "#06b6d4"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [93, 13.5],
+          [92.8, 12.5],
+          [92.7, 11.5],
+          [92.8, 9.2],
+          [93.8, 7],
+          [93.9, 6.7]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "tsunami_andhra_coast",
+      "properties": {
+        "id": "tsunami_andhra_coast",
+        "name": "Andhra Pradesh Coastal Tsunami Inundation Zone",
+        "hazard_type": "tsunami",
+        "hazard_level": "High Tsunami Hazard",
+        "region_group": "coastal",
+        "region_name": "Andhra Pradesh Coast",
+        "inundation_buffer_km": 1.2,
+        "max_runup_m": 4.5,
+        "authority": "INCOIS & APSDMA",
+        "color": "#06b6d4"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [80.3, 14],
+          [80.8, 15.5],
+          [81.8, 16.2],
+          [82.4, 16.8],
+          [83.3, 17.7],
+          [84.2, 18.5]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "heatwave_vidarbha_central",
+      "properties": {
+        "id": "heatwave_vidarbha_central",
+        "name": "Vidarbha & Central India Heat Core",
+        "hazard_type": "heatwave",
+        "hazard_level": "Severe Heatwave Core Zone",
+        "region_group": "peninsular",
+        "region_name": "Eastern Maharashtra / Central India",
+        "max_recorded_temp_c": 48.6,
+        "avg_heatwave_days": 18,
+        "authority": "India Meteorological Department (IMD) & NDMA",
+        "color": "#e11d48"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [78.5, 21.8],
+            [80.5, 21.8],
+            [80.5, 19.8],
+            [78.5, 19.8],
+            [78.5, 21.8]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "heatwave_thar_rajasthan",
+      "properties": {
+        "id": "heatwave_thar_rajasthan",
+        "name": "Western Rajasthan Extreme Arid Heat Zone",
+        "hazard_type": "heatwave",
+        "hazard_level": "National Extreme Record Zone",
+        "region_group": "peninsular",
+        "region_name": "Western Rajasthan",
+        "max_recorded_temp_c": 51.0,
+        "avg_heatwave_days": 22,
+        "authority": "India Meteorological Department (IMD)",
+        "color": "#e11d48"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [70, 28.5],
+            [74.5, 28.5],
+            [74.5, 25.5],
+            [70, 25.5],
+            [70, 28.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "heatwave_gangetic_urban",
+      "properties": {
+        "id": "heatwave_gangetic_urban",
+        "name": "Indo-Gangetic & Delhi-NCR Urban Heat Corridor",
+        "hazard_type": "heatwave",
+        "hazard_level": "High Risk + Urban Heat Island",
+        "region_group": "gangetic",
+        "region_name": "Delhi-NCR, Western UP, Haryana, Punjab",
+        "max_recorded_temp_c": 49.2,
+        "avg_heatwave_days": 15,
+        "authority": "India Meteorological Department & Delhi DMA",
+        "color": "#e11d48"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [75.5, 30.5],
+            [78.5, 29.5],
+            [81, 27.5],
+            [80, 26.5],
+            [76.5, 27.5],
+            [75.5, 30.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "heatwave_rayalaseema_telangana",
+      "properties": {
+        "id": "heatwave_rayalaseema_telangana",
+        "name": "Telangana & Rayalaseema Humid Heat Belt",
+        "hazard_type": "heatwave",
+        "hazard_level": "High Wet-Bulb Hazard",
+        "region_group": "peninsular",
+        "region_name": "Telangana & Andhra Pradesh Interior",
+        "max_recorded_temp_c": 47.5,
+        "avg_heatwave_days": 14,
+        "authority": "India Meteorological Department & TSDMA",
+        "color": "#e11d48"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [78, 18.8],
+            [80.8, 18.8],
+            [80.5, 16.5],
+            [78, 16.5],
+            [78, 18.8]
+          ]
         ]
       }
     }

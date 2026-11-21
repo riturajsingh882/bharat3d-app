@@ -9,9 +9,11 @@ import { HistoricalTimeline } from './components/HistoricalTimeline';
 import { StateComparisonModal } from './components/StateComparisonModal';
 import { SoilDataModal } from './components/SoilDataModal';
 import { EnvironmentalComparisonDeck } from './components/EnvironmentalComparisonDeck';
+import { DisasterTimelineDeck } from './components/DisasterTimelineDeck';
 import { PanelLeftClose, PanelLeftOpen, Mountain, Leaf, Landmark, Scroll, Compass, AlertTriangle, Route, Info } from 'lucide-react';
-import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory, EnvironmentalPillar, EnvironmentalComparisonConfig } from './types';
+import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory, EnvironmentalPillar, EnvironmentalComparisonConfig, DisasterHazardType, DisasterRegion, HistoricalDisasterEvent } from './types';
 import { HISTORICAL_ERAS } from './data/historicalEras';
+import { DISASTER_HAZARDS_BY_ID } from './data/disasterIntelligence';
 import { 
   ALL_ENVIRONMENTAL_PILLARS, 
   PILLAR_VIEWPORTS, 
@@ -235,6 +237,102 @@ export function App() {
     }
   };
 
+  // Disaster & Hazard Intelligence State
+  const ALL_DISASTER_HAZARDS: DisasterHazardType[] = [
+    'seismic_zone',
+    'earthquake',
+    'cyclone',
+    'flood',
+    'landslide',
+    'drought',
+    'tsunami',
+    'heatwave'
+  ];
+
+  const [disasterHazardTypes, setDisasterHazardTypes] = useState<Set<DisasterHazardType>>(
+    new Set<DisasterHazardType>(ALL_DISASTER_HAZARDS)
+  );
+  const [disasterRegionFilter, setDisasterRegionFilter] = useState<DisasterRegion>('all');
+  const [isDisasterTimelineOpen, setIsDisasterTimelineOpen] = useState<boolean>(false);
+  const [selectedDisasterEventId, setSelectedDisasterEventId] = useState<string | null>(null);
+
+  const toggleDisasterHazardType = (hazard: DisasterHazardType) => {
+    setDisasterHazardTypes(prev => {
+      const next = new Set(prev);
+      if (next.has(hazard)) {
+        next.delete(hazard);
+      } else {
+        next.add(hazard);
+      }
+      return next;
+    });
+    if (!activeLayers.has('disaster_seismic')) {
+      setActiveLayers(prev => new Set(prev).add('disaster_seismic'));
+    }
+  };
+
+  const selectAllDisasterHazards = () => {
+    setDisasterHazardTypes(new Set<DisasterHazardType>(ALL_DISASTER_HAZARDS));
+    if (!activeLayers.has('disaster_seismic')) {
+      setActiveLayers(prev => new Set(prev).add('disaster_seismic'));
+    }
+  };
+
+  const clearDisasterHazards = () => {
+    setDisasterHazardTypes(new Set<DisasterHazardType>());
+  };
+
+  const handleSelectDisasterEvent = (event: HistoricalDisasterEvent) => {
+    setSelectedDisasterEventId(event.id);
+    if (!activeLayers.has('disaster_seismic')) {
+      setActiveLayers(prev => new Set(prev).add('disaster_seismic'));
+    }
+    setDisasterHazardTypes(prev => new Set(prev).add(event.hazardType));
+
+    setSearchTarget({
+      name: event.name,
+      type: 'disaster_hazard',
+      key: event.id,
+      lat: event.coordinates[1],
+      lng: event.coordinates[0],
+      zoom: event.zoom || 7.5,
+      pitch: event.pitch || 45,
+      bearing: event.bearing || 0
+    });
+
+    const featureMatch = DISASTER_HAZARDS_BY_ID[event.id];
+    const props = featureMatch?.properties || {
+      id: event.id,
+      name: event.name,
+      year: event.year,
+      hazard_type: event.hazardType,
+      region_name: event.regionName,
+      summary: event.summary,
+      authority: event.authority,
+      official_reference: event.officialReference,
+      magnitude_mw: event.hazardType === 'earthquake' ? parseFloat(event.magnitudeOrIntensity.replace(/[^0-9.]/g, '')) || undefined : undefined,
+      casualties: event.casualtiesApprox
+    };
+
+    let featType: SelectedFeatureInfo['type'] = 'disaster_hazard';
+    if (event.hazardType === 'earthquake') featType = 'earthquake_epicenter';
+    else if (event.hazardType === 'seismic_zone') featType = 'seismic_zone';
+    else if (event.hazardType === 'cyclone') featType = 'cyclone_track';
+    else if (event.hazardType === 'flood') featType = 'flood_zone';
+    else if (event.hazardType === 'landslide') featType = 'landslide_zone';
+    else if (event.hazardType === 'drought') featType = 'drought_zone';
+    else if (event.hazardType === 'tsunami') featType = 'tsunami_zone';
+    else if (event.hazardType === 'heatwave') featType = 'heatwave_zone';
+
+    setSelectedFeature({
+      type: featType,
+      name: event.name,
+      properties: props,
+      coordinates: event.coordinates,
+      geometry: featureMatch?.geometry
+    });
+  };
+
   // Ingest Demographics Data
   useEffect(() => {
     fetch('/data/census_demographics.json')
@@ -415,6 +513,10 @@ export function App() {
     setTradeCategories(new Set());
     setSelectedHistoricalPeriod('maurya');
     setIsTimelineOpen(false);
+    setDisasterHazardTypes(new Set<DisasterHazardType>(ALL_DISASTER_HAZARDS));
+    setDisasterRegionFilter('all');
+    setIsDisasterTimelineOpen(false);
+    setSelectedDisasterEventId(null);
     setSelectedFeature(null);
   };
 
@@ -537,6 +639,15 @@ export function App() {
               onSelectAllEnvironmentalPillars={selectAllEnvironmentalPillars}
               onClearEnvironmentalPillars={clearEnvironmentalPillars}
               onOpenComparisonDeck={() => openEcoComparison()}
+              disasterHazardTypes={disasterHazardTypes}
+              toggleDisasterHazardType={toggleDisasterHazardType}
+              onSelectAllDisasterHazards={selectAllDisasterHazards}
+              onClearDisasterHazards={clearDisasterHazards}
+              disasterRegionFilter={disasterRegionFilter}
+              setDisasterRegionFilter={setDisasterRegionFilter}
+              isDisasterTimelineOpen={isDisasterTimelineOpen}
+              onToggleDisasterTimeline={() => setIsDisasterTimelineOpen(prev => !prev)}
+              onSelectDisasterEvent={handleSelectDisasterEvent}
             />
           </div>
         </div>
@@ -587,6 +698,15 @@ export function App() {
               onSelectAllEnvironmentalPillars={selectAllEnvironmentalPillars}
               onClearEnvironmentalPillars={clearEnvironmentalPillars}
               onOpenComparisonDeck={() => openEcoComparison()}
+              disasterHazardTypes={disasterHazardTypes}
+              toggleDisasterHazardType={toggleDisasterHazardType}
+              onSelectAllDisasterHazards={selectAllDisasterHazards}
+              onClearDisasterHazards={clearDisasterHazards}
+              disasterRegionFilter={disasterRegionFilter}
+              setDisasterRegionFilter={setDisasterRegionFilter}
+              isDisasterTimelineOpen={isDisasterTimelineOpen}
+              onToggleDisasterTimeline={() => setIsDisasterTimelineOpen(prev => !prev)}
+              onSelectDisasterEvent={handleSelectDisasterEvent}
             />
             <button
               onClick={() => setIsSidebarOpen(false)}
@@ -624,6 +744,10 @@ export function App() {
             isElevationHighlight={isElevationHighlight}
             selectedHistoricalPeriod={selectedHistoricalPeriod}
             tradeCategories={tradeCategories}
+            environmentalPillars={environmentalPillars}
+            comparisonConfig={comparisonConfig}
+            disasterHazardTypes={disasterHazardTypes}
+            disasterRegionFilter={disasterRegionFilter}
           />
 
           {/* Dynamic Active Legends Overlay */}
@@ -773,19 +897,48 @@ export function App() {
               </div>
             )}
 
-            {/* Seismic Hazard Legend */}
+            {/* Disaster & Hazard Intelligence Legend */}
             {activeLayers.has('disaster_seismic') && (
-              <div className="glass-panel-glow rounded-xl p-3 shadow-2xl text-xs pointer-events-auto min-w-[220px] border border-rose-500/40 font-mono">
+              <div className="glass-panel-glow rounded-xl p-3 shadow-2xl text-xs pointer-events-auto min-w-[240px] max-w-[280px] border border-rose-500/40 font-mono">
                 <div className="font-bold text-rose-300 mb-1.5 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
                     <AlertTriangle className="w-3.5 h-3.5 text-rose-500" />
-                    <span>BIS Seismic Risk (IS 1893)</span>
+                    <span>Disaster &amp; Hazard Intelligence</span>
+                  </span>
+                  <span className="text-[10px] text-rose-300 font-bold px-1.5 py-0.5 rounded bg-rose-950/80 border border-rose-500/30">
+                    {disasterHazardTypes.size}/8
                   </span>
                 </div>
                 <div className="space-y-1 text-[11px] font-bold">
-                  <span className="flex items-center gap-1.5 text-red-400"><span className="w-2.5 h-2.5 rounded bg-[#ef4444] inline-block"/>Zone V: Very High Risk (Z=0.36)</span>
-                  <span className="flex items-center gap-1.5 text-amber-400"><span className="w-2.5 h-2.5 rounded bg-[#f97316] inline-block"/>Zone IV: High Risk (Z=0.24)</span>
-                  <span className="flex items-center gap-1.5 text-rose-300"><span className="w-2.5 h-2.5 rounded-full bg-[#ef4444] border border-white inline-block"/>Major Historical Epicenter</span>
+                  {disasterHazardTypes.has('seismic_zone') && (
+                    <>
+                      <span className="flex items-center gap-1.5 text-red-400"><span className="w-2.5 h-2.5 rounded bg-[#ef4444] inline-block"/>Zone V: Very High (Z=0.36)</span>
+                      <span className="flex items-center gap-1.5 text-orange-400"><span className="w-2.5 h-2.5 rounded bg-[#f97316] inline-block"/>Zone IV: High Risk (Z=0.24)</span>
+                      <span className="flex items-center gap-1.5 text-yellow-400"><span className="w-2.5 h-2.5 rounded bg-[#eab308] inline-block"/>Zone III: Moderate (Z=0.16)</span>
+                      <span className="flex items-center gap-1.5 text-blue-400"><span className="w-2.5 h-2.5 rounded bg-[#3b82f6] inline-block"/>Zone II: Low Risk (Z=0.10)</span>
+                    </>
+                  )}
+                  {disasterHazardTypes.has('earthquake') && (
+                    <span className="flex items-center gap-1.5 text-rose-300"><span className="w-2.5 h-2.5 rounded-full bg-[#ef4444] border border-white inline-block"/>Historical Earthquake Epicenter</span>
+                  )}
+                  {disasterHazardTypes.has('cyclone') && (
+                    <span className="flex items-center gap-1.5 text-fuchsia-400"><span className="w-3 h-0.5 bg-[#c026d3] inline-block"/>Cyclone Tracks &amp; Landfalls</span>
+                  )}
+                  {disasterHazardTypes.has('flood') && (
+                    <span className="flex items-center gap-1.5 text-sky-400"><span className="w-2.5 h-2.5 rounded bg-[#0284c7] inline-block"/>Flood-Prone Basins (CWC)</span>
+                  )}
+                  {disasterHazardTypes.has('landslide') && (
+                    <span className="flex items-center gap-1.5 text-amber-400"><span className="w-2.5 h-2.5 rounded bg-[#ea580c] inline-block"/>Landslide Susceptibility (GSI)</span>
+                  )}
+                  {disasterHazardTypes.has('drought') && (
+                    <span className="flex items-center gap-1.5 text-yellow-500"><span className="w-2.5 h-2.5 rounded bg-[#b45309] inline-block"/>Chronic Drought Belts (CWC)</span>
+                  )}
+                  {disasterHazardTypes.has('tsunami') && (
+                    <span className="flex items-center gap-1.5 text-teal-400"><span className="w-3 h-0.5 bg-[#06b6d4] inline-block"/>Tsunami Inundation Buffer</span>
+                  )}
+                  {disasterHazardTypes.has('heatwave') && (
+                    <span className="flex items-center gap-1.5 text-rose-400"><span className="w-2.5 h-2.5 rounded bg-[#e11d48] inline-block"/>Severe Heatwave Core (IMD)</span>
+                  )}
                 </div>
               </div>
             )}
@@ -992,6 +1145,16 @@ export function App() {
           }
         }}
         onClose={() => setIsTimelineOpen(false)}
+      />
+
+      {/* Disaster & Hazard Historical Timeline Deck - Docked at Bottom Center */}
+      <DisasterTimelineDeck
+        isOpen={isDisasterTimelineOpen}
+        onClose={() => setIsDisasterTimelineOpen(false)}
+        selectedEventId={selectedDisasterEventId}
+        onSelectEvent={handleSelectDisasterEvent}
+        activeHazardTypes={disasterHazardTypes}
+        selectedRegion={disasterRegionFilter}
       />
 
       {/* State vs State Comparison Modal */}

@@ -117,6 +117,44 @@ export interface EnvironmentalComparisonConfig {
 
 export type BasemapStyle = 'dark' | 'satellite' | 'osm' | 'geoapify' | 'physical_tactile';
 
+export type DisasterHazardType = 
+  | 'earthquake'
+  | 'seismic_zone'
+  | 'cyclone'
+  | 'flood'
+  | 'landslide'
+  | 'drought'
+  | 'tsunami'
+  | 'heatwave';
+
+export type DisasterRegion = 
+  | 'all'
+  | 'himalayan'
+  | 'gangetic'
+  | 'coastal'
+  | 'peninsular'
+  | 'northeast';
+
+export interface HistoricalDisasterEvent {
+  id: string;
+  name: string;
+  year: number;
+  dateStr?: string;
+  hazardType: DisasterHazardType;
+  region: DisasterRegion;
+  regionName: string;
+  magnitudeOrIntensity: string;
+  casualtiesApprox?: number | string;
+  coordinates: [number, number]; // [lng, lat]
+  zoom?: number;
+  pitch?: number;
+  bearing?: number;
+  summary: string;
+  keyFacts: string[];
+  authority: string;
+  officialReference?: string;
+}
+
 export interface CameraPreset {
   id: string;
   name: string;
@@ -153,6 +191,13 @@ export interface SelectedFeatureInfo {
     | 'highway'
     | 'seismic_zone' 
     | 'earthquake_epicenter'
+    | 'disaster_hazard'
+    | 'cyclone_track'
+    | 'flood_zone'
+    | 'landslide_zone'
+    | 'drought_zone'
+    | 'tsunami_zone'
+    | 'heatwave_zone'
     | 'environmental_change';
   name: string;
   state?: string;

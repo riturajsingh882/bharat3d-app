@@ -27,7 +27,9 @@ import {
   Building2,
   Sun,
   Gauge,
-  ExternalLink
+  ExternalLink,
+  Flame,
+  Wind
 } from 'lucide-react';
 import type { SelectedFeatureInfo, EnvironmentalComparisonConfig } from '../types';
 import { metersToFeetInches } from '../utils/elevation';
@@ -526,43 +528,98 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
           </div>
         )}
 
-        {/* 4. Seismic Risk & Earthquake Epicenter Dossier */}
-        {(type === 'seismic_zone' || type === 'earthquake_epicenter') && (
+        {/* 4. Disaster & Hazard Intelligence Dossier */}
+        {(type === 'seismic_zone' || 
+          type === 'earthquake_epicenter' || 
+          type === 'disaster_hazard' || 
+          type === 'cyclone_track' || 
+          type === 'flood_zone' || 
+          type === 'landslide_zone' || 
+          type === 'drought_zone' || 
+          type === 'tsunami_zone' || 
+          type === 'heatwave_zone') && (
           <div className="space-y-3">
-            <div className="vista-card p-4 space-y-3">
+            <div className="vista-card p-4 space-y-3 border border-rose-500/40 bg-[#14080b]/90">
               <div className="text-xs font-mono font-bold text-white flex items-center justify-between uppercase tracking-wider">
                 <span className="flex items-center gap-1.5">
-                  <AlertTriangle className="w-4 h-4 text-rose-500" />
-                  <span>{type === 'earthquake_epicenter' ? 'Historical Earthquake Event' : 'BIS Seismic Hazard Zone'}</span>
+                  {type === 'cyclone_track' || properties.hazard_type === 'cyclone' ? (
+                    <Wind className="w-4 h-4 text-fuchsia-400" />
+                  ) : type === 'flood_zone' || properties.hazard_type === 'flood' ? (
+                    <Waves className="w-4 h-4 text-sky-400" />
+                  ) : type === 'landslide_zone' || properties.hazard_type === 'landslide' ? (
+                    <Mountain className="w-4 h-4 text-amber-400" />
+                  ) : type === 'drought_zone' || properties.hazard_type === 'drought' ? (
+                    <Sun className="w-4 h-4 text-yellow-400" />
+                  ) : type === 'tsunami_zone' || properties.hazard_type === 'tsunami' ? (
+                    <Waves className="w-4 h-4 text-teal-400" />
+                  ) : type === 'heatwave_zone' || properties.hazard_type === 'heatwave' ? (
+                    <Flame className="w-4 h-4 text-rose-400" />
+                  ) : type === 'earthquake_epicenter' || properties.hazard_type === 'earthquake' ? (
+                    <Activity className="w-4 h-4 text-rose-500" />
+                  ) : (
+                    <AlertTriangle className="w-4 h-4 text-rose-500" />
+                  )}
+                  <span>
+                    {type === 'cyclone_track' || properties.hazard_type === 'cyclone'
+                      ? 'Tropical Cyclone Track & Landfall'
+                      : type === 'flood_zone' || properties.hazard_type === 'flood'
+                      ? 'High-Risk Flood Plain / Basin'
+                      : type === 'landslide_zone' || properties.hazard_type === 'landslide'
+                      ? 'Landslide Susceptibility Zone'
+                      : type === 'drought_zone' || properties.hazard_type === 'drought'
+                      ? 'Chronic Drought-Prone Region'
+                      : type === 'tsunami_zone' || properties.hazard_type === 'tsunami'
+                      ? 'Tsunami Coastal Inundation Zone'
+                      : type === 'heatwave_zone' || properties.hazard_type === 'heatwave'
+                      ? 'Severe Heatwave Hazard Core'
+                      : type === 'earthquake_epicenter' || properties.hazard_type === 'earthquake'
+                      ? 'Historical Earthquake Event'
+                      : 'BIS Seismic Hazard Zone'}
+                  </span>
                 </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-950/80 text-rose-300 border border-rose-500/30 font-bold">
-                  BIS 1893:2016
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-950/80 text-rose-300 border border-rose-500/30 font-bold shrink-0">
+                  {properties.authority ? properties.authority.split('(')[0].trim() : 'NDMA / BIS'}
                 </span>
               </div>
 
               <div className="space-y-2 text-xs font-mono">
-                {properties.zone_code && (
+                {/* Seismic Fields */}
+                {(properties.zone_code || properties.zone_name) && (
                   <div className="flex justify-between py-1.5 border-b border-white/5">
                     <span className="text-neutral-400">Seismic Hazard Zone:</span>
-                    <span className="font-bold text-rose-400 text-sm">{properties.zone_code} ({properties.hazard_level})</span>
+                    <span className="font-bold text-rose-400 text-sm">{properties.zone_code || properties.zone_name} ({properties.hazard_level || 'Zone V'})</span>
                   </div>
                 )}
                 {properties.zone_factor_z && (
                   <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Zone Factor (Z):</span>
-                    <span className="font-bold text-white text-sm">{properties.zone_factor_z} ({properties.peak_ground_accel})</span>
+                    <span className="text-neutral-400">Zone Factor (Z) &amp; PGA:</span>
+                    <span className="font-bold text-white text-sm">{properties.zone_factor_z} ({properties.peak_ground_accel || 'High Acceleration'})</span>
                   </div>
                 )}
+                {properties.seismic_intensity && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">Expected Ground Shaking:</span>
+                    <span className="font-bold text-amber-300">{properties.seismic_intensity}</span>
+                  </div>
+                )}
+                {properties.building_code_mandate && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Building Code Mandate:</span>
+                    <span className="text-rose-300 font-semibold">{properties.building_code_mandate}</span>
+                  </div>
+                )}
+
+                {/* Earthquake Fields */}
                 {properties.year && (
                   <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Event Year:</span>
-                    <span className="font-bold text-white text-sm">{properties.year}</span>
+                    <span className="text-neutral-400">Event Year / Date:</span>
+                    <span className="font-bold text-white text-sm">{properties.date_str || properties.year}</span>
                   </div>
                 )}
-                {properties.magnitude_mw && (
+                {(properties.magnitude_mw || properties.magnitude) && (
                   <div className="flex justify-between py-1.5 border-b border-white/5">
                     <span className="text-neutral-400">Moment Magnitude (Mw):</span>
-                    <span className="font-black text-rose-400 text-lg">M {properties.magnitude_mw}</span>
+                    <span className="font-black text-rose-400 text-lg">M {properties.magnitude_mw || properties.magnitude}</span>
                   </div>
                 )}
                 {properties.depth_km && (
@@ -571,16 +628,189 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
                     <span className="font-bold text-neutral-200">{properties.depth_km} km</span>
                   </div>
                 )}
-                {properties.fatalities_approx && (
+                {(properties.fatalities_approx || properties.casualties) && (
                   <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Estimated Casualties:</span>
-                    <span className="font-bold text-red-400">{properties.fatalities_approx.toLocaleString()}</span>
+                    <span className="text-neutral-400">Human Casualties / Impact:</span>
+                    <span className="font-bold text-red-400">{properties.casualties || Number(properties.fatalities_approx).toLocaleString()}</span>
                   </div>
                 )}
-                {properties.fault_system && (
-                  <div className="py-1.5">
+                {(properties.fault_system || properties.tectonic_setting) && (
+                  <div className="py-1.5 border-b border-white/5">
                     <span className="text-neutral-400 block text-[11px]">Tectonic Fault / Mechanism:</span>
-                    <span className="text-amber-300">{properties.fault_system}</span>
+                    <span className="text-amber-300">{properties.fault_system || properties.tectonic_setting}</span>
+                  </div>
+                )}
+
+                {/* Cyclone Fields */}
+                {properties.cyclone_category && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">Storm Intensity Category:</span>
+                    <span className="font-bold text-fuchsia-300">{properties.cyclone_category}</span>
+                  </div>
+                )}
+                {properties.wind_speed_kmh && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">Peak 3-Min Sustained Winds:</span>
+                    <span className="font-black text-rose-400 text-base">{properties.wind_speed_kmh} km/h</span>
+                  </div>
+                )}
+                {properties.central_pressure_hpa && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">Central Barometric Pressure:</span>
+                    <span className="font-bold text-neutral-200">{properties.central_pressure_hpa} hPa</span>
+                  </div>
+                )}
+                {properties.storm_surge_m && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">Storm Surge Inundation:</span>
+                    <span className="font-bold text-teal-300">{properties.storm_surge_m} meters above normal tide</span>
+                  </div>
+                )}
+                {properties.landfall_point && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">Coastal Landfall:</span>
+                    <span className="font-bold text-amber-300">{properties.landfall_point}</span>
+                  </div>
+                )}
+                {properties.evacuation_count && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Civil Defense Evacuation:</span>
+                    <span className="text-emerald-400 font-semibold">{properties.evacuation_count}</span>
+                  </div>
+                )}
+
+                {/* Flood Fields */}
+                {properties.basin_name && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">River Basin Catchment:</span>
+                    <span className="font-bold text-sky-300">{properties.basin_name}</span>
+                  </div>
+                )}
+                {properties.inundated_sqkm && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">Inundated Flood Area:</span>
+                    <span className="font-bold text-sky-400">{properties.inundated_sqkm.toLocaleString()} sq km</span>
+                  </div>
+                )}
+                {properties.vulnerable_population && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">Vulnerable Population:</span>
+                    <span className="font-bold text-rose-300">{properties.vulnerable_population}</span>
+                  </div>
+                )}
+                {properties.return_period && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">Flood Frequency / Recurrence:</span>
+                    <span className="font-semibold text-neutral-300">{properties.return_period}</span>
+                  </div>
+                )}
+
+                {/* Landslide Fields */}
+                {properties.susceptibility_rating && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">GSI NLSM Susceptibility:</span>
+                    <span className="font-bold text-orange-400">{properties.susceptibility_rating}</span>
+                  </div>
+                )}
+                {properties.rock_formation && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Geological Lithology &amp; Bedrock:</span>
+                    <span className="text-neutral-200">{properties.rock_formation}</span>
+                  </div>
+                )}
+                {properties.trigger_mechanisms && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Primary Trigger Factors:</span>
+                    <span className="text-amber-300">{properties.trigger_mechanisms}</span>
+                  </div>
+                )}
+
+                {/* Drought Fields */}
+                {properties.aridity_index && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">Aridity &amp; Drought Index:</span>
+                    <span className="font-bold text-amber-400">{properties.aridity_index}</span>
+                  </div>
+                )}
+                {properties.rainfall_deficit_pct && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Rainfall Deficit / Pattern:</span>
+                    <span className="text-rose-300 font-semibold">{properties.rainfall_deficit_pct}</span>
+                  </div>
+                )}
+                {properties.mitigation_scheme && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Mitigation &amp; Water Security:</span>
+                    <span className="text-emerald-400">{properties.mitigation_scheme}</span>
+                  </div>
+                )}
+
+                {/* Tsunami Fields */}
+                {properties.inundation_buffer_km && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">Coastal Inundation Buffer:</span>
+                    <span className="font-bold text-teal-300">{properties.inundation_buffer_km} km inland</span>
+                  </div>
+                )}
+                {properties.max_runup_m && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">Maximum Run-Up Height:</span>
+                    <span className="font-bold text-teal-400 text-base">{properties.max_runup_m} meters</span>
+                  </div>
+                )}
+                {properties.early_warning_time_min && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">ITEWC Lead Warning Window:</span>
+                    <span className="font-bold text-amber-300">~{properties.early_warning_time_min} minutes</span>
+                  </div>
+                )}
+
+                {/* Heatwave Fields */}
+                {properties.max_recorded_temp_c && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">All-Time Peak Temperature:</span>
+                    <span className="font-black text-rose-400 text-lg">{properties.max_recorded_temp_c} °C</span>
+                  </div>
+                )}
+                {properties.avg_heatwave_days && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">Annual Heatwave Days:</span>
+                    <span className="font-bold text-amber-400">{properties.avg_heatwave_days} days / summer</span>
+                  </div>
+                )}
+                {properties.wet_bulb_risk && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Wet-Bulb Thermal Stress:</span>
+                    <span className="text-rose-300 font-semibold">{properties.wet_bulb_risk}</span>
+                  </div>
+                )}
+                {properties.action_plan_framework && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Heat Action Plan Protocol:</span>
+                    <span className="text-emerald-400">{properties.action_plan_framework}</span>
+                  </div>
+                )}
+
+                {/* Summary / Intelligence Assessment */}
+                {(properties.summary || properties.description) && (
+                  <div className="pt-2">
+                    <span className="text-neutral-400 block text-[11px] mb-1 font-sans uppercase font-bold tracking-wider">
+                      Intelligence Assessment &amp; Hazard Brief:
+                    </span>
+                    <p className="text-neutral-300 font-sans text-xs leading-relaxed bg-black/40 p-2.5 rounded-lg border border-white/5">
+                      {properties.summary || properties.description}
+                    </p>
+                  </div>
+                )}
+
+                {/* Official Authority & Citation */}
+                {(properties.official_reference || properties.authority) && (
+                  <div className="pt-1.5 flex items-start gap-1.5 text-[10px] text-neutral-400 font-mono">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                    <span>
+                      Authority: <strong className="text-neutral-200">{properties.authority}</strong>
+                      {properties.official_reference && <> • Reference: <em>{properties.official_reference}</em></>}
+                    </span>
                   </div>
                 )}
               </div>

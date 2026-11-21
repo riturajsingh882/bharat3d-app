@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Map, NavigationControl, ScaleControl, setWorkerUrl, type MapMouseEvent, type MapGeoJSONFeature } from 'maplibre-gl';
-import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory, EnvironmentalPillar, EnvironmentalComparisonConfig } from '../types';
+import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory, EnvironmentalPillar, EnvironmentalComparisonConfig, DisasterHazardType, DisasterRegion } from '../types';
 import { APP_CONFIG } from '../config';
 import { formatElevationDual } from '../utils/elevation';
 import { ENVIRONMENTAL_FEATURES, ENVIRONMENTAL_FEATURES_BY_ID } from '../data/environmentalGeojson';
+import { DISASTER_GEOJSON, DISASTER_HAZARDS_BY_ID } from '../data/disasterIntelligence';
 
 // Statically point MapLibre worker to the public directory
 setWorkerUrl('/maplibre-gl-worker.mjs');
@@ -15,7 +16,10 @@ const SEARCH_HIGHLIGHT_SOURCE: Record<string, { source: string; field: string } 
   trade_route: { source: 'historical-trade-routes', field: 'name' },
   environmental_change: { source: 'environmental-change', field: 'id' },
   glacier: { source: 'environmental-change', field: 'id' },
-  wetland: { source: 'environmental-change', field: 'id' }
+  wetland: { source: 'environmental-change', field: 'id' },
+  disaster_hazard: { source: 'disaster-seismic-zones', field: 'id' },
+  seismic_zone: { source: 'disaster-seismic-zones', field: 'id' },
+  earthquake_epicenter: { source: 'disaster-seismic-zones', field: 'id' }
 };
 
 function clearSearchHighlight(map: Map) {
@@ -153,6 +157,45 @@ function applySearchHighlight(map: Map, target: SearchTarget | null) {
       }
       break;
     }
+    case 'disaster_hazard':
+    case 'seismic_zone':
+    case 'earthquake_epicenter':
+    case 'cyclone_track':
+    case 'flood_zone':
+    case 'landslide_zone':
+    case 'drought_zone':
+    case 'tsunami_zone':
+    case 'heatwave_zone':
+    case 'cyclone':
+    case 'flood':
+    case 'landslide':
+    case 'drought':
+    case 'tsunami':
+    case 'heatwave':
+    case 'earthquake': {
+      const keyOrName = target.key || target.name || '';
+      let match = target.key ? DISASTER_HAZARDS_BY_ID[target.key] : undefined;
+      if (!match && keyOrName) {
+        match = DISASTER_HAZARDS_BY_ID[keyOrName];
+      }
+      if (!match && target.name) {
+        const tName = target.name.toLowerCase();
+        match = DISASTER_GEOJSON.features.find((f: any) => {
+          const fName = (f.properties?.name || '').toLowerCase();
+          return fName.includes(tName) || tName.includes(fName);
+        });
+      }
+      const src = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+      if (match && src) {
+        src.setData({
+          type: 'FeatureCollection',
+          features: [match]
+        });
+      } else {
+        setPoint();
+      }
+      break;
+    }
     default: {
       const cfg = SEARCH_HIGHLIGHT_SOURCE[target.type];
       if (cfg && target.key) {
@@ -250,6 +293,8 @@ interface MapEngineProps {
   tradeCategories?: Set<TradeCategory>;
   environmentalPillars?: Set<EnvironmentalPillar>;
   comparisonConfig?: EnvironmentalComparisonConfig;
+  disasterHazardTypes?: Set<DisasterHazardType>;
+  disasterRegionFilter?: DisasterRegion;
 }
 
 export const MapEngine: React.FC<MapEngineProps> = ({
@@ -266,7 +311,9 @@ export const MapEngine: React.FC<MapEngineProps> = ({
   selectedHistoricalPeriod = 'maurya',
   tradeCategories,
   environmentalPillars,
-  comparisonConfig
+  comparisonConfig,
+  disasterHazardTypes,
+  disasterRegionFilter = 'all'
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map | null>(null);
@@ -509,13 +556,122 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     setVis('roads-hit-target', isRoadsActive);
     setVis('roads-highlight', true);
 
-    // 8. Disaster & Seismic Hazards
+    // 8. Disaster & Hazard Intelligence
     const isDisasterActive = activeLayers.has('disaster_seismic');
-    setVis('seismic-zones-fill', isDisasterActive);
-    setVis('seismic-zones-line', isDisasterActive);
-    setVis('earthquake-epicenter-glow', isDisasterActive);
-    setVis('earthquake-epicenter-core', isDisasterActive);
-    setVis('earthquake-epicenter-labels', isDisasterActive);
+    const hasAnyDisasterHazard = !disasterHazardTypes || disasterHazardTypes.size > 0;
+    const effectiveDisasterActive = isDisasterActive && hasAnyDisasterHazard;
+
+    const showSeismic = effectiveDisasterActive && (!disasterHazardTypes || disasterHazardTypes.has('seismic_zone'));
+    const showEarthquakes = effectiveDisasterActive && (!disasterHazardTypes || disasterHazardTypes.has('earthquake'));
+    const showCyclones = effectiveDisasterActive && (!disasterHazardTypes || disasterHazardTypes.has('cyclone'));
+    const showFloods = effectiveDisasterActive && (!disasterHazardTypes || disasterHazardTypes.has('flood'));
+    const showLandslides = effectiveDisasterActive && (!disasterHazardTypes || disasterHazardTypes.has('landslide'));
+    const showDroughts = effectiveDisasterActive && (!disasterHazardTypes || disasterHazardTypes.has('drought'));
+    const showTsunamis = effectiveDisasterActive && (!disasterHazardTypes || disasterHazardTypes.has('tsunami'));
+    const showHeatwaves = effectiveDisasterActive && (!disasterHazardTypes || disasterHazardTypes.has('heatwave'));
+
+    const regionCondition = (disasterRegionFilter && disasterRegionFilter !== 'all')
+      ? ['==', ['get', 'region_group'], disasterRegionFilter]
+      : ['!=', ['get', 'name'], 'none'];
+
+    if (map.getLayer('seismic-zones-fill')) {
+      map.setFilter('seismic-zones-fill', ['all', ['==', '$type', 'Polygon'], ['==', ['coalesce', ['get', 'hazard_type'], 'seismic_zone'], 'seismic_zone'], regionCondition] as any);
+      map.setLayoutProperty('seismic-zones-fill', 'visibility', showSeismic ? 'visible' : 'none');
+    }
+    if (map.getLayer('seismic-zones-line')) {
+      map.setFilter('seismic-zones-line', ['all', ['==', '$type', 'Polygon'], ['==', ['coalesce', ['get', 'hazard_type'], 'seismic_zone'], 'seismic_zone'], regionCondition] as any);
+      map.setLayoutProperty('seismic-zones-line', 'visibility', showSeismic ? 'visible' : 'none');
+    }
+    if (map.getLayer('earthquake-epicenter-glow')) {
+      map.setFilter('earthquake-epicenter-glow', ['all', ['==', '$type', 'Point'], regionCondition] as any);
+      map.setLayoutProperty('earthquake-epicenter-glow', 'visibility', showEarthquakes ? 'visible' : 'none');
+    }
+    if (map.getLayer('earthquake-epicenter-core')) {
+      map.setFilter('earthquake-epicenter-core', ['all', ['==', '$type', 'Point'], regionCondition] as any);
+      map.setLayoutProperty('earthquake-epicenter-core', 'visibility', showEarthquakes ? 'visible' : 'none');
+    }
+    if (map.getLayer('earthquake-epicenter-labels')) {
+      map.setFilter('earthquake-epicenter-labels', ['all', ['==', '$type', 'Point'], regionCondition] as any);
+      map.setLayoutProperty('earthquake-epicenter-labels', 'visibility', showEarthquakes ? 'visible' : 'none');
+    }
+
+    if (map.getLayer('disaster-cyclones-track')) {
+      map.setFilter('disaster-cyclones-track', ['all', ['==', ['get', 'hazard_type'], 'cyclone'], regionCondition] as any);
+      map.setLayoutProperty('disaster-cyclones-track', 'visibility', showCyclones ? 'visible' : 'none');
+    }
+    if (map.getLayer('disaster-cyclones-casing')) {
+      map.setFilter('disaster-cyclones-casing', ['all', ['==', ['get', 'hazard_type'], 'cyclone'], regionCondition] as any);
+      map.setLayoutProperty('disaster-cyclones-casing', 'visibility', showCyclones ? 'visible' : 'none');
+    }
+    if (map.getLayer('disaster-cyclones-labels')) {
+      map.setFilter('disaster-cyclones-labels', ['all', ['==', ['get', 'hazard_type'], 'cyclone'], regionCondition] as any);
+      map.setLayoutProperty('disaster-cyclones-labels', 'visibility', showCyclones ? 'visible' : 'none');
+    }
+
+    if (map.getLayer('disaster-floods-fill')) {
+      map.setFilter('disaster-floods-fill', ['all', ['==', ['get', 'hazard_type'], 'flood'], regionCondition] as any);
+      map.setLayoutProperty('disaster-floods-fill', 'visibility', showFloods ? 'visible' : 'none');
+    }
+    if (map.getLayer('disaster-floods-border')) {
+      map.setFilter('disaster-floods-border', ['all', ['==', ['get', 'hazard_type'], 'flood'], regionCondition] as any);
+      map.setLayoutProperty('disaster-floods-border', 'visibility', showFloods ? 'visible' : 'none');
+    }
+    if (map.getLayer('disaster-floods-labels')) {
+      map.setFilter('disaster-floods-labels', ['all', ['==', ['get', 'hazard_type'], 'flood'], regionCondition] as any);
+      map.setLayoutProperty('disaster-floods-labels', 'visibility', showFloods ? 'visible' : 'none');
+    }
+
+    if (map.getLayer('disaster-landslides-fill')) {
+      map.setFilter('disaster-landslides-fill', ['all', ['==', ['get', 'hazard_type'], 'landslide'], regionCondition] as any);
+      map.setLayoutProperty('disaster-landslides-fill', 'visibility', showLandslides ? 'visible' : 'none');
+    }
+    if (map.getLayer('disaster-landslides-border')) {
+      map.setFilter('disaster-landslides-border', ['all', ['==', ['get', 'hazard_type'], 'landslide'], regionCondition] as any);
+      map.setLayoutProperty('disaster-landslides-border', 'visibility', showLandslides ? 'visible' : 'none');
+    }
+    if (map.getLayer('disaster-landslides-labels')) {
+      map.setFilter('disaster-landslides-labels', ['all', ['==', ['get', 'hazard_type'], 'landslide'], regionCondition] as any);
+      map.setLayoutProperty('disaster-landslides-labels', 'visibility', showLandslides ? 'visible' : 'none');
+    }
+
+    if (map.getLayer('disaster-droughts-fill')) {
+      map.setFilter('disaster-droughts-fill', ['all', ['==', ['get', 'hazard_type'], 'drought'], regionCondition] as any);
+      map.setLayoutProperty('disaster-droughts-fill', 'visibility', showDroughts ? 'visible' : 'none');
+    }
+    if (map.getLayer('disaster-droughts-border')) {
+      map.setFilter('disaster-droughts-border', ['all', ['==', ['get', 'hazard_type'], 'drought'], regionCondition] as any);
+      map.setLayoutProperty('disaster-droughts-border', 'visibility', showDroughts ? 'visible' : 'none');
+    }
+    if (map.getLayer('disaster-droughts-labels')) {
+      map.setFilter('disaster-droughts-labels', ['all', ['==', ['get', 'hazard_type'], 'drought'], regionCondition] as any);
+      map.setLayoutProperty('disaster-droughts-labels', 'visibility', showDroughts ? 'visible' : 'none');
+    }
+
+    if (map.getLayer('disaster-tsunami-fill')) {
+      map.setFilter('disaster-tsunami-fill', ['all', ['==', ['get', 'hazard_type'], 'tsunami'], ['==', '$type', 'Polygon'], regionCondition] as any);
+      map.setLayoutProperty('disaster-tsunami-fill', 'visibility', showTsunamis ? 'visible' : 'none');
+    }
+    if (map.getLayer('disaster-tsunami-line')) {
+      map.setFilter('disaster-tsunami-line', ['all', ['==', ['get', 'hazard_type'], 'tsunami'], regionCondition] as any);
+      map.setLayoutProperty('disaster-tsunami-line', 'visibility', showTsunamis ? 'visible' : 'none');
+    }
+    if (map.getLayer('disaster-tsunami-labels')) {
+      map.setFilter('disaster-tsunami-labels', ['all', ['==', ['get', 'hazard_type'], 'tsunami'], regionCondition] as any);
+      map.setLayoutProperty('disaster-tsunami-labels', 'visibility', showTsunamis ? 'visible' : 'none');
+    }
+
+    if (map.getLayer('disaster-heatwaves-fill')) {
+      map.setFilter('disaster-heatwaves-fill', ['all', ['==', ['get', 'hazard_type'], 'heatwave'], regionCondition] as any);
+      map.setLayoutProperty('disaster-heatwaves-fill', 'visibility', showHeatwaves ? 'visible' : 'none');
+    }
+    if (map.getLayer('disaster-heatwaves-border')) {
+      map.setFilter('disaster-heatwaves-border', ['all', ['==', ['get', 'hazard_type'], 'heatwave'], regionCondition] as any);
+      map.setLayoutProperty('disaster-heatwaves-border', 'visibility', showHeatwaves ? 'visible' : 'none');
+    }
+    if (map.getLayer('disaster-heatwaves-labels')) {
+      map.setFilter('disaster-heatwaves-labels', ['all', ['==', ['get', 'hazard_type'], 'heatwave'], regionCondition] as any);
+      map.setLayoutProperty('disaster-heatwaves-labels', 'visibility', showHeatwaves ? 'visible' : 'none');
+    }
 
     // 9. Selection Highlights (always visible; controlled by filters, not layer toggles)
     setVis('states-highlight', true);
@@ -593,7 +749,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     } catch {
       // ignore
     }
-  }, [activeLayers, religionFilter, tradeCategories, environmentalPillars, comparisonConfig]);
+  }, [activeLayers, religionFilter, tradeCategories, environmentalPillars, comparisonConfig, disasterHazardTypes, disasterRegionFilter]);
 
   // Initialize Map
   useEffect(() => {
@@ -738,7 +894,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
 
       map.addSource('disaster-seismic-zones', {
         type: 'geojson',
-        data: '/data/disaster_seismic_zones.geojson'
+        data: DISASTER_GEOJSON
       });
 
       map.addSource('search-highlight', {
@@ -1898,22 +2054,29 @@ export const MapEngine: React.FC<MapEngineProps> = ({
       // 4. DISASTER & SEISMIC RISK LAYERS
       // ========================================================
 
+      // 4.1 BIS SEISMIC ZONES
       map.addLayer({
         id: 'seismic-zones-fill',
         type: 'fill',
         source: 'disaster-seismic-zones',
-        filter: ['==', '$type', 'Polygon'],
+        filter: ['all', ['==', '$type', 'Polygon'], ['==', ['coalesce', ['get', 'hazard_type'], 'seismic_zone'], 'seismic_zone']],
         layout: {
           visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
         },
         paint: {
           'fill-color': [
-            'match', ['get', 'zone_code'],
+            'match', ['coalesce', ['get', 'zone_code'], ['get', 'zone_id']],
             'Zone V', '#ef4444',
+            'ZONE_V', '#ef4444',
             'Zone IV', '#f97316',
-            '#eab308'
+            'ZONE_IV', '#f97316',
+            'Zone III', '#eab308',
+            'ZONE_III', '#eab308',
+            'Zone II', '#3b82f6',
+            'ZONE_II', '#3b82f6',
+            ['coalesce', ['get', 'color'], '#ef4444']
           ],
-          'fill-opacity': 0.38
+          'fill-opacity': 0.35
         }
       });
 
@@ -1921,27 +2084,34 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         id: 'seismic-zones-line',
         type: 'line',
         source: 'disaster-seismic-zones',
-        filter: ['==', '$type', 'Polygon'],
+        filter: ['all', ['==', '$type', 'Polygon'], ['==', ['coalesce', ['get', 'hazard_type'], 'seismic_zone'], 'seismic_zone']],
         layout: {
           visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
         },
         paint: {
           'line-color': [
-            'match', ['get', 'zone_code'],
+            'match', ['coalesce', ['get', 'zone_code'], ['get', 'zone_id']],
             'Zone V', '#ef4444',
+            'ZONE_V', '#ef4444',
             'Zone IV', '#f97316',
-            '#eab308'
+            'ZONE_IV', '#f97316',
+            'Zone III', '#eab308',
+            'ZONE_III', '#eab308',
+            'Zone II', '#3b82f6',
+            'ZONE_II', '#3b82f6',
+            ['coalesce', ['get', 'border_color'], '#ef4444']
           ],
           'line-width': 2.2,
           'line-opacity': 0.85
         }
       });
 
+      // 4.2 HISTORICAL EARTHQUAKES & EPICENTERS
       map.addLayer({
         id: 'earthquake-epicenter-glow',
         type: 'circle',
         source: 'disaster-seismic-zones',
-        filter: ['==', '$type', 'Point'],
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['coalesce', ['get', 'hazard_type'], 'earthquake'], 'earthquake']],
         layout: {
           visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
         },
@@ -1957,7 +2127,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         id: 'earthquake-epicenter-core',
         type: 'circle',
         source: 'disaster-seismic-zones',
-        filter: ['==', '$type', 'Point'],
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['coalesce', ['get', 'hazard_type'], 'earthquake'], 'earthquake']],
         layout: {
           visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
         },
@@ -1973,12 +2143,307 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         id: 'earthquake-epicenter-labels',
         type: 'symbol',
         source: 'disaster-seismic-zones',
-        filter: ['==', '$type', 'Point'],
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['coalesce', ['get', 'hazard_type'], 'earthquake'], 'earthquake']],
         layout: {
-          'text-field': ['concat', ['to-string', ['get', 'year']], ' ', ['get', 'name'], ' (M', ['to-string', ['get', 'magnitude_mw']], ')'],
+          'text-field': ['concat', ['to-string', ['get', 'year']], ' ', ['get', 'name'], ' (M', ['to-string', ['coalesce', ['get', 'magnitude_mw'], ['get', 'magnitude']]], ')'],
           'text-size': 10.5,
           'text-offset': [0, -1.3],
           'text-anchor': 'bottom',
+          'text-allow-overlap': false,
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#fecdd3',
+          'text-halo-color': '#020617',
+          'text-halo-width': 2
+        }
+      });
+
+      // 4.3 CYCLONE TRACKS
+      map.addLayer({
+        id: 'disaster-cyclones-casing',
+        type: 'line',
+        source: 'disaster-seismic-zones',
+        filter: ['all', ['==', ['get', 'hazard_type'], 'cyclone'], ['==', '$type', 'LineString']],
+        layout: {
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none',
+          'line-cap': 'round',
+          'line-join': 'round'
+        },
+        paint: {
+          'line-color': '#020617',
+          'line-width': 5.5,
+          'line-opacity': 0.8
+        }
+      });
+
+      map.addLayer({
+        id: 'disaster-cyclones-track',
+        type: 'line',
+        source: 'disaster-seismic-zones',
+        filter: ['all', ['==', ['get', 'hazard_type'], 'cyclone'], ['==', '$type', 'LineString']],
+        layout: {
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none',
+          'line-cap': 'round',
+          'line-join': 'round'
+        },
+        paint: {
+          'line-color': ['coalesce', ['get', 'color'], '#c026d3'],
+          'line-width': 2.8,
+          'line-dasharray': [2, 1]
+        }
+      });
+
+      map.addLayer({
+        id: 'disaster-cyclones-labels',
+        type: 'symbol',
+        source: 'disaster-seismic-zones',
+        filter: ['all', ['==', ['get', 'hazard_type'], 'cyclone'], ['==', '$type', 'LineString']],
+        layout: {
+          'text-field': ['concat', '🌀 ', ['get', 'name'], ' (', ['to-string', ['get', 'wind_speed_kmh']], ' km/h)'],
+          'symbol-placement': 'line-center',
+          'text-size': 11,
+          'text-offset': [0, -0.8],
+          'text-allow-overlap': false,
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#f5d0fe',
+          'text-halo-color': '#020617',
+          'text-halo-width': 2.5
+        }
+      });
+
+      // 4.4 FLOOD-PRONE BASINS
+      map.addLayer({
+        id: 'disaster-floods-fill',
+        type: 'fill',
+        source: 'disaster-seismic-zones',
+        filter: ['all', ['==', ['get', 'hazard_type'], 'flood'], ['==', '$type', 'Polygon']],
+        layout: {
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
+        },
+        paint: {
+          'fill-color': '#0284c7',
+          'fill-opacity': 0.35
+        }
+      });
+
+      map.addLayer({
+        id: 'disaster-floods-border',
+        type: 'line',
+        source: 'disaster-seismic-zones',
+        filter: ['all', ['==', ['get', 'hazard_type'], 'flood'], ['==', '$type', 'Polygon']],
+        layout: {
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#38bdf8',
+          'line-width': 2,
+          'line-opacity': 0.85
+        }
+      });
+
+      map.addLayer({
+        id: 'disaster-floods-labels',
+        type: 'symbol',
+        source: 'disaster-seismic-zones',
+        filter: ['all', ['==', ['get', 'hazard_type'], 'flood'], ['==', '$type', 'Polygon']],
+        layout: {
+          'text-field': ['concat', '🌊 ', ['get', 'name']],
+          'text-size': 10.5,
+          'text-allow-overlap': false,
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#bae6fd',
+          'text-halo-color': '#020617',
+          'text-halo-width': 2
+        }
+      });
+
+      // 4.5 LANDSLIDE SUSCEPTIBILITY ZONES
+      map.addLayer({
+        id: 'disaster-landslides-fill',
+        type: 'fill',
+        source: 'disaster-seismic-zones',
+        filter: ['all', ['==', ['get', 'hazard_type'], 'landslide'], ['==', '$type', 'Polygon']],
+        layout: {
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
+        },
+        paint: {
+          'fill-color': '#ea580c',
+          'fill-opacity': 0.40
+        }
+      });
+
+      map.addLayer({
+        id: 'disaster-landslides-border',
+        type: 'line',
+        source: 'disaster-seismic-zones',
+        filter: ['all', ['==', ['get', 'hazard_type'], 'landslide'], ['==', '$type', 'Polygon']],
+        layout: {
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#f97316',
+          'line-width': 2.2,
+          'line-opacity': 0.9
+        }
+      });
+
+      map.addLayer({
+        id: 'disaster-landslides-labels',
+        type: 'symbol',
+        source: 'disaster-seismic-zones',
+        filter: ['all', ['==', ['get', 'hazard_type'], 'landslide'], ['==', '$type', 'Polygon']],
+        layout: {
+          'text-field': ['concat', '⛰️ ', ['get', 'name']],
+          'text-size': 10.5,
+          'text-allow-overlap': false,
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#fed7aa',
+          'text-halo-color': '#020617',
+          'text-halo-width': 2
+        }
+      });
+
+      // 4.6 DROUGHT-PRONE REGIONS
+      map.addLayer({
+        id: 'disaster-droughts-fill',
+        type: 'fill',
+        source: 'disaster-seismic-zones',
+        filter: ['all', ['==', ['get', 'hazard_type'], 'drought'], ['==', '$type', 'Polygon']],
+        layout: {
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
+        },
+        paint: {
+          'fill-color': '#b45309',
+          'fill-opacity': 0.34
+        }
+      });
+
+      map.addLayer({
+        id: 'disaster-droughts-border',
+        type: 'line',
+        source: 'disaster-seismic-zones',
+        filter: ['all', ['==', ['get', 'hazard_type'], 'drought'], ['==', '$type', 'Polygon']],
+        layout: {
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#f59e0b',
+          'line-width': 1.8,
+          'line-dasharray': [3, 2]
+        }
+      });
+
+      map.addLayer({
+        id: 'disaster-droughts-labels',
+        type: 'symbol',
+        source: 'disaster-seismic-zones',
+        filter: ['all', ['==', ['get', 'hazard_type'], 'drought'], ['==', '$type', 'Polygon']],
+        layout: {
+          'text-field': ['concat', '☀️ ', ['get', 'name']],
+          'text-size': 10.5,
+          'text-allow-overlap': false,
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#fde68a',
+          'text-halo-color': '#020617',
+          'text-halo-width': 2
+        }
+      });
+
+      // 4.7 TSUNAMI HAZARD ZONES
+      map.addLayer({
+        id: 'disaster-tsunami-fill',
+        type: 'fill',
+        source: 'disaster-seismic-zones',
+        filter: ['all', ['==', ['get', 'hazard_type'], 'tsunami'], ['==', '$type', 'Polygon']],
+        layout: {
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
+        },
+        paint: {
+          'fill-color': '#06b6d4',
+          'fill-opacity': 0.4
+        }
+      });
+
+      map.addLayer({
+        id: 'disaster-tsunami-line',
+        type: 'line',
+        source: 'disaster-seismic-zones',
+        filter: ['all', ['==', ['get', 'hazard_type'], 'tsunami'], ['!=', '$type', 'Point']],
+        layout: {
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#22d3ee',
+          'line-width': 3.5,
+          'line-opacity': 0.9
+        }
+      });
+
+      map.addLayer({
+        id: 'disaster-tsunami-labels',
+        type: 'symbol',
+        source: 'disaster-seismic-zones',
+        filter: ['==', ['get', 'hazard_type'], 'tsunami'],
+        layout: {
+          'text-field': ['concat', '🚨 ', ['get', 'name']],
+          'text-size': 10.5,
+          'text-allow-overlap': false,
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#a5f3fc',
+          'text-halo-color': '#020617',
+          'text-halo-width': 2
+        }
+      });
+
+      // 4.8 HEATWAVE RISK ZONES
+      map.addLayer({
+        id: 'disaster-heatwaves-fill',
+        type: 'fill',
+        source: 'disaster-seismic-zones',
+        filter: ['all', ['==', ['get', 'hazard_type'], 'heatwave'], ['==', '$type', 'Polygon']],
+        layout: {
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
+        },
+        paint: {
+          'fill-color': '#e11d48',
+          'fill-opacity': 0.35
+        }
+      });
+
+      map.addLayer({
+        id: 'disaster-heatwaves-border',
+        type: 'line',
+        source: 'disaster-seismic-zones',
+        filter: ['all', ['==', ['get', 'hazard_type'], 'heatwave'], ['==', '$type', 'Polygon']],
+        layout: {
+          visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#f43f5e',
+          'line-width': 2,
+          'line-opacity': 0.85
+        }
+      });
+
+      map.addLayer({
+        id: 'disaster-heatwaves-labels',
+        type: 'symbol',
+        source: 'disaster-seismic-zones',
+        filter: ['all', ['==', ['get', 'hazard_type'], 'heatwave'], ['==', '$type', 'Polygon']],
+        layout: {
+          'text-field': ['concat', '🌡️ ', ['get', 'name'], ' (', ['to-string', ['get', 'max_recorded_temp_c']], '°C)'],
+          'text-size': 10.5,
           'text-allow-overlap': false,
           visibility: activeLayers.has('disaster_seismic') ? 'visible' : 'none'
         },
@@ -2324,6 +2789,13 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             'archaeology-inner-pip',
             'earthquake-epicenter-core',
             'seismic-zones-fill',
+            'disaster-cyclones-track',
+            'disaster-floods-fill',
+            'disaster-landslides-fill',
+            'disaster-droughts-fill',
+            'disaster-tsunami-line',
+            'disaster-tsunami-fill',
+            'disaster-heatwaves-fill',
             'trade-hit-target',
             'trade-core',
             'trade-railways',
@@ -2403,18 +2875,60 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             source = props.source_authority || 'Forest Survey of India / ISRO-SAC';
           } else if (topFeat.layer.id.startsWith('earthquake-epicenter-')) {
             featType = 'HISTORICAL EARTHQUAKE';
-            title = `${props.year} ${props.name}`;
-            subtitle = `Fault: ${props.fault_system || 'Tectonic Plate Boundary'}`;
+            title = `${props.year || ''} ${props.name}`;
+            subtitle = `Fault: ${props.fault_system || props.tectonic_setting || 'Tectonic Plate Boundary'}`;
             metricLabel = 'Magnitude';
-            metricValue = `M ${props.magnitude_mw} (Depth: ${props.depth_km} km)`;
-            source = 'National Centre for Seismology / IMD';
+            metricValue = `M ${props.magnitude_mw || props.magnitude} (Depth: ${props.depth_km || '—'} km)`;
+            source = props.authority || 'National Centre for Seismology / IMD';
           } else if (topFeat.layer.id === 'seismic-zones-fill') {
             featType = 'SEISMIC HAZARD ZONE';
-            title = `${props.zone_code} (${props.hazard_level})`;
-            subtitle = `Zone Factor Z = ${props.zone_factor_z}`;
+            title = `${props.zone_code || props.zone_name || props.zone_id}`;
+            subtitle = `Zone Factor Z = ${props.zone_factor_z || '0.36'} • ${props.hazard_level || 'High Risk'}`;
             metricLabel = 'Peak Ground Accel';
-            metricValue = props.peak_ground_accel;
-            source = 'Bureau of Indian Standards (BIS 1893:2016)';
+            metricValue = props.peak_ground_accel || '0.36g';
+            source = props.authority || 'Bureau of Indian Standards (BIS 1893:2016)';
+          } else if (topFeat.layer.id.startsWith('disaster-cyclones-')) {
+            featType = 'TROPICAL CYCLONE TRACK';
+            title = props.name;
+            subtitle = `${props.cyclone_category || 'Cyclonic Storm'} • ${props.region_name || 'Coastal'}`;
+            metricLabel = 'Max Wind Speed';
+            metricValue = props.wind_speed_kmh ? `${props.wind_speed_kmh} km/h (Surge: ${props.storm_surge_m}m)` : 'Severe Storm';
+            source = props.authority || 'India Meteorological Department (IMD)';
+          } else if (topFeat.layer.id.startsWith('disaster-floods-')) {
+            featType = 'FLOOD-PRONE BASIN';
+            title = props.name;
+            subtitle = `${props.basin_name || 'River Basin'} • ${props.region_name || 'Floodplain'}`;
+            metricLabel = 'Inundated Area';
+            metricValue = props.inundated_sqkm ? `${props.inundated_sqkm.toLocaleString()} sq km` : (props.hazard_level || 'High Risk');
+            source = props.authority || 'Central Water Commission (CWC) / NDMA';
+          } else if (topFeat.layer.id.startsWith('disaster-landslides-')) {
+            featType = 'LANDSLIDE SUSCEPTIBILITY';
+            title = props.name;
+            subtitle = `${props.susceptibility_rating || 'High Susceptibility'} • ${props.region_name || 'Himalayan/Ghats'}`;
+            metricLabel = 'Rock Formation';
+            metricValue = props.rock_formation || 'Fragile Metasediments';
+            source = props.authority || 'Geological Survey of India (GSI NLSM)';
+          } else if (topFeat.layer.id.startsWith('disaster-droughts-')) {
+            featType = 'DROUGHT-PRONE REGION';
+            title = props.name;
+            subtitle = `${props.hazard_level || 'Chronic Drought'} • ${props.region_name || 'Peninsular'}`;
+            metricLabel = 'Aridity Index';
+            metricValue = props.aridity_index || 'Semi-Arid';
+            source = props.authority || 'Central Water Commission / IMD';
+          } else if (topFeat.layer.id.startsWith('disaster-tsunami-')) {
+            featType = 'TSUNAMI HAZARD BUFFER';
+            title = props.name;
+            subtitle = `${props.hazard_level || 'Inundation Buffer'} • ${props.region_name || 'Coastline'}`;
+            metricLabel = 'Max Run-up';
+            metricValue = props.max_runup_m ? `${props.max_runup_m} m Run-up` : 'Inundation Zone';
+            source = props.authority || 'INCOIS (Indian Tsunami Early Warning Centre)';
+          } else if (topFeat.layer.id.startsWith('disaster-heatwaves-')) {
+            featType = 'SEVERE HEATWAVE ZONE';
+            title = props.name;
+            subtitle = `${props.hazard_level || 'Extreme Heat Core'} • ${props.region_name || 'Interior'}`;
+            metricLabel = 'Max Recorded Temp';
+            metricValue = props.max_recorded_temp_c ? `${props.max_recorded_temp_c}°C (Avg ${props.avg_heatwave_days || 15} days/yr)` : 'Extreme Heat';
+            source = props.authority || 'India Meteorological Department (IMD)';
           } else if (topFeat.layer.id.startsWith('elevation-natural-')) {
             featType = 'NATURAL MOUNTAIN SUMMIT';
             title = props.name || 'Topographic Summit';
@@ -2553,6 +3067,8 @@ export const MapEngine: React.FC<MapEngineProps> = ({
           'archaeology-inner-pip',
           'archaeology-glow',
           'earthquake-epicenter-core',
+          'disaster-cyclones-track',
+          'disaster-tsunami-line',
           'elevation-natural-summit',
           'elevation-natural-spot-core',
           'env-points-hit-target',
@@ -2566,6 +3082,11 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         const polygonLayers = [
           'env-polygons-fill',
           'seismic-zones-fill',
+          'disaster-floods-fill',
+          'disaster-landslides-fill',
+          'disaster-droughts-fill',
+          'disaster-tsunami-fill',
+          'disaster-heatwaves-fill',
           'empires-fill',
           'soils-fill',
           'districts-fill',
@@ -2657,8 +3178,76 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             featType = 'archaeological_site';
           } else if (topFeat.layer.id.startsWith('earthquake-epicenter-')) {
             featType = 'earthquake_epicenter';
+            const searchHighlightSrc = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+            if (searchHighlightSrc && topFeat.geometry) {
+              searchHighlightSrc.setData({
+                type: 'FeatureCollection',
+                features: [{ type: 'Feature', geometry: topFeat.geometry, properties: topFeat.properties }]
+              });
+            }
           } else if (topFeat.layer.id === 'seismic-zones-fill') {
             featType = 'seismic_zone';
+            const searchHighlightSrc = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+            if (searchHighlightSrc && topFeat.geometry) {
+              searchHighlightSrc.setData({
+                type: 'FeatureCollection',
+                features: [{ type: 'Feature', geometry: topFeat.geometry, properties: topFeat.properties }]
+              });
+            }
+          } else if (topFeat.layer.id.startsWith('disaster-cyclones-')) {
+            featType = 'cyclone_track';
+            const searchHighlightSrc = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+            if (searchHighlightSrc && topFeat.geometry) {
+              searchHighlightSrc.setData({
+                type: 'FeatureCollection',
+                features: [{ type: 'Feature', geometry: topFeat.geometry, properties: topFeat.properties }]
+              });
+            }
+          } else if (topFeat.layer.id.startsWith('disaster-floods-')) {
+            featType = 'flood_zone';
+            const searchHighlightSrc = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+            if (searchHighlightSrc && topFeat.geometry) {
+              searchHighlightSrc.setData({
+                type: 'FeatureCollection',
+                features: [{ type: 'Feature', geometry: topFeat.geometry, properties: topFeat.properties }]
+              });
+            }
+          } else if (topFeat.layer.id.startsWith('disaster-landslides-')) {
+            featType = 'landslide_zone';
+            const searchHighlightSrc = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+            if (searchHighlightSrc && topFeat.geometry) {
+              searchHighlightSrc.setData({
+                type: 'FeatureCollection',
+                features: [{ type: 'Feature', geometry: topFeat.geometry, properties: topFeat.properties }]
+              });
+            }
+          } else if (topFeat.layer.id.startsWith('disaster-droughts-')) {
+            featType = 'drought_zone';
+            const searchHighlightSrc = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+            if (searchHighlightSrc && topFeat.geometry) {
+              searchHighlightSrc.setData({
+                type: 'FeatureCollection',
+                features: [{ type: 'Feature', geometry: topFeat.geometry, properties: topFeat.properties }]
+              });
+            }
+          } else if (topFeat.layer.id.startsWith('disaster-tsunami-')) {
+            featType = 'tsunami_zone';
+            const searchHighlightSrc = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+            if (searchHighlightSrc && topFeat.geometry) {
+              searchHighlightSrc.setData({
+                type: 'FeatureCollection',
+                features: [{ type: 'Feature', geometry: topFeat.geometry, properties: topFeat.properties }]
+              });
+            }
+          } else if (topFeat.layer.id.startsWith('disaster-heatwaves-')) {
+            featType = 'heatwave_zone';
+            const searchHighlightSrc = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+            if (searchHighlightSrc && topFeat.geometry) {
+              searchHighlightSrc.setData({
+                type: 'FeatureCollection',
+                features: [{ type: 'Feature', geometry: topFeat.geometry, properties: topFeat.properties }]
+              });
+            }
           } else if (topFeat.layer.id === 'empires-fill') {
             featType = 'historical_empire';
           } else if (topFeat.layer.id === 'soils-fill') {

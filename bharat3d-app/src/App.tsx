@@ -282,12 +282,18 @@ export function App() {
     setDisasterHazardTypes(new Set<DisasterHazardType>());
   };
 
+  const handleResetDisasterFocus = () => {
+    setSelectedDisasterEventId(null);
+    setDisasterHazardTypes(new Set<DisasterHazardType>(ALL_DISASTER_HAZARDS));
+  };
+
   const handleSelectDisasterEvent = (event: HistoricalDisasterEvent) => {
     setSelectedDisasterEventId(event.id);
     if (!activeLayers.has('disaster_seismic')) {
       setActiveLayers(prev => new Set(prev).add('disaster_seismic'));
     }
-    setDisasterHazardTypes(prev => new Set(prev).add(event.hazardType));
+    // Clutter-free view: isolate background hazard layers strictly to this event's hazard type
+    setDisasterHazardTypes(new Set<DisasterHazardType>([event.hazardType]));
 
     setSearchTarget({
       name: event.name,
@@ -648,6 +654,8 @@ export function App() {
               isDisasterTimelineOpen={isDisasterTimelineOpen}
               onToggleDisasterTimeline={() => setIsDisasterTimelineOpen(prev => !prev)}
               onSelectDisasterEvent={handleSelectDisasterEvent}
+              selectedDisasterEventId={selectedDisasterEventId}
+              onResetDisasterFocus={handleResetDisasterFocus}
             />
           </div>
         </div>
@@ -707,6 +715,8 @@ export function App() {
               isDisasterTimelineOpen={isDisasterTimelineOpen}
               onToggleDisasterTimeline={() => setIsDisasterTimelineOpen(prev => !prev)}
               onSelectDisasterEvent={handleSelectDisasterEvent}
+              selectedDisasterEventId={selectedDisasterEventId}
+              onResetDisasterFocus={handleResetDisasterFocus}
             />
             <button
               onClick={() => setIsSidebarOpen(false)}
@@ -748,6 +758,7 @@ export function App() {
             comparisonConfig={comparisonConfig}
             disasterHazardTypes={disasterHazardTypes}
             disasterRegionFilter={disasterRegionFilter}
+            selectedDisasterEventId={selectedDisasterEventId}
           />
 
           {/* Dynamic Active Legends Overlay */}

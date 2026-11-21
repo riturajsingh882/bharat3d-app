@@ -34,6 +34,381 @@ function clearSearchHighlight(map: Map) {
   if (src && typeof src.setData === 'function') src.setData({ type: 'FeatureCollection', features: [] });
 }
 
+// Generate geodesic circular polygon for earthquake rupture and shockwave zones
+function createGeodesicCircle(centerLng: number, centerLat: number, radiusKm: number, numPoints = 64) {
+  const coords: [number, number][] = [];
+  const kmToRad = radiusKm / 6371.0;
+  const centerLatRad = (centerLat * Math.PI) / 180.0;
+  const centerLngRad = (centerLng * Math.PI) / 180.0;
+
+  for (let i = 0; i <= numPoints; i++) {
+    const angle = (i * 2 * Math.PI) / numPoints;
+    const latRad = Math.asin(
+      Math.sin(centerLatRad) * Math.cos(kmToRad) +
+      Math.cos(centerLatRad) * Math.sin(kmToRad) * Math.cos(angle)
+    );
+    const lngRad = centerLngRad + Math.atan2(
+      Math.sin(angle) * Math.sin(kmToRad) * Math.cos(centerLatRad),
+      Math.cos(kmToRad) - Math.sin(centerLatRad) * Math.sin(latRad)
+    );
+    coords.push([(lngRad * 180.0) / Math.PI, (latRad * 180.0) / Math.PI]);
+  }
+  return {
+    type: 'Polygon' as const,
+    coordinates: [coords]
+  };
+}
+
+// Generate perpendicular polygon swath along cyclone tracks for wind impact zones
+function createLineCorridor(coordinates: [number, number][], offsetKm = 45) {
+  if (!coordinates || coordinates.length < 2) return null;
+  const leftSide: [number, number][] = [];
+  const rightSide: [number, number][] = [];
+
+  for (let i = 0; i < coordinates.length; i++) {
+    const p = coordinates[i];
+    const prev = coordinates[Math.max(0, i - 1)];
+    const next = coordinates[Math.min(coordinates.length - 1, i + 1)];
+
+    const dx = next[0] - prev[0];
+    const dy = next[1] - prev[1];
+    const len = Math.hypot(dx, dy) || 1e-6;
+
+    const nx = -dy / len;
+    const ny = dx / len;
+
+    const latRad = (p[1] * Math.PI) / 180.0;
+    const degLat = offsetKm / 111.0;
+    const degLng = offsetKm / (111.0 * Math.max(0.1, Math.cos(latRad)));
+
+    leftSide.push([p[0] + nx * degLng, p[1] + ny * degLat]);
+    rightSide.unshift([p[0] - nx * degLng, p[1] - ny * degLat]);
+  }
+
+  const ring = [...leftSide, ...rightSide, leftSide[0]];
+  return {
+    type: 'Polygon' as const,
+    coordinates: [ring]
+  };
+}
+
+// Generate rich marked highlighted features for any disaster event
+function createDisasterImpactFeatures(match: any, target: { name?: string; key?: string; lng?: number; lat?: number }) {
+  const features: any[] = [];
+  let centerLng = target.lng;
+  let centerLat = target.lat;
+
+  if (centerLng === undefined || centerLat === undefined) {
+    if (match?.geometry?.type === 'Point' && Array.isArray(match.geometry.coordinates)) {
+      centerLng = match.geometry.coordinates[0];
+      centerLat = match.geometry.coordinates[1];
+    } else if (match?.geometry?.coordinates && Array.isArray(match.geometry.coordinates)) {
+      const flat = match.geometry.coordinates.flat(Infinity);
+      if (flat.length >= 2) {
+        centerLng = flat[0];
+        centerLat = flat[1];
+      }
+    }
+  }
+
+  if (centerLng === undefined) centerLng = 78.9629;
+  if (centerLat === undefined) centerLat = 20.5937;
+
+  const hazardType = match?.properties?.hazard_type || target.key || '';
+  const name = match?.properties?.name || target.name || 'Disaster Event';
+  const year = match?.properties?.year;
+  const labelPrefix = year ? `${year} ` : '';
+
+  // 1. EARTHQUAKE: Shockwave impact circle + Outer isoseismal buffer + Epicenter beacon
+  if (hazardType === 'earthquake' || (!hazardType && (name.toLowerCase().includes('earthquake') || match?.properties?.magnitude_mw))) {
+    const mw = match?.properties?.magnitude_mw || match?.properties?.magnitude || 7.5;
+    let radiusKm = 65;
+    if (mw >= 8.5) radiusKm = 140;
+    else if (mw >= 8.0) radiusKm = 110;
+    else if (mw >= 7.5) radiusKm = 85;
+    else if (mw >= 7.0) radiusKm = 65;
+    else if (mw >= 6.0) radiusKm = 45;
+    else radiusKm = 30;
+
+    const ruptureCircle = createGeodesicCircle(centerLng, centerLat, radiusKm, 64);
+    features.push({
+      type: 'Feature',
+      geometry: ruptureCircle,
+      properties: {
+        id: (match?.id || 'eq') + '_rupture',
+        name: `${name} - Severe Ground Motion Rupture Zone`,
+        color: '#ef4444',
+        border_color: '#ffffff',
+        fill_opacity: 0.42,
+        stroke_width: 3.5
+      }
+    });
+
+    const shockwaveCircle = createGeodesicCircle(centerLng, centerLat, radiusKm * 1.7, 64);
+    features.push({
+      type: 'Feature',
+      geometry: shockwaveCircle,
+      properties: {
+        id: (match?.id || 'eq') + '_shockwave',
+        name: `${name} - High Intensity Isoseismal Buffer`,
+        color: '#ef4444',
+        border_color: '#f97316',
+        fill_opacity: 0.12,
+        stroke_width: 2.0
+      }
+    });
+
+    features.push({
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [centerLng, centerLat] },
+      properties: {
+        id: (match?.id || 'eq') + '_beacon',
+        name: name,
+        label_text: `🚨 ${labelPrefix}${name} • Mw ${mw}`,
+        color: '#ef4444',
+        pulse_color: 'rgba(239, 68, 68, 0.45)'
+      }
+    });
+  }
+  // 2. CYCLONE: Wind impact corridor + Track line + Landfall beacon
+  else if (hazardType === 'cyclone' || name.toLowerCase().includes('cyclone')) {
+    if (match?.geometry?.type === 'LineString') {
+      const lineCoords = match.geometry.coordinates as [number, number][];
+      const swath = createLineCorridor(lineCoords, 45);
+      if (swath) {
+        features.push({
+          type: 'Feature',
+          geometry: swath,
+          properties: {
+            id: (match?.id || 'cyc') + '_swath',
+            name: `${name} - Gale-Force Wind Impact Swath (IMD)`,
+            color: '#c026d3',
+            border_color: '#f0abfc',
+            fill_opacity: 0.38,
+            stroke_width: 3.0
+          }
+        });
+      }
+      features.push({
+        type: 'Feature',
+        geometry: match.geometry,
+        properties: {
+          id: (match?.id || 'cyc') + '_track',
+          name: name,
+          color: '#f0abfc',
+          border_color: '#c026d3'
+        }
+      });
+      const landfallPt = lineCoords[lineCoords.length - 1] || [centerLng, centerLat];
+      const speed = match.properties?.wind_speed_kmh ? `${match.properties.wind_speed_kmh} km/h` : (match.properties?.cyclone_category || 'Landfall');
+      features.push({
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: landfallPt },
+        properties: {
+          id: (match?.id || 'cyc') + '_landfall',
+          name: name,
+          label_text: `🌀 ${labelPrefix}${name} • ${speed}`,
+          color: '#c026d3',
+          pulse_color: 'rgba(192, 38, 211, 0.45)'
+        }
+      });
+    } else {
+      const landfallCircle = createGeodesicCircle(centerLng, centerLat, 55, 64);
+      features.push({
+        type: 'Feature',
+        geometry: landfallCircle,
+        properties: {
+          id: (match?.id || 'cyc') + '_swath',
+          name: `${name} Landfall Impact Zone`,
+          color: '#c026d3',
+          border_color: '#ffffff',
+          fill_opacity: 0.4,
+          stroke_width: 3.0
+        }
+      });
+      features.push({
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: [centerLng, centerLat] },
+        properties: {
+          id: (match?.id || 'cyc') + '_beacon',
+          name: name,
+          label_text: `🌀 ${labelPrefix}${name}`,
+          color: '#c026d3',
+          pulse_color: 'rgba(192, 38, 211, 0.45)'
+        }
+      });
+    }
+  }
+  // 3. FLOOD: Catchment basin polygon + Focal breach beacon
+  else if (hazardType === 'flood' || name.toLowerCase().includes('flood') || name.toLowerCase().includes('deluge')) {
+    if (match?.geometry && (match.geometry.type === 'Polygon' || match.geometry.type === 'MultiPolygon')) {
+      features.push({
+        type: 'Feature',
+        geometry: match.geometry,
+        properties: {
+          id: (match?.id || 'fld') + '_basin',
+          name: `${name} Inundated Catchment Basin`,
+          color: '#0284c7',
+          border_color: '#38bdf8',
+          fill_opacity: 0.45,
+          stroke_width: 3.5
+        }
+      });
+    } else {
+      const floodCircle = createGeodesicCircle(centerLng, centerLat, 45, 64);
+      features.push({
+        type: 'Feature',
+        geometry: floodCircle,
+        properties: {
+          id: (match?.id || 'fld') + '_basin',
+          name: `${name} Inundation Basin`,
+          color: '#0284c7',
+          border_color: '#ffffff',
+          fill_opacity: 0.45,
+          stroke_width: 3.5
+        }
+      });
+    }
+    features.push({
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [centerLng, centerLat] },
+      properties: {
+        id: (match?.id || 'fld') + '_beacon',
+        name: name,
+        label_text: `🌊 ${labelPrefix}${name}`,
+        color: '#0284c7',
+        pulse_color: 'rgba(2, 132, 199, 0.45)'
+      }
+    });
+  }
+  // 4. LANDSLIDE: Debris flow chute + Escarpment beacon
+  else if (hazardType === 'landslide' || name.toLowerCase().includes('landslide') || name.toLowerCase().includes('glof')) {
+    if (match?.geometry && (match.geometry.type === 'Polygon' || match.geometry.type === 'MultiPolygon')) {
+      features.push({
+        type: 'Feature',
+        geometry: match.geometry,
+        properties: {
+          id: (match?.id || 'ls') + '_zone',
+          name: `${name} Debris Flow / Landslide Chute`,
+          color: '#ea580c',
+          border_color: '#fdba74',
+          fill_opacity: 0.48,
+          stroke_width: 3.5
+        }
+      });
+    } else {
+      const lsCircle = createGeodesicCircle(centerLng, centerLat, 30, 64);
+      features.push({
+        type: 'Feature',
+        geometry: lsCircle,
+        properties: {
+          id: (match?.id || 'ls') + '_zone',
+          name: `${name} Debris Flow Corridor`,
+          color: '#ea580c',
+          border_color: '#ffffff',
+          fill_opacity: 0.48,
+          stroke_width: 3.5
+        }
+      });
+    }
+    features.push({
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [centerLng, centerLat] },
+      properties: {
+        id: (match?.id || 'ls') + '_beacon',
+        name: name,
+        label_text: `⛰️ ${labelPrefix}${name}`,
+        color: '#ea580c',
+        pulse_color: 'rgba(234, 88, 12, 0.45)'
+      }
+    });
+  }
+  // 5. TSUNAMI: Coastal runup buffer + Shoreline beacon
+  else if (hazardType === 'tsunami' || name.toLowerCase().includes('tsunami')) {
+    if (match?.geometry && (match.geometry.type === 'Polygon' || match.geometry.type === 'MultiPolygon')) {
+      features.push({
+        type: 'Feature',
+        geometry: match.geometry,
+        properties: {
+          id: (match?.id || 'tsu') + '_buffer',
+          name: `${name} Coastal Inundation Strip`,
+          color: '#06b6d4',
+          border_color: '#67e8f9',
+          fill_opacity: 0.45,
+          stroke_width: 3.5
+        }
+      });
+    } else {
+      const tsuCircle = createGeodesicCircle(centerLng, centerLat, 50, 64);
+      features.push({
+        type: 'Feature',
+        geometry: tsuCircle,
+        properties: {
+          id: (match?.id || 'tsu') + '_buffer',
+          name: `${name} Tsunami Inundation Buffer`,
+          color: '#06b6d4',
+          border_color: '#ffffff',
+          fill_opacity: 0.45,
+          stroke_width: 3.5
+        }
+      });
+    }
+    features.push({
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [centerLng, centerLat] },
+      properties: {
+        id: (match?.id || 'tsu') + '_beacon',
+        name: name,
+        label_text: `🚨 ${labelPrefix}${name}`,
+        color: '#06b6d4',
+        pulse_color: 'rgba(6, 182, 212, 0.45)'
+      }
+    });
+  }
+  // 6. OTHER (HEATWAVE / DROUGHT)
+  else {
+    const defaultColor = hazardType === 'heatwave' ? '#e11d48' : hazardType === 'drought' ? '#b45309' : '#f59e0b';
+    if (match?.geometry && (match.geometry.type === 'Polygon' || match.geometry.type === 'MultiPolygon')) {
+      features.push({
+        type: 'Feature',
+        geometry: match.geometry,
+        properties: {
+          id: (match?.id || 'haz') + '_poly',
+          name: name,
+          color: defaultColor,
+          border_color: '#ffffff',
+          fill_opacity: 0.45,
+          stroke_width: 3.0
+        }
+      });
+    } else if (match?.geometry) {
+      features.push({
+        type: 'Feature',
+        geometry: match.geometry,
+        properties: {
+          id: (match?.id || 'haz') + '_geom',
+          name: name,
+          color: defaultColor,
+          border_color: '#ffffff'
+        }
+      });
+    }
+    features.push({
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [centerLng, centerLat] },
+      properties: {
+        id: (match?.id || 'haz') + '_beacon',
+        name: name,
+        label_text: `${labelPrefix}${name}`,
+        color: defaultColor,
+        pulse_color: defaultColor + '66'
+      }
+    });
+  }
+
+  return features;
+}
+
 function applySearchHighlight(map: Map, target: SearchTarget | null) {
   clearSearchHighlight(map);
   if (!target || !target.type || !map.isStyleLoaded()) return;
@@ -185,11 +560,12 @@ function applySearchHighlight(map: Map, target: SearchTarget | null) {
           return fName.includes(tName) || tName.includes(fName);
         });
       }
+      const impactFeatures = createDisasterImpactFeatures(match, target);
       const src = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
-      if (match && src) {
+      if (src && impactFeatures.length > 0) {
         src.setData({
           type: 'FeatureCollection',
-          features: [match]
+          features: impactFeatures
         });
       } else {
         setPoint();
@@ -295,6 +671,7 @@ interface MapEngineProps {
   comparisonConfig?: EnvironmentalComparisonConfig;
   disasterHazardTypes?: Set<DisasterHazardType>;
   disasterRegionFilter?: DisasterRegion;
+  selectedDisasterEventId?: string | null;
 }
 
 export const MapEngine: React.FC<MapEngineProps> = ({
@@ -313,7 +690,8 @@ export const MapEngine: React.FC<MapEngineProps> = ({
   environmentalPillars,
   comparisonConfig,
   disasterHazardTypes,
-  disasterRegionFilter = 'all'
+  disasterRegionFilter = 'all',
+  selectedDisasterEventId = null
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map | null>(null);
@@ -577,6 +955,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     if (map.getLayer('seismic-zones-fill')) {
       map.setFilter('seismic-zones-fill', ['all', ['==', '$type', 'Polygon'], ['==', ['coalesce', ['get', 'hazard_type'], 'seismic_zone'], 'seismic_zone'], regionCondition] as any);
       map.setLayoutProperty('seismic-zones-fill', 'visibility', showSeismic ? 'visible' : 'none');
+      map.setPaintProperty('seismic-zones-fill', 'fill-opacity', selectedDisasterEventId ? 0.18 : 0.42);
     }
     if (map.getLayer('seismic-zones-line')) {
       map.setFilter('seismic-zones-line', ['all', ['==', '$type', 'Polygon'], ['==', ['coalesce', ['get', 'hazard_type'], 'seismic_zone'], 'seismic_zone'], regionCondition] as any);
@@ -749,7 +1128,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     } catch {
       // ignore
     }
-  }, [activeLayers, religionFilter, tradeCategories, environmentalPillars, comparisonConfig, disasterHazardTypes, disasterRegionFilter]);
+  }, [activeLayers, religionFilter, tradeCategories, environmentalPillars, comparisonConfig, disasterHazardTypes, disasterRegionFilter, selectedDisasterEventId]);
 
   // Initialize Map
   useEffect(() => {
@@ -2638,7 +3017,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
       });
 
       // ========================================================
-      // SEARCH RESULT HIGHLIGHT (rendered above all data layers)
+      // SEARCH & TIMELINE EVENT HIGHLIGHT (rendered above all data layers)
       // ========================================================
       map.addLayer({
         id: 'search-highlight-fill',
@@ -2646,9 +3025,9 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         source: 'search-highlight',
         filter: ['==', '$type', 'Polygon'],
         paint: {
-          'fill-color': '#f59e0b',
-          'fill-opacity': 0.48,
-          'fill-outline-color': '#ffffff'
+          'fill-color': ['coalesce', ['get', 'color'], '#f59e0b'],
+          'fill-opacity': ['coalesce', ['get', 'fill_opacity'], 0.48],
+          'fill-outline-color': ['coalesce', ['get', 'border_color'], '#ffffff']
         }
       });
 
@@ -2658,8 +3037,8 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         source: 'search-highlight',
         filter: ['==', '$type', 'Polygon'],
         paint: {
-          'line-color': '#f59e0b',
-          'line-width': 8.0,
+          'line-color': ['coalesce', ['get', 'border_color'], ['get', 'color'], '#f59e0b'],
+          'line-width': ['coalesce', ['get', 'glow_width'], 8.0],
           'line-opacity': 0.7,
           'line-blur': 3.0
         }
@@ -2671,8 +3050,8 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         source: 'search-highlight',
         filter: ['==', '$type', 'Polygon'],
         paint: {
-          'line-color': '#ffffff',
-          'line-width': 3.5,
+          'line-color': ['coalesce', ['get', 'border_color'], '#ffffff'],
+          'line-width': ['coalesce', ['get', 'stroke_width'], 3.5],
           'line-opacity': 1.0
         }
       });
@@ -2697,7 +3076,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         filter: ['==', '$type', 'LineString'],
         layout: { 'line-join': 'round', 'line-cap': 'round' },
         paint: {
-          'line-color': '#fbbf24',
+          'line-color': ['coalesce', ['get', 'color'], '#fbbf24'],
           'line-width': 7.0,
           'line-opacity': 0.9,
           'line-blur': 1.5
@@ -2711,8 +3090,8 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         filter: ['==', '$type', 'LineString'],
         layout: { 'line-join': 'round', 'line-cap': 'round' },
         paint: {
-          'line-color': '#ffffff',
-          'line-width': 2.5,
+          'line-color': ['coalesce', ['get', 'border_color'], '#ffffff'],
+          'line-width': 3.0,
           'line-opacity': 1.0
         }
       });
@@ -2723,10 +3102,10 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         source: 'search-highlight',
         filter: ['==', '$type', 'Point'],
         paint: {
-          'circle-radius': 26,
-          'circle-color': 'rgba(245, 158, 11, 0.22)',
-          'circle-stroke-color': '#f59e0b',
-          'circle-stroke-width': 2.0
+          'circle-radius': 30,
+          'circle-color': ['coalesce', ['get', 'pulse_color'], 'rgba(245, 158, 11, 0.22)'],
+          'circle-stroke-color': ['coalesce', ['get', 'color'], '#f59e0b'],
+          'circle-stroke-width': 2.5
         }
       });
 
@@ -2736,11 +3115,31 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         source: 'search-highlight',
         filter: ['==', '$type', 'Point'],
         paint: {
-          'circle-radius': 12,
-          'circle-color': '#f59e0b',
+          'circle-radius': 11,
+          'circle-color': ['coalesce', ['get', 'color'], '#f59e0b'],
           'circle-stroke-width': 3.5,
           'circle-stroke-color': '#ffffff',
           'circle-opacity': 1.0
+        }
+      });
+
+      map.addLayer({
+        id: 'search-highlight-label',
+        type: 'symbol',
+        source: 'search-highlight',
+        filter: ['==', '$type', 'Point'],
+        layout: {
+          'text-field': ['coalesce', ['get', 'label_text'], ''],
+          'text-size': 11,
+          'text-offset': [0, -1.8],
+          'text-anchor': 'bottom',
+          'text-allow-overlap': true,
+          'text-ignore-placement': true
+        },
+        paint: {
+          'text-color': '#ffffff',
+          'text-halo-color': '#020617',
+          'text-halo-width': 2.5
         }
       });
 
@@ -3566,6 +3965,44 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             features: [match]
           });
         }
+      }
+    } else if (
+      type === 'disaster_hazard' ||
+      type === 'seismic_zone' ||
+      type === 'earthquake_epicenter' ||
+      type === 'cyclone_track' ||
+      type === 'flood_zone' ||
+      type === 'landslide_zone' ||
+      type === 'drought_zone' ||
+      type === 'tsunami_zone' ||
+      type === 'heatwave_zone'
+    ) {
+      const featId = properties.id || properties.key || '';
+      let match = selectedFeature.geometry 
+        ? { type: 'Feature', geometry: selectedFeature.geometry, properties: selectedFeature.properties }
+        : (featId ? DISASTER_HAZARDS_BY_ID[featId] : undefined);
+
+      if (!match && featName) {
+        const tName = featName.toLowerCase();
+        match = DISASTER_GEOJSON.features.find((f: any) => {
+          const fName = (f.properties?.name || '').toLowerCase();
+          return fName.includes(tName) || tName.includes(fName);
+        });
+      }
+
+      const impactFeatures = createDisasterImpactFeatures(match, {
+        name: featName,
+        key: featId,
+        lng: selectedFeature.coordinates ? selectedFeature.coordinates[0] : undefined,
+        lat: selectedFeature.coordinates ? selectedFeature.coordinates[1] : undefined
+      });
+
+      const src = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+      if (src && typeof src.setData === 'function' && impactFeatures.length > 0) {
+        src.setData({
+          type: 'FeatureCollection',
+          features: impactFeatures
+        });
       }
     }
   }, [selectedFeature, activeLayers, environmentalPillars]);

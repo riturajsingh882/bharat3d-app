@@ -45,7 +45,7 @@ export const DisasterTimelineDeck: React.FC<DisasterTimelineDeckProps> = ({
   onClose,
   selectedEventId,
   onSelectEvent,
-  activeHazardTypes,
+  activeHazardTypes: _activeHazardTypes,
   selectedRegion = 'all'
 }) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -56,7 +56,6 @@ export const DisasterTimelineDeck: React.FC<DisasterTimelineDeckProps> = ({
   const filteredEvents = HISTORICAL_DISASTER_EVENTS.filter(event => {
     if (hazardFilter !== 'all' && event.hazardType !== hazardFilter) return false;
     if (selectedRegion !== 'all' && event.region !== selectedRegion) return false;
-    if (activeHazardTypes && !activeHazardTypes.has(event.hazardType)) return false;
     return true;
   });
 

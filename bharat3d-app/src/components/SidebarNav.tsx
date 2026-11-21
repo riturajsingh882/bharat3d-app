@@ -66,6 +66,8 @@ interface SidebarNavProps {
   isDisasterTimelineOpen?: boolean;
   onToggleDisasterTimeline?: () => void;
   onSelectDisasterEvent?: (event: HistoricalDisasterEvent) => void;
+  selectedDisasterEventId?: string | null;
+  onResetDisasterFocus?: () => void;
 }
 
 export const SidebarNav: React.FC<SidebarNavProps> = ({
@@ -96,7 +98,9 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
   setDisasterRegionFilter = () => {},
   isDisasterTimelineOpen = false,
   onToggleDisasterTimeline = () => {},
-  onSelectDisasterEvent = () => {}
+  onSelectDisasterEvent = () => {},
+  selectedDisasterEventId = null,
+  onResetDisasterFocus
 }) => {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     historical: false,
@@ -106,6 +110,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
     environmental: false,
     roads: false,
     disaster: false,
+    disasterTimeline: false,
     political: false,
     soils: false,
     demographics: false,
@@ -767,57 +772,6 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
                 {/* Sub-controls when active */}
                 {activeLayers.has('disaster_seismic') && (
                   <div className="space-y-2.5 pt-1">
-                    {/* Launch Disaster Timeline Deck */}
-                    <button
-                      onClick={onToggleDisasterTimeline}
-                      className={`w-full px-3 py-2 rounded-lg text-xs font-mono flex items-center justify-between transition-all cursor-pointer border ${
-                        isDisasterTimelineOpen
-                          ? 'bg-rose-600/30 text-rose-200 border-rose-500 shadow-[0_0_12px_rgba(244,63,94,0.35)] font-bold'
-                          : 'bg-white/5 text-neutral-300 border-white/10 hover:bg-white/10 hover:text-white'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-3.5 h-3.5 text-rose-400" />
-                        <span>Disaster Event Timeline (1897–2024)</span>
-                      </div>
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-rose-950/80 text-rose-300 border border-rose-500/30">
-                        {isDisasterTimelineOpen ? 'ACTIVE' : 'OPEN'}
-                      </span>
-                    </button>
-
-                    {/* Geographic Region Filter */}
-                    <div className="bg-[#131720] p-2 rounded-lg border border-white/5 space-y-1.5">
-                      <div className="text-[10px] font-mono uppercase font-bold text-neutral-400 flex items-center justify-between">
-                        <span className="flex items-center gap-1.5">
-                          <Globe className="w-3 h-3 text-rose-400" />
-                          <span>Geographic Zone Filter</span>
-                        </span>
-                        <span className="text-[9px] text-rose-400 lowercase">{disasterRegionFilter}</span>
-                      </div>
-                      <div className="grid grid-cols-2 gap-1 text-[11px] font-mono">
-                        {[
-                          { id: 'all' as DisasterRegion, label: '🌐 All India' },
-                          { id: 'himalayan' as DisasterRegion, label: '🏔️ Himalayan Arc' },
-                          { id: 'gangetic' as DisasterRegion, label: '🌾 Indo-Gangetic' },
-                          { id: 'coastal' as DisasterRegion, label: '🏖️ Coastal Belts' },
-                          { id: 'peninsular' as DisasterRegion, label: '🏜️ Peninsular' },
-                          { id: 'northeast' as DisasterRegion, label: '🌿 Northeast' }
-                        ].map(reg => (
-                          <button
-                            key={reg.id}
-                            onClick={() => setDisasterRegionFilter(reg.id)}
-                            className={`px-2 py-1 rounded text-left transition-all cursor-pointer ${
-                              disasterRegionFilter === reg.id
-                                ? 'bg-rose-500/30 text-white font-bold border border-rose-500/60 shadow-[0_0_8px_rgba(244,63,94,0.25)]'
-                                : 'text-neutral-400 hover:text-neutral-200 hover:bg-white/5 border border-transparent'
-                            }`}
-                          >
-                            {reg.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
                     {/* Hazard Category Toggles */}
                     <div className="bg-[#131720] p-2 rounded-lg border border-white/5 space-y-2">
                       <div className="flex items-center justify-between text-[10px] font-mono uppercase font-bold text-neutral-400">
@@ -878,30 +832,146 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
                         })}
                       </div>
                     </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
 
-                    {/* Quick Jump: Major Historical Events */}
-                    <div className="bg-[#131720] p-2 rounded-lg border border-white/5 space-y-1.5">
-                      <div className="text-[10px] font-mono uppercase font-bold text-neutral-400 flex items-center justify-between">
-                        <span>Pivotal Historical Disasters</span>
-                        <span className="text-rose-400">1897–2024</span>
-                      </div>
-                      <div className="space-y-1 max-h-44 overflow-y-auto scrollbar-thin pr-1">
-                        {HISTORICAL_DISASTER_EVENTS.slice(0, 10).map(evt => (
+        {/* ======================================================== */}
+        {/* 5. HISTORICAL DISASTER TIMELINE (SEPARATE STANDALONE) */}
+        {/* ======================================================== */}
+        <div className="vista-card overflow-hidden border border-rose-500/40">
+          <button
+            onClick={() => toggleSection('disasterTimeline')}
+            className="w-full px-3.5 py-3 flex items-center justify-between text-sm font-serif font-semibold uppercase tracking-wide text-rose-300 hover:text-rose-200 transition-colors bg-[#1a0f12] cursor-pointer select-none"
+          >
+            <span className="flex items-center gap-2">
+              <ActiveDot on={isDisasterTimelineOpen || Boolean(selectedDisasterEventId)} />
+              <Clock className="w-4 h-4 text-rose-400" />
+              <span>Historical Disaster Timeline</span>
+            </span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-rose-950/80 text-rose-300 border border-rose-500/40">
+                1897–2024
+              </span>
+              <ChevronDown className={`w-4 h-4 text-neutral-400 chevron-rotate ${openSections.disasterTimeline ? 'is-open text-white' : ''}`} />
+            </div>
+          </button>
+          
+          <div className={`accordion-collapse ${openSections.disasterTimeline ? 'is-open' : ''}`}>
+            <div>
+              <div className="p-2 space-y-2.5 bg-[#0d1016]">
+                {/* Launch / Toggle Interactive Deck Button */}
+                <button
+                  onClick={onToggleDisasterTimeline}
+                  className={`w-full px-3 py-2 rounded-lg text-xs font-mono flex items-center justify-between transition-all cursor-pointer border ${
+                    isDisasterTimelineOpen
+                      ? 'bg-rose-600/30 text-rose-200 border-rose-500 shadow-[0_0_12px_rgba(244,63,94,0.35)] font-bold'
+                      : 'bg-white/5 text-neutral-300 border-white/10 hover:bg-white/10 hover:text-white'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-3.5 h-3.5 text-rose-400" />
+                    <span>Disaster Event Timeline Deck</span>
+                  </div>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-rose-950/80 text-rose-300 border border-rose-500/30">
+                    {isDisasterTimelineOpen ? 'ACTIVE' : 'OPEN'}
+                  </span>
+                </button>
+
+                {/* Geographic Zone Filter */}
+                <div className="bg-[#131720] p-2 rounded-lg border border-white/5 space-y-1.5">
+                  <div className="text-[10px] font-mono uppercase font-bold text-neutral-400 flex items-center justify-between">
+                    <span className="flex items-center gap-1.5">
+                      <Globe className="w-3 h-3 text-rose-400" />
+                      <span>Geographic Zone Filter</span>
+                    </span>
+                    <span className="text-[9px] text-rose-400 lowercase">{disasterRegionFilter}</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-1 text-[11px] font-mono">
+                    {[
+                      { id: 'all' as DisasterRegion, label: '🌐 All India' },
+                      { id: 'himalayan' as DisasterRegion, label: '🏔️ Himalayan Arc' },
+                      { id: 'gangetic' as DisasterRegion, label: '🌾 Indo-Gangetic' },
+                      { id: 'coastal' as DisasterRegion, label: '🏖️ Coastal Belts' },
+                      { id: 'peninsular' as DisasterRegion, label: '🏜️ Peninsular' },
+                      { id: 'northeast' as DisasterRegion, label: '🌿 Northeast' }
+                    ].map(reg => (
+                      <button
+                        key={reg.id}
+                        onClick={() => setDisasterRegionFilter(reg.id)}
+                        className={`px-2 py-1 rounded text-left transition-all cursor-pointer ${
+                          disasterRegionFilter === reg.id
+                            ? 'bg-rose-500/30 text-white font-bold border border-rose-500/60 shadow-[0_0_8px_rgba(244,63,94,0.25)]'
+                            : 'text-neutral-400 hover:text-neutral-200 hover:bg-white/5 border border-transparent'
+                        }`}
+                      >
+                        {reg.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Clutter-Free Focus Status / Reset Button */}
+                {selectedDisasterEventId && (
+                  <div className="bg-rose-950/40 border border-rose-500/40 p-2 rounded-lg flex items-center justify-between text-xs font-mono">
+                    <span className="text-rose-200 text-[10px] truncate">
+                      ✨ Event Focus Active (Clutter-Free)
+                    </span>
+                    {onResetDisasterFocus && (
+                      <button
+                        onClick={onResetDisasterFocus}
+                        className="text-[10px] px-2 py-0.5 rounded bg-rose-600/30 text-rose-200 hover:bg-rose-600/50 border border-rose-500/50 cursor-pointer shrink-0 font-bold"
+                        title="Show all hazard layers again"
+                      >
+                        Show All
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {/* Chronological Detailed Event Explorer */}
+                <div className="bg-[#131720] p-2 rounded-lg border border-white/5 space-y-1.5">
+                  <div className="text-[10px] font-mono uppercase font-bold text-neutral-400 flex items-center justify-between">
+                    <span>Chronological Events ({HISTORICAL_DISASTER_EVENTS.filter(e => disasterRegionFilter === 'all' || e.region === disasterRegionFilter).length})</span>
+                    <span className="text-rose-400">1897–2024</span>
+                  </div>
+                  <div className="space-y-1 max-h-72 overflow-y-auto scrollbar-thin pr-1">
+                    {HISTORICAL_DISASTER_EVENTS
+                      .filter(e => disasterRegionFilter === 'all' || e.region === disasterRegionFilter)
+                      .map(evt => {
+                        const isSelected = selectedDisasterEventId === evt.id;
+                        return (
                           <button
                             key={evt.id}
                             onClick={() => onSelectDisasterEvent(evt)}
-                            className="w-full px-2 py-1 rounded text-left transition-colors cursor-pointer hover:bg-white/10 flex items-center justify-between text-[11px] font-mono text-neutral-300 hover:text-white"
+                            className={`w-full p-2 rounded-lg text-left transition-all cursor-pointer border ${
+                              isSelected
+                                ? 'bg-rose-500/25 border-rose-400 text-white font-bold shadow-[0_0_12px_rgba(244,63,94,0.3)]'
+                                : 'bg-white/5 border-white/5 text-neutral-300 hover:bg-white/10 hover:text-white'
+                            }`}
                           >
-                            <span className="truncate">
-                              <strong className="text-rose-400">{evt.year}</strong> {evt.name.replace(/^\d{4}\s*/, '')}
-                            </span>
-                            <span className="text-[10px] text-neutral-400 shrink-0 ml-1 font-semibold">{evt.magnitudeOrIntensity.split(' ')[0]}</span>
+                            <div className="flex items-center justify-between gap-1 mb-0.5">
+                              <span className="font-mono text-[10px] font-bold text-rose-400 bg-rose-950/80 px-1.5 py-0.5 rounded border border-rose-500/30">
+                                {evt.year}
+                              </span>
+                              <span className="text-[10px] font-mono text-neutral-300 font-semibold truncate">
+                                {evt.magnitudeOrIntensity}
+                              </span>
+                            </div>
+                            <div className="text-xs font-semibold truncate leading-tight text-white">
+                              {evt.name.replace(/^\d{4}\s*/, '')}
+                            </div>
+                            <div className="text-[9px] font-mono text-neutral-400 truncate mt-0.5">
+                              📍 {evt.regionName}
+                            </div>
                           </button>
-                        ))}
-                      </div>
-                    </div>
+                        );
+                      })}
                   </div>
-                )}
+                </div>
               </div>
             </div>
           </div>

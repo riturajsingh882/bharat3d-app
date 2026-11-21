@@ -17,7 +17,8 @@ import {
   PILLAR_VIEWPORTS, 
   findPillarForHotspot, 
   FEATURE_BENCHMARKS, 
-  ENVIRONMENTAL_PILLARS 
+  ENVIRONMENTAL_PILLARS,
+  PILLAR_HOTSPOTS
 } from './data/environmentalChange';
 import { 
   ENVIRONMENTAL_FEATURES, 
@@ -177,17 +178,22 @@ export function App() {
       setActiveLayers(prev => new Set(prev).add('environmental_change'));
     }
     setEnvironmentalPillars(new Set([p]));
-    const vp = PILLAR_VIEWPORTS[p];
-    if (vp) {
-      setSearchTarget({
-        name: vp.description,
-        lat: vp.lat,
-        lng: vp.lng,
-        zoom: vp.zoom,
-        pitch: vp.pitch,
-        bearing: vp.bearing,
-        type: 'environmental_change'
-      });
+    const primaryHotspot = PILLAR_HOTSPOTS[p]?.[0];
+    if (primaryHotspot) {
+      handleSelectHotspot(primaryHotspot);
+    } else {
+      const vp = PILLAR_VIEWPORTS[p];
+      if (vp) {
+        setSearchTarget({
+          name: vp.description,
+          lat: vp.lat,
+          lng: vp.lng,
+          zoom: vp.zoom,
+          pitch: vp.pitch,
+          bearing: vp.bearing,
+          type: 'environmental_change'
+        });
+      }
     }
   };
 
@@ -197,17 +203,22 @@ export function App() {
       setActiveLayers(prev => new Set(prev).add('environmental_change'));
     }
     setEnvironmentalPillars(new Set([pillar]));
-    const vp = PILLAR_VIEWPORTS[pillar];
-    if (vp) {
-      setSearchTarget({
-        name: vp.description,
-        lat: vp.lat,
-        lng: vp.lng,
-        zoom: vp.zoom,
-        pitch: vp.pitch,
-        bearing: vp.bearing,
-        type: 'environmental_change'
-      });
+    const primaryHotspot = PILLAR_HOTSPOTS[pillar]?.[0];
+    if (primaryHotspot) {
+      handleSelectHotspot(primaryHotspot);
+    } else {
+      const vp = PILLAR_VIEWPORTS[pillar];
+      if (vp) {
+        setSearchTarget({
+          name: vp.description,
+          lat: vp.lat,
+          lng: vp.lng,
+          zoom: vp.zoom,
+          pitch: vp.pitch,
+          bearing: vp.bearing,
+          type: 'environmental_change'
+        });
+      }
     }
   };
 

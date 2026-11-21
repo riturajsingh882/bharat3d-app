@@ -9,7 +9,7 @@ import { HistoricalTimeline } from './components/HistoricalTimeline';
 import { StateComparisonModal } from './components/StateComparisonModal';
 import { SoilDataModal } from './components/SoilDataModal';
 import { EnvironmentalComparisonDeck } from './components/EnvironmentalComparisonDeck';
-import { PanelLeftClose, PanelLeftOpen, Mountain, Leaf, Landmark, Scroll, Compass, AlertTriangle, Route, ChevronUp, Clock, Info } from 'lucide-react';
+import { PanelLeftClose, PanelLeftOpen, Mountain, Leaf, Landmark, Scroll, Compass, AlertTriangle, Route, Info } from 'lucide-react';
 import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory, EnvironmentalPillar, EnvironmentalComparisonConfig } from './types';
 import { HISTORICAL_ERAS } from './data/historicalEras';
 import { 
@@ -62,9 +62,6 @@ export function App() {
   // Historical Atlas State
   const [selectedHistoricalPeriod, setSelectedHistoricalPeriod] = useState<HistoricalPeriodId>('maurya');
   const [isTimelineOpen, setIsTimelineOpen] = useState<boolean>(false);
-  const [isTimelineCollapsed, setIsTimelineCollapsed] = useState<boolean>(
-    typeof window !== 'undefined' && window.innerWidth < 768
-  );
 
   // State Comparison Studio State
   const [isComparisonModalOpen, setIsComparisonModalOpen] = useState<boolean>(false);
@@ -189,6 +186,7 @@ export function App() {
   const openEcoComparison = (targetPillar?: EnvironmentalPillar) => {
     const p = targetPillar || comparisonConfig.pillar;
     setIsEcoComparisonOpen(true);
+    setIsTimelineOpen(false);
     if (!activeLayers.has('environmental_change')) {
       setActiveLayers(prev => new Set(prev).add('environmental_change'));
     }
@@ -521,7 +519,13 @@ export function App() {
                 }
               }}
               isTimelineOpen={isTimelineOpen}
-              onToggleTimeline={() => setIsTimelineOpen(!isTimelineOpen)}
+              onToggleTimeline={() => {
+                setIsTimelineOpen(prev => {
+                  const next = !prev;
+                  if (next) setIsEcoComparisonOpen(false);
+                  return next;
+                });
+              }}
               tradeCategories={tradeCategories}
               toggleTradeCategory={toggleTradeCategory}
               onSelectAllTradeCategories={selectAllTradeCategories}
@@ -565,7 +569,13 @@ export function App() {
                 }
               }}
               isTimelineOpen={isTimelineOpen}
-              onToggleTimeline={() => setIsTimelineOpen(!isTimelineOpen)}
+              onToggleTimeline={() => {
+                setIsTimelineOpen(prev => {
+                  const next = !prev;
+                  if (next) setIsEcoComparisonOpen(false);
+                  return next;
+                });
+              }}
               tradeCategories={tradeCategories}
               toggleTradeCategory={toggleTradeCategory}
               onSelectAllTradeCategories={selectAllTradeCategories}
@@ -972,45 +982,17 @@ export function App() {
       />
 
       {/* Universal Historical Timeline Slider - Docked at Bottom Center */}
-      {isTimelineOpen && (
-        <div className="fixed bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 z-40 w-[94%] max-w-4xl flex flex-col items-center gap-1.5 slide-in-from-bottom-4">
-          {/* Small collapse / expand toggle, sitting above the timeline bar */}
-          <button
-            onClick={() => setIsTimelineCollapsed((v) => !v)}
-            className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900/90 text-[#C9A227] border border-[#C9A227]/40 hover:bg-slate-800 transition-colors shadow-lg backdrop-blur-md text-xs font-semibold cursor-pointer select-none"
-            title={isTimelineCollapsed ? 'Expand timeline' : 'Collapse timeline'}
-          >
-            <ChevronUp className={`w-3.5 h-3.5 transition-transform duration-300 ease-out ${isTimelineCollapsed ? '' : 'rotate-180'}`} />
-            <span>{isTimelineCollapsed ? 'Show Timeline' : 'Hide Timeline'}</span>
-          </button>
-
-          <div className="w-full overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]">
-            {isTimelineCollapsed ? (
-              <button
-                onClick={() => setIsTimelineCollapsed(false)}
-                className="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-xl glass-panel-glow border border-amber-500/40 text-left transition-all duration-300 hover:border-amber-400 cursor-pointer"
-              >
-                <span className="flex items-center gap-2 text-amber-300 font-semibold truncate text-sm min-w-0">
-                  <Clock className="w-4 h-4 shrink-0" />
-                  <span className="truncate">{activeEraMeta.name}</span>
-                </span>
-                <span className="text-xs text-neutral-400 font-mono shrink-0">{activeEraMeta.yearApprox}</span>
-              </button>
-            ) : (
-              <HistoricalTimeline
-                currentEraId={selectedHistoricalPeriod}
-                onSelectEra={(era) => {
-                  setSelectedHistoricalPeriod(era);
-                  if (!activeLayers.has('historical_atlas')) {
-                    toggleLayer('historical_atlas');
-                  }
-                }}
-                onClose={() => setIsTimelineOpen(false)}
-              />
-            )}
-          </div>
-        </div>
-      )}
+      <HistoricalTimeline
+        isOpen={isTimelineOpen}
+        currentEraId={selectedHistoricalPeriod}
+        onSelectEra={(era) => {
+          setSelectedHistoricalPeriod(era);
+          if (!activeLayers.has('historical_atlas')) {
+            toggleLayer('historical_atlas');
+          }
+        }}
+        onClose={() => setIsTimelineOpen(false)}
+      />
 
       {/* State vs State Comparison Modal */}
       <StateComparisonModal

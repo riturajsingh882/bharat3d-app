@@ -12,7 +12,13 @@ import { EnvironmentalComparisonDeck } from './components/EnvironmentalCompariso
 import { PanelLeftClose, PanelLeftOpen, Mountain, Leaf, Landmark, Scroll, Compass, AlertTriangle, Route, ChevronUp, Clock, Info } from 'lucide-react';
 import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory, EnvironmentalPillar, EnvironmentalComparisonConfig } from './types';
 import { HISTORICAL_ERAS } from './data/historicalEras';
-import { ALL_ENVIRONMENTAL_PILLARS, PILLAR_VIEWPORTS } from './data/environmentalChange';
+import { 
+  ALL_ENVIRONMENTAL_PILLARS, 
+  PILLAR_VIEWPORTS, 
+  findPillarForHotspot, 
+  FEATURE_BENCHMARKS, 
+  ENVIRONMENTAL_PILLARS 
+} from './data/environmentalChange';
 
 const DEMOGRAPHIC_LAYERS: ActiveLayer[] = [
   'pop_density',
@@ -105,6 +111,12 @@ export function App() {
 
   const toggleEnvironmentalPillar = (pillar: EnvironmentalPillar) => {
     const isCurrentlyActive = environmentalPillars.has(pillar);
+
+    // If unticking this pillar and the currently selected feature belongs to it, immediately clear selectedFeature!
+    if (isCurrentlyActive && selectedFeature?.type === 'environmental_change' && selectedFeature.properties?.pillar === pillar) {
+      setSelectedFeature(null);
+    }
+
     setEnvironmentalPillars(prev => {
       const next = new Set(prev);
       if (next.has(pillar)) {
@@ -114,9 +126,12 @@ export function App() {
       }
       return next;
     });
-    if (!activeLayers.has('environmental_change')) {
+
+    // Only activate 'environmental_change' layer when turning a pillar ON
+    if (!isCurrentlyActive && !activeLayers.has('environmental_change')) {
       setActiveLayers(prev => new Set(prev).add('environmental_change'));
     }
+
     if (!isCurrentlyActive) {
       const vp = PILLAR_VIEWPORTS[pillar];
       if (vp) {
@@ -142,6 +157,9 @@ export function App() {
 
   const clearEnvironmentalPillars = () => {
     setEnvironmentalPillars(new Set());
+    if (selectedFeature?.type === 'environmental_change') {
+      setSelectedFeature(null);
+    }
   };
 
   const updateComparisonConfig = (newConfig: Partial<EnvironmentalComparisonConfig>) => {
@@ -215,18 +233,32 @@ export function App() {
   }, []);
 
   const handleSelectHotspot = (hotspot: { id?: string; name: string; lat: number; lng: number; zoom?: number }) => {
+    // 1. Identify which pillar this hotspot belongs to
+    const targetPillar = (hotspot.id ? findPillarForHotspot(hotspot.id) : undefined) || comparisonConfig.pillar;
+
+    // 2. Ensure activeLayers has 'environmental_change'
     if (!activeLayers.has('environmental_change')) {
       setActiveLayers(prev => new Set(prev).add('environmental_change'));
     }
+
+    // 3. Ensure environmentalPillars includes this pillar so MapEngine displays its geometry
+    setEnvironmentalPillars(prev => new Set(prev).add(targetPillar));
+
+    // 4. Update comparison deck to focus on this pillar
+    updateComparisonConfig({ pillar: targetPillar });
+
+    // 5. Set search target with key matching the ID so search-highlight immediately illuminates the geometry!
     setSearchTarget({
       name: hotspot.name,
       lat: hotspot.lat,
       lng: hotspot.lng,
       zoom: hotspot.zoom || 9,
       pitch: 50,
-      type: 'environmental_change'
+      type: 'environmental_change',
+      key: hotspot.id || undefined
     });
 
+    // 6. Match feature in environmentalFeatures GeoJSON
     // Priority 1: Exact ID match across all features
     let match = hotspot.id
       ? environmentalFeatures.find(f => (f.properties?.id === hotspot.id || f.id === hotspot.id))
@@ -253,6 +285,39 @@ export function App() {
           return hTokens.some(w => fName.includes(w));
         });
       }
+    }
+
+    // Priority 4: Synchronous fallback from FEATURE_BENCHMARKS & PILLAR METADATA
+    // If environmentalFeatures is still loading or not yet populated, IMMEDIATELY construct
+    // the SelectedFeatureInfo so the user NEVER has to double click!
+    if (!match && hotspot.id) {
+      const bMarks = FEATURE_BENCHMARKS[hotspot.id];
+      const pMeta = ENVIRONMENTAL_PILLARS[targetPillar];
+      const bYear = pMeta?.baselineYear || '2001';
+      const cYear = pMeta?.comparisonYear || '2021';
+      const bPoint = bMarks?.[bYear];
+      const cPoint = bMarks?.[cYear];
+
+      setSelectedFeature({
+        type: 'environmental_change',
+        name: hotspot.name,
+        properties: {
+          id: hotspot.id,
+          name: hotspot.name,
+          pillar: targetPillar,
+          category_name: pMeta?.title || 'Environmental Change',
+          baseline_year: bYear,
+          baseline_text: bPoint?.text || '',
+          baseline_value: bPoint?.value,
+          comparison_year: cYear,
+          comparison_text: cPoint?.text || '',
+          comparison_value: cPoint?.value,
+          delta_text: bPoint && cPoint ? `${cPoint.value - bPoint.value > 0 ? '+' : ''}${cPoint.value - bPoint.value} ${cPoint.unit}` : undefined,
+          authority: pMeta?.authority || ''
+        },
+        coordinates: [hotspot.lng, hotspot.lat]
+      });
+      return;
     }
 
     if (match) {
@@ -309,6 +374,9 @@ export function App() {
       // Independent overlay layers
       if (next.has(layer)) {
         next.delete(layer);
+        if (layer === 'environmental_change' && selectedFeature?.type === 'environmental_change') {
+          setSelectedFeature(null);
+        }
       } else {
         next.add(layer);
       }
@@ -321,6 +389,7 @@ export function App() {
     setTradeCategories(new Set(ALL_TRADE_CATEGORIES));
     setSelectedHistoricalPeriod('maurya');
     setIsTimelineOpen(false);
+    setSelectedFeature(null);
   };
 
   const handleResetView = () => {
@@ -865,6 +934,8 @@ export function App() {
         comparisonConfig={comparisonConfig}
         onUpdateConfig={updateComparisonConfig}
         onSelectHotspot={handleSelectHotspot}
+        selectedFeatureId={selectedFeature?.properties?.id}
+        selectedFeatureName={selectedFeature?.name}
         onFlyToCoordinates={(lat: number, lng: number, zoom?: number) => {
           if (!activeLayers.has('environmental_change')) {
             setActiveLayers(prev => new Set(prev).add('environmental_change'));

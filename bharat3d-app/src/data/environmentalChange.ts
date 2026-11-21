@@ -294,6 +294,92 @@ export const PILLAR_VIEWPORTS: Record<EnvironmentalPillar, PillarViewport> = {
   }
 };
 
+export interface MonitoredHotspot {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  zoom?: number;
+}
+
+export const PILLAR_HOTSPOTS: Record<EnvironmentalPillar, MonitoredHotspot[]> = {
+  forest_change: [
+    { id: "forest-western-ghats", name: "Western Ghats", lat: 14.5, lng: 75.0, zoom: 7.5 },
+    { id: "forest-northeast-tribal", name: "Northeast Tribal Belt", lat: 25.5, lng: 93.0, zoom: 7.5 },
+    { id: "forest-sundarbans-mangroves", name: "Sundarbans Mangrove", lat: 21.9, lng: 88.9, zoom: 9 },
+    { id: "forest-eastern-ghats", name: "Eastern Ghats", lat: 17.2, lng: 82.0, zoom: 7.5 },
+    { id: "forest-central-highlands", name: "Central Sal & Teak", lat: 22.5, lng: 80.5, zoom: 7.5 }
+  ],
+  glacier_retreat: [
+    { id: "glacier-gangotri", name: "Gangotri / Gaumukh", lat: 30.92, lng: 79.08, zoom: 11 },
+    { id: "glacier-siachen", name: "Siachen Glacier", lat: 35.50, lng: 77.10, zoom: 10 },
+    { id: "glacier-chorabari", name: "Chorabari (Kedarnath)", lat: 30.75, lng: 79.05, zoom: 12 },
+    { id: "glacier-zemu", name: "Zemu (Sikkim)", lat: 27.75, lng: 88.22, zoom: 10.5 },
+    { id: "glacier-kolhai", name: "Kolhai (Kashmir)", lat: 34.18, lng: 75.33, zoom: 11 },
+    { id: "glacier-bara-shigri", name: "Bara Shigri (Spiti)", lat: 32.25, lng: 77.60, zoom: 11 }
+  ],
+  urban_expansion: [
+    { id: "urban-delhi-ncr", name: "Delhi NCR", lat: 28.60, lng: 77.15, zoom: 9 },
+    { id: "urban-bengaluru", name: "Bengaluru BBMP", lat: 12.97, lng: 77.60, zoom: 10 },
+    { id: "urban-mumbai-mmr", name: "Mumbai MMR", lat: 19.12, lng: 72.95, zoom: 9.5 },
+    { id: "urban-hyderabad", name: "Hyderabad ORR", lat: 17.40, lng: 78.45, zoom: 9.5 },
+    { id: "urban-chennai", name: "Chennai OMR", lat: 12.95, lng: 80.15, zoom: 9.5 }
+  ],
+  coastal_erosion: [
+    { id: "coastal-sundarbans-sagar", name: "Sagar Island (WB)", lat: 21.60, lng: 88.15, zoom: 10.5 },
+    { id: "coastal-odisha-kendrapara", name: "Satabhaya (Odisha)", lat: 20.62, lng: 86.95, zoom: 10.5 },
+    { id: "coastal-kerala-chellanam", name: "Chellanam (Kerala)", lat: 9.70, lng: 76.28, zoom: 10.5 },
+    { id: "coastal-puducherry-ennore", name: "Puducherry Coast", lat: 11.93, lng: 79.83, zoom: 11 },
+    { id: "coastal-gujarat-khambhat", name: "Gulf of Khambhat", lat: 21.80, lng: 72.35, zoom: 10 }
+  ],
+  wetland_change: [
+    { id: "wetland-chilika", name: "Chilika Lagoon", lat: 19.68, lng: 85.35, zoom: 9.5 },
+    { id: "wetland-vembanad", name: "Vembanad-Kol", lat: 9.65, lng: 76.38, zoom: 9.5 },
+    { id: "wetland-wular", name: "Wular Lake", lat: 34.35, lng: 74.58, zoom: 10.5 },
+    { id: "wetland-loktak", name: "Loktak & Phumdis", lat: 24.52, lng: 93.82, zoom: 10.5 },
+    { id: "wetland-kolleru", name: "Kolleru Lake", lat: 16.65, lng: 81.30, zoom: 10 },
+    { id: "wetland-sambhar", name: "Sambhar Salt Lake", lat: 26.92, lng: 75.05, zoom: 10 }
+  ],
+  desertification: [
+    { id: "desert-thar-eastern", name: "Thar Fringe (Rajasthan)", lat: 27.00, lng: 72.20, zoom: 7.5 },
+    { id: "desert-aravalli-breach", name: "Aravalli Gaps (NCR)", lat: 27.95, lng: 76.65, zoom: 9 },
+    { id: "desert-rayalaseema-scrub", name: "Rayalaseema Scrub", lat: 14.68, lng: 77.60, zoom: 8 },
+    { id: "desert-chambal-badlands", name: "Chambal Ravines", lat: 26.30, lng: 78.20, zoom: 9 },
+    { id: "desert-rann-saurashtra", name: "Rann & Banni", lat: 23.60, lng: 69.50, zoom: 8.5 }
+  ],
+  groundwater_stress: [
+    { id: "gw-punjab-haryana", name: "Punjab Granary", lat: 30.25, lng: 75.85, zoom: 8 },
+    { id: "gw-western-rajasthan", name: "Marwar Fossil Aquifers", lat: 26.25, lng: 72.75, zoom: 8 },
+    { id: "gw-delhi-ncr", name: "Delhi NCR Cones", lat: 28.60, lng: 77.20, zoom: 10 },
+    { id: "gw-tamilnadu-cauvery", name: "Tamil Nadu Hard-Rock", lat: 11.00, lng: 77.50, zoom: 8.5 },
+    { id: "gw-gangetic-eastern", name: "Eastern Gangetic Plain", lat: 25.50, lng: 85.50, zoom: 8 }
+  ],
+  river_avulsion: [
+    { id: "river-kosi-migration", name: "Kosi Avulsion Corridor", lat: 26.10, lng: 86.90, zoom: 8.5 },
+    { id: "river-brahmaputra-majuli", name: "Majuli Island (Assam)", lat: 26.95, lng: 94.20, zoom: 9.5 },
+    { id: "river-ganga-malda", name: "Malda Ganga Migration", lat: 24.90, lng: 88.00, zoom: 9.5 },
+    { id: "river-saraswati-paleochannel", name: "Saraswati Paleochannel", lat: 28.80, lng: 74.20, zoom: 7 },
+    { id: "river-teesta-avulsion", name: "Teesta Historic Avulsion", lat: 26.50, lng: 88.80, zoom: 9 }
+  ]
+};
+
+export const findPillarForHotspot = (hotspotId: string): EnvironmentalPillar | undefined => {
+  for (const [pillar, hotspots] of Object.entries(PILLAR_HOTSPOTS)) {
+    if (hotspots.some(h => h.id === hotspotId)) {
+      return pillar as EnvironmentalPillar;
+    }
+  }
+  return undefined;
+};
+
+export const findHotspotById = (hotspotId: string): MonitoredHotspot | undefined => {
+  for (const hotspots of Object.values(PILLAR_HOTSPOTS)) {
+    const found = hotspots.find(h => h.id === hotspotId);
+    if (found) return found;
+  }
+  return undefined;
+};
+
 // ============================================================================
 // DYNAMIC MULTI-DECADAL TEMPORAL FINDINGS (YEAR-BY-YEAR / EPOCH-BY-EPOCH)
 // ============================================================================

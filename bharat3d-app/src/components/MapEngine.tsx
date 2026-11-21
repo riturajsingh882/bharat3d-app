@@ -12,9 +12,9 @@ const SEARCH_HIGHLIGHT_SOURCE: Record<string, { source: string; field: string } 
   historical_empire: { source: 'historical-empires', field: 'name' },
   historical_capital: { source: 'historical-empires', field: 'name' },
   trade_route: { source: 'historical-trade-routes', field: 'name' },
-  environmental_change: { source: 'environmental-change', field: 'name' },
-  glacier: { source: 'environmental-change', field: 'name' },
-  wetland: { source: 'environmental-change', field: 'name' }
+  environmental_change: { source: 'environmental-change', field: 'id' },
+  glacier: { source: 'environmental-change', field: 'id' },
+  wetland: { source: 'environmental-change', field: 'id' }
 };
 
 function clearSearchHighlight(map: Map) {
@@ -25,6 +25,10 @@ function clearSearchHighlight(map: Map) {
   if (map.getLayer('rivers-highlight')) map.setFilter('rivers-highlight', ['==', 'clean_name', '']);
   if (map.getLayer('mountains-highlight')) map.setFilter('mountains-highlight', ['==', 'name', '']);
   if (map.getLayer('roads-highlight')) map.setFilter('roads-highlight', ['==', 'code', '']);
+  if (map.getLayer('env-highlight-fill')) map.setFilter('env-highlight-fill', ['==', ['id'], '']);
+  if (map.getLayer('env-highlight-border')) map.setFilter('env-highlight-border', ['==', ['id'], '']);
+  if (map.getLayer('env-highlight-line')) map.setFilter('env-highlight-line', ['==', ['id'], '']);
+  if (map.getLayer('env-highlight-point')) map.setFilter('env-highlight-point', ['==', ['id'], '']);
   const src = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
   if (src && typeof src.setData === 'function') src.setData({ type: 'FeatureCollection', features: [] });
 }
@@ -73,6 +77,42 @@ function applySearchHighlight(map: Map, target: SearchTarget | null) {
     case 'archaeological_site':
       setPoint();
       break;
+    case 'environmental_change':
+    case 'glacier':
+    case 'wetland': {
+      const keyOrName = target.key || target.name || '';
+      try {
+        let feats = map.querySourceFeatures('environmental-change', {
+          filter: [
+            'any',
+            ['==', ['get', 'id'], keyOrName],
+            ['==', ['id'], keyOrName],
+            ['==', 'id', keyOrName],
+            ['==', ['get', 'name'], target.name || keyOrName],
+            ['==', 'name', target.name || keyOrName]
+          ]
+        });
+        if (feats.length === 0 && target.key) {
+          feats = map.querySourceFeatures('environmental-change', {
+            filter: ['any', ['==', ['get', 'id'], target.key], ['==', ['id'], target.key], ['==', 'id', target.key]]
+          });
+        }
+        if (feats.length > 0) {
+          const src = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+          if (src) {
+            src.setData({
+              type: 'FeatureCollection',
+              features: feats.map((f) => ({ type: 'Feature', geometry: f.geometry, properties: f.properties }))
+            });
+          }
+        } else {
+          setPoint();
+        }
+      } catch {
+        setPoint();
+      }
+      break;
+    }
     default: {
       const cfg = SEARCH_HIGHLIGHT_SOURCE[target.type];
       if (cfg && target.key) {
@@ -355,6 +395,23 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         map.setLayoutProperty(id, 'visibility', effectiveEnvActive ? 'visible' : 'none');
       }
     });
+
+    // Environmental Highlight Layers visibility and filter clearance on untick
+    ['env-highlight-fill', 'env-highlight-border', 'env-highlight-line', 'env-highlight-point'].forEach(id => {
+      if (map.getLayer(id)) {
+        map.setLayoutProperty(id, 'visibility', effectiveEnvActive ? 'visible' : 'none');
+        if (!effectiveEnvActive) {
+          map.setFilter(id, ['==', ['id'], '']);
+        }
+      }
+    });
+
+    if (!effectiveEnvActive) {
+      const src = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+      if (src && typeof src.setData === 'function') {
+        src.setData({ type: 'FeatureCollection', features: [] });
+      }
+    }
 
     // Dynamic Environmental Change Color & Severity Styling based on Delta vs Baseline Mode
     const activeEnvColorExpr = comparisonConfig?.isDeltaMode
@@ -2761,10 +2818,12 @@ export const MapEngine: React.FC<MapEngineProps> = ({
       if (map.getLayer('rivers-highlight')) map.setFilter('rivers-highlight', ['==', 'clean_name', '']);
       if (map.getLayer('mountains-highlight')) map.setFilter('mountains-highlight', ['==', 'name', '']);
       if (map.getLayer('roads-highlight')) map.setFilter('roads-highlight', ['==', 'code', '']);
-      if (map.getLayer('env-highlight-fill')) map.setFilter('env-highlight-fill', ['==', 'id', '']);
-      if (map.getLayer('env-highlight-border')) map.setFilter('env-highlight-border', ['==', 'id', '']);
-      if (map.getLayer('env-highlight-line')) map.setFilter('env-highlight-line', ['==', 'id', '']);
-      if (map.getLayer('env-highlight-point')) map.setFilter('env-highlight-point', ['==', 'id', '']);
+      if (map.getLayer('env-highlight-fill')) map.setFilter('env-highlight-fill', ['==', ['id'], '']);
+      if (map.getLayer('env-highlight-border')) map.setFilter('env-highlight-border', ['==', ['id'], '']);
+      if (map.getLayer('env-highlight-line')) map.setFilter('env-highlight-line', ['==', ['id'], '']);
+      if (map.getLayer('env-highlight-point')) map.setFilter('env-highlight-point', ['==', ['id'], '']);
+      const src = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+      if (src && typeof src.setData === 'function') src.setData({ type: 'FeatureCollection', features: [] });
       return;
     }
 
@@ -2784,13 +2843,57 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     } else if (type === 'highway') {
       if (map.getLayer('roads-highlight')) map.setFilter('roads-highlight', ['==', 'code', properties.code || featName]);
     } else if (type === 'environmental_change') {
+      const isEnvActive = activeLayers.has('environmental_change');
+      const pillar = properties.pillar;
+      const isPillarActive = !environmentalPillars || (pillar && environmentalPillars.has(pillar));
+
+      // If environmental layer is not active or this feature's pillar is not in active pillars, clear highlight!
+      if (!isEnvActive || !isPillarActive) {
+        if (map.getLayer('env-highlight-fill')) map.setFilter('env-highlight-fill', ['==', ['id'], '']);
+        if (map.getLayer('env-highlight-border')) map.setFilter('env-highlight-border', ['==', ['id'], '']);
+        if (map.getLayer('env-highlight-line')) map.setFilter('env-highlight-line', ['==', ['id'], '']);
+        if (map.getLayer('env-highlight-point')) map.setFilter('env-highlight-point', ['==', ['id'], '']);
+        const src = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+        if (src && typeof src.setData === 'function') src.setData({ type: 'FeatureCollection', features: [] });
+        return;
+      }
+
       const featId = properties.id || '';
-      if (map.getLayer('env-highlight-fill')) map.setFilter('env-highlight-fill', ['==', 'id', featId]);
-      if (map.getLayer('env-highlight-border')) map.setFilter('env-highlight-border', ['==', 'id', featId]);
-      if (map.getLayer('env-highlight-line')) map.setFilter('env-highlight-line', ['==', 'id', featId]);
-      if (map.getLayer('env-highlight-point')) map.setFilter('env-highlight-point', ['==', 'id', featId]);
+      const envFilter: any = featId
+        ? [
+            'any',
+            ['==', ['get', 'id'], featId],
+            ['==', ['id'], featId],
+            ['==', 'id', featId],
+            ['==', ['get', 'name'], featName || ''],
+            ['==', 'name', featName || '']
+          ]
+        : ['==', ['id'], ''];
+
+      ['env-highlight-fill', 'env-highlight-border', 'env-highlight-line', 'env-highlight-point'].forEach(id => {
+        if (map.getLayer(id)) {
+          map.setLayoutProperty(id, 'visibility', 'visible');
+          map.setFilter(id, envFilter);
+        }
+      });
+
+      // Synchronously push geometry to search-highlight source for guaranteed first-click high-contrast illumination
+      try {
+        const feats = map.querySourceFeatures('environmental-change', { filter: envFilter });
+        if (feats.length > 0) {
+          const src = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+          if (src) {
+            src.setData({
+              type: 'FeatureCollection',
+              features: feats.map(f => ({ type: 'Feature', geometry: f.geometry, properties: f.properties }))
+            });
+          }
+        }
+      } catch {
+        // ignore query errors
+      }
     }
-  }, [selectedFeature]);
+  }, [selectedFeature, activeLayers, environmentalPillars]);
 
   // Handle Search FlyTo
   useEffect(() => {

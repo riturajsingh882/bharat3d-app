@@ -160,4 +160,5 @@ export interface SelectedFeatureInfo {
   demographics?: DemographicRecord;
   properties: Record<string, any>;
   coordinates?: [number, number];
+  geometry?: any;
 }

@@ -19,6 +19,10 @@ import {
   FEATURE_BENCHMARKS, 
   ENVIRONMENTAL_PILLARS 
 } from './data/environmentalChange';
+import { 
+  ENVIRONMENTAL_FEATURES, 
+  ENVIRONMENTAL_FEATURES_BY_ID 
+} from './data/environmentalGeojson';
 
 const DEMOGRAPHIC_LAYERS: ActiveLayer[] = [
   'pop_density',
@@ -207,9 +211,7 @@ export function App() {
     }
   };
 
-  const [environmentalFeatures, setEnvironmentalFeatures] = useState<any[]>([]);
-
-  // Ingest Demographics & Environmental Data
+  // Ingest Demographics Data
   useEffect(() => {
     fetch('/data/census_demographics.json')
       .then(res => res.json())
@@ -221,15 +223,6 @@ export function App() {
         console.error('Failed to load demographics data:', err);
         setIsLoading(false);
       });
-
-    fetch('/data/environmental_change.geojson')
-      .then(res => res.json())
-      .then(data => {
-        if (data && Array.isArray(data.features)) {
-          setEnvironmentalFeatures(data.features);
-        }
-      })
-      .catch(err => console.error('Failed to load environmental_change.geojson:', err));
   }, []);
 
   const handleSelectHotspot = (hotspot: { id?: string; name: string; lat: number; lng: number; zoom?: number }) => {
@@ -258,39 +251,41 @@ export function App() {
       key: hotspot.id || undefined
     });
 
-    // 6. Match feature in environmentalFeatures GeoJSON
-    // Priority 1: Exact ID match across all features
-    let match = hotspot.id
-      ? environmentalFeatures.find(f => (f.properties?.id === hotspot.id || f.id === hotspot.id))
-      : undefined;
+    // 6. Match feature synchronously from ENVIRONMENTAL_FEATURES_BY_ID or ENVIRONMENTAL_FEATURES
+    let match = hotspot.id ? ENVIRONMENTAL_FEATURES_BY_ID[hotspot.id] : undefined;
 
-    // Priority 2: Exact or whole-string name containment
+    // Fallback: Exact or whole-string name containment
     if (!match) {
       const hName = (hotspot.name || '').toLowerCase();
-      match = environmentalFeatures.find(f => {
+      match = ENVIRONMENTAL_FEATURES.find(f => {
         const fName = (f.properties?.name || '').toLowerCase();
         return fName.includes(hName) || hName.includes(fName);
       });
     }
 
-    // Priority 3: Significant keyword token match (length >= 4 to avoid false substrings)
+    // Fallback: Significant keyword token match (length >= 4 to avoid false substrings)
     if (!match) {
       const hTokens = (hotspot.name || '')
         .toLowerCase()
         .split(/[\s&,/()-]+/)
         .filter(w => w.length >= 4);
       if (hTokens.length > 0) {
-        match = environmentalFeatures.find(f => {
+        match = ENVIRONMENTAL_FEATURES.find(f => {
           const fName = (f.properties?.name || '').toLowerCase();
           return hTokens.some(w => fName.includes(w));
         });
       }
     }
 
-    // Priority 4: Synchronous fallback from FEATURE_BENCHMARKS & PILLAR METADATA
-    // If environmentalFeatures is still loading or not yet populated, IMMEDIATELY construct
-    // the SelectedFeatureInfo so the user NEVER has to double click!
-    if (!match && hotspot.id) {
+    if (match) {
+      setSelectedFeature({
+        type: 'environmental_change',
+        name: match.properties.name,
+        properties: match.properties,
+        coordinates: [hotspot.lng, hotspot.lat],
+        geometry: match.geometry
+      });
+    } else if (hotspot.id) {
       const bMarks = FEATURE_BENCHMARKS[hotspot.id];
       const pMeta = ENVIRONMENTAL_PILLARS[targetPillar];
       const bYear = pMeta?.baselineYear || '2001';
@@ -315,16 +310,6 @@ export function App() {
           delta_text: bPoint && cPoint ? `${cPoint.value - bPoint.value > 0 ? '+' : ''}${cPoint.value - bPoint.value} ${cPoint.unit}` : undefined,
           authority: pMeta?.authority || ''
         },
-        coordinates: [hotspot.lng, hotspot.lat]
-      });
-      return;
-    }
-
-    if (match) {
-      setSelectedFeature({
-        type: 'environmental_change',
-        name: match.properties.name,
-        properties: match.properties,
         coordinates: [hotspot.lng, hotspot.lat]
       });
     }

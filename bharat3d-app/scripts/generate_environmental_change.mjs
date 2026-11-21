@@ -1,0 +1,1385 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const outputPath = path.resolve(__dirname, '../public/data/environmental_change.geojson');
+
+const features = [
+  // ==========================================
+  // PILLAR 1: FOREST-COVER CHANGES (FSI ISFR)
+  // ==========================================
+  {
+    type: "Feature",
+    id: "forest-western-ghats",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [73.8, 19.5], [74.2, 18.0], [75.0, 15.5], [75.8, 13.5], [76.8, 11.0], [77.3, 8.8],
+        [77.7, 8.4], [77.5, 9.5], [76.9, 11.8], [75.8, 14.2], [74.6, 17.0], [73.5, 19.0], [73.8, 19.5]
+      ]]
+    },
+    properties: {
+      id: "forest-western-ghats",
+      name: "Western Ghats Montane Forest Corridor",
+      pillar: "forest_change",
+      category_name: "Forest Cover",
+      region: "Maharashtra, Goa, Karnataka, Kerala, Tamil Nadu",
+      baseline_year: "2001",
+      baseline_value: 43850,
+      baseline_text: "43,850 sq km canopy cover",
+      comparison_year: "2021",
+      comparison_value: 45120,
+      comparison_text: "45,120 sq km canopy cover",
+      delta_value: 1270,
+      delta_pct: 2.9,
+      delta_text: "+1,270 sq km (+2.9%) net gain in open/mod forest",
+      severity_level: "Moderate / Caution",
+      severity_code: "moderate",
+      primary_driver: "Commercial plantation expansion vs core evergreen interior fragmentation",
+      ecological_impact: "While total tree canopy expanded due to rubber, coffee and teak plantations, dense evergreen rainforest interior cores suffered linear fragmentation from roads and power lines, impacting endemic arboreal primates (Lion-tailed Macaque).",
+      citation: "Forest Survey of India (FSI) — State of Forest Report (ISFR) 2001 & 2021",
+      point_coordinates: [75.6, 13.8]
+    }
+  },
+  {
+    type: "Feature",
+    id: "forest-northeast-tribal",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [92.5, 27.5], [95.5, 28.5], [96.8, 27.8], [95.5, 25.0], [93.5, 23.5], [92.2, 24.5], [91.5, 26.0], [92.5, 27.5]
+      ]]
+    },
+    properties: {
+      id: "forest-northeast-tribal",
+      name: "Northeast India Shifting Cultivation Belt",
+      pillar: "forest_change",
+      category_name: "Forest Cover",
+      region: "Arunachal Pradesh, Nagaland, Mizoram, Manipur, Meghalaya",
+      baseline_year: "2001",
+      baseline_value: 169825,
+      baseline_text: "169,825 sq km primary forest",
+      comparison_year: "2021",
+      comparison_value: 166540,
+      comparison_text: "166,540 sq km remaining forest",
+      delta_value: -3285,
+      delta_pct: -1.93,
+      delta_text: "-3,285 sq km (-1.93%) primary canopy loss",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Shortened jhum slash-and-burn cycles, infrastructure, and bamboo flowering degradation",
+      ecological_impact: "Traditional 15-20 year rotational jhum cycles shrank to 3-5 years due to demographic pressure, preventing natural canopy regeneration and causing heavy topsoil loss across hilly watershed catchments.",
+      citation: "FSI ISFR Assessments 2001–2021; MoEFCC Technical Forest Statistics",
+      point_coordinates: [94.0, 26.0]
+    }
+  },
+  {
+    type: "Feature",
+    id: "forest-sundarbans-mangroves",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [88.2, 22.4], [89.1, 22.3], [89.1, 21.5], [88.1, 21.6], [88.2, 22.4]
+      ]]
+    },
+    properties: {
+      id: "forest-sundarbans-mangroves",
+      name: "Sundarbans Deltaic Mangrove Biosphere",
+      pillar: "forest_change",
+      category_name: "Forest Cover",
+      region: "West Bengal (South 24 Parganas)",
+      baseline_year: "2001",
+      baseline_value: 2081,
+      baseline_text: "2,081 sq km mangrove cover",
+      comparison_year: "2021",
+      comparison_value: 2114,
+      comparison_text: "2,114 sq km mangrove cover",
+      delta_value: 33,
+      delta_pct: 1.58,
+      delta_text: "+33 sq km (+1.58%) net mangrove colonization",
+      severity_level: "Moderate / Caution",
+      severity_code: "moderate",
+      primary_driver: "Sea-level rise, increased salinity, and frequent super cyclones (Amphan, Yaas)",
+      ecological_impact: "While mudbank accretion allowed pioneer mangrove colonization, reduced freshwater flows from the upstream Ganga altered water chemistry, causing freshwater-loving Sundari (Heritiera fomes) trees to decline in favor of saline-tolerant Avicennia marina.",
+      citation: "FSI ISFR 2021 Mangrove Cover Assessment; Sundarban Biosphere Reserve Directorate",
+      point_coordinates: [88.6, 21.9]
+    }
+  },
+  {
+    type: "Feature",
+    id: "forest-eastern-ghats",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [81.0, 18.0], [84.0, 19.5], [84.8, 18.2], [82.5, 16.5], [80.5, 15.0], [78.8, 14.0], [79.2, 14.8], [81.0, 18.0]
+      ]]
+    },
+    properties: {
+      id: "forest-eastern-ghats",
+      name: "Eastern Ghats Deciduous & Social Forestry Belt",
+      pillar: "forest_change",
+      category_name: "Forest Cover",
+      region: "Andhra Pradesh, Odisha, Telangana",
+      baseline_year: "2001",
+      baseline_value: 44200,
+      baseline_text: "44,200 sq km forest cover",
+      comparison_year: "2021",
+      comparison_value: 47480,
+      comparison_text: "47,480 sq km forest cover",
+      delta_value: 3280,
+      delta_pct: 7.42,
+      delta_text: "+3,280 sq km (+7.42%) expansion via community forestry",
+      severity_level: "Stable / Recovery",
+      severity_code: "positive",
+      primary_driver: "Vana Samrakshana Samithi (VSS) joint management, agro-forestry, and compensatory afforestation",
+      ecological_impact: "Significant green cover gains in open and scrub forest categories, improving ground moisture retention across degraded quartzitic hill slopes, though mono-species eucalyptus and bamboo plantations lack original biodiversity.",
+      citation: "FSI Biennial Assessments 2001 vs 2021; Andhra Pradesh Forest Department",
+      point_coordinates: [82.0, 17.2]
+    }
+  },
+  {
+    type: "Feature",
+    id: "forest-central-highlands",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [77.0, 23.5], [82.5, 24.0], [82.8, 21.8], [78.0, 21.5], [77.0, 23.5]
+      ]]
+    },
+    properties: {
+      id: "forest-central-highlands",
+      name: "Central Indian Sal & Teak Wildlife Corridor",
+      pillar: "forest_change",
+      category_name: "Forest Cover",
+      region: "Madhya Pradesh & Chhattisgarh",
+      baseline_year: "2001",
+      baseline_value: 76400,
+      baseline_text: "76,400 sq km dense forest",
+      comparison_year: "2021",
+      comparison_value: 77493,
+      comparison_text: "77,493 sq km dense forest",
+      delta_value: 1093,
+      delta_pct: 1.43,
+      delta_text: "+1,093 sq km (+1.43%) stable tiger corridor core",
+      severity_level: "Stable / Recovery",
+      severity_code: "positive",
+      primary_driver: "Project Tiger protected area zoning, Kanha-Pench corridor conservation",
+      ecological_impact: "Robust protection of core deciduous forests preserves India's largest metapopulation of Bengal Tigers (Panthera tigris), maintaining vital carbon sinks and perennial headwater catchments of the Narmada and Mahanadi rivers.",
+      citation: "FSI ISFR 2021; National Tiger Conservation Authority (NTCA)",
+      point_coordinates: [80.2, 22.8]
+    }
+  },
+
+  // ==========================================
+  // PILLAR 2: GLACIER RETREAT (SAC-ISRO / GSI)
+  // ==========================================
+  {
+    type: "Feature",
+    id: "glacier-gangotri",
+    geometry: {
+      type: "Point",
+      coordinates: [79.08, 30.92]
+    },
+    properties: {
+      id: "glacier-gangotri",
+      name: "Gangotri Glacier & Gaumukh Snout",
+      pillar: "glacier_retreat",
+      category_name: "Glacier Retreat",
+      region: "Uttarakhand (Uttarkashi, Bhagirathi Basin)",
+      baseline_year: "1965",
+      baseline_value: 0,
+      baseline_text: "Gaumukh Snout position at 3,920 m (1965 Corona satellite baseline)",
+      comparison_year: "2022",
+      comparison_value: 1530,
+      comparison_text: "Gaumukh Snout shifted to 4,015 m (1,530 m upvalley retreat)",
+      delta_value: -1530,
+      delta_pct: -5.1,
+      delta_text: "-1,530 m retreat (~22 m/year average retreat rate)",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Rising surface temperatures, decreasing winter snowfall, and heavy debris-cover detachment",
+      ecological_impact: "Accelerated melting thins the main 30.2 km ice trunk, creating moraine collapse at the snout and forming expanding supra-glacial meltwater lakes that threaten flash flood discharge down the Bhagirathi Ganga valley.",
+      citation: "Space Applications Centre (SAC - ISRO) Himalayan Glaciers Atlas; Geological Survey of India (GSI) Glaciology Div",
+      point_coordinates: [79.08, 30.92]
+    }
+  },
+  {
+    type: "Feature",
+    id: "glacier-siachen",
+    geometry: {
+      type: "Point",
+      coordinates: [77.10, 35.50]
+    },
+    properties: {
+      id: "glacier-siachen",
+      name: "Siachen Glacier Terminus",
+      pillar: "glacier_retreat",
+      category_name: "Glacier Retreat",
+      region: "Ladakh (Karakoram Range, Nubra Basin)",
+      baseline_year: "1965",
+      baseline_value: 76.5,
+      baseline_text: "76.5 km ice tongue length; continuous tributary feeds",
+      comparison_year: "2022",
+      comparison_value: 71.2,
+      comparison_text: "71.2 km active tongue; lower 5 km stagnant debris",
+      delta_value: -5.3,
+      delta_pct: -6.9,
+      delta_text: "-5.3 km snout detachment & 17% ice volume loss",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Global warming, reduced winter accumulation, and military anthropogenic footprint",
+      ecological_impact: "World's second longest non-polar glacier is experiencing tributary detachment (e.g. Teram Shehr, Lolofond), thinning ice thickness by up to 100 meters and altering downstream summer melt discharge into the Nubra and Shyok rivers.",
+      citation: "ISRO SAC Karakoram Cryosphere Studies; Wadia Institute of Himalayan Geology (WIHG)",
+      point_coordinates: [77.10, 35.50]
+    }
+  },
+  {
+    type: "Feature",
+    id: "glacier-chorabari",
+    geometry: {
+      type: "Point",
+      coordinates: [79.05, 30.75]
+    },
+    properties: {
+      id: "glacier-chorabari",
+      name: "Chorabari Glacier & Gandhi Sarovar (Kedarnath)",
+      pillar: "glacier_retreat",
+      category_name: "Glacier Retreat",
+      region: "Uttarakhand (Rudraprayag, Mandakini Basin)",
+      baseline_year: "1965",
+      baseline_value: 0,
+      baseline_text: "Intact snout feeding stable moraine-dammed lake",
+      comparison_year: "2022",
+      comparison_value: 320,
+      comparison_text: "320 m snout retreat with breached moraine lake wall",
+      delta_value: -320,
+      delta_pct: -4.5,
+      delta_text: "-320 m retreat & catastrophic 2013 GLOF breach",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Glacial lake outburst flood (GLOF) dynamics, heavy monsoonal cloudbursts",
+      ecological_impact: "Site of the tragic June 2013 Kedarnath disaster: unprecedented heavy rain combined with rapid glacial melt burst the Chorabari moraine-dammed lake (Gandhi Sarovar), triggering a catastrophic debris flow that decimated Kedarnath town.",
+      citation: "Wadia Institute of Himalayan Geology (WIHG) Report on Kedarnath Disaster; SAC-ISRO",
+      point_coordinates: [79.05, 30.75]
+    }
+  },
+  {
+    type: "Feature",
+    id: "glacier-zemu",
+    geometry: {
+      type: "Point",
+      coordinates: [88.22, 27.75]
+    },
+    properties: {
+      id: "glacier-zemu",
+      name: "Zemu Glacier (Kangchenjunga Basin)",
+      pillar: "glacier_retreat",
+      category_name: "Glacier Retreat",
+      region: "Sikkim (North Sikkim, Teesta Basin)",
+      baseline_year: "1965",
+      baseline_value: 28.0,
+      baseline_text: "28.0 km length from Kangchenjunga east flank",
+      comparison_year: "2022",
+      comparison_value: 25.8,
+      comparison_text: "25.8 km length with expanding proglacial lake",
+      delta_value: -2.2,
+      delta_pct: -7.86,
+      delta_text: "-2.2 km retreat & rapid proglacial lake formation",
+      severity_level: "High Vulnerability",
+      severity_code: "high",
+      primary_driver: "Rising eastern Himalayan temperatures, accelerated summer ablation",
+      ecological_impact: "Zemu is the prime feeder of the Teesta River. Rapid shrinkage is causing heavy supra-glacial pond coalescence, elevating GLOF hazard risk for downstream hydroelectric dams across Sikkim (e.g. Teesta-III Chungthang dam failure precursor).",
+      citation: "Geological Survey of India (GSI) Eastern Region Glaciology; Sikkim State Disaster Management Authority",
+      point_coordinates: [88.22, 27.75]
+    }
+  },
+  {
+    type: "Feature",
+    id: "glacier-kolhai",
+    geometry: {
+      type: "Point",
+      coordinates: [75.33, 34.18]
+    },
+    properties: {
+      id: "glacier-kolhai",
+      name: "Kolhai Glacier ('Goddess of Light')",
+      pillar: "glacier_retreat",
+      category_name: "Glacier Retreat",
+      region: "Jammu & Kashmir (Anantnag, Lidder/Jhelum Basin)",
+      baseline_year: "1965",
+      baseline_value: 13.87,
+      baseline_text: "13.87 sq km continuous ice expanse",
+      comparison_year: "2022",
+      comparison_value: 10.95,
+      comparison_text: "10.95 sq km heavily fragmented ice mass",
+      delta_value: -2.92,
+      delta_pct: -21.05,
+      delta_text: "-21.05% surface area shrinkage",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Winter snowfall deficit, black carbon deposition, warming valley temperatures",
+      ecological_impact: "Primary water tower for the Kashmir Valley. Rapid shrinkage threatens drinking water supply for Srinagar and irrigation for apple orchards and paddy fields across Anantnag, Pulwama, and Srinagar districts.",
+      citation: "University of Kashmir Dept of Earth Sciences Cryosphere Group; SAC-ISRO Glacier Inventory",
+      point_coordinates: [75.33, 34.18]
+    }
+  },
+  {
+    type: "Feature",
+    id: "glacier-bara-shigri",
+    geometry: {
+      type: "Point",
+      coordinates: [77.62, 32.25]
+    },
+    properties: {
+      id: "glacier-bara-shigri",
+      name: "Bara Shigri Glacier (Lahaul-Spiti)",
+      pillar: "glacier_retreat",
+      category_name: "Glacier Retreat",
+      region: "Himachal Pradesh (Chandra/Chenab Basin)",
+      baseline_year: "1965",
+      baseline_value: 27.5,
+      baseline_text: "27.5 km length; largest glacier in Himachal",
+      comparison_year: "2022",
+      comparison_value: 26.4,
+      comparison_text: "26.4 km length; detached tributary glaciers",
+      delta_value: -1.1,
+      delta_pct: -4.0,
+      delta_text: "-1,100 m retreat (~19.3 m/year average rate)",
+      severity_level: "High Vulnerability",
+      severity_code: "high",
+      primary_driver: "Negative mass balance, higher equilibrium line altitude (ELA)",
+      ecological_impact: "Historical breach in 1836 dammed the Chandra river creating a massive lake that devastated the valley when it burst. Ongoing retreat is forming new proglacial moraine lakes requiring continuous satellite monitoring.",
+      citation: "Wadia Institute of Himalayan Geology (WIHG) Chenab Basin Glacier Monograph; GSI",
+      point_coordinates: [77.62, 32.25]
+    }
+  },
+
+  // ==========================================
+  // PILLAR 3: URBAN EXPANSION (NRSC / ISRO LULC)
+  // ==========================================
+  {
+    type: "Feature",
+    id: "urban-delhi-ncr",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [76.85, 28.85], [77.45, 28.85], [77.55, 28.35], [76.90, 28.35], [76.85, 28.85]
+      ]]
+    },
+    properties: {
+      id: "urban-delhi-ncr",
+      name: "Delhi National Capital Region (NCR) Megalopolis",
+      pillar: "urban_expansion",
+      category_name: "Urban Expansion",
+      region: "Delhi, Gurugram (Haryana), Noida/Greater Noida (UP), Faridabad",
+      baseline_year: "1991",
+      baseline_value: 485,
+      baseline_text: "485 sq km contiguous built-up area",
+      comparison_year: "2021",
+      comparison_value: 1840,
+      comparison_text: "1,840 sq km contiguous built-up area",
+      delta_value: 1355,
+      delta_pct: 279.4,
+      delta_text: "+1,355 sq km (+279.4%) explosive radial sprawl",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Post-economic liberalization rapid urbanization, expressway corridors, real estate conversion",
+      ecological_impact: "Impervious concrete sprawl over Aravalli green ridges and Yamuna active floodplains drastically reduced groundwater recharge, causing acute urban flooding during monsoons and intense winter PM2.5 smog trapping.",
+      citation: "NRSC Decadal Land Use / Land Cover (LULC) Atlas; Census of India Urban Growth",
+      point_coordinates: [77.15, 28.60]
+    }
+  },
+  {
+    type: "Feature",
+    id: "urban-bengaluru",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [77.45, 13.12], [77.78, 13.12], [77.78, 12.82], [77.45, 12.82], [77.45, 13.12]
+      ]]
+    },
+    properties: {
+      id: "urban-bengaluru",
+      name: "Greater Bengaluru Metropolitan Area (BBMP)",
+      pillar: "urban_expansion",
+      category_name: "Urban Expansion",
+      region: "Karnataka (Bengaluru Urban)",
+      baseline_year: "1991",
+      baseline_value: 165,
+      baseline_text: "165 sq km built-up (34% tree canopy, 280 interconnected lakes)",
+      comparison_year: "2021",
+      comparison_value: 741,
+      comparison_text: "741 sq km built-up (>78% paved surfaces, <80 living lakes)",
+      delta_value: 576,
+      delta_pct: 349.1,
+      delta_text: "+576 sq km (+349.1%) massive tech corridor sprawl",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "IT industry boom, Outer Ring Road and Electronic City construction, lakebed reclamation",
+      ecological_impact: "Transformation of the 'Garden City' into a concrete heat island. Loss of >70% of ancient cascading lake networks severed natural storm drainage, triggering severe urban flooding (Bellandur, Varthur) and profound groundwater crisis.",
+      citation: "Indian Institute of Science (IISc) Energy & Wetlands Research Group; NRSC LULC",
+      point_coordinates: [77.60, 12.97]
+    }
+  },
+  {
+    type: "Feature",
+    id: "urban-mumbai-mmr",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [72.75, 19.35], [73.15, 19.35], [73.15, 18.90], [72.75, 18.90], [72.75, 19.35]
+      ]]
+    },
+    properties: {
+      id: "urban-mumbai-mmr",
+      name: "Mumbai Metropolitan Region (MMR) Northward Axis",
+      pillar: "urban_expansion",
+      category_name: "Urban Expansion",
+      region: "Maharashtra (Mumbai, Thane, Navi Mumbai, Mira-Bhayandar, Panvel)",
+      baseline_year: "1991",
+      baseline_value: 340,
+      baseline_text: "340 sq km built-up area",
+      comparison_year: "2021",
+      comparison_value: 910,
+      comparison_text: "910 sq km built-up area",
+      delta_value: 570,
+      delta_pct: 167.6,
+      delta_text: "+570 sq km (+167.6%) expansion into salt pans & hills",
+      severity_level: "High Vulnerability",
+      severity_code: "high",
+      primary_driver: "Island city spatial saturation pushing development north and east along rail/freeway spines",
+      ecological_impact: "Severe destruction of coastal mangroves and mudflats along Thane Creek and Ulhas estuary; reclamation of Mithi River catchment exacerbated catastrophic urban deluge events (such as the 26 July 2005 flood).",
+      citation: "Mumbai Metropolitan Region Development Authority (MMRDA); NRSC Urban Studies",
+      point_coordinates: [72.95, 19.12]
+    }
+  },
+  {
+    type: "Feature",
+    id: "urban-hyderabad",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [78.25, 17.55], [78.65, 17.55], [78.65, 17.25], [78.25, 17.25], [78.25, 17.55]
+      ]]
+    },
+    properties: {
+      id: "urban-hyderabad",
+      name: "Greater Hyderabad & Outer Ring Road (ORR) Grid",
+      pillar: "urban_expansion",
+      category_name: "Urban Expansion",
+      region: "Telangana (Hyderabad, Ranga Reddy, Medchal-Malkajgiri)",
+      baseline_year: "1991",
+      baseline_value: 210,
+      baseline_text: "210 sq km built-up footprint",
+      comparison_year: "2021",
+      comparison_value: 685,
+      comparison_text: "685 sq km built-up footprint",
+      delta_value: 475,
+      delta_pct: 226.2,
+      delta_text: "+475 sq km (+226.2%) radial expansion across ORR",
+      severity_level: "High Vulnerability",
+      severity_code: "high",
+      primary_driver: "Cyberabad IT hub development, 158 km Outer Ring Road expressway, pharma city expansion",
+      ecological_impact: "Obliteration of ancient Kakatiya irrigation water tanks (cheruvus) and granitic rock formations; Musi River transformed into an effluent conduit with heavy urban flash-flood vulnerability in low-lying colonies.",
+      citation: "Hyderabad Metropolitan Development Authority (HMDA); NRSC Decadal LULC",
+      point_coordinates: [78.45, 17.40]
+    }
+  },
+  {
+    type: "Feature",
+    id: "urban-chennai",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [80.05, 13.20], [80.32, 13.20], [80.32, 12.80], [80.05, 12.80], [80.05, 13.20]
+      ]]
+    },
+    properties: {
+      id: "urban-chennai",
+      name: "Chennai Metropolitan Area OMR & Sriperumbudur Axis",
+      pillar: "urban_expansion",
+      category_name: "Urban Expansion",
+      region: "Tamil Nadu (Chennai, Chengalpattu, Kanchipuram, Tiruvallur)",
+      baseline_year: "1991",
+      baseline_value: 174,
+      baseline_text: "174 sq km built-up area",
+      comparison_year: "2021",
+      comparison_value: 512,
+      comparison_text: "512 sq km built-up area",
+      delta_value: 338,
+      delta_pct: 194.3,
+      delta_text: "+338 sq km (+194.3%) expansion over coastal marshlands",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "IT Corridor (OMR), automotive manufacturing hub along NH 48, suburban sprawl",
+      ecological_impact: "Encroachment on the Pallikaranai freshwater marshland (shrank from 50 sq km to <5 sq km) and blocking of surplus flood canals connecting Chembarambakkam tank to Adyar River, directly causing the catastrophic 2015 Chennai floods.",
+      citation: "Chennai Metropolitan Development Authority (CMDA); Anna University Institute of Remote Sensing",
+      point_coordinates: [80.20, 13.00]
+    }
+  },
+
+  // ==========================================
+  // PILLAR 4: COASTAL EROSION (NCCR - MoES)
+  // ==========================================
+  {
+    type: "Feature",
+    id: "coastal-sundarbans-sagar",
+    geometry: {
+      type: "LineString",
+      coordinates: [
+        [88.05, 21.65], [88.10, 21.60], [88.18, 21.55], [88.25, 21.58], [88.35, 21.65]
+      ]
+    },
+    properties: {
+      id: "coastal-sundarbans-sagar",
+      name: "Sagar & Mousuni Island Coastal Front",
+      pillar: "coastal_erosion",
+      category_name: "Coastal Erosion",
+      region: "West Bengal (Sundarbans Estuary, Hooghly Mouth)",
+      baseline_year: "1990",
+      baseline_value: 0,
+      baseline_text: "Intact coastal sand dune barriers and agricultural dykes",
+      comparison_year: "2022",
+      comparison_value: 60.5,
+      comparison_text: "60.5% of coastline under active erosion (16–20 m/year)",
+      delta_value: -1200,
+      delta_pct: -60.5,
+      delta_text: "Severe retreat >1.2 km; 60.5% of state coast eroding",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Sea level rise (~3.14 mm/yr), high macrotidal energy, and intense cyclone storm surges",
+      ecological_impact: "Rapid shoreline retreat has washed away thousands of hectares of fertile farmland; neighboring Ghoramara Island has shrunk by over 50%, generating India's first documented climate-displaced refugees.",
+      citation: "National Centre for Coastal Research (NCCR / MoES) — Shoreline Change Atlas of India (1990-2018)",
+      point_coordinates: [88.15, 21.60]
+    }
+  },
+  {
+    type: "Feature",
+    id: "coastal-odisha-kendrapara",
+    geometry: {
+      type: "LineString",
+      coordinates: [
+        [86.70, 20.60], [86.85, 20.55], [87.00, 20.65], [87.15, 20.80]
+      ]
+    },
+    properties: {
+      id: "coastal-odisha-kendrapara",
+      name: "Kendrapara & Satabhaya Coastal Ingress",
+      pillar: "coastal_erosion",
+      category_name: "Coastal Erosion",
+      region: "Odisha (Kendrapara District, Bay of Bengal)",
+      baseline_year: "1990",
+      baseline_value: 0,
+      baseline_text: "Satabhaya 7-village cluster located 1.5 km inland from high tide line",
+      comparison_year: "2022",
+      comparison_value: 1500,
+      comparison_text: "Shoreline retreated >1.5 km; entire original village submerged",
+      delta_value: -1500,
+      delta_pct: -28.0,
+      delta_text: "Sea ingress of >1.5 km; historic village completely inundated",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "High wave energy, severe cyclonic erosion, and deficit in deltaic river sediment discharge",
+      ecological_impact: "All 7 historical hamlets of Satabhaya were swallowed by the advancing sea, forcing the Odisha government to undertake India's first planned coastal community relocation to Bagapatia.",
+      citation: "NCCR Ministry of Earth Sciences; Integrated Coastal Zone Management Project (ICZMP) Odisha",
+      point_coordinates: [86.95, 20.62]
+    }
+  },
+  {
+    type: "Feature",
+    id: "coastal-kerala-chellanam",
+    geometry: {
+      type: "LineString",
+      coordinates: [
+        [76.25, 9.85], [76.28, 9.75], [76.32, 9.50], [76.40, 9.20]
+      ]
+    },
+    properties: {
+      id: "coastal-kerala-chellanam",
+      name: "Chellanam & Alappuzha Shoreline Retreat",
+      pillar: "coastal_erosion",
+      category_name: "Coastal Erosion",
+      region: "Kerala (Ernakulam & Alappuzha Coast)",
+      baseline_year: "1990",
+      baseline_value: 0,
+      baseline_text: "Continuous natural beach system with seasonal mudbank (Chakara) buffers",
+      comparison_year: "2022",
+      comparison_value: 46.4,
+      comparison_text: "46.4% of Kerala coastline classified under active erosion",
+      delta_value: -350,
+      delta_pct: -46.4,
+      delta_text: "46.4% state coast eroding; coastal roads frequently breached",
+      severity_level: "High Vulnerability",
+      severity_code: "high",
+      primary_driver: "Monsoon swell wave attack, littoral drift obstruction by harbor breakwaters, sand mining",
+      ecological_impact: "Frequent sea surges smash traditional granite seawalls and flood densely populated coastal fishing hamlets, destroying drinking water wells and necessitating expensive tetrapod seawalls.",
+      citation: "NCCR Shoreline Change Assessment; Kerala State Coastal Area Development Corporation",
+      point_coordinates: [76.28, 9.70]
+    }
+  },
+  {
+    type: "Feature",
+    id: "coastal-puducherry-ennore",
+    geometry: {
+      type: "LineString",
+      coordinates: [
+        [79.80, 11.90], [79.84, 11.95], [79.86, 12.05]
+      ]
+    },
+    properties: {
+      id: "coastal-puducherry-ennore",
+      name: "Puducherry & Ennore Port Downdrift Shoreline",
+      pillar: "coastal_erosion",
+      category_name: "Coastal Erosion",
+      region: "Puducherry & Tamil Nadu (Coromandel Coast)",
+      baseline_year: "1990",
+      baseline_value: 0,
+      baseline_text: "Broad 150m wide sandy beach along Promenade (Puducherry)",
+      comparison_year: "2022",
+      comparison_value: 8000,
+      comparison_text: "Beach completely lost; 8 km coastline stripped to bedrock",
+      delta_value: -150,
+      delta_pct: -100.0,
+      delta_text: "100% loss of natural beach width; artificial reef restoration active",
+      severity_level: "High Vulnerability",
+      severity_code: "high",
+      primary_driver: "Harbor breakwater construction blocking northward littoral sand drift (0.6 million m³/yr)",
+      ecological_impact: "Trapping of sand south of the harbor led to severe sediment starvation north of the port, stripping the famous Promenade beach down to black rocks until modern submerged artificial reefs were deployed for nourishment.",
+      citation: "National Institute of Ocean Technology (NIOT); NCCR MoES",
+      point_coordinates: [79.83, 11.93]
+    }
+  },
+  {
+    type: "Feature",
+    id: "coastal-gujarat-khambhat",
+    geometry: {
+      type: "LineString",
+      coordinates: [
+        [72.50, 22.25], [72.60, 21.80], [72.70, 21.20], [72.85, 20.60]
+      ]
+    },
+    properties: {
+      id: "coastal-gujarat-khambhat",
+      name: "Gulf of Khambhat Estuarine Bluff Collapse",
+      pillar: "coastal_erosion",
+      category_name: "Coastal Erosion",
+      region: "Gujarat (Anand, Bharuch, Surat Coast)",
+      baseline_year: "1990",
+      baseline_value: 0,
+      baseline_text: "Stable estuarine mudflats and mangrove fringes",
+      comparison_year: "2022",
+      comparison_value: 27.2,
+      comparison_text: "27.2% of Gujarat coastline under active erosion / dynamic scour",
+      delta_value: -450,
+      delta_pct: -27.2,
+      delta_text: "Macrotidal channel bank collapse & mudflat erosion",
+      severity_level: "Moderate / Caution",
+      severity_code: "moderate",
+      primary_driver: "Extreme macrotidal range (>10 meters) generating powerful scour currents in Narmada/Tapi mouths",
+      ecological_impact: "Tidal bore currents undermine soft alluvial coastal bluffs, eroding hundreds of acres of coastal pasture and altering shallow navigational channels.",
+      citation: "NCCR Shoreline Dynamics Atlas; Gujarat Institute of Desert Ecology (GUIDE)",
+      point_coordinates: [72.65, 21.60]
+    }
+  },
+
+  // ==========================================
+  // PILLAR 5: WETLAND CHANGES (SAC-ISRO / RAMSAR)
+  // ==========================================
+  {
+    type: "Feature",
+    id: "wetland-chilika",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [85.10, 19.85], [85.60, 19.85], [85.50, 19.45], [85.15, 19.50], [85.10, 19.85]
+      ]]
+    },
+    properties: {
+      id: "wetland-chilika",
+      name: "Chilika Lake Lagoon (Ramsar Site #229)",
+      pillar: "wetland_change",
+      category_name: "Wetlands",
+      region: "Odisha (Puri, Khordha, Ganjam)",
+      baseline_year: "1990",
+      baseline_value: 890,
+      baseline_text: "890 sq km open water; choke-up of outer channel; 350 sq km weed choked",
+      comparison_year: "2020",
+      comparison_value: 1165,
+      comparison_text: "1,165 sq km revived water spread; restored salinity gradient",
+      delta_value: 275,
+      delta_pct: 30.9,
+      delta_text: "+275 sq km (+30.9%) ecological recovery post-2000 dredging",
+      severity_level: "Stable / Recovery",
+      severity_code: "positive",
+      primary_driver: "Hydrological engineering: cutting of new artificial sea mouth at Sipakuda in Sept 2000",
+      ecological_impact: "A landmark global success in wetland restoration: opening the new tidal mouth flushed freshwater weeds, restored brackish salinity, and led to a six-fold increase in fish and prawn catch while safeguarding the endangered Irrawaddy Dolphin (Orcaella brevirostris).",
+      citation: "Chilika Development Authority (CDA); Ramsar Convention Secretariat (Ramsar Wetland Conservation Award)",
+      point_coordinates: [85.35, 19.68]
+    }
+  },
+  {
+    type: "Feature",
+    id: "wetland-vembanad",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [76.30, 9.95], [76.45, 9.80], [76.45, 9.45], [76.35, 9.50], [76.30, 9.95]
+      ]]
+    },
+    properties: {
+      id: "wetland-vembanad",
+      name: "Vembanad-Kol Wetland System (Ramsar Site #1214)",
+      pillar: "wetland_change",
+      category_name: "Wetlands",
+      region: "Kerala (Kottayam, Alappuzha, Ernakulam)",
+      baseline_year: "1990",
+      baseline_value: 230,
+      baseline_text: "230 sq km open water expanse",
+      comparison_year: "2020",
+      comparison_value: 148,
+      comparison_text: "148 sq km open water spread",
+      delta_value: -82,
+      delta_pct: -35.65,
+      delta_text: "-82 sq km (-35.65%) shrinkage via polders & weed matting",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Land reclamation for tourism/paddy, Thanneermukkom salinity barrage, African payal (water hyacinth) invasion",
+      ecological_impact: "India's longest lake has lost over 35% of its water storage capacity. The Thanneermukkom bund permanently cut off natural estuarine tidal flushing, leading to severe eutrophication, toxic pesticide accumulation, and fish population crashes.",
+      citation: "SAC - ISRO National Wetland Atlas: Kerala; Kerala State Council for Science, Technology and Environment",
+      point_coordinates: [76.38, 9.65]
+    }
+  },
+  {
+    type: "Feature",
+    id: "wetland-wular",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [74.50, 34.40], [74.65, 34.40], [74.65, 34.30], [74.50, 34.30], [74.50, 34.40]
+      ]]
+    },
+    properties: {
+      id: "wetland-wular",
+      name: "Wular Lake Natural Flood Basin (Ramsar Site #461)",
+      pillar: "wetland_change",
+      category_name: "Wetlands",
+      region: "Jammu & Kashmir (Bandipora & Baramulla, Kashmir Valley)",
+      baseline_year: "1990",
+      baseline_value: 89,
+      baseline_text: "89 sq km open water spread",
+      comparison_year: "2020",
+      comparison_value: 38,
+      comparison_text: "38 sq km open water spread",
+      delta_value: -51,
+      delta_pct: -57.3,
+      delta_text: "-51 sq km (-57.3%) drastic contraction of open water",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Extensive willow (Salix) tree plantations, heavy siltation from catchments, agricultural encroachment",
+      ecological_impact: "Contraction of this vital flood-absorption reservoir crippled its ability to buffer the Jhelum River during cloudbursts, contributing directly to the devastating catastrophic Kashmir floods of September 2014.",
+      citation: "Wular Conservation and Management Authority (WUCMA); SAC - ISRO National Wetland Atlas",
+      point_coordinates: [74.58, 34.35]
+    }
+  },
+  {
+    type: "Feature",
+    id: "wetland-loktak",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [93.75, 24.60], [93.88, 24.60], [93.88, 24.45], [93.75, 24.45], [93.75, 24.60]
+      ]]
+    },
+    properties: {
+      id: "wetland-loktak",
+      name: "Loktak Lake & Phumdis (Ramsar Site #468)",
+      pillar: "wetland_change",
+      category_name: "Wetlands",
+      region: "Manipur (Bishnupur & Imphal West)",
+      baseline_year: "1990",
+      baseline_value: 0,
+      baseline_text: "Seasonal water-level oscillation supporting buoyant organic phumdis mats",
+      comparison_year: "2020",
+      comparison_value: 100,
+      comparison_text: "Permanent inundation; Montreux Record endangered wetland status",
+      delta_value: -40,
+      delta_pct: -28.0,
+      delta_text: "Permanent high water altering phumdis biomass & habitat",
+      severity_level: "High Vulnerability",
+      severity_code: "high",
+      primary_driver: "Commissioning of the Ithai Barrage for hydroelectric power holding water levels high year-round",
+      ecological_impact: "Permanent stagnation prevented the floating phumdis vegetation from grounding during winter to absorb nutrients. Thinning phumdis threatens the only natural habitat of the critically endangered Brow-antlered Deer (Sangai).",
+      citation: "Loktak Development Authority (LDA); Ramsar Montreux Record Dossier",
+      point_coordinates: [93.82, 24.52]
+    }
+  },
+  {
+    type: "Feature",
+    id: "wetland-kolleru",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [81.25, 16.75], [81.55, 16.75], [81.55, 16.55], [81.25, 16.55], [81.25, 16.75]
+      ]]
+    },
+    properties: {
+      id: "wetland-kolleru",
+      name: "Kolleru Lake Wetland (Ramsar Site #1209)",
+      pillar: "wetland_change",
+      category_name: "Wetlands",
+      region: "Andhra Pradesh (Krishna & West Godavari)",
+      baseline_year: "1990",
+      baseline_value: 180,
+      baseline_text: "180 sq km lake area heavily encroached by illegal commercial fish ponds (>60% bed)",
+      comparison_year: "2020",
+      comparison_value: 220,
+      comparison_text: "220 sq km partially restored open water following 'Operation Kolleru'",
+      delta_value: 40,
+      delta_pct: 22.2,
+      delta_text: "+40 sq km reclaimed water; ongoing agro-chemical runoff",
+      severity_level: "Moderate / Caution",
+      severity_code: "moderate",
+      primary_driver: "Massive commercial aquaculture tank proliferation followed by Supreme Court demolition drives",
+      ecological_impact: "Demolition of fish tanks during 'Operation Kolleru' in 2006 restored partial open water for migratory pelicans and painted storks, but heavy agricultural pesticide and fertilizer runoff via Tammileru drain continues to degrade water quality.",
+      citation: "Andhra Pradesh Forest Department Wildlife Wing; SAC - ISRO Wetland Inventory",
+      point_coordinates: [81.40, 16.65]
+    }
+  },
+  {
+    type: "Feature",
+    id: "wetland-sambhar",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [74.85, 27.00], [75.25, 27.00], [75.25, 26.85], [74.85, 26.85], [74.85, 27.00]
+      ]]
+    },
+    properties: {
+      id: "wetland-sambhar",
+      name: "Sambhar Salt Lake (Ramsar Site #464)",
+      pillar: "wetland_change",
+      category_name: "Wetlands",
+      region: "Rajasthan (Jaipur, Nagaur, Ajmer)",
+      baseline_year: "1990",
+      baseline_value: 230,
+      baseline_text: "230 sq km saline wetland catchment area",
+      comparison_year: "2020",
+      comparison_value: 160,
+      comparison_text: "160 sq km open water spread",
+      delta_value: -70,
+      delta_pct: -30.4,
+      delta_text: "-70 sq km (-30.4%) open brine water shrinkage",
+      severity_level: "High Vulnerability",
+      severity_code: "high",
+      primary_driver: "Proliferation of unauthorized commercial sub-surface borewell pumping of brine",
+      ecological_impact: "India's largest inland salt lake suffers from depleted groundwater tables and altered salinity dynamics, creating anaerobic conditions that triggered avian botulism outbreaks killing thousands of migratory waterfowl in 2019.",
+      citation: "Rajasthan State Wetland Authority; SAC - ISRO Wetland Atlas",
+      point_coordinates: [75.05, 26.92]
+    }
+  },
+
+  // ==========================================
+  // PILLAR 6: DESERTIFICATION (SAC - ISRO)
+  // ==========================================
+  {
+    type: "Feature",
+    id: "desert-thar-eastern",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [70.50, 28.50], [73.50, 28.50], [73.80, 25.50], [70.80, 25.50], [70.50, 28.50]
+      ]]
+    },
+    properties: {
+      id: "desert-thar-eastern",
+      name: "Thar Desert Eastern Transition Fringe",
+      pillar: "desertification",
+      category_name: "Desertification",
+      region: "Rajasthan (Jaisalmer, Barmer, Bikaner, Jodhpur, Churu)",
+      baseline_year: "2003",
+      baseline_value: 68.4,
+      baseline_text: "68.4% of district area under active land degradation",
+      comparison_year: "2018",
+      comparison_value: 66.8,
+      comparison_text: "66.8% under active degradation (stabilization along canal belts)",
+      delta_value: -1.6,
+      delta_pct: -2.3,
+      delta_text: "-1.6% net stabilization via Indira Gandhi Canal shelterbelts",
+      severity_level: "High Vulnerability",
+      severity_code: "high",
+      primary_driver: "Severe wind erosion, mobile sand dune shifts, and overgrazing by livestock",
+      ecological_impact: "Active dune movement continually threatens roads and settlements; afforestation shelterbelts of Acacia and Prosopis cineraria along the Indira Gandhi Canal command area have helped stabilize mobile sands locally.",
+      citation: "SAC - ISRO Desertification and Land Degradation Atlas of India (2003-05 to 2018-19); CAZRI Jodhpur",
+      point_coordinates: [72.20, 27.00]
+    }
+  },
+  {
+    type: "Feature",
+    id: "desert-aravalli-breach",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [76.20, 28.40], [77.10, 28.40], [77.10, 27.50], [76.20, 27.50], [76.20, 28.40]
+      ]]
+    },
+    properties: {
+      id: "desert-aravalli-breach",
+      name: "Aravalli Range Mining Gap Corridors",
+      pillar: "desertification",
+      category_name: "Desertification",
+      region: "Rajasthan & Haryana (Alwar, Mahendragarh, Nuh, Gurugram border)",
+      baseline_year: "2003",
+      baseline_value: 15,
+      baseline_text: "Continuous natural rocky hill barrier containing western desert winds",
+      comparison_year: "2018",
+      comparison_value: 12,
+      comparison_text: "12 distinct physical gaps created by illegal quartzite mining",
+      delta_value: 12,
+      delta_pct: 80.0,
+      delta_text: "12 micro-gap breaches allowing desert sand drift into NCR",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Unchecked illegal stone quarrying, quartzite mining, and deforestation of ridge gaps",
+      ecological_impact: "The ancient Aravalli Range is India's principal physical barrier shielding the northern plains from the Thar Desert. Breaches allow dry desert winds and sand dunes to migrate eastward towards southern Haryana and Delhi NCR.",
+      citation: "Supreme Court of India Central Empowered Committee (CEC) Reports; Wildlife Institute of India (WII)",
+      point_coordinates: [76.65, 27.95]
+    }
+  },
+  {
+    type: "Feature",
+    id: "desert-rayalaseema-scrub",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [76.80, 15.50], [78.50, 15.50], [78.80, 13.80], [77.00, 13.80], [76.80, 15.50]
+      ]]
+    },
+    properties: {
+      id: "desert-rayalaseema-scrub",
+      name: "Rayalaseema & Marathwada Rain-Shadow Belt",
+      pillar: "desertification",
+      category_name: "Desertification",
+      region: "Andhra Pradesh & Karnataka (Anantapur, Kurnool, Bellary)",
+      baseline_year: "2003",
+      baseline_value: 38.2,
+      baseline_text: "38.2% of geographic area degraded (sheet erosion)",
+      comparison_year: "2018",
+      comparison_value: 44.5,
+      comparison_text: "44.5% of geographic area degraded",
+      delta_value: 6.3,
+      delta_pct: 16.5,
+      delta_text: "+6.3% increase in degraded scrub & drought-stressed lands",
+      severity_level: "High Vulnerability",
+      severity_code: "high",
+      primary_driver: "Severe rain-shadow drought, soil moisture exhaustion, loss of traditional millets for groundnut monoculture",
+      ecological_impact: "Anantapur has the second lowest rainfall in mainland India (after Jaisalmer). Recurrent drought cycles and heavy water-sheet erosion on barren red soils have turned vast tracts into semi-desert scrublands.",
+      citation: "SAC - ISRO Desertification Atlas 2021; National Institute of Rural Development (NIRDPR)",
+      point_coordinates: [77.60, 14.68]
+    }
+  },
+  {
+    type: "Feature",
+    id: "desert-chambal-badlands",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [77.20, 26.80], [79.20, 26.80], [79.20, 25.80], [77.20, 25.80], [77.20, 26.80]
+      ]]
+    },
+    properties: {
+      id: "desert-chambal-badlands",
+      name: "Chambal River Ravine & Gully Badlands",
+      pillar: "desertification",
+      category_name: "Desertification",
+      region: "Madhya Pradesh, Rajasthan, Uttar Pradesh (Morena, Bhind, Dholpur, Etawah)",
+      baseline_year: "2003",
+      baseline_value: 4800,
+      baseline_text: "4,800 sq km deeply entrenched badland ravines",
+      comparison_year: "2018",
+      comparison_value: 5120,
+      comparison_text: "5,120 sq km active headward ravine expansion",
+      delta_value: 320,
+      delta_pct: 6.67,
+      delta_text: "+320 sq km expansion; headward gully retreat of 0.5–1 m/yr",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Catastrophic water gully erosion in soft alluvial-lacustrine soils along deep river bluffs",
+      ecological_impact: "Headward gully erosion continuously engulfs fertile agricultural tablelands, slicing productive topsoil into uncultivable 20-30 meter deep labyrinthine chasms.",
+      citation: "Central Soil and Water Conservation Research and Training Institute (CSWCRTI); SAC - ISRO",
+      point_coordinates: [78.20, 26.30]
+    }
+  },
+  {
+    type: "Feature",
+    id: "desert-rann-saurashtra",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [70.00, 24.00], [72.20, 24.00], [72.20, 22.80], [70.00, 22.80], [70.00, 24.00]
+      ]]
+    },
+    properties: {
+      id: "desert-rann-saurashtra",
+      name: "Little Rann & Banni Invasive Prosopis Transition",
+      pillar: "desertification",
+      category_name: "Desertification",
+      region: "Gujarat (Kutch, Surendranagar, Patan)",
+      baseline_year: "2003",
+      baseline_value: 42.0,
+      baseline_text: "Native saline grasslands supporting endemic Indian Wild Ass (Khur)",
+      comparison_year: "2018",
+      comparison_value: 58.0,
+      comparison_text: "Over 58% of grassland invaded by dense Prosopis juliflora thickets",
+      delta_value: 16.0,
+      delta_pct: 38.1,
+      delta_text: "+16% grassland displacement by invasive woody scrub",
+      severity_level: "Moderate / Caution",
+      severity_code: "moderate",
+      primary_driver: "Soil salinization, vegetative degradation, aggressive spread of invasive *Prosopis juliflora* (*Gando Baval*)",
+      ecological_impact: "Invasive thorny scrub has choked the Asia's largest natural grassland (Banni), crowding out indigenous perennial grass species and compressing the critical grazing habitat of the endangered Indian Wild Ass.",
+      citation: "Gujarat Institute of Desert Ecology (GUIDE); SAC - ISRO Desertification Atlas",
+      point_coordinates: [71.10, 23.40]
+    }
+  },
+
+  // ==========================================
+  // PILLAR 7: GROUNDWATER STRESS (CGWB)
+  // ==========================================
+  {
+    type: "Feature",
+    id: "gw-punjab-haryana",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [74.50, 31.50], [77.20, 31.50], [77.20, 29.00], [74.50, 29.00], [74.50, 31.50]
+      ]]
+    },
+    properties: {
+      id: "gw-punjab-haryana",
+      name: "Indo-Gangetic Northwestern Granary Aquifers",
+      pillar: "groundwater_stress",
+      category_name: "Groundwater Stress",
+      region: "Punjab & Haryana (Sangrur, Moga, Barnala, Karnal, Kurukshetra)",
+      baseline_year: "2004",
+      baseline_value: 145,
+      baseline_text: "145% Stage of Groundwater Extraction (Over-Exploited)",
+      comparison_year: "2022",
+      comparison_value: 164,
+      comparison_text: "164% Stage of Groundwater Extraction in Punjab (76% blocks Over-Exploited)",
+      delta_value: 19,
+      delta_pct: 13.1,
+      delta_text: "+19% surge in extraction stress; water table falling 0.5–1 m/yr",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Unmetered free electricity for deep submersible tubewells, water-thirsty summer paddy monoculture",
+      ecological_impact: "Pumping groundwater at nearly double the natural annual monsoon recharge rate has dried up shallow unconfined aquifers, forcing farmers to bore down 150-200 meters into saline deeper strata and triggering urgent state preservation acts.",
+      citation: "Central Ground Water Board (CGWB) — Dynamic Ground Water Resources of India 2004 & 2022",
+      point_coordinates: [75.85, 30.25]
+    }
+  },
+  {
+    type: "Feature",
+    id: "gw-western-rajasthan",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [71.50, 27.50], [74.00, 27.50], [74.00, 25.00], [71.50, 25.00], [71.50, 27.50]
+      ]]
+    },
+    properties: {
+      id: "gw-western-rajasthan",
+      name: "Marwar Arid Deep Fossil Aquifers",
+      pillar: "groundwater_stress",
+      category_name: "Groundwater Stress",
+      region: "Rajasthan (Jodhpur, Jalore, Nagaur, Pali)",
+      baseline_year: "2004",
+      baseline_value: 138,
+      baseline_text: "138% Stage of Extraction",
+      comparison_year: "2022",
+      comparison_value: 188,
+      comparison_text: "188% Stage of Extraction (Critical Over-Draft)",
+      delta_value: 50,
+      delta_pct: 36.2,
+      delta_text: "+50% extraction leap; extensive mining of non-renewable fossil water",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Low rainfall (<300 mm/yr), non-replenishable deep sandstone aquifers, cash crop tubewell cultivation",
+      ecological_impact: "Aquifers are being irreversibly depleted. Pumping deep ancient groundwater mobilizes dangerously high fluoride and total dissolved solids (TDS), creating widespread fluorosis bone deformities among rural communities.",
+      citation: "CGWB National Compilation 2022; Ground Water Department, Govt of Rajasthan",
+      point_coordinates: [72.75, 26.25]
+    }
+  },
+  {
+    type: "Feature",
+    id: "gw-delhi-ncr",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [76.90, 28.80], [77.40, 28.80], [77.40, 28.40], [76.90, 28.40], [76.90, 28.80]
+      ]]
+    },
+    properties: {
+      id: "gw-delhi-ncr",
+      name: "Delhi Metropolitan & Yamuna Floodplain Aquifers",
+      pillar: "groundwater_stress",
+      category_name: "Groundwater Stress",
+      region: "Delhi NCT (South, Southwest, New Delhi, West Districts)",
+      baseline_year: "2004",
+      baseline_value: 110,
+      baseline_text: "110% Stage of Groundwater Extraction",
+      comparison_year: "2022",
+      comparison_value: 119,
+      comparison_text: "119% Stage of Extraction; 15 of 34 tehsils Over-Exploited",
+      delta_value: 9,
+      delta_pct: 8.2,
+      delta_text: "+9% increase; deep localized drawdown depression cones",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Urban population growth, illegal borewells in unpiped colonies, concrete paving blocking rain infiltration",
+      ecological_impact: "Water table depth in parts of South Delhi and Gurugram exceeds 40-60 meters below ground level; heavy extraction along Yamuna floodplains risks saline groundwater ingress from surrounding semi-arid formations.",
+      citation: "CGWB Dynamic Ground Water Resources 2022; Delhi Jal Board (DJB)",
+      point_coordinates: [77.20, 28.60]
+    }
+  },
+  {
+    type: "Feature",
+    id: "gw-tamilnadu-cauvery",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [76.80, 11.50], [78.20, 11.50], [78.20, 10.20], [76.80, 10.20], [76.80, 11.50]
+      ]]
+    },
+    properties: {
+      id: "gw-tamilnadu-cauvery",
+      name: "Western Tamil Nadu Hard-Rock Aquifers (Noyyal/Cauvery)",
+      pillar: "groundwater_stress",
+      category_name: "Groundwater Stress",
+      region: "Tamil Nadu (Coimbatore, Tirupur, Erode, Salem)",
+      baseline_year: "2004",
+      baseline_value: 115,
+      baseline_text: "115% Stage of Groundwater Extraction",
+      comparison_year: "2022",
+      comparison_value: 135,
+      comparison_text: "135% Stage of Extraction in hard crystalline rocks",
+      delta_value: 20,
+      delta_pct: 17.4,
+      delta_text: "+20% extraction surge in low-porosity gneiss rocks",
+      severity_level: "High Vulnerability",
+      severity_code: "high",
+      primary_driver: "Intensive industrial textile bleaching/dyeing abstraction and commercial horticultural irrigation",
+      ecological_impact: "Crystalline gneissic bedrock provides very poor aquifer storage; borewells drilled to depths >300 meters frequently yield dry holes while industrial effluents have contaminated shallow recharge zones.",
+      citation: "CGWB State Report: Tamil Nadu 2022; Tamil Nadu Water Supply and Drainage Board (TWAD)",
+      point_coordinates: [77.50, 11.00]
+    }
+  },
+  {
+    type: "Feature",
+    id: "gw-gangetic-eastern",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [83.50, 26.50], [88.50, 26.50], [88.50, 23.50], [83.50, 23.50], [83.50, 26.50]
+      ]]
+    },
+    properties: {
+      id: "gw-gangetic-eastern",
+      name: "Eastern Gangetic Alluvial Aquifers & Arsenic Threat",
+      pillar: "groundwater_stress",
+      category_name: "Groundwater Stress",
+      region: "Bihar & West Bengal (Patna, Purnea, Malda, Murshidabad)",
+      baseline_year: "2004",
+      baseline_value: 38,
+      baseline_text: "38% Stage of Extraction (Classified as Safe volumetric balance)",
+      comparison_year: "2022",
+      comparison_value: 46,
+      comparison_text: "46% Stage of Extraction (Abundant volumetric recharge)",
+      delta_value: 8,
+      delta_pct: 21.05,
+      delta_text: "+8% extraction; high geogenic Arsenic water quality crisis",
+      severity_level: "Moderate / Caution",
+      severity_code: "moderate",
+      primary_driver: "Shallow tubewell pumping mobilizing naturally occurring geogenic arsenic from Holocene sediments",
+      ecological_impact: "While quantitative volumetric recharge is abundant and 'Safe' (<50%), millions of rural villagers drink from shallow tubewells contaminated with arsenic exceeding the 10 µg/L WHO limit, leading to widespread hyperkeratosis and skin cancers.",
+      citation: "CGWB Ground Water Quality in India; School of Environmental Studies, Jadavpur University",
+      point_coordinates: [86.00, 25.50]
+    }
+  },
+
+  // ==========================================
+  // PILLAR 8: RIVER COURSE MIGRATION (NRSC / CWC)
+  // ==========================================
+  {
+    type: "Feature",
+    id: "river-kosi-migration",
+    geometry: {
+      type: "LineString",
+      coordinates: [
+        [87.10, 26.90], [87.05, 26.50], [86.95, 26.00], [86.75, 25.50], [87.25, 25.35]
+      ]
+    },
+    properties: {
+      id: "river-kosi-migration",
+      name: "Kosi River 120 km Westward Avulsion Corridor",
+      pillar: "river_avulsion",
+      category_name: "River Avulsion",
+      region: "Bihar (Supaul, Madhepura, Saharsa, Purnea)",
+      baseline_year: "1760",
+      baseline_value: 0,
+      baseline_text: "Historical course flowed through Purnea (James Rennell 1760 Survey)",
+      comparison_year: "2022",
+      comparison_value: 120,
+      comparison_text: "Contemporary active braided belt near Supaul (120 km west)",
+      delta_value: 120,
+      delta_pct: 100.0,
+      delta_text: "120 km westward migration in 250 years + 2008 Kusaha breach",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Enormous silt load (100 million m³/yr) originating in eastern Himalayas causing rapid aggradation and avulsion",
+      ecological_impact: "The classic 'Sorrow of Bihar'. On 18 August 2008, the river breached the eastern embankment at Kusaha (Nepal) and avulsed 100 km eastward into an ancient abandoned channel, inundating 400,000 hectares and displacing 3.3 million people.",
+      citation: "National Remote Sensing Centre (NRSC / ISRO); Central Water Commission (CWC) Fluvial Geomorphology Studies",
+      point_coordinates: [86.90, 26.10]
+    }
+  },
+  {
+    type: "Feature",
+    id: "river-brahmaputra-majuli",
+    geometry: {
+      type: "LineString",
+      coordinates: [
+        [94.10, 27.15], [94.25, 27.05], [94.35, 26.95], [94.05, 26.85], [93.85, 26.75]
+      ]
+    },
+    properties: {
+      id: "river-brahmaputra-majuli",
+      name: "Brahmaputra Channel Widening & Majuli Island Shrinkage",
+      pillar: "river_avulsion",
+      category_name: "River Avulsion",
+      region: "Assam (Jorhat, Majuli, Lakhimpur)",
+      baseline_year: "1950",
+      baseline_value: 750,
+      baseline_text: "Majuli Island area ~750 sq km (post-1950 Assam M8.6 earthquake)",
+      comparison_year: "2022",
+      comparison_value: 380,
+      comparison_text: "Majuli Island contracted to ~380 sq km; braided width 15-18 km",
+      delta_value: -370,
+      delta_pct: -49.33,
+      delta_text: "-49.3% reduction in island landmass via bankline toe erosion",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Massive earthquake co-seismic landslides raising riverbed, high monsoon peak discharges (>70,000 m³/s)",
+      ecological_impact: "World's largest river island and cradle of Vaishnavite Neo-Vaishnavism culture has lost over half its geographical area. Continuous bankline erosion forces historic Satras (monasteries) to repeatedly relocate inland.",
+      citation: "Brahmaputra Board, Ministry of Jal Shakti; NRSC Assam Water Resources Satellite Mapping",
+      point_coordinates: [94.20, 26.95]
+    }
+  },
+  {
+    type: "Feature",
+    id: "river-ganga-malda",
+    geometry: {
+      type: "LineString",
+      coordinates: [
+        [87.90, 25.10], [87.95, 24.95], [88.05, 24.80], [88.15, 24.70]
+      ]
+    },
+    properties: {
+      id: "river-ganga-malda",
+      name: "Ganga Bankline Migration at Malda & Murshidabad",
+      pillar: "river_avulsion",
+      category_name: "River Avulsion",
+      region: "West Bengal & Jharkhand (Malda, Murshidabad, Sahibganj)",
+      baseline_year: "1975",
+      baseline_value: 0,
+      baseline_text: "Symmetrical meandering channel prior to Farakka Barrage impoundment",
+      comparison_year: "2022",
+      comparison_value: 3500,
+      comparison_text: "Severe left-bank migration; Manikchak & Bhutanir Char erosion",
+      delta_value: -3500,
+      delta_pct: -35.0,
+      delta_text: "3.5 km bankline displacement; dynamic char island generation",
+      severity_level: "High Vulnerability",
+      severity_code: "high",
+      primary_driver: "Backwater siltation upstream of Farakka barrage, soft uncohesive silty riverbank scouring",
+      ecological_impact: "Severe bank erosion swallows whole mouzas and agricultural lands in Malda's Manikchak and Kaliachak blocks, creating shifting temporary river islands (chars) whose inhabitants face stateless ambiguity across the WB-Jharkhand border.",
+      citation: "Farakka Barrage Project (CWC); Centre for Earth Science Studies (CESS)",
+      point_coordinates: [88.00, 24.90]
+    }
+  },
+  {
+    type: "Feature",
+    id: "river-saraswati-paleochannel",
+    geometry: {
+      type: "LineString",
+      coordinates: [
+        [77.30, 30.30], [76.50, 29.80], [75.00, 29.20], [73.50, 28.30], [71.50, 27.00], [69.80, 24.20]
+      ]
+    },
+    properties: {
+      id: "river-saraswati-paleochannel",
+      name: "Vedic Saraswati / Ghaggar-Hakra Paleochannel Network",
+      pillar: "river_avulsion",
+      category_name: "River Avulsion",
+      region: "Haryana, Punjab, Rajasthan, Gujarat (Adi Badri to Rann of Kutch)",
+      baseline_year: "Ancient",
+      baseline_value: 1500,
+      baseline_text: "Perennial snow-fed glacial river connecting Shivaliks to Arabian Sea (c. 3000 BCE)",
+      comparison_year: "2022",
+      comparison_value: 0,
+      baseline_year_str: "c. 3000 BCE",
+      comparison_year_str: "Present",
+      comparison_text: "Subterranean buried sand paleochannel identified by ISRO satellite sensors",
+      delta_value: -1500,
+      delta_pct: -100.0,
+      delta_text: "Total surface river desiccation via tectonic Yamuna/Sutlej diversion",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Tectonic uplift of the Aravalli-Delhi ridge capturing glacial headwaters into the Yamuna and Sutlej",
+      ecological_impact: "Loss of the glacial headwaters transformed the fertile Saraswati-Drishadvati basin into the hyper-arid Thar Desert, prompting the dispersal of Mature Harappan urban centers eastward into the Gangetic plain.",
+      citation: "ISRO SAC Paleochannel Atlas (IRS WiFS / LISS-III); Geological Society of India Memoir 42",
+      point_coordinates: [74.20, 28.80]
+    }
+  },
+  {
+    type: "Feature",
+    id: "river-teesta-avulsion",
+    geometry: {
+      type: "LineString",
+      coordinates: [
+        [88.50, 26.80], [88.75, 26.50], [89.10, 26.00], [89.50, 25.60], [89.70, 25.15]
+      ]
+    },
+    properties: {
+      id: "river-teesta-avulsion",
+      name: "Teesta River Historic 1787 Megaflood Avulsion",
+      pillar: "river_avulsion",
+      category_name: "River Avulsion",
+      region: "West Bengal & Bangladesh (Jalpaiguri, Rangpur, Jamuna confluence)",
+      baseline_year: "1780",
+      baseline_value: 0,
+      baseline_text: "Teesta flowed south via Karatoya into the Ganga (Padma)",
+      comparison_year: "2022",
+      comparison_value: 90,
+      comparison_text: "Avulsed 90 km eastward to join the Brahmaputra (Jamuna)",
+      delta_value: 90,
+      delta_pct: 100.0,
+      delta_text: "Catastrophic 90 km nodal shift during the July 1787 megaflood",
+      severity_level: "Severe Degradation",
+      severity_code: "severe",
+      primary_driver: "Immense tectonic-sediment choking during catastrophic monsoonal floods of 1787",
+      ecological_impact: "A single megaflood event completely altered the hydrological geography of Bengal: the Teesta deserted its southern course to the Ganga, joining the Brahmaputra and forcing the Brahmaputra itself to avulse into the new Jamuna channel.",
+      citation: "CWC Historical River Avulsion Records; James Rennell Bengal Atlas (1779); GSI Eastern Region",
+      point_coordinates: [89.10, 26.00]
+    }
+  }
+];
+
+const geojson = {
+  type: "FeatureCollection",
+  features: features
+};
+
+fs.writeFileSync(outputPath, JSON.stringify(geojson, null, 2), 'utf8');
+console.log(`Successfully generated ${features.length} environmental change features to ${outputPath}`);

@@ -8,9 +8,11 @@ import { LoadingScreen } from './components/LoadingScreen';
 import { HistoricalTimeline } from './components/HistoricalTimeline';
 import { StateComparisonModal } from './components/StateComparisonModal';
 import { SoilDataModal } from './components/SoilDataModal';
-import { PanelLeftClose, PanelLeftOpen, Mountain, Landmark, Scroll, Compass, AlertTriangle, Route, ChevronUp, Clock, Info } from 'lucide-react';
-import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory } from './types';
+import { EnvironmentalComparisonDeck } from './components/EnvironmentalComparisonDeck';
+import { PanelLeftClose, PanelLeftOpen, Mountain, Leaf, Landmark, Scroll, Compass, AlertTriangle, Route, ChevronUp, Clock, Info } from 'lucide-react';
+import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory, EnvironmentalPillar, EnvironmentalComparisonConfig } from './types';
 import { HISTORICAL_ERAS } from './data/historicalEras';
+import { ALL_ENVIRONMENTAL_PILLARS } from './data/environmentalChange';
 
 const DEMOGRAPHIC_LAYERS: ActiveLayer[] = [
   'pop_density',
@@ -88,7 +90,52 @@ export function App() {
     setTradeCategories(new Set());
   };
 
-  // Ingest Demographics
+
+  // Environmental Change & Climate Explorer State
+  const [environmentalPillars, setEnvironmentalPillars] = useState<Set<EnvironmentalPillar>>(
+    new Set(ALL_ENVIRONMENTAL_PILLARS)
+  );
+  const [isEcoComparisonOpen, setIsEcoComparisonOpen] = useState<boolean>(false);
+  const [comparisonConfig, setComparisonConfig] = useState<EnvironmentalComparisonConfig>({
+    pillar: 'forest_change',
+    yearA: '2001',
+    yearB: '2021',
+    isDeltaMode: false
+  });
+
+  const toggleEnvironmentalPillar = (pillar: EnvironmentalPillar) => {
+    setEnvironmentalPillars(prev => {
+      const next = new Set(prev);
+      if (next.has(pillar)) {
+        next.delete(pillar);
+      } else {
+        next.add(pillar);
+      }
+      return next;
+    });
+    if (!activeLayers.has('environmental_change')) {
+      setActiveLayers(prev => new Set(prev).add('environmental_change'));
+    }
+  };
+
+  const selectAllEnvironmentalPillars = () => {
+    setEnvironmentalPillars(new Set(ALL_ENVIRONMENTAL_PILLARS));
+    if (!activeLayers.has('environmental_change')) {
+      setActiveLayers(prev => new Set(prev).add('environmental_change'));
+    }
+  };
+
+  const clearEnvironmentalPillars = () => {
+    setEnvironmentalPillars(new Set());
+  };
+
+  const updateComparisonConfig = (newConfig: Partial<EnvironmentalComparisonConfig>) => {
+    setComparisonConfig(prev => ({ ...prev, ...newConfig }));
+  };
+
+  const [environmentalFeatures, setEnvironmentalFeatures] = useState<any[]>([]);
+
+  // Ingest Demographics & Environmental Data
   useEffect(() => {
     fetch('/data/census_demographics.json')
       .then(res => res.json())
@@ -100,7 +147,54 @@ export function App() {
         console.error('Failed to load demographics data:', err);
         setIsLoading(false);
       });
+
+    fetch('/data/environmental_change.geojson')
+      .then(res => res.json())
+      .then(data => {
+        if (data && Array.isArray(data.features)) {
+          setEnvironmentalFeatures(data.features);
+        }
+      })
+      .catch(err => console.error('Failed to load environmental_change.geojson:', err));
   }, []);
+
+  const handleSelectHotspot = (hotspot: { name: string; lat: number; lng: number; zoom?: number }) => {
+    setSearchTarget({
+      name: hotspot.name,
+      lat: hotspot.lat,
+      lng: hotspot.lng,
+      zoom: hotspot.zoom || 9,
+      type: 'environmental_change'
+    });
+
+    const match = environmentalFeatures.find(f => {
+      const p = f.properties || {};
+      const fName = (p.name || '').toLowerCase();
+      const hName = hotspot.name.toLowerCase();
+      return fName.includes(hName) || hName.includes(fName) ||
+        (hName.includes('gangotri') && fName.includes('gangotri')) ||
+        (hName.includes('siachen') && fName.includes('siachen')) ||
+        (hName.includes('delhi') && fName.includes('delhi')) ||
+        (hName.includes('bengaluru') && fName.includes('bengaluru')) ||
+        (hName.includes('sagar') && fName.includes('sagar')) ||
+        (hName.includes('satabhaya') && fName.includes('satabhaya')) ||
+        (hName.includes('chilika') && fName.includes('chilika')) ||
+        (hName.includes('vembanad') && fName.includes('vembanad')) ||
+        (hName.includes('thar') && fName.includes('thar')) ||
+        (hName.includes('punjab') && fName.includes('punjab')) ||
+        (hName.includes('kosi') && fName.includes('kosi')) ||
+        (hName.includes('majuli') && fName.includes('majuli'));
+    });
+
+    if (match) {
+      setSelectedFeature({
+        type: 'environmental_change',
+        name: match.properties.name,
+        properties: match.properties,
+        coordinates: [hotspot.lng, hotspot.lat]
+      });
+    }
+  };
 
   // Intuitive, responsive single-click layer toggling with smart mutual exclusivity
   const toggleLayer = (layer: ActiveLayer) => {
@@ -234,6 +328,8 @@ export function App() {
         onResetView={handleResetView}
         onOpenSourceModal={() => setIsSourceModalOpen(true)}
         onOpenComparison={() => setIsComparisonModalOpen(true)}
+          onOpenEcoComparison={() => setIsEcoComparisonOpen(prev => !prev)}
+          isEcoComparisonOpen={isEcoComparisonOpen}
         selectedFeature={selectedFeature}
         isElevationHighlight={isElevationHighlight}
         setIsElevationHighlight={setIsElevationHighlight}
@@ -268,6 +364,11 @@ export function App() {
               onClearTradeCategories={clearTradeCategories}
               onResetLayers={handleResetLayers}
               onOpenSoilSources={() => setIsSoilModalOpen(true)}
+              environmentalPillars={environmentalPillars}
+              toggleEnvironmentalPillar={toggleEnvironmentalPillar}
+              onSelectAllEnvironmentalPillars={selectAllEnvironmentalPillars}
+              onClearEnvironmentalPillars={clearEnvironmentalPillars}
+              onOpenComparisonDeck={() => setIsEcoComparisonOpen(true)}
             />
           </div>
         </div>
@@ -307,6 +408,11 @@ export function App() {
               onClearTradeCategories={clearTradeCategories}
               onResetLayers={handleResetLayers}
               onOpenSoilSources={() => setIsSoilModalOpen(true)}
+              environmentalPillars={environmentalPillars}
+              toggleEnvironmentalPillar={toggleEnvironmentalPillar}
+              onSelectAllEnvironmentalPillars={selectAllEnvironmentalPillars}
+              onClearEnvironmentalPillars={clearEnvironmentalPillars}
+              onOpenComparisonDeck={() => setIsEcoComparisonOpen(true)}
             />
             <button
               onClick={() => setIsSidebarOpen(false)}
@@ -348,6 +454,60 @@ export function App() {
 
           {/* Dynamic Active Legends Overlay */}
           <div className="absolute bottom-4 right-3 md:bottom-6 md:right-6 z-20 pointer-events-none flex flex-col gap-2.5 max-h-[70vh] overflow-y-auto max-w-[calc(100vw-1.5rem)]">
+
+            {/* Environmental Change & Climate Explorer Legend */}
+            {activeLayers.has('environmental_change') && (
+              <div className="glass-panel-glow rounded-xl p-3 shadow-2xl text-xs pointer-events-auto min-w-[240px] border border-emerald-500/40 font-mono">
+                <div className="font-bold text-emerald-300 mb-1.5 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <Leaf className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Environmental Change ({environmentalPillars.size}/8)</span>
+                  </span>
+                  {comparisonConfig.isDeltaMode && (
+                    <span className="text-[10px] text-amber-300 font-bold bg-amber-950/80 px-1.5 py-0.5 rounded border border-amber-500/30">
+                      Δ MODE
+                    </span>
+                  )}
+                </div>
+
+                {comparisonConfig.isDeltaMode ? (
+                  <div className="space-y-1 text-[11px] font-bold">
+                    <span className="flex items-center gap-1.5 text-red-400"><span className="w-2.5 h-2.5 rounded bg-[#ef4444] inline-block"/>Severe Degradation / Loss</span>
+                    <span className="flex items-center gap-1.5 text-amber-400"><span className="w-2.5 h-2.5 rounded bg-[#f59e0b] inline-block"/>High Vulnerability / Stress</span>
+                    <span className="flex items-center gap-1.5 text-yellow-300"><span className="w-2.5 h-2.5 rounded bg-[#eab308] inline-block"/>Moderate / Cautious Monitor</span>
+                    <span className="flex items-center gap-1.5 text-emerald-400"><span className="w-2.5 h-2.5 rounded bg-[#10b981] inline-block"/>Stable / Conservation Recovery</span>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-[10px] font-bold pt-1 border-t border-white/5">
+                    {environmentalPillars.has('forest_change') && (
+                      <span className="flex items-center gap-1 text-emerald-400"><span className="w-2 h-2 rounded-full bg-[#10b981] inline-block"/>Forest Cover</span>
+                    )}
+                    {environmentalPillars.has('glacier_retreat') && (
+                      <span className="flex items-center gap-1 text-cyan-400"><span className="w-2 h-2 rounded-full bg-[#06b6d4] inline-block"/>Glacier Retreat</span>
+                    )}
+                    {environmentalPillars.has('urban_expansion') && (
+                      <span className="flex items-center gap-1 text-orange-400"><span className="w-2 h-2 rounded-full bg-[#f97316] inline-block"/>Urban Sprawl</span>
+                    )}
+                    {environmentalPillars.has('coastal_erosion') && (
+                      <span className="flex items-center gap-1 text-rose-400"><span className="w-2 h-2 rounded-full bg-[#ef4444] inline-block"/>Coastal Erosion</span>
+                    )}
+                    {environmentalPillars.has('wetland_change') && (
+                      <span className="flex items-center gap-1 text-blue-400"><span className="w-2 h-2 rounded-full bg-[#3b82f6] inline-block"/>Wetlands</span>
+                    )}
+                    {environmentalPillars.has('desertification') && (
+                      <span className="flex items-center gap-1 text-yellow-400"><span className="w-2 h-2 rounded-full bg-[#eab308] inline-block"/>Desertification</span>
+                    )}
+                    {environmentalPillars.has('groundwater_stress') && (
+                      <span className="flex items-center gap-1 text-purple-400"><span className="w-2 h-2 rounded-full bg-[#a855f7] inline-block"/>Groundwater</span>
+                    )}
+                    {environmentalPillars.has('river_avulsion') && (
+                      <span className="flex items-center gap-1 text-teal-400"><span className="w-2 h-2 rounded-full bg-[#14b8a6] inline-block"/>River Avulsion</span>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Historical Atlas Legend */}
             {activeLayers.has('historical_atlas') && (
               <div className="glass-panel-glow rounded-xl p-3.5 shadow-2xl text-xs pointer-events-auto min-w-[240px] border border-amber-500/40 font-mono">
@@ -618,6 +778,26 @@ export function App() {
           </div>
         )}
       </div>
+
+
+      {/* Environmental Year Comparison Tool Deck */}
+      <EnvironmentalComparisonDeck
+        isOpen={isEcoComparisonOpen}
+        onClose={() => setIsEcoComparisonOpen(false)}
+        activePillar={comparisonConfig.pillar}
+        onSelectPillar={(pillar) => updateComparisonConfig({ pillar })}
+        comparisonConfig={comparisonConfig}
+        onUpdateConfig={updateComparisonConfig}
+        onSelectHotspot={handleSelectHotspot}
+        onFlyToCoordinates={(lat: number, lng: number, zoom?: number) => {
+          setSearchTarget({
+            name: 'Environmental Site',
+            lat,
+            lng,
+            zoom: zoom || 9
+          });
+        }}
+      />
 
       {/* Universal Historical Timeline Slider - Docked at Bottom Center */}
       {isTimelineOpen && (

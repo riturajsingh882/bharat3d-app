@@ -8,7 +8,8 @@ import {
   Eye,
   Camera,
   Mountain,
-  Scale
+  Scale,
+  Leaf
 } from 'lucide-react';
 import type { BasemapStyle, CameraPreset, SearchTarget, SelectedFeatureInfo } from '../types';
 import { BharatLogo } from './BharatLogo';
@@ -37,7 +38,10 @@ const TYPE_LABEL: Record<string, string> = {
   historical_capital: 'Capital',
   trade_route: 'Trade Route',
   ancient_port: 'Port',
-  highway: 'Road'
+  highway: 'Road',
+  environmental: 'Eco Change',
+  glacier: 'Glacier',
+  wetland: 'Wetland'
 };
 
 const TYPE_COLOR: Record<string, string> = {
@@ -52,7 +56,10 @@ const TYPE_COLOR: Record<string, string> = {
   historical_capital: 'text-purple-300',
   trade_route: 'text-emerald-400',
   ancient_port: 'text-amber-300',
-  highway: 'text-orange-300'
+  highway: 'text-orange-300',
+  environmental: 'text-emerald-300',
+  glacier: 'text-cyan-300',
+  wetland: 'text-blue-300'
 };
 
 const TYPE_PRIORITY: Record<string, number> = {
@@ -83,6 +90,8 @@ interface TopNavBarProps {
   onResetView: () => void;
   onOpenSourceModal: () => void;
   onOpenComparison: () => void;
+  onOpenEcoComparison?: () => void;
+  isEcoComparisonOpen?: boolean;
   selectedFeature: SelectedFeatureInfo | null;
   isElevationHighlight: boolean;
   setIsElevationHighlight: (val: boolean) => void;
@@ -99,6 +108,8 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
   onResetView,
   onOpenSourceModal,
   onOpenComparison,
+  onOpenEcoComparison,
+  isEcoComparisonOpen = false,
   selectedFeature,
   isElevationHighlight,
   setIsElevationHighlight,
@@ -465,6 +476,26 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
         >
           <Scale className="w-4 h-4 text-[#C9A227]" />
           <span className="hidden lg:inline">Compare</span>
+        </button>
+
+
+        {/* Environmental Change & Climate Explorer Launcher */}
+        <button
+          onClick={() => {
+            setShowPresetMenu(false);
+            setShowBasemapMenu(false);
+            setShowSlider(false);
+            onOpenEcoComparison?.();
+          }}
+          className={`px-3 py-1.5 rounded-lg text-sm font-sans font-semibold flex items-center gap-1.5 transition-all border cursor-pointer ${
+            isEcoComparisonOpen 
+              ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/50 shadow-[0_0_12px_rgba(16,185,129,0.3)]'
+              : 'bg-[#10141a] text-neutral-200 border-white/10 hover:border-emerald-500/60 hover:text-white'
+          }`}
+          title="Open Environmental Change & Climate Explorer Year Comparison Tool"
+        >
+          <Leaf className="w-4 h-4 text-emerald-400" />
+          <span className="hidden lg:inline">Eco Change</span>
         </button>
 
         {/* Fine-Art Tactile 3D Elevation & Relief Button */}

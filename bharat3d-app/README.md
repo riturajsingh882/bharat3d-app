@@ -33,11 +33,21 @@ Built with **React 19 · TypeScript · Vite · Tailwind CSS v4 · MapLibre GL JS
   - *Historical Railway Development (1853–1905)*: GIPR 1853 (Asia's first line), East Indian Railway 1854, Madras Railway 1856, Imperial Trunk Grid (Dalhousie master plan) with authentic railway cross-tie styling.
   - *Controls*: Granular sub-category toggles, active indicator counter (`7/7`), "Select All" / "Clear", and dynamic active legend.
 - **Disaster & seismic risk** — BIS IS 1893:2016 zones (Zones V, IV, III) and historical M7+ earthquake epicenters with depth, magnitude, and casualty records.
+- **Environmental Change Explorer & Year Comparison Tool (8 Foundations, 42 Features)** —
+  - *Forest-Cover Changes*: FSI ISFR 2001–2021 decadal gain/loss, fragmentation, and density transitions (Western Ghats, Sunderbans, Northeast).
+  - *Glacier Retreat*: SAC-ISRO & GSI cryosphere benchmarks (1965–2022) for Gangotri (Gaumukh), Siachen Glacier, Chhota Shigri, and Zanskar.
+  - *Urban Expansion*: NRSC Decadal LULC (1991–2021) built-up expansion footprint for Delhi NCR, Bengaluru BBMP, Hyderabad GHMC, Mumbai MMR, and Pune.
+  - *Coastal Erosion*: NCCR-MoES Shoreline Change Atlas (1990–2022) monitoring Sagar Island, Satabhaya, Puducherry, and Chellanam.
+  - *Wetland Dynamics*: SAC National Wetland Atlas & Ramsar baseline (1990–2020) tracking Chilika Lake, Vembanad-Kol, Deepor Beel, and Sambhar.
+  - *Desertification & Land Degradation*: SAC-ISRO Atlas (2003–2018) monitoring Thar Fringe, Rayalaseema, and Vidarbha scrub expansion.
+  - *Groundwater Stress*: CGWB Dynamic Groundwater Extraction assessments (2004–2022) for Punjab Granary, Central Rajasthan, and North Gujarat.
+  - *River Course Changes & Avulsion*: Historical meander and avulsion corridors (1760–2022) including Kosi River, Majuli Island (Brahmaputra), and Ganga at Farakka.
+  - *Interactive Multi-Decadal Year Comparison Tool*: Dedicated analysis deck with Baseline Year (A) vs Comparison Year (B) selectors, Delta Rate ($\Delta$) toggle, severity classification, and instant hotspot navigation.
 - **National Highways & Expressways** — 28 curated corridors (tolled expressways, national highway grid, scenic state corridors) with route metadata.
 
 ### Search (data-driven)
-- Unified search across **states, districts, cities, rivers, mountain ranges, peaks, archaeological sites, ancient ports, highways (e.g. "NH 44", "Delhi-Mumbai Expressway"), historical empires, and trade routes** — powered by a generated index (`public/data/search_index.json`, 1,077 entries).
-- Ranked, diacritic-insensitive fuzzy matching with type badges (`State`, `District`, `River`, `Mountain`, `Archaeology`, `Port`, `Trade Route`, `Highway`, `Empire`).
+- Unified search across **states, districts, cities, rivers, mountain ranges, peaks, archaeological sites, ancient ports, highways (e.g. "NH 44", "Delhi-Mumbai Expressway"), historical empires, trade routes, glaciers, and environmental monitoring hotspots** — powered by a generated index (`public/data/search_index.json`, 1,119 entries).
+- Ranked, diacritic-insensitive fuzzy matching with type badges (`State`, `District`, `River`, `Mountain`, `Archaeology`, `Port`, `Trade Route`, `Highway`, `Empire`, `Environmental`, `Glacier`, `Wetland`).
 - Selecting a result flies/fits the camera to it **and highlights the exact feature** (gold outline for areas/lines, gold marker for points and ports).
 
 ### Mobile & Touch Optimization
@@ -99,8 +109,9 @@ All vector/data files live in [`public/data/`](public/data):
 | `archaeological_sites.geojson` | 18 ASI-verified monumental sites across 5 categories |
 | `historical_trade_routes.geojson` | 27 verified trade routes, maritime circuits, 10 ancient ports & heritage railways |
 | `disaster_seismic_zones.geojson` | BIS IS 1893 seismic zones & historical M7+ epicenters |
+| `environmental_change.geojson` | 42 multi-decadal features across 8 foundations (FSI, SAC-ISRO, CGWB, NCCR, CWC, Ramsar) |
 | `census_demographics.json` | District demographic lookup (PCA 2011 + Table C-01) |
-| `search_index.json` | Generated search index (1,077 multi-tier tokens) |
+| `search_index.json` | Generated search index (1,119 multi-tier tokens) |
 
 > Note: historical boundaries and the highway/route geometry are **approximate scholarly/cartographic reconstructions** (schematic corridors), consistent with the "verified baseline, approximate reconstruction" approach used throughout the atlas.
 
@@ -123,14 +134,17 @@ bharat3d-app/
     ├── config.ts              # basemaps, DEM, API keys
     ├── types.ts               # shared TypeScript types
     ├── index.css              # design system (fonts, palette, panels)
-    ├── data/historicalEras.ts # historical era metadata
-    ├── utils/elevation.ts     # elevation formatting & registry
+    ├── data/
+    │   ├── historicalEras.ts          # historical era metadata
+    │   └── environmentalChange.ts     # 8 environmental change pillars & metadata
+    ├── utils/elevation.ts             # elevation formatting & registry
     └── components/
-        ├── MapEngine.tsx      # MapLibre map, layers, interactions, search highlight
-        ├── TopNavBar.tsx      # search, basemap, 3D, views, compare, sources
-        ├── SidebarNav.tsx     # layer toggles
-        ├── InfoPanel.tsx      # feature dossier drawer
+        ├── MapEngine.tsx              # MapLibre map, layers, interactions, search highlight
+        ├── TopNavBar.tsx              # search, basemap, 3D, views, compare, eco change, sources
+        ├── SidebarNav.tsx             # layer toggles & sub-pillar controls
+        ├── InfoPanel.tsx              # feature dossier drawer
         ├── HistoricalTimeline.tsx
+        ├── EnvironmentalComparisonDeck.tsx # floating multi-decadal year comparison dock
         ├── StateComparisonModal.tsx
         ├── SourceModal.tsx
         ├── LoadingScreen.tsx

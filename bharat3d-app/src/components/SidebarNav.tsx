@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Leaf, Building2, Droplets, Sun, Gauge, Calendar, Activity } from 'lucide-react';
 import { 
   Mountain, 
   MapPin, 
@@ -20,7 +21,7 @@ import {
   Train,
   Globe
 } from 'lucide-react';
-import type { ActiveLayer, HistoricalPeriodId, ReligionFilter, TradeCategory } from '../types';
+import type { ActiveLayer, HistoricalPeriodId, ReligionFilter, TradeCategory, EnvironmentalPillar } from '../types';
 import { HISTORICAL_ERAS } from '../data/historicalEras';
 import { BharatLogo } from './BharatLogo';
 
@@ -50,6 +51,11 @@ interface SidebarNavProps {
   onClearTradeCategories: () => void;
   onResetLayers?: () => void;
   onOpenSoilSources?: () => void;
+  environmentalPillars?: Set<EnvironmentalPillar>;
+  toggleEnvironmentalPillar?: (pillar: EnvironmentalPillar) => void;
+  onSelectAllEnvironmentalPillars?: () => void;
+  onClearEnvironmentalPillars?: () => void;
+  onOpenComparisonDeck?: () => void;
 }
 
 export const SidebarNav: React.FC<SidebarNavProps> = ({
@@ -66,13 +72,19 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
   onSelectAllTradeCategories,
   onClearTradeCategories,
   onResetLayers,
-  onOpenSoilSources
+  onOpenSoilSources,
+  environmentalPillars = new Set(),
+  toggleEnvironmentalPillar = () => {},
+  onSelectAllEnvironmentalPillars = () => {},
+  onClearEnvironmentalPillars = () => {},
+  onOpenComparisonDeck = () => {}
 }) => {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     historical: false,
     historyTimeline: false,
     archaeology: false,
     trade: false,
+    environmental: false,
     roads: false,
     disaster: false,
     political: false,
@@ -432,6 +444,219 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
                       <span>Historical Railways (1853–1905)</span>
                     </span>
                     <span className="text-[10px] text-rose-400/80">4 lines</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        {/* ======================================================== */}
+        {/* 3.4 ENVIRONMENTAL CHANGE & CLIMATE EXPLORER */}
+        {/* ======================================================== */}
+        <div className="vista-card overflow-hidden border border-emerald-500/30">
+          <button
+            onClick={() => toggleSection('environmental')}
+            className="w-full px-3.5 py-3 flex items-center justify-between text-sm font-serif font-semibold uppercase tracking-wide text-emerald-300 hover:text-emerald-200 transition-colors bg-[#0a1614] cursor-pointer select-none"
+          >
+            <span className="flex items-center gap-2">
+              <ActiveDot on={sectionActive(['environmental_change'])} />
+              <Leaf className="w-4 h-4 text-emerald-400" />
+              <span>Environmental Change Explorer</span>
+            </span>
+            <ChevronDown className={`w-4 h-4 text-neutral-400 chevron-rotate ${openSections.environmental ? 'is-open text-white' : ''}`} />
+          </button>
+          
+          <div className={`accordion-collapse ${openSections.environmental ? 'is-open' : ''}`}>
+            <div>
+              <div className="p-2 space-y-2 bg-[#0c1214]">
+                {/* Master Toggle */}
+                <button
+                  onClick={() => toggleLayer('environmental_change')}
+                  className={`w-full px-3 py-2 rounded-lg text-sm font-mono flex items-center justify-between transition-all cursor-pointer ${
+                    activeLayers.has('environmental_change')
+                      ? 'bg-emerald-500/20 text-white border border-emerald-500/50 border-l-3 border-l-emerald-500 font-bold shadow-[0_0_12px_rgba(16,185,129,0.25)]'
+                      : 'text-neutral-300 hover:bg-white/5 hover:text-white font-bold'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className={`w-2.5 h-2.5 rounded-full ${activeLayers.has('environmental_change') ? 'bg-emerald-400 shadow-[0_0_8px_#34d399]' : 'bg-neutral-600'}`} />
+                    <span>Environmental Layer</span>
+                  </div>
+                  <span className="text-[11px] px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 font-bold">
+                    42 Features
+                  </span>
+                </button>
+
+                {/* Launch Year Comparison Tool Button */}
+                <button
+                  onClick={onOpenComparisonDeck}
+                  className="w-full px-3 py-2 rounded-lg text-xs font-mono font-bold bg-gradient-to-r from-emerald-950/90 to-sky-950/90 hover:from-emerald-900/90 hover:to-sky-900/90 text-emerald-200 border border-emerald-500/40 flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer"
+                >
+                  <Calendar className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Open Year Comparison Tool</span>
+                  <Activity className="w-3.5 h-3.5 text-sky-400 animate-pulse" />
+                </button>
+
+                {/* Sub-pillar Active Header & Quick Actions */}
+                <div className="flex items-center justify-between px-1 text-[11px] font-mono">
+                  <span className="text-neutral-400 font-bold">
+                    Active Pillars: <span className="text-emerald-300">{environmentalPillars.size}/8</span>
+                  </span>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={onSelectAllEnvironmentalPillars}
+                      className="text-[10px] text-emerald-400 hover:text-emerald-200 underline cursor-pointer"
+                    >
+                      Select All
+                    </button>
+                    <span className="text-neutral-600">•</span>
+                    <button
+                      onClick={onClearEnvironmentalPillars}
+                      className="text-[10px] text-neutral-400 hover:text-neutral-200 underline cursor-pointer"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                </div>
+
+                {/* 8 Granular Pillar Sub-Toggles */}
+                <div className="space-y-1 pt-1 border-t border-white/5">
+                  {/* 1. Forest Cover */}
+                  <button
+                    onClick={() => toggleEnvironmentalPillar('forest_change')}
+                    className={`w-full px-2.5 py-1.5 rounded text-xs font-mono flex items-center justify-between transition-all cursor-pointer ${
+                      activeLayers.has('environmental_change') && environmentalPillars.has('forest_change')
+                        ? 'bg-emerald-950/60 text-emerald-200 border border-emerald-500/40 font-bold'
+                        : 'text-neutral-400 hover:bg-white/5 hover:text-neutral-200'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full ${activeLayers.has('environmental_change') && environmentalPillars.has('forest_change') ? 'bg-emerald-400 shadow-[0_0_6px_#10b981]' : 'bg-neutral-600'}`} />
+                      <TreePine className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Forest-Cover Changes (FSI)</span>
+                    </span>
+                    <span className="text-[10px] text-emerald-400/80">5 belts</span>
+                  </button>
+
+                  {/* 2. Glacier Retreat */}
+                  <button
+                    onClick={() => toggleEnvironmentalPillar('glacier_retreat')}
+                    className={`w-full px-2.5 py-1.5 rounded text-xs font-mono flex items-center justify-between transition-all cursor-pointer ${
+                      activeLayers.has('environmental_change') && environmentalPillars.has('glacier_retreat')
+                        ? 'bg-cyan-950/60 text-cyan-200 border border-cyan-500/40 font-bold'
+                        : 'text-neutral-400 hover:bg-white/5 hover:text-neutral-200'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full ${activeLayers.has('environmental_change') && environmentalPillars.has('glacier_retreat') ? 'bg-cyan-400 shadow-[0_0_6px_#06b6d4]' : 'bg-neutral-600'}`} />
+                      <Mountain className="w-3.5 h-3.5 text-cyan-400" />
+                      <span>Glacier Retreat (SAC-ISRO)</span>
+                    </span>
+                    <span className="text-[10px] text-cyan-400/80">6 snouts</span>
+                  </button>
+
+                  {/* 3. Urban Expansion */}
+                  <button
+                    onClick={() => toggleEnvironmentalPillar('urban_expansion')}
+                    className={`w-full px-2.5 py-1.5 rounded text-xs font-mono flex items-center justify-between transition-all cursor-pointer ${
+                      activeLayers.has('environmental_change') && environmentalPillars.has('urban_expansion')
+                        ? 'bg-orange-950/60 text-orange-200 border border-orange-500/40 font-bold'
+                        : 'text-neutral-400 hover:bg-white/5 hover:text-neutral-200'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full ${activeLayers.has('environmental_change') && environmentalPillars.has('urban_expansion') ? 'bg-orange-400 shadow-[0_0_6px_#f97316]' : 'bg-neutral-600'}`} />
+                      <Building2 className="w-3.5 h-3.5 text-orange-400" />
+                      <span>Urban Sprawl (NRSC LULC)</span>
+                    </span>
+                    <span className="text-[10px] text-orange-400/80">5 metros</span>
+                  </button>
+
+                  {/* 4. Coastal Erosion */}
+                  <button
+                    onClick={() => toggleEnvironmentalPillar('coastal_erosion')}
+                    className={`w-full px-2.5 py-1.5 rounded text-xs font-mono flex items-center justify-between transition-all cursor-pointer ${
+                      activeLayers.has('environmental_change') && environmentalPillars.has('coastal_erosion')
+                        ? 'bg-rose-950/60 text-rose-200 border border-rose-500/40 font-bold'
+                        : 'text-neutral-400 hover:bg-white/5 hover:text-neutral-200'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full ${activeLayers.has('environmental_change') && environmentalPillars.has('coastal_erosion') ? 'bg-rose-400 shadow-[0_0_6px_#ef4444]' : 'bg-neutral-600'}`} />
+                      <Waves className="w-3.5 h-3.5 text-rose-400" />
+                      <span>Coastal Erosion (NCCR-MoES)</span>
+                    </span>
+                    <span className="text-[10px] text-rose-400/80">5 coasts</span>
+                  </button>
+
+                  {/* 5. Wetland Changes */}
+                  <button
+                    onClick={() => toggleEnvironmentalPillar('wetland_change')}
+                    className={`w-full px-2.5 py-1.5 rounded text-xs font-mono flex items-center justify-between transition-all cursor-pointer ${
+                      activeLayers.has('environmental_change') && environmentalPillars.has('wetland_change')
+                        ? 'bg-blue-950/60 text-blue-200 border border-blue-500/40 font-bold'
+                        : 'text-neutral-400 hover:bg-white/5 hover:text-neutral-200'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full ${activeLayers.has('environmental_change') && environmentalPillars.has('wetland_change') ? 'bg-blue-400 shadow-[0_0_6px_#3b82f6]' : 'bg-neutral-600'}`} />
+                      <Droplets className="w-3.5 h-3.5 text-blue-400" />
+                      <span>Wetland Contraction (Ramsar)</span>
+                    </span>
+                    <span className="text-[10px] text-blue-400/80">6 lakes</span>
+                  </button>
+
+                  {/* 6. Desertification */}
+                  <button
+                    onClick={() => toggleEnvironmentalPillar('desertification')}
+                    className={`w-full px-2.5 py-1.5 rounded text-xs font-mono flex items-center justify-between transition-all cursor-pointer ${
+                      activeLayers.has('environmental_change') && environmentalPillars.has('desertification')
+                        ? 'bg-yellow-950/60 text-yellow-200 border border-yellow-500/40 font-bold'
+                        : 'text-neutral-400 hover:bg-white/5 hover:text-neutral-200'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full ${activeLayers.has('environmental_change') && environmentalPillars.has('desertification') ? 'bg-yellow-400 shadow-[0_0_6px_#eab308]' : 'bg-neutral-600'}`} />
+                      <Sun className="w-3.5 h-3.5 text-yellow-400" />
+                      <span>Desertification &amp; Badlands</span>
+                    </span>
+                    <span className="text-[10px] text-yellow-400/80">5 zones</span>
+                  </button>
+
+                  {/* 7. Groundwater Stress */}
+                  <button
+                    onClick={() => toggleEnvironmentalPillar('groundwater_stress')}
+                    className={`w-full px-2.5 py-1.5 rounded text-xs font-mono flex items-center justify-between transition-all cursor-pointer ${
+                      activeLayers.has('environmental_change') && environmentalPillars.has('groundwater_stress')
+                        ? 'bg-purple-950/60 text-purple-200 border border-purple-500/40 font-bold'
+                        : 'text-neutral-400 hover:bg-white/5 hover:text-neutral-200'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full ${activeLayers.has('environmental_change') && environmentalPillars.has('groundwater_stress') ? 'bg-purple-400 shadow-[0_0_6px_#a855f7]' : 'bg-neutral-600'}`} />
+                      <Gauge className="w-3.5 h-3.5 text-purple-400" />
+                      <span>Groundwater Over-Draft (CGWB)</span>
+                    </span>
+                    <span className="text-[10px] text-purple-400/80">5 aquifers</span>
+                  </button>
+
+                  {/* 8. River Course Changes */}
+                  <button
+                    onClick={() => toggleEnvironmentalPillar('river_avulsion')}
+                    className={`w-full px-2.5 py-1.5 rounded text-xs font-mono flex items-center justify-between transition-all cursor-pointer ${
+                      activeLayers.has('environmental_change') && environmentalPillars.has('river_avulsion')
+                        ? 'bg-teal-950/60 text-teal-200 border border-teal-500/40 font-bold'
+                        : 'text-neutral-400 hover:bg-white/5 hover:text-neutral-200'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full ${activeLayers.has('environmental_change') && environmentalPillars.has('river_avulsion') ? 'bg-teal-400 shadow-[0_0_6px_#14b8a6]' : 'bg-neutral-600'}`} />
+                      <Compass className="w-3.5 h-3.5 text-teal-400" />
+                      <span>River Migration &amp; Avulsion</span>
+                    </span>
+                    <span className="text-[10px] text-teal-400/80">5 rivers</span>
                   </button>
                 </div>
               </div>

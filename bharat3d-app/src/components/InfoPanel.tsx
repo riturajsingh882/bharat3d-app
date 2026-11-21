@@ -21,7 +21,12 @@ import {
   Anchor,
   Train,
   Waves,
-  Globe
+  Globe,
+  TreePine,
+  Droplets,
+  Building2,
+  Sun,
+  Gauge
 } from 'lucide-react';
 import type { SelectedFeatureInfo } from '../types';
 import { metersToFeetInches } from '../utils/elevation';
@@ -551,6 +556,120 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
                   <div className="py-1.5">
                     <span className="text-neutral-400 block text-[11px]">Tectonic Fault / Mechanism:</span>
                     <span className="text-amber-300">{properties.fault_system}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+
+        {/* 4.5 Environmental Change & Climate Explorer Dossier */}
+        {type === 'environmental_change' && (
+          <div className="space-y-3">
+            <div className="vista-card p-4 space-y-3 border border-emerald-500/40 bg-[#0a1518]/90">
+              <div className="text-xs font-mono font-bold text-white flex items-center justify-between uppercase tracking-wider">
+                <span className="flex items-center gap-1.5">
+                  {properties.pillar === 'forest_change' ? (
+                    <TreePine className="w-4 h-4 text-emerald-400" />
+                  ) : properties.pillar === 'glacier_retreat' ? (
+                    <Mountain className="w-4 h-4 text-cyan-400" />
+                  ) : properties.pillar === 'urban_expansion' ? (
+                    <Building2 className="w-4 h-4 text-orange-400" />
+                  ) : properties.pillar === 'coastal_erosion' ? (
+                    <Waves className="w-4 h-4 text-rose-400" />
+                  ) : properties.pillar === 'wetland_change' ? (
+                    <Droplets className="w-4 h-4 text-blue-400" />
+                  ) : properties.pillar === 'desertification' ? (
+                    <Sun className="w-4 h-4 text-yellow-400" />
+                  ) : properties.pillar === 'groundwater_stress' ? (
+                    <Gauge className="w-4 h-4 text-purple-400" />
+                  ) : (
+                    <Compass className="w-4 h-4 text-teal-400" />
+                  )}
+                  <span className="text-white">
+                    {properties.category_name || 'Environmental Change'}
+                  </span>
+                </span>
+                <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold border ${
+                  properties.severity_code === 'severe'
+                    ? 'bg-rose-950/80 text-rose-300 border-rose-500/40'
+                    : properties.severity_code === 'high'
+                    ? 'bg-amber-950/80 text-amber-300 border-amber-500/40'
+                    : properties.severity_code === 'positive'
+                    ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40'
+                    : 'bg-yellow-950/80 text-yellow-300 border-yellow-500/40'
+                }`}>
+                  {properties.severity_level || 'ASSESSED'}
+                </span>
+              </div>
+
+              <div className="space-y-2 text-xs font-mono">
+                {properties.region && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Geographical Region / Jurisdiction:</span>
+                    <span className="text-white font-sans font-bold">{properties.region}</span>
+                  </div>
+                )}
+
+                {/* Comparative Metric Box */}
+                <div className="p-3 bg-[#071114] border border-white/10 rounded-lg space-y-2 my-2">
+                  <div className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">
+                    Sovereign Temporal Assessment Comparison:
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div className="bg-black/30 p-2 rounded border border-white/5">
+                      <span className="text-amber-400 block text-[10px] uppercase font-bold">
+                        Baseline ({properties.baseline_year || 'Year A'}):
+                      </span>
+                      <span className="text-neutral-200 font-bold text-[11px] font-sans">
+                        {properties.baseline_text || `${properties.baseline_value || '—'}`}
+                      </span>
+                    </div>
+                    <div className="bg-black/30 p-2 rounded border border-white/5">
+                      <span className="text-emerald-400 block text-[10px] uppercase font-bold">
+                        Contemporary ({properties.comparison_year || 'Year B'}):
+                      </span>
+                      <span className="text-white font-bold text-[11px] font-sans">
+                        {properties.comparison_text || `${properties.comparison_value || '—'}`}
+                      </span>
+                    </div>
+                  </div>
+
+                  {properties.delta_text && (
+                    <div className="pt-1.5 border-t border-white/10 flex justify-between items-center text-xs">
+                      <span className="text-neutral-400 text-[11px]">Recorded Net Variance (Δ):</span>
+                      <span className={`font-bold px-2 py-0.5 rounded text-[11px] ${
+                        properties.severity_code === 'severe'
+                          ? 'bg-rose-950 text-rose-300 border border-rose-500/30'
+                          : properties.severity_code === 'positive'
+                          ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/30'
+                          : 'bg-amber-950 text-amber-300 border border-amber-500/30'
+                      }`}>
+                        {properties.delta_text}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {properties.primary_driver && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Primary Driver &amp; Forcing Mechanism:</span>
+                    <span className="text-amber-300 leading-relaxed font-sans">{properties.primary_driver}</span>
+                  </div>
+                )}
+
+                {properties.ecological_impact && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Ecological Impact &amp; Environmental Consequences:</span>
+                    <span className="text-neutral-200 text-[11px] leading-relaxed font-sans">{properties.ecological_impact}</span>
+                  </div>
+                )}
+
+                {properties.citation && (
+                  <div className="pt-1.5">
+                    <span className="text-neutral-500 block text-[10px] uppercase tracking-wider">Official Publishing Authority:</span>
+                    <span className="text-emerald-300 text-[11px] leading-relaxed">{properties.citation}</span>
                   </div>
                 )}
               </div>

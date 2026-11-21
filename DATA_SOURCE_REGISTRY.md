@@ -216,3 +216,16 @@ To satisfy the core requirement that all factual information originates from ver
 | **Attributes Recorded** | Zone factor ($Z$), peak ground acceleration (PGA), seismic intensity (MSK scale), tectonic fault mechanisms, epicenter coordinates, focal depth (km), Richter magnitude, recorded fatalities |
 | **Format** | GeoJSON MultiPolygons (seismic hazard zones) & Points (earthquake epicenters) |
 | **Provenance Note** | Zone boundaries and epicenter parameters conform strictly to BIS IS 1893:2016 and published NCS seismic bulletins. |
+
+---
+
+### N. Environmental Change, Cryosphere Monitoring & Climate Dynamics
+
+| Property | Details |
+| :--- | :--- |
+| **Repository Name** | Environmental Change Explorer & Multidecadal Climate Assessment Baseline |
+| **Publishing Institutions** | Forest Survey of India (FSI - MoEFCC), Space Applications Centre (SAC - ISRO), Central Ground Water Board (CGWB - Ministry of Jal Shakti), National Centre for Coastal Research (NCCR - MoES), Central Water Commission (CWC), Geological Survey of India (GSI Glaciology Division), Ramsar Convention Secretariat |
+| **Coverage** | **42 Curated Features across 8 Foundations**:<br>1. **Forest-Cover Changes**: Western Ghats, Northeast tribal shifting cultivation zones, Sundarbans mangroves, Eastern Ghats, and Central Highlands (FSI ISFR 2001 vs 2021)<br>2. **Himalayan Glacier Retreat**: Gangotri/Gaumukh, Siachen, Chorabari (Kedarnath), Zemu (Sikkim), Kolhai (Kashmir), Bara Shigri (Himachal) (SAC-ISRO & GSI 1965 to 2022)<br>3. **Metropolitan Urban Sprawl**: Delhi NCR, Bengaluru BBMP, Mumbai MMR, Hyderabad ORR, and Chennai OMR corridors (NRSC Decadal LULC 1991 to 2021)<br>4. **Coastal Erosion & Shorelines**: Sagar Island (WB), Satabhaya (Odisha), Chellanam (Kerala), Puducherry-Ennore, and Gulf of Khambhat (NCCR Shoreline Change Atlas 1990 to 2022)<br>5. **Wetland & Lake Changes**: Chilika Lake, Vembanad-Kol, Wular Lake, Loktak Lake & Phumdis, Kolleru Lake, and Sambhar Salt Lake (SAC Wetland Atlas & Ramsar 1990 to 2020)<br>6. **Desertification & Degradation**: Thar eastern fringe, Aravalli mining gap breaches, Rayalaseema rain-shadow, Chambal ravines, and Little Rann Banni scrub (SAC Desertification Atlas 2003 to 2018)<br>7. **Groundwater Over-Draft**: Punjab-Haryana granary, Marwar deep aquifers, Delhi NCR drawdown cones, and Coimbatore crystalline hard rock (CGWB 2004 to 2022)<br>8. **River Course Avulsion**: Kosi River 120 km westward shift & 2008 Kusaha breach, Brahmaputra channel widening at Majuli, Ganga Malda bankline shift, and Vedic Saraswati paleochannels (NRSC/CWC 1760/1950 to 2022) |
+| **Attributes Recorded** | Feature ID, name, pillar category, geographical jurisdiction, baseline year & measured value, comparison year & measured value, net change variance (Δ), percentage variance, severity classification (Severe, High, Moderate, Recovery), primary drivers/mechanisms, ecological consequences, and official institutional citations |
+| **Format** | GeoJSON Polygons, LineStrings, and Point Features with multi-temporal attributes |
+| **Provenance Note** | All temporal baselines correspond strictly to published peer-reviewed or sovereign assessment reports from official survey agencies. No data is interpolated or simulated through AI models. |

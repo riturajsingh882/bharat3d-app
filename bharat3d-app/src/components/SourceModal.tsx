@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Shield, AlertTriangle, ExternalLink, CheckCircle2, Layers, Mountain, Waves, Users, PieChart, Trees } from 'lucide-react';
+import { X, Shield, AlertTriangle, ExternalLink, CheckCircle2, Layers, Mountain, Waves, Users, PieChart, Trees, Leaf } from 'lucide-react';
 
 interface SourceModalProps {
   isOpen: boolean;
@@ -72,6 +72,15 @@ export const SourceModal: React.FC<SourceModalProps> = ({ isOpen, onClose }) => 
       license: 'Government of India Mapping Products',
       status: 'VERIFIED ONLINE',
       url: 'https://bhukosh.gsi.gov.in/'
+    },
+    {
+      category: 'Environmental Change, Climate & Cryosphere Monitoring',
+      icon: <Leaf className="w-4 h-4 text-emerald-400" />,
+      institution: 'FSI (ISFR), SAC - ISRO, CGWB, NCCR (MoES), CWC & Ramsar',
+      coverage: '8 Pillars: Forest Dynamics, Glacier Retreat, Urban Sprawl, Shoreline Erosion, Wetlands, Desertification, Groundwater Stress & River Avulsion',
+      license: 'Open Government Data / ISRO SAC Atlases',
+      status: 'VERIFIED ONLINE',
+      url: 'https://fsi.nic.in/'
     }
   ];
 

@@ -199,6 +199,34 @@ for (const f of read('india_highways').features) {
   });
 }
 
+// 10.5 Environmental Change & Climate Features
+try {
+  for (const f of read('environmental_change').features) {
+    const p = f.properties || {};
+    const coords = p.point_coordinates || (f.geometry.type === 'Point' ? f.geometry.coordinates : null);
+    const lat = coords ? coords[1] : undefined;
+    const lng = coords ? coords[0] : undefined;
+
+    let sub = `${p.category_name || 'Environmental Site'} · ${p.region || ''}`;
+    let type = 'environmental';
+    if (p.pillar === 'glacier_retreat') type = 'glacier';
+    else if (p.pillar === 'wetland_change') type = 'wetland';
+
+    add({
+      name: p.name,
+      type,
+      key: p.id,
+      sub,
+      lat: lat ? round5(lat) : undefined,
+      lng: lng ? round5(lng) : undefined,
+      zoom: coords ? (p.pillar === 'glacier_retreat' ? 11 : 9.5) : undefined,
+      bbox: bboxOf(f.geometry),
+    });
+  }
+} catch (err) {
+  console.warn('Could not ingest environmental_change into search index:', err.message);
+}
+
 // 11. Curated major cities (points) for robust city search coverage.
 const cities = [
   ['New Delhi', 28.6139, 77.2090], ['Mumbai', 19.0760, 72.8777], ['Bengaluru', 12.9716, 77.5946],

@@ -214,7 +214,71 @@ Encompasses 27 verified historical features across 7 foundations, accessible wit
   - Glowing circular anchors and spot labels for ancient ports.
   - Granular category sub-toggles with active count indicators and "Select All" / "Clear" buttons.
 
-### 4.4 National Highways & Expressways (MoRTH / NHAI Corridors)
+### 4.4 Environmental Change & Climate Explorer (8 Pillars & Year Comparison Tool)
+Encompasses 42 verified multidecadal environmental change features across 8 foundations, paired with a dedicated **Year Comparison Tool**:
+
+1. **Forest-Cover Changes (FSI ISFR Assessments)** (Emerald `#10b981`):
+   - Decadal satellite monitoring (2001 vs 2021) across the Western Ghats (+1,270 sq km net canopy gain but interior fragmentation), Northeast tribal shifting cultivation belt (-3,285 sq km primary canopy loss due to shortened jhum cycles), Sundarbans mangrove reserve (+33 sq km pioneer accretion vs salinity stress), Eastern Ghats (+3,280 sq km joint community forestry gains), and Central Indian tiger corridors.
+2. **Himalayan Glacier Retreat (SAC-ISRO & GSI)** (Cyan `#06b6d4`):
+   - Snout retreat and cryospheric volume monitoring (1965 to 2022) for major subcontinental glaciers:
+     - *Gangotri Glacier & Gaumukh Snout* (1,530 m retreat at ~22 m/year; terminal snout shifted from 3,920m to 4,015m).
+     - *Siachen Glacier* (5.3 km tongue detachment, lower 5 km stagnant debris).
+     - *Chorabari Glacier* (320 m retreat; site of 2013 Kedarnath GLOF disaster).
+     - *Zemu Glacier* (2.2 km retreat; proglacial lake formation in Sikkim).
+     - *Kolhai Glacier* (21.05% surface area shrinkage; Kashmir water tower stress).
+     - *Bara Shigri Glacier* (1,100 m retreat in Lahaul-Spiti).
+3. **Metropolitan Urban Expansion (NRSC Decadal LULC)** (Orange `#f97316`):
+   - Satellite impervious built-up expansion (1991 to 2021):
+     - *Delhi NCR*: Sprawl from 485 sq km to 1,840 sq km (+279.4% growth across Aravalli ridges and Yamuna floodplains).
+     - *Bengaluru BBMP*: Built-up footprint surged from 165 sq km (34% green cover, 280 lakes) to 741 sq km (>78% paved surfaces, <80 living lakes; +349.1% growth).
+     - *Mumbai MMR*: Northward axis expansion from 340 sq km to 910 sq km (+167.6%).
+     - *Hyderabad ORR*: Radial sprawl from 210 sq km to 685 sq km (+226.2%).
+     - *Chennai OMR*: Expansion from 174 sq km to 512 sq km (+194.3% over Pallikaranai marshlands).
+4. **Coastal Erosion & Shoreline Dynamics (NCCR / MoES)** (Rose `#ef4444`):
+   - Shoreline displacement monitoring (1990 to 2022) across 6,632 km of coastline:
+     - *Sundarbans Sagar & Mousuni Islands*: 60.5% of state coast eroding; southern Sagar Island retreating at 16–20 m/year (>1.2 km recession).
+     - *Odisha Satabhaya Coast*: Sea ingress of >1.5 km; entire 7-hamlet village submerged and relocated to Bagapatia.
+     - *Kerala Chellanam Shoreline*: 46.4% of state coast under active wave attack.
+     - *Puducherry & Ennore Ports*: Harbor breakwater sand-trapping caused 100% loss of natural Promenade beach.
+     - *Gulf of Khambhat*: Macrotidal scour causing estuarine bluff collapse.
+5. **Wetland & Lake Changes (SAC Wetland Atlas & Ramsar)** (Blue `#3b82f6`):
+   - Open water surface and conservation tracking (1990 to 2020):
+     - *Chilika Lake Lagoon (Ramsar #229)*: Landmark recovery; new mouth dredging in Sept 2000 expanded open water to 1,165 sq km (+30.9% recovery) and revived Irrawaddy dolphins.
+     - *Vembanad-Kol (Ramsar #1214)*: 35.65% shrinkage (230 to 148 sq km) via polders and weed choking.
+     - *Wular Lake (Ramsar #461)*: Drastic 57.3% contraction (89 to 38 sq km) due to willow plantations and siltation.
+     - *Loktak Lake & Phumdis (Ramsar #468)*: Permanent inundation from Ithai Barrage thinning Sangai deer habitat.
+     - *Kolleru Lake*: Reclaimed 40 sq km following Supreme Court Operation Kolleru.
+     - *Sambhar Salt Lake*: 30.4% brine water shrinkage via illegal tubewell pumping.
+6. **Desertification & Land Degradation (SAC - ISRO)** (Yellow `#eab308`):
+   - Remote sensing analysis across 328 million hectares (2003 to 2018):
+     - *Thar Desert Eastern Fringe*: Wind erosion and sand dune stabilization along Indira Gandhi Canal.
+     - *Aravalli Range Mining Gaps*: 12 micro-gap breaches allowing desert sand drift into Haryana and Delhi NCR.
+     - *Rayalaseema & Marathwada*: 44.5% degraded scrub in rain-shadow drought belt.
+     - *Chambal Ravines*: 5,120 sq km badlands advancing at 0.5–1 m/year headward erosion.
+     - *Little Rann Banni Grasslands*: 58% invaded by woody *Prosopis juliflora*.
+7. **Groundwater Over-Draft (CGWB Dynamic Assessments)** (Purple `#a855f7`):
+   - Aquifer extraction assessment across 7,089 administrative blocks (2004 to 2022):
+     - *Punjab & Haryana Granary*: Punjab extraction stage reached 164% (76% blocks Over-Exploited) and Haryana 134%, with water tables falling 0.5–1.2 m/year.
+     - *Marwar Deep Fossil Aquifers*: Extraction stage surged from 138% to 188% mining ancient non-renewable water.
+     - *Delhi NCR Aquifers*: 119% extraction stage with deep urban cone depressions.
+     - *Western Tamil Nadu Hard Rock*: 135% extraction stage in low-storage crystalline gneiss.
+     - *Eastern Gangetic Plains*: Volumetrically Safe (46%) but severe geogenic arsenic contamination.
+8. **River Course Migration & Avulsion (NRSC / CWC)** (Teal `#14b8a6`):
+   - Subcontinental river migration and paleochannel tracking:
+     - *Kosi River Migration*: 120 km westward shift over 250 years, plus the historic 100 km eastward avulsion during the 18 August 2008 Kusaha breach.
+     - *Brahmaputra & Majuli Island*: Majuli Island contracted from ~750 sq km (1950) to ~380 sq km (-49.3%) due to braided bankline toe erosion.
+     - *Ganga at Malda & Murshidabad*: 3.5 km bankline displacement creating shifting char islands.
+     - *Vedic Saraswati Paleochannels*: Buried subterranean course verified by ISRO satellite sensors running through Haryana, Punjab, and Rajasthan into Kutch.
+     - *Teesta River 1787 Megaflood Avulsion*: Catastrophic 90 km nodal shift diverting the Teesta from the Ganga to the Brahmaputra (Jamuna).
+
+- **Year Comparison Tool Operation**:
+  - Click **Open Year Comparison Tool** from the sidebar or **Eco Change** in the top navigation bar.
+  - Select any of the 8 pillars using the theme selector tabs.
+  - Choose **Baseline Year (A)** (e.g. 2001) and **Comparison Year (B)** (e.g. 2021).
+  - Toggle **Show Change Rate (Δ Active)** to transform map styling into a color-coded severity spectrum (Severe Degradation in red, High Vulnerability in amber, Moderate in yellow, Stable/Recovery in emerald).
+  - Click any **Monitored Site** quick-fly pill (e.g. *Gangotri / Gaumukh*, *Bengaluru BBMP*, *Chilika Lagoon*, *Satabhaya*) to fly the 3D camera directly to the feature and open its complete environmental dossier.
+
+### 4.5 National Highways & Expressways (MoRTH / NHAI Corridors)
 Overlays 28 curated major national transport corridors classified into three visual tiers:
 - **Expressways (Tolled, Access-Controlled)** (Emerald Green `#10b981`): Delhi–Mumbai Expressway (NE-4), Samruddhi Mahamarg, Purvanchal Expressway, Yamuna Expressway, Agra–Lucknow Expressway, Bangalore–Mysore Expressway, Eastern Peripheral Expressway.
 - **National Highways (The Core NH Grid)** (Amber `#f59e0b`):

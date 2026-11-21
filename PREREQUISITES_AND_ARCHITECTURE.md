@@ -235,6 +235,8 @@ Local geospatial vector files (`public/data/*.geojson`) are ingested asynchronou
     - `census_demographics.json`: Census 2011 PCA + Table C-01 statistics.
 11. **Unified Search Index**:
     - `search_index.json`: Pre-indexed search tokens for instantaneous search.
+12. **Environmental Change & Multi-Decadal Year Comparison**:
+    - `environmental_change.geojson`: 42 verified multi-decadal monitoring features across 8 foundations (Forest Cover, Glacier Retreat, Urban Expansion, Coastal Erosion, Wetland Dynamics, Desertification, Groundwater Stress, and River Course Avulsion/Migration) paired with `src/data/environmentalChange.ts` and `src/components/EnvironmentalComparisonDeck.tsx`.
 
 ### Phase 5: Animated Hydrological Network & Trade Route Shaders
 To simulate moving water currents through river channels and merchant movements along trade corridors:
@@ -394,6 +396,10 @@ Every data layer in Bharat 3D strictly references verified sovereign baselines:
     - *Authority*: **Schwartzberg Historical Atlas of South Asia (University of Chicago)** & **ASI Archaeological Records**.
     - *Coverage*: 13 historical eras (Indus Valley to present day).
     - *Scholarly Note*: Explicitly classified as approximate territorial reconstructions.
+12. **Environmental Change, Cryosphere Monitoring & Multi-Decadal Dynamics**:
+    - *Authority*: **Forest Survey of India (FSI ISFR 2001–2021)**, **Space Applications Centre / ISRO (SAC Glacier & Desertification Atlases)**, **National Remote Sensing Centre (NRSC Decadal LULC 1991–2021)**, **National Centre for Coastal Research (NCCR-MoES Shoreline Change Atlas)**, **Central Ground Water Board (CGWB Dynamic GW Extraction 2004–2022)**, **Central Water Commission (CWC River Avulsion / Migration)**, and **Ramsar Convention Secretariat**.
+    - *Coverage*: 42 verified long-term monitoring sites across 8 foundations with baseline, comparison, and change rates ($\Delta$).
+    - *License*: Open Government Data (OGD) / ISRO VEDAS / Scientific Research Open Access.
 
 ---
 
@@ -429,6 +435,7 @@ INTERACTIVE INDIA 3D DATA/
     │       ├── archaeological_sites.geojson <- 18 ASI-verified monumental sites
     │       ├── historical_trade_routes.geojson <- 27 features across 7 foundations (routes, maritime, silk, spice, 10 ports, colonial, railways)
     │       ├── disaster_seismic_zones.geojson <- BIS 1893 seismic zones & M7+ epicenters
+    │       ├── environmental_change.geojson <- 42 features across 8 foundations (FSI, SAC-ISRO, CGWB, NCCR)
     │       ├── india_urban_nodes.geojson  <- Major urban city centers
     │       ├── elevation_high_points.json <- Precision summit coordinates & ft/in data
     │       ├── census_demographics.json   <- Census 2011 PCA + C-01 demographic data
@@ -440,7 +447,8 @@ INTERACTIVE INDIA 3D DATA/
         ├── types.ts                       <- TypeScript interfaces for all data models
         ├── config.ts                      <- Default coordinates, colors & layer presets
         ├── data/
-        │   └── historicalEras.ts          <- 13 Historical era metadata, rulers, and dates
+        │   ├── historicalEras.ts          <- 13 Historical era metadata, rulers, and dates
+        │   └── environmentalChange.ts     <- 8 Environmental change pillars, available years & metadata
         ├── utils/
         │   └── elevation.ts               <- Dual feet/inches & metric elevation converter
         └── components/
@@ -450,6 +458,7 @@ INTERACTIVE INDIA 3D DATA/
             ├── MapEngine.tsx              <- Core MapLibre GL 3D WebGL engine & canvas
             ├── InfoPanel.tsx              <- Right intelligence dossier & KPI dashboard
             ├── HistoricalTimeline.tsx     <- Docked bottom timeline scrubber & play controls
+            ├── EnvironmentalComparisonDeck.tsx <- Multi-decadal year comparison floating dock & delta toggles
             ├── StateComparisonModal.tsx   <- Side-by-side dual-state comparison studio
             ├── SourceModal.tsx            <- Official Provenance & Data Registry dialog
             └── LoadingScreen.tsx          <- Initializing cinematic splash screen

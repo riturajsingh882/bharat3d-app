@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Map, NavigationControl, ScaleControl, setWorkerUrl, type MapMouseEvent, type MapGeoJSONFeature } from 'maplibre-gl';
-import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory } from '../types';
+import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory, EnvironmentalPillar, EnvironmentalComparisonConfig } from '../types';
 import { APP_CONFIG } from '../config';
 import { formatElevationDual } from '../utils/elevation';
 
@@ -11,7 +11,10 @@ setWorkerUrl('/maplibre-gl-worker.mjs');
 const SEARCH_HIGHLIGHT_SOURCE: Record<string, { source: string; field: string } | undefined> = {
   historical_empire: { source: 'historical-empires', field: 'name' },
   historical_capital: { source: 'historical-empires', field: 'name' },
-  trade_route: { source: 'historical-trade-routes', field: 'name' }
+  trade_route: { source: 'historical-trade-routes', field: 'name' },
+  environmental_change: { source: 'environmental-change', field: 'name' },
+  glacier: { source: 'environmental-change', field: 'name' },
+  wetland: { source: 'environmental-change', field: 'name' }
 };
 
 function clearSearchHighlight(map: Map) {
@@ -165,6 +168,8 @@ interface MapEngineProps {
   isElevationHighlight: boolean;
   selectedHistoricalPeriod?: HistoricalPeriodId;
   tradeCategories?: Set<TradeCategory>;
+  environmentalPillars?: Set<EnvironmentalPillar>;
+  comparisonConfig?: EnvironmentalComparisonConfig;
 }
 
 export const MapEngine: React.FC<MapEngineProps> = ({
@@ -179,7 +184,9 @@ export const MapEngine: React.FC<MapEngineProps> = ({
   searchTarget,
   isElevationHighlight,
   selectedHistoricalPeriod = 'maurya',
-  tradeCategories
+  tradeCategories,
+  environmentalPillars,
+  comparisonConfig
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map | null>(null);
@@ -314,6 +321,41 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     setVis('trade-ports-labels', showPorts);
     setVis('trade-ports-hit-target', showPorts);
 
+
+    // 7.4 Environmental Change & Climate Explorer
+    const isEnvActive = activeLayers.has('environmental_change');
+    const hasAnyEnvPillar = !environmentalPillars || environmentalPillars.size > 0;
+    const effectiveEnvActive = isEnvActive && hasAnyEnvPillar;
+    const envPillarsArray = environmentalPillars ? Array.from(environmentalPillars) : [];
+    const envPillarCondition = envPillarsArray.length > 0
+      ? ['any', ...envPillarsArray.map(p => ['==', ['get', 'pillar'], p])]
+      : ['==', ['get', 'pillar'], 'none'];
+
+    const envPolyFilter = ['all', ['==', ['geometry-type'], 'Polygon'], envPillarCondition] as any;
+    const envLineFilter = ['all', ['==', ['geometry-type'], 'LineString'], envPillarCondition] as any;
+    const envPointFilter = ['all', ['==', ['geometry-type'], 'Point'], envPillarCondition] as any;
+
+    ['env-polygons-glow', 'env-polygons-fill', 'env-polygons-border', 'env-polygons-hit-target'].forEach(id => {
+      if (map.getLayer(id)) {
+        map.setFilter(id, envPolyFilter);
+        map.setLayoutProperty(id, 'visibility', effectiveEnvActive ? 'visible' : 'none');
+      }
+    });
+
+    ['env-lines-glow', 'env-lines-core', 'env-lines-flow', 'env-lines-labels', 'env-lines-hit-target'].forEach(id => {
+      if (map.getLayer(id)) {
+        map.setFilter(id, envLineFilter);
+        map.setLayoutProperty(id, 'visibility', effectiveEnvActive ? 'visible' : 'none');
+      }
+    });
+
+    ['env-points-halo', 'env-points-core', 'env-points-labels', 'env-points-hit-target'].forEach(id => {
+      if (map.getLayer(id)) {
+        map.setFilter(id, envPointFilter);
+        map.setLayoutProperty(id, 'visibility', effectiveEnvActive ? 'visible' : 'none');
+      }
+    });
+
     // 7.5 National Highways & Expressways
     const isRoadsActive = activeLayers.has('roads');
     setVis('roads-casing', isRoadsActive);
@@ -406,7 +448,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     } catch {
       // ignore
     }
-  }, [activeLayers, religionFilter, tradeCategories]);
+  }, [activeLayers, religionFilter, tradeCategories, environmentalPillars, comparisonConfig]);
 
   // Initialize Map
   useEffect(() => {
@@ -536,6 +578,12 @@ export const MapEngine: React.FC<MapEngineProps> = ({
       map.addSource('historical-trade-routes', {
         type: 'geojson',
         data: '/data/historical_trade_routes.geojson'
+      });
+
+
+      map.addSource('environmental-change', {
+        type: 'geojson',
+        data: '/data/environmental_change.geojson'
       });
 
       map.addSource('india-highways', {
@@ -1281,6 +1329,266 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         }
       });
 
+
+      // ========================================================
+      // 3.4 ENVIRONMENTAL CHANGE & CLIMATE EXPLORER LAYERS
+      // ========================================================
+
+      // Dynamic color expression based on delta vs normal thematic mode
+      const envColorExpr: any = [
+        'match',
+        ['get', 'pillar'],
+        'forest_change', '#10b981',
+        'glacier_retreat', '#06b6d4',
+        'urban_expansion', '#f97316',
+        'coastal_erosion', '#ef4444',
+        'wetland_change', '#3b82f6',
+        'desertification', '#eab308',
+        'groundwater_stress', '#a855f7',
+        'river_avulsion', '#14b8a6',
+        '#10b981'
+      ];
+
+      // Polygons (Forests, Urban Sprawl, Wetlands, Desertification, Groundwater)
+      map.addLayer({
+        id: 'env-polygons-glow',
+        type: 'line',
+        source: 'environmental-change',
+        filter: ['==', ['geometry-type'], 'Polygon'],
+        layout: {
+          visibility: activeLayers.has('environmental_change') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': envColorExpr,
+          'line-width': 5,
+          'line-opacity': 0.5,
+          'line-blur': 3
+        }
+      });
+
+      map.addLayer({
+        id: 'env-polygons-fill',
+        type: 'fill',
+        source: 'environmental-change',
+        filter: ['==', ['geometry-type'], 'Polygon'],
+        layout: {
+          visibility: activeLayers.has('environmental_change') ? 'visible' : 'none'
+        },
+        paint: {
+          'fill-color': envColorExpr,
+          'fill-opacity': 0.40
+        }
+      });
+
+      map.addLayer({
+        id: 'env-polygons-border',
+        type: 'line',
+        source: 'environmental-change',
+        filter: ['==', ['geometry-type'], 'Polygon'],
+        layout: {
+          visibility: activeLayers.has('environmental_change') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': envColorExpr,
+          'line-width': 2.0,
+          'line-opacity': 0.95
+        }
+      });
+
+      map.addLayer({
+        id: 'env-polygons-hit-target',
+        type: 'fill',
+        source: 'environmental-change',
+        filter: ['==', ['geometry-type'], 'Polygon'],
+        layout: {
+          visibility: activeLayers.has('environmental_change') ? 'visible' : 'none'
+        },
+        paint: {
+          'fill-color': '#000000',
+          'fill-opacity': 0.001
+        }
+      });
+
+      // Lines (Shorelines, River Avulsion Channels)
+      map.addLayer({
+        id: 'env-lines-glow',
+        type: 'line',
+        source: 'environmental-change',
+        filter: ['==', ['geometry-type'], 'LineString'],
+        layout: {
+          visibility: activeLayers.has('environmental_change') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': envColorExpr,
+          'line-width': 7,
+          'line-opacity': 0.45,
+          'line-blur': 4
+        }
+      });
+
+      map.addLayer({
+        id: 'env-lines-core',
+        type: 'line',
+        source: 'environmental-change',
+        filter: ['==', ['geometry-type'], 'LineString'],
+        layout: {
+          visibility: activeLayers.has('environmental_change') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': envColorExpr,
+          'line-width': 3.5,
+          'line-opacity': 0.95
+        }
+      });
+
+      map.addLayer({
+        id: 'env-lines-flow',
+        type: 'line',
+        source: 'environmental-change',
+        filter: ['==', ['geometry-type'], 'LineString'],
+        layout: {
+          visibility: activeLayers.has('environmental_change') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#ffffff',
+          'line-width': 1.6,
+          'line-dasharray': [2, 4],
+          'line-opacity': 0.85
+        }
+      });
+
+      map.addLayer({
+        id: 'env-lines-labels',
+        type: 'symbol',
+        source: 'environmental-change',
+        filter: ['==', ['geometry-type'], 'LineString'],
+        layout: {
+          'symbol-placement': 'line',
+          'text-field': ['get', 'name'],
+          'text-size': 11,
+          'text-letter-spacing': 0.08,
+          'text-allow-overlap': false,
+          visibility: activeLayers.has('environmental_change') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#f8fafc',
+          'text-halo-color': '#020617',
+          'text-halo-width': 2
+        }
+      });
+
+      // 32px Wide Line Hit Target for 1-Tap Mobile Touch
+      map.addLayer({
+        id: 'env-lines-hit-target',
+        type: 'line',
+        source: 'environmental-change',
+        filter: ['==', ['geometry-type'], 'LineString'],
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+          visibility: activeLayers.has('environmental_change') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#000000',
+          'line-width': 32,
+          'line-opacity': 0.001
+        }
+      });
+
+      // Points (Glacier snouts, Urban centroids, Hotspot spots)
+      map.addLayer({
+        id: 'env-points-halo',
+        type: 'circle',
+        source: 'environmental-change',
+        filter: ['==', ['geometry-type'], 'Point'],
+        layout: {
+          visibility: activeLayers.has('environmental_change') ? 'visible' : 'none'
+        },
+        paint: {
+          'circle-radius': 13,
+          'circle-color': 'rgba(16, 185, 129, 0.22)',
+          'circle-stroke-color': envColorExpr,
+          'circle-stroke-width': 1.5
+        }
+      });
+
+      map.addLayer({
+        id: 'env-points-core',
+        type: 'circle',
+        source: 'environmental-change',
+        filter: ['==', ['geometry-type'], 'Point'],
+        layout: {
+          visibility: activeLayers.has('environmental_change') ? 'visible' : 'none'
+        },
+        paint: {
+          'circle-radius': 6.5,
+          'circle-color': envColorExpr,
+          'circle-stroke-color': '#ffffff',
+          'circle-stroke-width': 2.0
+        }
+      });
+
+      map.addLayer({
+        id: 'env-points-labels',
+        type: 'symbol',
+        source: 'environmental-change',
+        filter: ['==', ['geometry-type'], 'Point'],
+        layout: {
+          'text-field': ['get', 'name'],
+          'text-size': 11.5,
+          'text-offset': [0, 1.4],
+          'text-anchor': 'top',
+          'text-allow-overlap': false,
+          visibility: activeLayers.has('environmental_change') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#f8fafc',
+          'text-halo-color': '#020617',
+          'text-halo-width': 2.5
+        }
+      });
+
+      // 32px Radius Circle Hit Target for 1-Tap Mobile Touch
+      map.addLayer({
+        id: 'env-points-hit-target',
+        type: 'circle',
+        source: 'environmental-change',
+        filter: ['==', ['geometry-type'], 'Point'],
+        layout: {
+          visibility: activeLayers.has('environmental_change') ? 'visible' : 'none'
+        },
+        paint: {
+          'circle-radius': 32,
+          'circle-opacity': 0.001
+        }
+      });
+
+      // Highlight Layers for Selected Environmental Feature
+      map.addLayer({
+        id: 'env-highlight-line',
+        type: 'line',
+        source: 'environmental-change',
+        filter: ['==', 'id', ''],
+        paint: {
+          'line-color': '#fbbf24',
+          'line-width': 5.5,
+          'line-opacity': 1.0
+        }
+      });
+
+      map.addLayer({
+        id: 'env-highlight-point',
+        type: 'circle',
+        source: 'environmental-change',
+        filter: ['==', 'id', ''],
+        paint: {
+          'circle-radius': 14,
+          'circle-color': 'rgba(251, 191, 36, 0.35)',
+          'circle-stroke-color': '#fbbf24',
+          'circle-stroke-width': 3.0
+        }
+      });
+
       // ========================================================
       // 3.5 NATIONAL HIGHWAYS, EXPRESSWAYS & ROAD CORRIDORS
       // ========================================================
@@ -1787,6 +2095,12 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             'elevation-natural-summit',
             'elevation-natural-spot-core',
             'urban-nodes-halo',
+            'env-points-hit-target',
+            'env-points-core',
+            'env-lines-hit-target',
+            'env-lines-core',
+            'env-polygons-hit-target',
+            'env-polygons-fill',
             'rivers-hit-target',
             'rivers-core',
             'mountains-hit-target',
@@ -1840,6 +2154,13 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             metricLabel = 'Route Length';
             metricValue = props.length_km ? `${props.length_km.toLocaleString()} km` : (props.corridor || 'Road Corridor');
             source = props.source || 'MoRTH / NHAI';
+          } else if (topFeat.layer.id.startsWith('env-')) {
+            featType = 'ENVIRONMENTAL CHANGE';
+            title = props.name || 'Environmental Hotspot';
+            subtitle = `${props.category_name || 'Climate Change'} • ${props.region || ''}`;
+            metricLabel = 'Assessment Delta';
+            metricValue = props.delta_text || props.comparison_text || 'Multi-Decadal Shift';
+            source = props.source_authority || 'Forest Survey of India / ISRO-SAC';
           } else if (topFeat.layer.id.startsWith('earthquake-epicenter-')) {
             featType = 'HISTORICAL EARTHQUAKE';
             title = `${props.year} ${props.name}`;
@@ -1993,11 +2314,17 @@ export const MapEngine: React.FC<MapEngineProps> = ({
           'archaeology-glow',
           'earthquake-epicenter-core',
           'elevation-natural-summit',
-          'elevation-natural-spot-core'
+          'elevation-natural-spot-core',
+          'env-points-hit-target',
+          'env-points-core',
+          'env-lines-hit-target',
+          'env-lines-core',
+          'env-polygons-hit-target'
         ].filter(id => Boolean(map.getLayer(id)));
 
-        // 2. Low priority background polygon layers (districts, states, soils, empires, seismic zones)
+        // 2. Low priority background polygon layers (districts, states, soils, empires, seismic zones, env polygons)
         const polygonLayers = [
+          'env-polygons-fill',
           'seismic-zones-fill',
           'empires-fill',
           'soils-fill',
@@ -2031,6 +2358,8 @@ export const MapEngine: React.FC<MapEngineProps> = ({
           if (map.getLayer('rivers-highlight')) map.setFilter('rivers-highlight', ['==', 'clean_name', '']);
           if (map.getLayer('mountains-highlight')) map.setFilter('mountains-highlight', ['==', 'name', '']);
           if (map.getLayer('roads-highlight')) map.setFilter('roads-highlight', ['==', 'code', '']);
+          if (map.getLayer('env-highlight-line')) map.setFilter('env-highlight-line', ['==', 'id', '']);
+          if (map.getLayer('env-highlight-point')) map.setFilter('env-highlight-point', ['==', 'id', '']);
           const searchHighlightSrc = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
           if (searchHighlightSrc) searchHighlightSrc.setData({ type: 'FeatureCollection', features: [] });
         };
@@ -2060,6 +2389,14 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             }
           } else if (topFeat.layer.id.startsWith('trade-')) {
             featType = 'trade_route';
+          } else if (topFeat.layer.id.startsWith('env-')) {
+            featType = 'environmental_change';
+            if (map.getLayer('env-highlight-line') && topFeat.geometry && topFeat.geometry.type && topFeat.geometry.type.includes('Line')) {
+              map.setFilter('env-highlight-line', ['==', 'id', props.id || '']);
+            }
+            if (map.getLayer('env-highlight-point') && topFeat.geometry && topFeat.geometry.type && topFeat.geometry.type.includes('Point')) {
+              map.setFilter('env-highlight-point', ['==', 'id', props.id || '']);
+            }
           } else if (topFeat.layer.id.startsWith('archaeology-')) {
             featType = 'archaeological_site';
           } else if (topFeat.layer.id.startsWith('earthquake-epicenter-')) {

@@ -52,7 +52,8 @@ export type ActiveLayer =
   | 'archaeological_sites'
   | 'trade_routes'
   | 'roads'
-  | 'disaster_seismic';
+  | 'disaster_seismic'
+  | 'environmental_change';
 
 export type HistoricalPeriodId =
   | 'indus_valley'
@@ -97,6 +98,23 @@ export type TradeCategory =
   | 'colonial_network'
   | 'historical_railway';
 
+export type EnvironmentalPillar = 
+  | 'forest_change'
+  | 'glacier_retreat'
+  | 'urban_expansion'
+  | 'coastal_erosion'
+  | 'wetland_change'
+  | 'desertification'
+  | 'groundwater_stress'
+  | 'river_avulsion';
+
+export interface EnvironmentalComparisonConfig {
+  pillar: EnvironmentalPillar;
+  yearA: string;
+  yearB: string;
+  isDeltaMode: boolean;
+}
+
 export type BasemapStyle = 'dark' | 'satellite' | 'osm' | 'geoapify' | 'physical_tactile';
 
 export interface CameraPreset {
@@ -134,7 +152,8 @@ export interface SelectedFeatureInfo {
     | 'trade_route' 
     | 'highway'
     | 'seismic_zone' 
-    | 'earthquake_epicenter';
+    | 'earthquake_epicenter'
+    | 'environmental_change';
   name: string;
   state?: string;
   district?: string;

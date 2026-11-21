@@ -72,21 +72,28 @@ export function App() {
 
   // Trade & Connectivity Sub-categories State
   const [tradeCategories, setTradeCategories] = useState<Set<TradeCategory>>(
-    new Set(ALL_TRADE_CATEGORIES)
+    new Set()
   );
 
   const toggleTradeCategory = (cat: TradeCategory) => {
-    setTradeCategories(prev => {
-      const next = new Set(prev);
-      if (next.has(cat)) {
-        next.delete(cat);
-      } else {
-        next.add(cat);
+    const isTradeActive = activeLayers.has('trade_routes');
+    // If trade_routes is active and this category is already the only one active, toggle it off
+    if (isTradeActive && tradeCategories.size === 1 && tradeCategories.has(cat)) {
+      setTradeCategories(new Set());
+      setActiveLayers(prev => {
+        const next = new Set(prev);
+        next.delete('trade_routes');
+        return next;
+      });
+      if (selectedFeature?.type === 'trade_route') {
+        setSelectedFeature(null);
       }
-      return next;
-    });
-    if (!activeLayers.has('trade_routes')) {
-      setActiveLayers(prev => new Set(prev).add('trade_routes'));
+    } else {
+      // Set ONLY this category active, with no other category turned on
+      setTradeCategories(new Set([cat]));
+      if (!isTradeActive) {
+        setActiveLayers(prev => new Set(prev).add('trade_routes'));
+      }
     }
   };
 
@@ -99,6 +106,14 @@ export function App() {
 
   const clearTradeCategories = () => {
     setTradeCategories(new Set());
+    setActiveLayers(prev => {
+      const next = new Set(prev);
+      next.delete('trade_routes');
+      return next;
+    });
+    if (selectedFeature?.type === 'trade_route') {
+      setSelectedFeature(null);
+    }
   };
 
 
@@ -367,6 +382,23 @@ export function App() {
         return next;
       }
 
+      // If user clicked Trade Routes
+      if (layer === 'trade_routes') {
+        if (next.has('trade_routes')) {
+          if (tradeCategories.size === ALL_TRADE_CATEGORIES.length) {
+            next.delete('trade_routes');
+            setTradeCategories(new Set());
+            if (selectedFeature?.type === 'trade_route') setSelectedFeature(null);
+          } else {
+            setTradeCategories(new Set(ALL_TRADE_CATEGORIES));
+          }
+        } else {
+          next.add('trade_routes');
+          setTradeCategories(new Set(ALL_TRADE_CATEGORIES));
+        }
+        return next;
+      }
+
       // Independent overlay layers
       if (next.has(layer)) {
         next.delete(layer);
@@ -382,7 +414,7 @@ export function App() {
 
   const handleResetLayers = () => {
     setActiveLayers(new Set<ActiveLayer>());
-    setTradeCategories(new Set(ALL_TRADE_CATEGORIES));
+    setTradeCategories(new Set());
     setSelectedHistoricalPeriod('maurya');
     setIsTimelineOpen(false);
     setSelectedFeature(null);
@@ -462,14 +494,6 @@ export function App() {
         onResetView={handleResetView}
         onOpenSourceModal={() => setIsSourceModalOpen(true)}
         onOpenComparison={() => setIsComparisonModalOpen(true)}
-        onOpenEcoComparison={() => {
-          if (isEcoComparisonOpen) {
-            setIsEcoComparisonOpen(false);
-          } else {
-            openEcoComparison();
-          }
-        }}
-        isEcoComparisonOpen={isEcoComparisonOpen}
         selectedFeature={selectedFeature}
         isElevationHighlight={isElevationHighlight}
         setIsElevationHighlight={setIsElevationHighlight}

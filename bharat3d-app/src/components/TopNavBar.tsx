@@ -8,8 +8,7 @@ import {
   Eye,
   Camera,
   Mountain,
-  Scale,
-  Leaf
+  Scale
 } from 'lucide-react';
 import type { BasemapStyle, CameraPreset, SearchTarget, SelectedFeatureInfo } from '../types';
 import { BharatLogo } from './BharatLogo';
@@ -90,8 +89,6 @@ interface TopNavBarProps {
   onResetView: () => void;
   onOpenSourceModal: () => void;
   onOpenComparison: () => void;
-  onOpenEcoComparison?: () => void;
-  isEcoComparisonOpen?: boolean;
   selectedFeature: SelectedFeatureInfo | null;
   isElevationHighlight: boolean;
   setIsElevationHighlight: (val: boolean) => void;
@@ -108,8 +105,6 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
   onResetView,
   onOpenSourceModal,
   onOpenComparison,
-  onOpenEcoComparison,
-  isEcoComparisonOpen = false,
   selectedFeature,
   isElevationHighlight,
   setIsElevationHighlight,
@@ -476,26 +471,6 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
         >
           <Scale className="w-4 h-4 text-[#C9A227]" />
           <span className="hidden lg:inline">Compare</span>
-        </button>
-
-
-        {/* Environmental Change & Climate Explorer Launcher */}
-        <button
-          onClick={() => {
-            setShowPresetMenu(false);
-            setShowBasemapMenu(false);
-            setShowSlider(false);
-            onOpenEcoComparison?.();
-          }}
-          className={`px-3 py-1.5 rounded-lg text-sm font-sans font-semibold flex items-center gap-1.5 transition-all border cursor-pointer ${
-            isEcoComparisonOpen 
-              ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/50 shadow-[0_0_12px_rgba(16,185,129,0.3)]'
-              : 'bg-[#10141a] text-neutral-200 border-white/10 hover:border-emerald-500/60 hover:text-white'
-          }`}
-          title="Open Environmental Change & Climate Explorer Year Comparison Tool"
-        >
-          <Leaf className="w-4 h-4 text-emerald-400" />
-          <span className="hidden lg:inline">Eco Change</span>
         </button>
 
         {/* Fine-Art Tactile 3D Elevation & Relief Button */}

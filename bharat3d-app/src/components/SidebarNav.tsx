@@ -295,18 +295,18 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <span className={`w-2.5 h-2.5 rounded-full ${activeLayers.has('trade_routes') ? 'bg-sky-400 shadow-[0_0_8px_#38bdf8]' : 'bg-neutral-600'}`} />
+                    <span className={`w-2.5 h-2.5 rounded-full ${activeLayers.has('trade_routes') && tradeCategories.size === 7 ? 'bg-sky-400 shadow-[0_0_8px_#38bdf8]' : activeLayers.has('trade_routes') ? 'bg-sky-400/70' : 'bg-neutral-600'}`} />
                     <span>All Trade &amp; Connectivity</span>
                   </div>
                   <span className="text-[11px] px-2 py-0.5 rounded bg-sky-950/80 text-sky-300 border border-sky-500/40 font-bold">
-                    27 Features
+                    {activeLayers.has('trade_routes') && tradeCategories.size < 7 ? `${tradeCategories.size} Active` : '27 Features'}
                   </span>
                 </button>
 
                 {/* Quick actions */}
                 <div className="flex items-center justify-between px-1 text-[11px] font-mono">
                   <span className="text-neutral-400 font-bold">
-                    Active Pillars: <span className="text-sky-300">{tradeCategories.size}/7</span>
+                    Active Pillars: <span className="text-sky-300">{activeLayers.has('trade_routes') ? tradeCategories.size : 0}/7</span>
                   </span>
                   <div className="flex gap-2">
                     <button

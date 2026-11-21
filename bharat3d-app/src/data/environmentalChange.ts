@@ -158,3 +158,62 @@ export const ALL_ENVIRONMENTAL_PILLARS: EnvironmentalPillar[] = [
   'groundwater_stress',
   'river_avulsion'
 ];
+
+export interface ObservationDateMeta {
+  year: string;
+  month: string;
+  monthIndex: number; // 0-11
+  day: number;
+  label: string;
+  season: string;
+  sensor: string;
+  cycleName: string;
+}
+
+export const PILLAR_OBSERVATION_DATES: Record<EnvironmentalPillar, Record<string, ObservationDateMeta>> = {
+  forest_change: {
+    '2001': { year: '2001', month: 'October', monthIndex: 9, day: 15, label: 'Oct 2001', season: 'Post-Monsoon', sensor: 'IRS-1C LISS-III', cycleName: 'ISFR 2001 Biennial Assessment' },
+    '2011': { year: '2011', month: 'November', monthIndex: 10, day: 18, label: 'Nov 2011', season: 'Post-Monsoon', sensor: 'IRS-P6 ResourceSat-1', cycleName: 'ISFR 2011 Decadal Baseline' },
+    '2021': { year: '2021', month: 'December', monthIndex: 11, day: 22, label: 'Dec 2021', season: 'Winter Canopy', sensor: 'ResourceSat-2A LISS-III', cycleName: 'ISFR 2021 Modern Benchmark' }
+  },
+  glacier_retreat: {
+    '1965': { year: '1965', month: 'March', monthIndex: 2, day: 12, label: 'Mar 1965', season: 'Pre-Melt Baseline', sensor: 'Corona KH-4 Satellite', cycleName: 'Corona Satellite Historical Snout Datum' },
+    '1990': { year: '1990', month: 'October', monthIndex: 9, day: 24, label: 'Oct 1990', season: 'Post-Monsoon', sensor: 'Landsat-5 TM', cycleName: 'Landsat TM Multispectral Terminus' },
+    '2000': { year: '2000', month: 'June', monthIndex: 5, day: 15, label: 'Jun 2000', season: 'Early Summer', sensor: 'NASA SRTM & ETM+', cycleName: 'Millennium Digital Elevation Datum' },
+    '2022': { year: '2022', month: 'November', monthIndex: 10, day: 10, label: 'Nov 2022', season: 'Autumn Clear', sensor: 'Sentinel-2A & Cartosat-3', cycleName: 'SAC-ISRO Contemporary Cryosphere Release' }
+  },
+  urban_expansion: {
+    '1991': { year: '1991', month: 'March', monthIndex: 2, day: 1, label: 'Mar 1991', season: 'Spring Census', sensor: 'Landsat-5 & Survey of India', cycleName: 'Decadal Census 1991 Urban Footprint' },
+    '2001': { year: '2001', month: 'March', monthIndex: 2, day: 1, label: 'Mar 2001', season: 'Spring Census', sensor: 'IRS-1C LISS-III', cycleName: 'Decadal Census 2001 Metros' },
+    '2011': { year: '2011', month: 'March', monthIndex: 2, day: 1, label: 'Mar 2011', season: 'Spring Census', sensor: 'Cartosat-1 / LISS-IV', cycleName: 'Decadal Census 2011 LULC Footprint' },
+    '2021': { year: '2021', month: 'November', monthIndex: 10, day: 15, label: 'Nov 2021', season: 'Post-Monsoon', sensor: 'NRSC Decadal Bhuvan LULC', cycleName: 'NRSC Decadal Megacity Expansion' }
+  },
+  coastal_erosion: {
+    '1990': { year: '1990', month: 'January', monthIndex: 0, day: 15, label: 'Jan 1990', season: 'Winter Littoral', sensor: 'Survey of India HWL Baseline', cycleName: 'National Shoreline Baseline (MoES)' },
+    '2006': { year: '2006', month: 'May', monthIndex: 4, day: 20, label: 'May 2006', season: 'Post-Tsunami', sensor: 'IRS-P6 AWiFS & LISS-IV', cycleName: 'Post-2004 Tsunami Coastline Survey' },
+    '2018': { year: '2018', month: 'June', monthIndex: 5, day: 10, label: 'Jun 2018', season: 'Pre-Monsoon', sensor: 'NCCR-MoES Shoreline Change Atlas', cycleName: 'NCCR National Shoreline Assessment' },
+    '2022': { year: '2022', month: 'December', monthIndex: 11, day: 30, label: 'Dec 2022', season: 'Winter Littoral', sensor: 'Sentinel-2 & High-Res DGPS', cycleName: 'Contemporary Littoral Displacement' }
+  },
+  wetland_change: {
+    '1990': { year: '1990', month: 'February', monthIndex: 1, day: 2, label: 'Feb 1990', season: 'World Wetlands Day', sensor: 'Landsat-5 Pre-Ramsar', cycleName: 'National Pre-Ramsar Baseline' },
+    '2006': { year: '2006', month: 'October', monthIndex: 9, day: 15, label: 'Oct 2006', season: 'Post-Monsoon Open Water', sensor: 'IRS LISS-III Wetland Atlas', cycleName: 'SAC National Wetland Atlas Cycle 1' },
+    '2020': { year: '2020', month: 'February', monthIndex: 1, day: 18, label: 'Feb 2020', season: 'Winter Waterfowl', sensor: 'Sentinel-2 & SAC VEDAS', cycleName: 'Ramsar Conservation Modern Survey' }
+  },
+  desertification: {
+    '2003': { year: '2003', month: 'May', monthIndex: 4, day: 25, label: 'May 2003', season: 'Pre-Monsoon Arid', sensor: 'IRS AWiFS Satellite', cycleName: 'SAC Desertification Atlas Cycle 1' },
+    '2011': { year: '2011', month: 'May', monthIndex: 4, day: 28, label: 'May 2011', season: 'Summer Peak', sensor: 'ResourceSat-1 AWiFS', cycleName: 'SAC Desertification Atlas Cycle 2' },
+    '2018': { year: '2018', month: 'June', monthIndex: 5, day: 12, label: 'Jun 2018', season: 'Pre-Monsoon Arid', sensor: 'ResourceSat-2 AWiFS & CAZRI', cycleName: 'SAC Desertification Atlas Cycle 3' }
+  },
+  groundwater_stress: {
+    '2004': { year: '2004', month: 'March', monthIndex: 2, day: 31, label: 'Mar 2004', season: 'Pre-Monsoon Hydro', sensor: 'CGWB National Well Network', cycleName: 'National Dynamic GW Assessment 2004' },
+    '2011': { year: '2011', month: 'March', monthIndex: 2, day: 31, label: 'Mar 2011', season: 'Pre-Monsoon Hydro', sensor: 'CGWB Assessment Block Matrix', cycleName: 'National Dynamic GW Assessment 2011' },
+    '2017': { year: '2017', month: 'March', monthIndex: 2, day: 31, label: 'Mar 2017', season: 'Pre-Monsoon Hydro', sensor: 'CGWB & State GW Depts', cycleName: 'National Dynamic GW Assessment 2017' },
+    '2022': { year: '2022', month: 'October', monthIndex: 9, day: 31, label: 'Oct 2022', season: 'Post-Monsoon Infiltration', sensor: 'INGRES Digital Assessment Platform', cycleName: 'CGWB INGRES Sovereign Benchmark' }
+  },
+  river_avulsion: {
+    '1780': { year: '1780', month: 'January', monthIndex: 0, day: 1, label: 'Jan 1780', season: 'Historical Winter', sensor: 'Major James Rennell Bengal Atlas', cycleName: 'Pre-Avulsion Historical Fluvial Course' },
+    '1950': { year: '1950', month: 'August', monthIndex: 7, day: 15, label: 'Aug 1950', season: 'Monsoon Flood', sensor: 'Survey of India 1-Inch Toposheets', cycleName: 'Pre-1950 Earthquake Channel Datum' },
+    '2008': { year: '2008', month: 'August', monthIndex: 7, day: 18, label: 'Aug 2008', season: 'Kusaha Breach', sensor: 'MODIS & IRS LISS-IV Disaster Rapid', cycleName: 'Kosi 100km Avulsion Breach Datum' },
+    '2022': { year: '2022', month: 'October', monthIndex: 9, day: 10, label: 'Oct 2022', season: 'Post-Monsoon', sensor: 'Sentinel-2 & CWC Fluvial Records', cycleName: 'Contemporary Braided River Geometry' }
+  }
+};

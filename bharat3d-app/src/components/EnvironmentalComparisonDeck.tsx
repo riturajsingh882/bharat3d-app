@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   TreePine, 
   Mountain, 
@@ -11,15 +11,25 @@ import {
   X, 
   ChevronUp, 
   ChevronDown, 
-  Calendar, 
+  Calendar as CalendarIcon, 
   Activity, 
   ShieldCheck, 
-  Layers, 
   ArrowRight,
-  MapPin
+  MapPin,
+  Minimize2,
+  Maximize2,
+  CheckCircle2,
+  Clock,
+  Satellite,
+  Info
 } from 'lucide-react';
 import type { EnvironmentalPillar, EnvironmentalComparisonConfig } from '../types';
-import { ENVIRONMENTAL_PILLARS, ALL_ENVIRONMENTAL_PILLARS } from '../data/environmentalChange';
+import { 
+  ENVIRONMENTAL_PILLARS, 
+  ALL_ENVIRONMENTAL_PILLARS,
+  PILLAR_OBSERVATION_DATES,
+  type ObservationDateMeta
+} from '../data/environmentalChange';
 
 interface MonitoredHotspot {
   name: string;
@@ -81,6 +91,181 @@ const PILLAR_HOTSPOTS: Record<EnvironmentalPillar, MonitoredHotspot[]> = {
   ]
 };
 
+interface CalendarPickerPopoverProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  pillar: EnvironmentalPillar;
+  selectedYear: string;
+  availableYears: string[];
+  onSelectYear: (year: string) => void;
+  accentColor: 'amber' | 'emerald';
+}
+
+// Snappy, interactive calendar date selector popover
+const CalendarPickerPopover: React.FC<CalendarPickerPopoverProps> = ({
+  isOpen,
+  onClose,
+  title,
+  pillar,
+  selectedYear,
+  availableYears,
+  onSelectYear,
+  accentColor
+}) => {
+  const popoverRef = useRef<HTMLDivElement>(null);
+  const datesRecord = PILLAR_OBSERVATION_DATES[pillar] || {};
+  const activeDateMeta: ObservationDateMeta | undefined = datesRecord[selectedYear];
+
+  // Close when clicking outside
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (popoverRef.current && !popoverRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    };
+    window.addEventListener('mousedown', handleOutsideClick);
+    return () => window.removeEventListener('mousedown', handleOutsideClick);
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  const isAmber = accentColor === 'amber';
+  const borderCol = isAmber ? 'border-amber-500/50' : 'border-emerald-500/50';
+  const glowCol = isAmber ? 'shadow-amber-950/60' : 'shadow-emerald-950/60';
+  const textCol = isAmber ? 'text-amber-300' : 'text-emerald-300';
+  const badgeBg = isAmber ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40';
+
+  // Days array for the calendar month grid simulation
+  const daysInMonth = 31;
+  const targetDay = activeDateMeta?.day || 15;
+
+  return (
+    <div 
+      ref={popoverRef}
+      className={`absolute bottom-[calc(100%+10px)] left-1/2 -translate-x-1/2 z-50 w-[310px] sm:w-[340px] bg-[#0a1217]/98 backdrop-blur-2xl border ${borderCol} rounded-2xl shadow-2xl ${glowCol} p-3.5 font-sans animate-calendar-pop pointer-events-auto`}
+    >
+      {/* Popover Header */}
+      <div className="flex items-center justify-between border-b border-white/10 pb-2.5 mb-3">
+        <div className="flex items-center gap-2">
+          <div className={`p-1.5 rounded-lg ${badgeBg} border`}>
+            <CalendarIcon className="w-3.5 h-3.5" />
+          </div>
+          <div>
+            <div className="text-[11px] font-mono font-bold uppercase tracking-wider text-white">
+              {title}
+            </div>
+            <div className="text-[10px] text-neutral-400 font-mono">
+              Sovereign Remote Sensing Cycle
+            </div>
+          </div>
+        </div>
+        <button
+          onClick={onClose}
+          className="p-1 text-neutral-400 hover:text-white hover:bg-white/10 rounded-md transition-colors cursor-pointer"
+        >
+          <X className="w-3.5 h-3.5" />
+        </button>
+      </div>
+
+      {/* Selected Date Spotlight Display */}
+      {activeDateMeta && (
+        <div className="bg-[#121c22]/90 border border-white/10 rounded-xl p-2.5 mb-3 flex items-center justify-between">
+          <div>
+            <div className="text-[10px] font-mono uppercase tracking-wider text-neutral-400">
+              Selected Observation Date
+            </div>
+            <div className={`text-sm font-serif font-bold ${textCol} tracking-wide mt-0.5`}>
+              {activeDateMeta.day} {activeDateMeta.month} {activeDateMeta.year}
+            </div>
+            <div className="text-[10px] text-neutral-300 font-mono flex items-center gap-1.5 mt-0.5">
+              <Satellite className="w-3 h-3 text-sky-400" />
+              <span>{activeDateMeta.sensor}</span>
+            </div>
+          </div>
+          <div className="text-right">
+            <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${badgeBg} font-bold`}>
+              {activeDateMeta.season}
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* Available Sovereign Assessment Years Selector */}
+      <div className="space-y-1.5 mb-3">
+        <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1">
+          <Clock className="w-3 h-3 text-emerald-400" />
+          <span>Available Assessment Benchmarks:</span>
+        </div>
+        <div className="grid grid-cols-2 gap-1.5">
+          {availableYears.map(yr => {
+            const isSelected = selectedYear === yr;
+            const meta = datesRecord[yr];
+            return (
+              <button
+                key={yr}
+                onClick={() => {
+                  onSelectYear(yr);
+                  onClose();
+                }}
+                className={`p-2 rounded-xl text-left border transition-all cursor-pointer flex flex-col justify-between ${
+                  isSelected
+                    ? `${badgeBg} shadow-md scale-[1.02]`
+                    : 'bg-[#121b21]/60 border-white/5 text-neutral-300 hover:bg-white/10 hover:text-white'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-mono font-bold text-xs">{yr}</span>
+                  {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />}
+                </div>
+                <div className="text-[10px] text-neutral-400 font-sans truncate mt-0.5">
+                  {meta ? meta.label : `${yr} Assessment`}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Mini Calendar Monthly Days Grid Visualizer */}
+      <div className="bg-[#080d11] border border-white/5 rounded-xl p-2 mb-2">
+        <div className="text-[9px] font-mono text-neutral-400 uppercase tracking-wider mb-1 flex items-center justify-between">
+          <span>{activeDateMeta?.month || 'Survey'} {activeDateMeta?.year || selectedYear}</span>
+          <span className="text-[9px] text-emerald-400">Sovereign Capture</span>
+        </div>
+        <div className="grid grid-cols-7 gap-1 text-center text-[9px] font-mono">
+          {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d, i) => (
+            <span key={i} className="text-neutral-500 font-bold">{d}</span>
+          ))}
+          {Array.from({ length: daysInMonth }).map((_, i) => {
+            const dayNum = i + 1;
+            const isTarget = dayNum === targetDay;
+            return (
+              <div
+                key={dayNum}
+                className={`h-5 w-full flex items-center justify-center rounded text-[9px] ${
+                  isTarget
+                    ? `${isAmber ? 'bg-amber-500 text-black font-extrabold shadow-sm' : 'bg-emerald-500 text-black font-extrabold shadow-sm animate-pulse'}`
+                    : 'text-neutral-400 hover:text-white'
+                }`}
+              >
+                {dayNum}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Live Map Sync Confirmation */}
+      <div className="text-[10px] text-emerald-400/90 font-mono text-center flex items-center justify-center gap-1.5 pt-1">
+        <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+        <span>Updates 3D map &amp; metrics in real time</span>
+      </div>
+    </div>
+  );
+};
+
 interface EnvironmentalComparisonDeckProps {
   isOpen: boolean;
   onClose: () => void;
@@ -102,240 +287,329 @@ export const EnvironmentalComparisonDeck: React.FC<EnvironmentalComparisonDeckPr
   onFlyToCoordinates,
   onSelectHotspot
 }) => {
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  // State for ultra-compact minimized pill bar vs floating deck
+  const [isMinimized, setIsMinimized] = useState<boolean>(false);
+  // State for toggling full sovereign assessment findings disclosure
+  const [showFindings, setShowFindings] = useState<boolean>(false);
+  // Calendar popover states
+  const [isCalendarAOpen, setIsCalendarAOpen] = useState<boolean>(false);
+  const [isCalendarBOpen, setIsCalendarBOpen] = useState<boolean>(false);
 
   if (!isOpen) return null;
 
   const currentMeta = ENVIRONMENTAL_PILLARS[activePillar];
   const hotspots = PILLAR_HOTSPOTS[activePillar] || [];
+  const observationDates = PILLAR_OBSERVATION_DATES[activePillar] || {};
 
-  const getPillarIcon = (pillarId: EnvironmentalPillar) => {
+  const dateMetaA = observationDates[comparisonConfig.yearA];
+  const dateMetaB = observationDates[comparisonConfig.yearB];
+
+  const getPillarIcon = (pillarId: EnvironmentalPillar, sizeClass = "w-3.5 h-3.5") => {
     switch (pillarId) {
       case 'forest_change':
-        return <TreePine className="w-4 h-4 text-emerald-400" />;
+        return <TreePine className={`${sizeClass} text-emerald-400`} />;
       case 'glacier_retreat':
-        return <Mountain className="w-4 h-4 text-cyan-400" />;
+        return <Mountain className={`${sizeClass} text-cyan-400`} />;
       case 'urban_expansion':
-        return <Building2 className="w-4 h-4 text-orange-400" />;
+        return <Building2 className={`${sizeClass} text-orange-400`} />;
       case 'coastal_erosion':
-        return <Waves className="w-4 h-4 text-rose-400" />;
+        return <Waves className={`${sizeClass} text-rose-400`} />;
       case 'wetland_change':
-        return <Droplets className="w-4 h-4 text-blue-400" />;
+        return <Droplets className={`${sizeClass} text-blue-400`} />;
       case 'desertification':
-        return <Sun className="w-4 h-4 text-yellow-400" />;
+        return <Sun className={`${sizeClass} text-yellow-400`} />;
       case 'groundwater_stress':
-        return <Gauge className="w-4 h-4 text-purple-400" />;
+        return <Gauge className={`${sizeClass} text-purple-400`} />;
       case 'river_avulsion':
-        return <Compass className="w-4 h-4 text-teal-400" />;
+        return <Compass className={`${sizeClass} text-teal-400`} />;
     }
   };
 
-  return (
-    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[95%] max-w-4xl transition-all duration-300 font-sans pointer-events-auto">
-      <div className="bg-[#0b1318]/95 backdrop-blur-xl border border-emerald-500/40 rounded-2xl shadow-2xl overflow-hidden shadow-emerald-950/50">
-        
-        {/* Header Bar */}
-        <div className="px-4 py-2.5 bg-[#071015] border-b border-white/10 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center">
-              <Activity className="w-4 h-4 text-emerald-400" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-serif font-bold text-sm tracking-wide text-white uppercase">
-                  Environmental Change &amp; Climate Explorer
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 font-bold uppercase tracking-wider">
-                  Year Comparison Tool
-                </span>
-              </div>
-              <div className="text-[11px] text-neutral-400 flex items-center gap-2 font-mono mt-0.5">
-                <span>{currentMeta.title}</span>
-                <span>•</span>
-                <span className="text-emerald-400 font-bold">{currentMeta.authority}</span>
-              </div>
-            </div>
+  // --- MINIMIZED FLOATING PILL VIEW (Zero Map Occlusion Mode) ---
+  if (isMinimized) {
+    return (
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-auto max-w-[95%] font-sans pointer-events-auto animate-snappy-pop">
+        <div className="bg-[#0b1318]/92 backdrop-blur-xl border border-emerald-500/50 rounded-full px-3.5 py-1.5 shadow-2xl shadow-emerald-950/60 flex items-center gap-3 text-xs text-white">
+          <div className="flex items-center gap-1.5">
+            {getPillarIcon(activePillar, "w-4 h-4")}
+            <span className="font-serif font-bold text-sm tracking-wide text-emerald-300">
+              {currentMeta.shortTitle}
+            </span>
           </div>
 
-          <div className="flex items-center gap-1.5">
+          <div className="h-3.5 w-px bg-white/20" />
+
+          {/* Date Range Pill */}
+          <div className="flex items-center gap-1.5 font-mono text-[11px] text-neutral-300">
+            <span className="text-amber-300 font-bold">{dateMetaA ? dateMetaA.label : comparisonConfig.yearA}</span>
+            <ArrowRight className="w-3 h-3 text-emerald-400" />
+            <span className="text-emerald-300 font-bold">{dateMetaB ? dateMetaB.label : comparisonConfig.yearB}</span>
+          </div>
+
+          {/* Delta status */}
+          <div className="hidden sm:flex items-center gap-1">
+            <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${
+              comparisonConfig.isDeltaMode
+                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 font-bold'
+                : 'bg-white/5 text-neutral-400 border-white/10'
+            }`}>
+              {comparisonConfig.isDeltaMode ? 'Δ Active' : 'Baseline'}
+            </span>
+          </div>
+
+          <div className="h-3.5 w-px bg-white/20" />
+
+          {/* Expand and Close Action Buttons */}
+          <div className="flex items-center gap-1">
             <button
-              onClick={() => setIsCollapsed(!isCollapsed)}
-              className="p-1.5 text-neutral-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
-              title={isCollapsed ? "Expand Deck" : "Collapse Deck"}
+              onClick={() => setIsMinimized(false)}
+              className="p-1 rounded-full text-neutral-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer flex items-center gap-1 text-[11px] font-mono"
+              title="Expand Deck"
             >
-              {isCollapsed ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              <Maximize2 className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="hidden md:inline">Expand</span>
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 text-neutral-400 hover:text-rose-400 hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
+              className="p-1 rounded-full text-neutral-400 hover:text-rose-400 hover:bg-white/10 transition-colors cursor-pointer"
               title="Close Tool"
             >
-              <X className="w-4 h-4" />
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // --- COMPACT FLOATING DECK VIEW (Ergonomic, low-height profile) ---
+  return (
+    <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 w-[95%] max-w-2xl sm:max-w-2xl md:max-w-3xl transition-all duration-300 font-sans pointer-events-auto animate-snappy-pop">
+      <div className="bg-[#091014]/94 backdrop-blur-2xl border border-emerald-500/40 rounded-2xl shadow-2xl overflow-visible shadow-emerald-950/60">
+        
+        {/* Sleek, Low-Profile Header Bar */}
+        <div className="px-3 py-1.5 bg-[#060c10] border-b border-white/10 rounded-t-2xl flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-5 rounded-md bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center">
+              <Activity className="w-3 h-3 text-emerald-400" />
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="font-serif font-bold text-xs sm:text-sm tracking-wide text-white uppercase">
+                Environmental &amp; Climate Explorer
+              </span>
+              <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 font-bold uppercase tracking-wider hidden sm:inline-block">
+                Time Machine
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-1">
+            {/* Toggle Sovereign Findings Button */}
+            <button
+              onClick={() => setShowFindings(!showFindings)}
+              className={`px-2 py-0.5 rounded text-[10px] font-mono transition-colors cursor-pointer flex items-center gap-1 border ${
+                showFindings
+                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 font-bold'
+                  : 'text-neutral-400 hover:text-white border-transparent hover:bg-white/5'
+              }`}
+              title="Toggle Official Findings"
+            >
+              <Info className="w-3 h-3 text-emerald-400" />
+              <span className="hidden sm:inline">Findings</span>
+              {showFindings ? <ChevronDown className="w-3 h-3" /> : <ChevronUp className="w-3 h-3" />}
+            </button>
+
+            {/* Minimize to Pill (Zero Map Occlusion) */}
+            <button
+              onClick={() => setIsMinimized(true)}
+              className="p-1 text-neutral-400 hover:text-white hover:bg-white/10 rounded-md transition-colors cursor-pointer"
+              title="Minimize to Floating Bar"
+            >
+              <Minimize2 className="w-3.5 h-3.5" />
+            </button>
+
+            {/* Close Tool */}
+            <button
+              onClick={onClose}
+              className="p-1 text-neutral-400 hover:text-rose-400 hover:bg-white/10 rounded-md transition-colors cursor-pointer"
+              title="Close Tool"
+            >
+              <X className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
 
-        {/* Collapsible Content */}
-        {!isCollapsed && (
-          <div className="p-4 space-y-4">
-            
-            {/* 8-Pillar Selector Tabs */}
-            <div>
-              <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-400 mb-1.5 flex items-center gap-1">
-                <Layers className="w-3 h-3 text-emerald-400" />
-                <span>Select Environmental Theme (8 Pillars):</span>
-              </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-1.5">
-                {ALL_ENVIRONMENTAL_PILLARS.map(pId => {
-                  const meta = ENVIRONMENTAL_PILLARS[pId];
-                  const isSelected = activePillar === pId;
-                  return (
-                    <button
-                      key={pId}
-                      onClick={() => {
-                        onSelectPillar(pId);
-                        onUpdateConfig({
-                          pillar: pId,
-                          yearA: meta.availableYears[0],
-                          yearB: meta.availableYears[meta.availableYears.length - 1]
-                        });
-                      }}
-                      className={`px-2 py-1.5 rounded-lg text-xs font-bold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer border ${
-                        isSelected 
-                          ? 'bg-emerald-950/80 border-emerald-400 text-white shadow-lg shadow-emerald-950/50 scale-[1.02]' 
-                          : 'bg-[#121c22]/60 border-white/5 text-neutral-300 hover:bg-white/10 hover:text-white'
-                      }`}
-                    >
-                      <div className="w-5 h-5 flex items-center justify-center">
-                        {getPillarIcon(pId)}
-                      </div>
-                      <span className="text-[10px] text-center leading-tight tracking-tight">
-                        {meta.shortTitle}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Year Comparison Controller Deck */}
-            <div className="bg-[#0e171d] border border-white/10 rounded-xl p-3 flex flex-wrap items-center justify-between gap-4">
-              
-              {/* Year A (Baseline) Selector */}
-              <div className="flex items-center gap-3">
-                <div className="flex flex-col">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1">
-                    <Calendar className="w-3 h-3 text-amber-400" />
-                    <span>Baseline Year (A):</span>
-                  </span>
-                  <div className="flex items-center gap-1 mt-1">
-                    {currentMeta.availableYears.slice(0, -1).map(yr => (
-                      <button
-                        key={`yearA-${yr}`}
-                        onClick={() => onUpdateConfig({ yearA: yr })}
-                        className={`px-2.5 py-1 rounded text-xs font-mono font-bold transition-all cursor-pointer border ${
-                          comparisonConfig.yearA === yr
-                            ? 'bg-amber-500/20 text-amber-300 border-amber-500/50 shadow-sm'
-                            : 'bg-black/30 text-neutral-400 border-white/5 hover:text-white hover:bg-white/10'
-                        }`}
-                      >
-                        {yr}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="text-neutral-500 font-mono text-xs hidden sm:block">
-                  <ArrowRight className="w-4 h-4 text-emerald-400" />
-                </div>
-
-                {/* Year B (Comparison) Selector */}
-                <div className="flex flex-col">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1">
-                    <Calendar className="w-3 h-3 text-emerald-400" />
-                    <span>Comparison Year (B):</span>
-                  </span>
-                  <div className="flex items-center gap-1 mt-1">
-                    {currentMeta.availableYears.slice(1).map(yr => (
-                      <button
-                        key={`yearB-${yr}`}
-                        onClick={() => onUpdateConfig({ yearB: yr })}
-                        className={`px-2.5 py-1 rounded text-xs font-mono font-bold transition-all cursor-pointer border ${
-                          comparisonConfig.yearB === yr
-                            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50 shadow-sm'
-                            : 'bg-black/30 text-neutral-400 border-white/5 hover:text-white hover:bg-white/10'
-                        }`}
-                      >
-                        {yr}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Mode Toggle: Delta vs Temporal Baseline */}
-              <div className="flex items-center gap-2">
+        {/* Compact Main Control Body */}
+        <div className="p-2.5 sm:p-3 space-y-2.5">
+          
+          {/* Horizontal Low-Profile Pillar Switcher Bar */}
+          <div className="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
+            {ALL_ENVIRONMENTAL_PILLARS.map(pId => {
+              const meta = ENVIRONMENTAL_PILLARS[pId];
+              const isSelected = activePillar === pId;
+              return (
                 <button
-                  onClick={() => onUpdateConfig({ isDeltaMode: !comparisonConfig.isDeltaMode })}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-2 cursor-pointer border ${
-                    comparisonConfig.isDeltaMode
-                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/60 shadow-md'
-                      : 'bg-neutral-800 text-neutral-400 border-white/10 hover:text-white'
+                  key={pId}
+                  onClick={() => {
+                    onSelectPillar(pId);
+                    onUpdateConfig({
+                      pillar: pId,
+                      yearA: meta.availableYears[0],
+                      yearB: meta.availableYears[meta.availableYears.length - 1]
+                    });
+                  }}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-sans font-bold flex items-center gap-1.5 whitespace-nowrap transition-all cursor-pointer border ${
+                    isSelected 
+                      ? 'bg-emerald-950/90 border-emerald-400 text-white shadow-md shadow-emerald-950/40 scale-[1.02]' 
+                      : 'bg-[#10171d]/60 border-white/5 text-neutral-400 hover:bg-white/10 hover:text-white'
                   }`}
                 >
-                  <Activity className={`w-3.5 h-3.5 ${comparisonConfig.isDeltaMode ? 'text-emerald-400 animate-pulse' : 'text-neutral-400'}`} />
-                  <span>{comparisonConfig.isDeltaMode ? 'Show Change Rate (Δ Active)' : 'Switch to Delta Rate'}</span>
+                  {getPillarIcon(pId)}
+                  <span>{meta.shortTitle}</span>
                 </button>
+              );
+            })}
+          </div>
+
+          {/* Temporal Calendar Date Comparison & Mode Controls */}
+          <div className="bg-[#0b1419] border border-white/10 rounded-xl p-2 sm:p-2.5 flex flex-wrap items-center justify-between gap-2.5 relative">
+            
+            {/* Calendar Date Pickers Group */}
+            <div className="flex items-center gap-2 flex-wrap">
+              
+              {/* Baseline Calendar Button */}
+              <div className="relative">
+                <button
+                  onClick={() => {
+                    setIsCalendarAOpen(!isCalendarAOpen);
+                    setIsCalendarBOpen(false);
+                  }}
+                  className="px-2.5 py-1 rounded-lg bg-[#142027] hover:bg-[#192832] border border-amber-500/40 hover:border-amber-400 text-neutral-200 transition-all cursor-pointer flex items-center gap-2 shadow-sm text-xs font-mono"
+                  title="Open Calendar to select Baseline Assessment Date"
+                >
+                  <CalendarIcon className="w-3.5 h-3.5 text-amber-400" />
+                  <div className="flex items-center gap-1">
+                    <span className="text-[10px] text-neutral-400 uppercase font-sans">Baseline:</span>
+                    <span className="font-bold text-amber-300">
+                      {dateMetaA ? dateMetaA.label : comparisonConfig.yearA}
+                    </span>
+                  </div>
+                  <ChevronDown className="w-3 h-3 text-neutral-400" />
+                </button>
+
+                {/* Snappy Baseline Calendar Popover */}
+                <CalendarPickerPopover
+                  isOpen={isCalendarAOpen}
+                  onClose={() => setIsCalendarAOpen(false)}
+                  title="Baseline Assessment Date (A)"
+                  pillar={activePillar}
+                  selectedYear={comparisonConfig.yearA}
+                  availableYears={currentMeta.availableYears.slice(0, -1)}
+                  onSelectYear={(yr) => onUpdateConfig({ yearA: yr })}
+                  accentColor="amber"
+                />
+              </div>
+
+              {/* Arrow divider */}
+              <ArrowRight className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+
+              {/* Comparison Calendar Button */}
+              <div className="relative">
+                <button
+                  onClick={() => {
+                    setIsCalendarBOpen(!isCalendarBOpen);
+                    setIsCalendarAOpen(false);
+                  }}
+                  className="px-2.5 py-1 rounded-lg bg-[#142027] hover:bg-[#192832] border border-emerald-500/40 hover:border-emerald-400 text-neutral-200 transition-all cursor-pointer flex items-center gap-2 shadow-sm text-xs font-mono"
+                  title="Open Calendar to select Comparison Assessment Date"
+                >
+                  <CalendarIcon className="w-3.5 h-3.5 text-emerald-400" />
+                  <div className="flex items-center gap-1">
+                    <span className="text-[10px] text-neutral-400 uppercase font-sans">Compare:</span>
+                    <span className="font-bold text-emerald-300">
+                      {dateMetaB ? dateMetaB.label : comparisonConfig.yearB}
+                    </span>
+                  </div>
+                  <ChevronDown className="w-3 h-3 text-neutral-400" />
+                </button>
+
+                {/* Snappy Comparison Calendar Popover */}
+                <CalendarPickerPopover
+                  isOpen={isCalendarBOpen}
+                  onClose={() => setIsCalendarBOpen(false)}
+                  title="Comparison Assessment Date (B)"
+                  pillar={activePillar}
+                  selectedYear={comparisonConfig.yearB}
+                  availableYears={currentMeta.availableYears.slice(1)}
+                  onSelectYear={(yr) => onUpdateConfig({ yearB: yr })}
+                  accentColor="emerald"
+                />
               </div>
             </div>
 
-            {/* Quick Fly-To Monitored Hotspot Pills */}
-            {hotspots.length > 0 && (
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1">
-                  <MapPin className="w-3 h-3 text-emerald-400" />
-                  <span>Monitored Sites:</span>
-                </span>
-                {hotspots.map(h => (
-                  <button
-                    key={h.name}
-                    onClick={() => {
-                      if (onSelectHotspot) {
-                        onSelectHotspot(h);
-                      } else {
-                        onFlyToCoordinates?.(h.lat, h.lng, h.zoom);
-                      }
-                    }}
-                    className="px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-[#142026] text-neutral-300 hover:text-emerald-300 hover:bg-emerald-950/60 border border-white/5 hover:border-emerald-500/30 transition-all cursor-pointer flex items-center gap-1"
-                  >
-                    <span>{h.name}</span>
-                  </button>
-                ))}
-              </div>
-            )}
+            {/* Mode Switch: Delta vs Thematic Baseline */}
+            <button
+              onClick={() => onUpdateConfig({ isDeltaMode: !comparisonConfig.isDeltaMode })}
+              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5 cursor-pointer border ${
+                comparisonConfig.isDeltaMode
+                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/60 shadow-sm'
+                  : 'bg-[#131d24] text-neutral-400 border-white/10 hover:text-white'
+              }`}
+              title="Toggle Delta Rate Color Scale on Map"
+            >
+              <Activity className={`w-3.5 h-3.5 ${comparisonConfig.isDeltaMode ? 'text-emerald-400 animate-pulse' : 'text-neutral-400'}`} />
+              <span>{comparisonConfig.isDeltaMode ? 'Δ Change Rate' : 'Thematic Mode'}</span>
+            </button>
+          </div>
 
-            {/* Key Finding & Metric Insight Banner */}
-            <div className="bg-gradient-to-r from-emerald-950/40 via-[#0e1a1e] to-sky-950/30 border border-emerald-500/30 rounded-xl p-3">
-              <div className="flex items-start gap-2.5">
-                <div className="p-1 rounded-md bg-emerald-500/20 text-emerald-400 mt-0.5">
-                  <ShieldCheck className="w-4 h-4" />
+          {/* Quick Fly-To Monitored Hotspot Pills (Single-line compact chips) */}
+          {hotspots.length > 0 && (
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1 shrink-0">
+                <MapPin className="w-3 h-3 text-emerald-400" />
+                <span>Sites:</span>
+              </span>
+              {hotspots.map(h => (
+                <button
+                  key={h.name}
+                  onClick={() => {
+                    if (onSelectHotspot) {
+                      onSelectHotspot(h);
+                    } else {
+                      onFlyToCoordinates?.(h.lat, h.lng, h.zoom);
+                    }
+                  }}
+                  className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#111b21] text-neutral-300 hover:text-emerald-300 hover:bg-emerald-950/70 border border-white/5 hover:border-emerald-500/30 whitespace-nowrap transition-all cursor-pointer"
+                >
+                  <span>{h.name}</span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Collapsible Sovereign Findings Disclosure */}
+          {showFindings && (
+            <div className="bg-gradient-to-r from-emerald-950/50 via-[#0d171c] to-sky-950/40 border border-emerald-500/30 rounded-xl p-2.5 animate-snappy-pop">
+              <div className="flex items-start gap-2">
+                <div className="p-1 rounded bg-emerald-500/20 text-emerald-400 shrink-0 mt-0.5">
+                  <ShieldCheck className="w-3.5 h-3.5" />
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-0.5 text-left">
                   <div className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold">
-                    Official Sovereign Assessment Finding ({comparisonConfig.yearA} vs {comparisonConfig.yearB}):
+                    Official Sovereign Finding ({comparisonConfig.yearA} vs {comparisonConfig.yearB}):
                   </div>
                   <div className="text-xs text-neutral-200 leading-relaxed font-sans">
                     {currentMeta.keyFinding}
                   </div>
                   <div className="text-[10px] text-neutral-400 font-mono pt-0.5">
-                    Source Authority: <span className="text-white font-bold">{currentMeta.authority}</span> • Units: <span className="text-emerald-300">{currentMeta.metricUnit}</span>
+                    Authority: <span className="text-white font-bold">{currentMeta.authority}</span> • Units: <span className="text-emerald-300">{currentMeta.metricUnit}</span>
                   </div>
                 </div>
               </div>
             </div>
+          )}
 
-          </div>
-        )}
+        </div>
 
       </div>
     </div>

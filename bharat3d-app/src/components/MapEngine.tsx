@@ -356,6 +356,54 @@ export const MapEngine: React.FC<MapEngineProps> = ({
       }
     });
 
+    // Dynamic Environmental Change Color & Severity Styling based on Delta vs Baseline Mode
+    const activeEnvColorExpr = comparisonConfig?.isDeltaMode
+      ? [
+          'match',
+          ['get', 'severity_code'],
+          'severe', '#ef4444',
+          'high', '#f97316',
+          'moderate', '#eab308',
+          'stable', '#10b981',
+          '#ef4444'
+        ] as any
+      : [
+          'match',
+          ['get', 'pillar'],
+          'forest_change', '#10b981',
+          'glacier_retreat', '#06b6d4',
+          'urban_expansion', '#f97316',
+          'coastal_erosion', '#ef4444',
+          'wetland_change', '#3b82f6',
+          'desertification', '#eab308',
+          'groundwater_stress', '#a855f7',
+          'river_avulsion', '#14b8a6',
+          '#10b981'
+        ] as any;
+
+    if (map.getLayer('env-polygons-fill')) {
+      map.setPaintProperty('env-polygons-fill', 'fill-color', activeEnvColorExpr);
+      map.setPaintProperty('env-polygons-fill', 'fill-opacity', comparisonConfig?.isDeltaMode ? 0.55 : 0.40);
+    }
+    if (map.getLayer('env-polygons-border')) {
+      map.setPaintProperty('env-polygons-border', 'line-color', activeEnvColorExpr);
+    }
+    if (map.getLayer('env-polygons-glow')) {
+      map.setPaintProperty('env-polygons-glow', 'line-color', activeEnvColorExpr);
+    }
+    if (map.getLayer('env-lines-core')) {
+      map.setPaintProperty('env-lines-core', 'line-color', activeEnvColorExpr);
+    }
+    if (map.getLayer('env-lines-glow')) {
+      map.setPaintProperty('env-lines-glow', 'line-color', activeEnvColorExpr);
+    }
+    if (map.getLayer('env-points-core')) {
+      map.setPaintProperty('env-points-core', 'circle-color', activeEnvColorExpr);
+    }
+    if (map.getLayer('env-points-halo')) {
+      map.setPaintProperty('env-points-halo', 'circle-color', activeEnvColorExpr);
+    }
+
     // 7.5 National Highways & Expressways
     const isRoadsActive = activeLayers.has('roads');
     setVis('roads-casing', isRoadsActive);

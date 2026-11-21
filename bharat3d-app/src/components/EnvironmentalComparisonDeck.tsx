@@ -28,6 +28,7 @@ import {
   ENVIRONMENTAL_PILLARS, 
   ALL_ENVIRONMENTAL_PILLARS,
   PILLAR_OBSERVATION_DATES,
+  getPillarTemporalFinding,
   type ObservationDateMeta
 } from '../data/environmentalChange';
 
@@ -201,13 +202,18 @@ const CalendarPickerPopover: React.FC<CalendarPickerPopoverProps> = ({
         </div>
       )}
 
-      {/* Available Sovereign Assessment Years Selector */}
+      {/* Available Sovereign Assessment Passes (Verified Data Only) */}
       <div className="space-y-1.5 mb-3">
-        <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1">
-          <Clock className="w-3 h-3 text-emerald-400" />
-          <span>Available Assessment Benchmarks:</span>
+        <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-neutral-400 flex items-center justify-between">
+          <span className="flex items-center gap-1">
+            <Clock className="w-3 h-3 text-emerald-400" />
+            <span>Verified Official Capture Dates:</span>
+          </span>
+          <span className="text-[9px] text-amber-400 font-mono">
+            {availableYears.length} passes available
+          </span>
         </div>
-        <div className="grid grid-cols-2 gap-1.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
           {availableYears.map(yr => {
             const isSelected = selectedYear === yr;
             const meta = datesRecord[yr];
@@ -220,16 +226,24 @@ const CalendarPickerPopover: React.FC<CalendarPickerPopoverProps> = ({
                 }}
                 className={`p-2 rounded-xl text-left border transition-all cursor-pointer flex flex-col justify-between ${
                   isSelected
-                    ? `${badgeBg} shadow-md scale-[1.02]`
-                    : 'bg-[#121b21]/60 border-white/5 text-neutral-300 hover:bg-white/10 hover:text-white'
+                    ? `${badgeBg} shadow-md scale-[1.02] border-emerald-400/80`
+                    : 'bg-[#121b21]/80 border-white/10 text-neutral-300 hover:bg-white/15 hover:text-white'
                 }`}
+                title={`Select ${meta ? `${meta.day} ${meta.month} ${meta.year}` : yr} benchmark`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-xs">{yr}</span>
-                  {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />}
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-mono font-bold text-xs text-white">{yr}</span>
+                    <span className={`text-[10px] font-mono font-bold px-1.5 py-0.2 rounded ${
+                      isSelected ? 'bg-black/40 text-emerald-300' : 'bg-white/5 text-neutral-300'
+                    }`}>
+                      {meta ? `${meta.day} ${meta.month.slice(0, 3)}` : 'Pass'}
+                    </span>
+                  </div>
+                  {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />}
                 </div>
-                <div className="text-[10px] text-neutral-400 font-sans truncate mt-0.5">
-                  {meta ? meta.label : `${yr} Assessment`}
+                <div className="text-[10px] text-neutral-400 font-sans truncate mt-1">
+                  {meta ? meta.sensor : `${yr} Sovereign Datum`}
                 </div>
               </button>
             );
@@ -237,11 +251,14 @@ const CalendarPickerPopover: React.FC<CalendarPickerPopoverProps> = ({
         </div>
       </div>
 
-      {/* Mini Calendar Monthly Days Grid Visualizer */}
+      {/* Mini Calendar Monthly Days Grid Visualizer - Only Official Pass Day Active */}
       <div className="bg-[#080d11] border border-white/5 rounded-xl p-2 mb-2">
-        <div className="text-[9px] font-mono text-neutral-400 uppercase tracking-wider mb-1 flex items-center justify-between">
-          <span>{activeDateMeta?.month || 'Survey'} {activeDateMeta?.year || selectedYear}</span>
-          <span className="text-[9px] text-emerald-400">Sovereign Capture</span>
+        <div className="text-[9px] font-mono text-neutral-400 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+          <span className="text-white font-bold">{activeDateMeta?.month || 'Survey'} {activeDateMeta?.year || selectedYear}</span>
+          <span className="text-[9px] text-emerald-400 font-bold flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block animate-ping" />
+            Official Pass Day: {targetDay} {activeDateMeta?.month?.slice(0, 3)}
+          </span>
         </div>
         <div className="grid grid-cols-7 gap-1 text-center text-[9px] font-mono">
           {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d, i) => (
@@ -251,25 +268,35 @@ const CalendarPickerPopover: React.FC<CalendarPickerPopoverProps> = ({
             const dayNum = i + 1;
             const isTarget = dayNum === targetDay;
             return (
-              <div
+              <button
                 key={dayNum}
-                className={`h-5 w-full flex items-center justify-center rounded text-[9px] ${
+                disabled={!isTarget}
+                onClick={() => {
+                  if (isTarget) {
+                    onClose();
+                  }
+                }}
+                className={`h-5 w-full flex items-center justify-center rounded text-[9px] transition-all ${
                   isTarget
-                    ? `${isAmber ? 'bg-amber-500 text-black font-extrabold shadow-sm' : 'bg-emerald-500 text-black font-extrabold shadow-sm animate-pulse'}`
-                    : 'text-neutral-400 hover:text-white'
+                    ? `${isAmber ? 'bg-amber-500 text-black font-extrabold shadow-sm ring-2 ring-amber-300 animate-pulse' : 'bg-emerald-500 text-black font-extrabold shadow-sm ring-2 ring-emerald-300 animate-pulse'} cursor-pointer`
+                    : 'text-neutral-600 bg-white/[0.02] opacity-25 cursor-not-allowed select-none'
                 }`}
+                title={isTarget ? `Official Data Capture Pass on Day ${dayNum} (${activeDateMeta?.sensor})` : `No sovereign sensor data captured on day ${dayNum}. Official pass is on Day ${targetDay}.`}
               >
                 {dayNum}
-              </div>
+              </button>
             );
           })}
+        </div>
+        <div className="text-[8.5px] font-mono text-neutral-400 text-center pt-1.5 border-t border-white/5 mt-1.5">
+          ✦ Non-survey days disabled: Official remote sensing data captured only on verified pass dates.
         </div>
       </div>
 
       {/* Live Map Sync Confirmation */}
       <div className="text-[10px] text-emerald-400/90 font-mono text-center flex items-center justify-center gap-1.5 pt-1">
         <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-        <span>Updates 3D map &amp; metrics in real time</span>
+        <span>Synchronizes 3D map &amp; comparison metrics in real time</span>
       </div>
     </div>
   );
@@ -312,6 +339,30 @@ export const EnvironmentalComparisonDeck: React.FC<EnvironmentalComparisonDeckPr
 
   const dateMetaA = observationDates[comparisonConfig.yearA];
   const dateMetaB = observationDates[comparisonConfig.yearB];
+
+  const handleSelectYearA = (yr: string) => {
+    const years = currentMeta.availableYears;
+    const currB = comparisonConfig.yearB;
+    if (parseInt(yr) >= parseInt(currB)) {
+      const nextYears = years.filter(y => parseInt(y) > parseInt(yr));
+      const newB = nextYears.length > 0 ? nextYears[0] : years[years.length - 1];
+      onUpdateConfig({ yearA: yr, yearB: newB });
+    } else {
+      onUpdateConfig({ yearA: yr });
+    }
+  };
+
+  const handleSelectYearB = (yr: string) => {
+    const years = currentMeta.availableYears;
+    const currA = comparisonConfig.yearA;
+    if (parseInt(yr) <= parseInt(currA)) {
+      const priorYears = years.filter(y => parseInt(y) < parseInt(yr));
+      const newA = priorYears.length > 0 ? priorYears[priorYears.length - 1] : years[0];
+      onUpdateConfig({ yearA: newA, yearB: yr });
+    } else {
+      onUpdateConfig({ yearB: yr });
+    }
+  };
 
   const getPillarIcon = (pillarId: EnvironmentalPillar, sizeClass = "w-3.5 h-3.5") => {
     switch (pillarId) {
@@ -514,7 +565,7 @@ export const EnvironmentalComparisonDeck: React.FC<EnvironmentalComparisonDeckPr
                   pillar={activePillar}
                   selectedYear={comparisonConfig.yearA}
                   availableYears={currentMeta.availableYears.slice(0, -1)}
-                  onSelectYear={(yr) => onUpdateConfig({ yearA: yr })}
+                  onSelectYear={handleSelectYearA}
                   accentColor="amber"
                 />
               </div>
@@ -550,7 +601,7 @@ export const EnvironmentalComparisonDeck: React.FC<EnvironmentalComparisonDeckPr
                   pillar={activePillar}
                   selectedYear={comparisonConfig.yearB}
                   availableYears={currentMeta.availableYears.slice(1)}
-                  onSelectYear={(yr) => onUpdateConfig({ yearB: yr })}
+                  onSelectYear={handleSelectYearB}
                   accentColor="emerald"
                 />
               </div>
@@ -655,7 +706,7 @@ export const EnvironmentalComparisonDeck: React.FC<EnvironmentalComparisonDeckPr
                     </a>
                   </div>
                   <div className="text-xs text-neutral-200 leading-relaxed font-sans">
-                    {currentMeta.keyFinding}
+                    {getPillarTemporalFinding(activePillar, comparisonConfig.yearA, comparisonConfig.yearB)}
                   </div>
                   <div className="text-[10px] text-neutral-400 font-mono pt-0.5">
                     Authority: <span className="text-white font-bold">{currentMeta.authority}</span> • Units: <span className="text-emerald-300">{currentMeta.metricUnit}</span>

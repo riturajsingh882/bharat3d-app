@@ -848,6 +848,7 @@ export function App() {
               <InfoPanel
                 feature={selectedFeature}
                 onClose={() => setSelectedFeature(null)}
+                comparisonConfig={comparisonConfig}
               />
             </div>
           </div>

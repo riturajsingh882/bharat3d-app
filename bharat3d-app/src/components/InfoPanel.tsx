@@ -29,11 +29,12 @@ import {
   Gauge,
   ExternalLink
 } from 'lucide-react';
-import type { SelectedFeatureInfo } from '../types';
+import type { SelectedFeatureInfo, EnvironmentalComparisonConfig } from '../types';
 import { metersToFeetInches } from '../utils/elevation';
 import { STATE_LANDMARKS } from '../data/stateLandmarks';
 import { STATE_CROPS } from '../data/stateAgriculture';
 import { STATE_WILDLIFE } from '../data/stateWildlife';
+import { getFeatureTemporalAssessment } from '../data/environmentalChange';
 
 const SITE_CATEGORY_LABELS: Record<string, string> = {
   ivc_site: 'Indus Valley Settlements',
@@ -48,6 +49,8 @@ const SITE_CATEGORY_LABELS: Record<string, string> = {
 interface InfoPanelProps {
   feature: SelectedFeatureInfo | null;
   onClose: () => void;
+  isOpen?: boolean;
+  comparisonConfig?: EnvironmentalComparisonConfig;
 }
 
 // Collapsible section wrapper (accordion) for the dossier panels with silky-smooth snappy transitions.
@@ -80,7 +83,7 @@ const CollapsibleSection: React.FC<{
   );
 };
 
-export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
+export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparisonConfig }) => {
   if (!feature) {
     return (
       <aside className="w-full h-full bg-[#080a0e]/95 backdrop-blur-2xl border-l border-white/10 flex flex-col p-6 text-neutral-200 z-20 select-none overflow-y-auto font-sans">
@@ -634,57 +637,103 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
                   </div>
                 )}
 
-                {/* Comparative Metric Box */}
-                <div className="p-3 bg-[#071114] border border-white/10 rounded-lg space-y-2 my-2">
-                  <div className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">
-                    Sovereign Temporal Assessment Comparison:
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div className="bg-black/30 p-2 rounded border border-white/5">
-                      <span className="text-amber-400 block text-[10px] uppercase font-bold">
-                        Baseline ({properties.baseline_year || 'Year A'}):
-                      </span>
-                      <span className="text-neutral-200 font-bold text-[11px] font-sans">
-                        {properties.baseline_text || `${properties.baseline_value || '—'}`}
-                      </span>
-                    </div>
-                    <div className="bg-black/30 p-2 rounded border border-white/5">
-                      <span className="text-emerald-400 block text-[10px] uppercase font-bold">
-                        Contemporary ({properties.comparison_year || 'Year B'}):
-                      </span>
-                      <span className="text-white font-bold text-[11px] font-sans">
-                        {properties.comparison_text || `${properties.comparison_value || '—'}`}
-                      </span>
-                    </div>
-                  </div>
+                {/* Dynamic Temporal Comparative Metric Box */}
+                {(() => {
+                  const temporal = getFeatureTemporalAssessment(
+                    properties,
+                    comparisonConfig?.yearA,
+                    comparisonConfig?.yearB
+                  );
 
-                  {properties.delta_text && (
-                    <div className="pt-1.5 border-t border-white/10 flex justify-between items-center text-xs">
-                      <span className="text-neutral-400 text-[11px]">Recorded Net Variance (Δ):</span>
-                      <span className={`font-bold px-2 py-0.5 rounded text-[11px] ${
-                        properties.severity_code === 'severe'
-                          ? 'bg-rose-950 text-rose-300 border border-rose-500/30'
-                          : properties.severity_code === 'positive'
-                          ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/30'
-                          : 'bg-amber-950 text-amber-300 border border-amber-500/30'
-                      }`}>
-                        {properties.delta_text}
-                      </span>
-                    </div>
-                  )}
+                  return (
+                    <div className="p-3 bg-[#071114] border border-white/10 rounded-lg space-y-2.5 my-2">
+                      <div className="flex items-center justify-between border-b border-white/10 pb-1.5">
+                        <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1">
+                          <Activity className="w-3 h-3 text-emerald-400" />
+                          <span>Temporal Comparison Assessment</span>
+                        </span>
+                        <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 font-bold">
+                          {temporal.timeSpanYears} Year Interval ({temporal.yearA} → {temporal.yearB})
+                        </span>
+                      </div>
 
-                  {properties.annual_change_rate && (
-                    <div className="pt-2 border-t border-white/10 flex justify-between items-center text-xs">
-                      <span className="text-amber-400 font-bold flex items-center gap-1 text-[11px]">
-                        <Activity className="w-3.5 h-3.5 text-amber-400" />
-                        <span>Annual Change Rate:</span>
-                      </span>
-                      <span className="font-extrabold text-amber-200 font-mono text-[11px] bg-amber-950/70 px-2 py-0.5 rounded border border-amber-500/30">
-                        {properties.annual_change_rate}
-                      </span>
+                      <div className="grid grid-cols-2 gap-2 text-xs">
+                        {/* Baseline Box */}
+                        <div className="bg-black/40 p-2 rounded-lg border border-amber-500/20">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-amber-400 text-[10px] uppercase font-bold font-mono">
+                              Baseline ({temporal.yearA}):
+                            </span>
+                          </div>
+                          <div className="text-amber-200 font-bold text-[11px] font-sans">
+                            {temporal.textA}
+                          </div>
+                          {temporal.contextA && (
+                            <div className="text-[9.5px] text-neutral-400 font-sans mt-1 leading-snug line-clamp-2">
+                              {temporal.contextA}
+                            </div>
+                          )}
+                          <div className="text-[8.5px] text-neutral-500 font-mono mt-1 truncate">
+                            {temporal.dateLabelA} · {temporal.sensorA}
+                          </div>
+                        </div>
+
+                        {/* Comparison Box */}
+                        <div className="bg-black/40 p-2 rounded-lg border border-emerald-500/20">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-emerald-400 text-[10px] uppercase font-bold font-mono">
+                              Compare ({temporal.yearB}):
+                            </span>
+                          </div>
+                          <div className="text-emerald-200 font-bold text-[11px] font-sans">
+                            {temporal.textB}
+                          </div>
+                          {temporal.contextB && (
+                            <div className="text-[9.5px] text-neutral-400 font-sans mt-1 leading-snug line-clamp-2">
+                              {temporal.contextB}
+                            </div>
+                          )}
+                          <div className="text-[8.5px] text-neutral-500 font-mono mt-1 truncate">
+                            {temporal.dateLabelB} · {temporal.sensorB}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Net Variance */}
+                      <div className="pt-1.5 border-t border-white/10 flex justify-between items-center text-xs">
+                        <span className="text-neutral-400 text-[11px]">Recorded Net Variance (Δ):</span>
+                        <span className={`font-bold px-2 py-0.5 rounded text-[11px] ${
+                          temporal.severityCode === 'severe'
+                            ? 'bg-rose-950 text-rose-300 border border-rose-500/30'
+                            : temporal.severityCode === 'positive'
+                            ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/30'
+                            : 'bg-amber-950 text-amber-300 border border-amber-500/30'
+                        }`}>
+                          {temporal.deltaText}
+                        </span>
+                      </div>
+
+                      {/* Annual Change Rate */}
+                      <div className="pt-1.5 border-t border-white/10 flex justify-between items-center text-xs">
+                        <span className="text-amber-400 font-bold flex items-center gap-1 text-[11px]">
+                          <Activity className="w-3.5 h-3.5 text-amber-400" />
+                          <span>Annual Change Rate:</span>
+                        </span>
+                        <span className="font-extrabold text-amber-200 font-mono text-[11px] bg-amber-950/70 px-2 py-0.5 rounded border border-amber-500/30">
+                          {temporal.annualRateText}
+                        </span>
+                      </div>
+
+                      {/* Dynamic Assessment Narrative */}
+                      <div className="pt-1.5 border-t border-white/10 text-[10.5px] text-neutral-300 leading-relaxed font-sans bg-white/[0.02] p-1.5 rounded">
+                        <span className="text-emerald-400 font-bold block mb-0.5 uppercase text-[9px] font-mono">
+                          Epoch Assessment ({temporal.yearA} → {temporal.yearB}):
+                        </span>
+                        {temporal.assessmentSummary}
+                      </div>
                     </div>
-                  )}
-                </div>
+                  );
+                })()}
 
                 {properties.primary_driver && (
                   <div className="py-1.5 border-b border-white/5">

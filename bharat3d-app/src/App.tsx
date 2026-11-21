@@ -227,15 +227,33 @@ export function App() {
       type: 'environmental_change'
     });
 
-    const match = environmentalFeatures.find(f => {
-      const p = f.properties || {};
-      if (hotspot.id && (p.id === hotspot.id || f.id === hotspot.id)) return true;
-      const fName = (p.name || '').toLowerCase();
+    // Priority 1: Exact ID match across all features
+    let match = hotspot.id
+      ? environmentalFeatures.find(f => (f.properties?.id === hotspot.id || f.id === hotspot.id))
+      : undefined;
+
+    // Priority 2: Exact or whole-string name containment
+    if (!match) {
       const hName = (hotspot.name || '').toLowerCase();
-      if (fName.includes(hName) || hName.includes(fName)) return true;
-      const parts = hName.split(/[\s&,/()-]+/).filter(w => w.length > 2);
-      return parts.some(w => fName.includes(w));
-    });
+      match = environmentalFeatures.find(f => {
+        const fName = (f.properties?.name || '').toLowerCase();
+        return fName.includes(hName) || hName.includes(fName);
+      });
+    }
+
+    // Priority 3: Significant keyword token match (length >= 4 to avoid false substrings)
+    if (!match) {
+      const hTokens = (hotspot.name || '')
+        .toLowerCase()
+        .split(/[\s&,/()-]+/)
+        .filter(w => w.length >= 4);
+      if (hTokens.length > 0) {
+        match = environmentalFeatures.find(f => {
+          const fName = (f.properties?.name || '').toLowerCase();
+          return hTokens.some(w => fName.includes(w));
+        });
+      }
+    }
 
     if (match) {
       setSelectedFeature({

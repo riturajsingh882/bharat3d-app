@@ -432,7 +432,7 @@ export const EnvironmentalComparisonDeck: React.FC<EnvironmentalComparisonDeckPr
 
   // --- COMPACT FLOATING DECK VIEW (Ergonomic, low-height profile) ---
   return (
-    <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 w-[96%] max-w-4xl lg:max-w-5xl transition-all duration-300 font-sans pointer-events-auto animate-snappy-pop">
+    <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 w-[92%] sm:w-[88%] max-w-2xl lg:max-w-[720px] transition-all duration-300 font-sans pointer-events-auto animate-snappy-pop">
       <div className="bg-[#091014]/94 backdrop-blur-2xl border border-emerald-500/40 rounded-2xl shadow-2xl overflow-visible shadow-emerald-950/60">
         
         {/* Sleek, Low-Profile Header Bar */}

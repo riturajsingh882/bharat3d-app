@@ -32,6 +32,7 @@ import {
 } from '../data/environmentalChange';
 
 interface MonitoredHotspot {
+  id: string;
   name: string;
   lat: number;
   lng: number;
@@ -40,54 +41,62 @@ interface MonitoredHotspot {
 
 const PILLAR_HOTSPOTS: Record<EnvironmentalPillar, MonitoredHotspot[]> = {
   forest_change: [
-    { name: "Western Ghats", lat: 13.8, lng: 75.6, zoom: 7.5 },
-    { name: "Northeast Tribal", lat: 26.0, lng: 94.0, zoom: 7 },
-    { name: "Sundarbans Mangrove", lat: 21.9, lng: 88.6, zoom: 8.5 },
-    { name: "Eastern Ghats", lat: 17.2, lng: 82.0, zoom: 7.5 }
+    { id: "forest-western-ghats", name: "Western Ghats", lat: 13.8, lng: 75.6, zoom: 7.5 },
+    { id: "forest-northeast-tribal", name: "Northeast Tribal", lat: 26.0, lng: 94.0, zoom: 7 },
+    { id: "forest-sundarbans-mangroves", name: "Sundarbans Mangrove", lat: 21.9, lng: 88.6, zoom: 8.5 },
+    { id: "forest-eastern-ghats", name: "Eastern Ghats", lat: 17.2, lng: 82.0, zoom: 7.5 },
+    { id: "forest-central-highlands", name: "Central Sal & Teak", lat: 22.5, lng: 80.5, zoom: 7.5 }
   ],
   glacier_retreat: [
-    { name: "Gangotri / Gaumukh", lat: 30.92, lng: 79.08, zoom: 11 },
-    { name: "Siachen Glacier", lat: 35.50, lng: 77.10, zoom: 10 },
-    { name: "Chorabari (Kedarnath)", lat: 30.75, lng: 79.05, zoom: 12 },
-    { name: "Zemu (Sikkim)", lat: 27.75, lng: 88.22, zoom: 10.5 },
-    { name: "Kolhai (Kashmir)", lat: 34.18, lng: 75.33, zoom: 11 }
+    { id: "glacier-gangotri", name: "Gangotri / Gaumukh", lat: 30.92, lng: 79.08, zoom: 11 },
+    { id: "glacier-siachen", name: "Siachen Glacier", lat: 35.50, lng: 77.10, zoom: 10 },
+    { id: "glacier-chorabari", name: "Chorabari (Kedarnath)", lat: 30.75, lng: 79.05, zoom: 12 },
+    { id: "glacier-zemu", name: "Zemu (Sikkim)", lat: 27.75, lng: 88.22, zoom: 10.5 },
+    { id: "glacier-kolhai", name: "Kolhai (Kashmir)", lat: 34.18, lng: 75.33, zoom: 11 },
+    { id: "glacier-bara-shigri", name: "Bara Shigri (Spiti)", lat: 32.25, lng: 77.60, zoom: 11 }
   ],
   urban_expansion: [
-    { name: "Delhi NCR", lat: 28.60, lng: 77.15, zoom: 9 },
-    { name: "Bengaluru BBMP", lat: 12.97, lng: 77.60, zoom: 10 },
-    { name: "Mumbai MMR", lat: 19.12, lng: 72.95, zoom: 9.5 },
-    { name: "Hyderabad ORR", lat: 17.40, lng: 78.45, zoom: 9.5 }
+    { id: "urban-delhi-ncr", name: "Delhi NCR", lat: 28.60, lng: 77.15, zoom: 9 },
+    { id: "urban-bengaluru", name: "Bengaluru BBMP", lat: 12.97, lng: 77.60, zoom: 10 },
+    { id: "urban-mumbai-mmr", name: "Mumbai MMR", lat: 19.12, lng: 72.95, zoom: 9.5 },
+    { id: "urban-hyderabad", name: "Hyderabad ORR", lat: 17.40, lng: 78.45, zoom: 9.5 },
+    { id: "urban-chennai", name: "Chennai OMR", lat: 12.95, lng: 80.15, zoom: 9.5 }
   ],
   coastal_erosion: [
-    { name: "Sagar Island (WB)", lat: 21.60, lng: 88.15, zoom: 10.5 },
-    { name: "Satabhaya (Odisha)", lat: 20.62, lng: 86.95, zoom: 10.5 },
-    { name: "Chellanam (Kerala)", lat: 9.70, lng: 76.28, zoom: 10.5 },
-    { name: "Puducherry Coast", lat: 11.93, lng: 79.83, zoom: 11 }
+    { id: "coastal-sundarbans-sagar", name: "Sagar Island (WB)", lat: 21.60, lng: 88.15, zoom: 10.5 },
+    { id: "coastal-odisha-kendrapara", name: "Satabhaya (Odisha)", lat: 20.62, lng: 86.95, zoom: 10.5 },
+    { id: "coastal-kerala-chellanam", name: "Chellanam (Kerala)", lat: 9.70, lng: 76.28, zoom: 10.5 },
+    { id: "coastal-puducherry-ennore", name: "Puducherry Coast", lat: 11.93, lng: 79.83, zoom: 11 },
+    { id: "coastal-gujarat-khambhat", name: "Gulf of Khambhat", lat: 21.80, lng: 72.35, zoom: 10 }
   ],
   wetland_change: [
-    { name: "Chilika Lagoon", lat: 19.68, lng: 85.35, zoom: 9.5 },
-    { name: "Vembanad-Kol", lat: 9.65, lng: 76.38, zoom: 9.5 },
-    { name: "Wular Lake", lat: 34.35, lng: 74.58, zoom: 10.5 },
-    { name: "Loktak & Phumdis", lat: 24.52, lng: 93.82, zoom: 10.5 },
-    { name: "Sambhar Salt Lake", lat: 26.92, lng: 75.05, zoom: 10 }
+    { id: "wetland-chilika", name: "Chilika Lagoon", lat: 19.68, lng: 85.35, zoom: 9.5 },
+    { id: "wetland-vembanad", name: "Vembanad-Kol", lat: 9.65, lng: 76.38, zoom: 9.5 },
+    { id: "wetland-wular", name: "Wular Lake", lat: 34.35, lng: 74.58, zoom: 10.5 },
+    { id: "wetland-loktak", name: "Loktak & Phumdis", lat: 24.52, lng: 93.82, zoom: 10.5 },
+    { id: "wetland-kolleru", name: "Kolleru Lake", lat: 16.65, lng: 81.30, zoom: 10 },
+    { id: "wetland-sambhar", name: "Sambhar Salt Lake", lat: 26.92, lng: 75.05, zoom: 10 }
   ],
   desertification: [
-    { name: "Thar Fringe (Rajasthan)", lat: 27.00, lng: 72.20, zoom: 7.5 },
-    { name: "Aravalli Gaps (NCR)", lat: 27.95, lng: 76.65, zoom: 9 },
-    { name: "Rayalaseema Scrub", lat: 14.68, lng: 77.60, zoom: 8 },
-    { name: "Chambal Ravines", lat: 26.30, lng: 78.20, zoom: 9 }
+    { id: "desert-thar-eastern", name: "Thar Fringe (Rajasthan)", lat: 27.00, lng: 72.20, zoom: 7.5 },
+    { id: "desert-aravalli-breach", name: "Aravalli Gaps (NCR)", lat: 27.95, lng: 76.65, zoom: 9 },
+    { id: "desert-rayalaseema-scrub", name: "Rayalaseema Scrub", lat: 14.68, lng: 77.60, zoom: 8 },
+    { id: "desert-chambal-badlands", name: "Chambal Ravines", lat: 26.30, lng: 78.20, zoom: 9 },
+    { id: "desert-rann-saurashtra", name: "Rann & Banni", lat: 23.60, lng: 69.50, zoom: 8.5 }
   ],
   groundwater_stress: [
-    { name: "Punjab Granary", lat: 30.25, lng: 75.85, zoom: 8 },
-    { name: "Marwar Fossil Aquifers", lat: 26.25, lng: 72.75, zoom: 8 },
-    { name: "Delhi NCR Cones", lat: 28.60, lng: 77.20, zoom: 10 },
-    { name: "Tamil Nadu Hard-Rock", lat: 11.00, lng: 77.50, zoom: 8.5 }
+    { id: "gw-punjab-haryana", name: "Punjab Granary", lat: 30.25, lng: 75.85, zoom: 8 },
+    { id: "gw-western-rajasthan", name: "Marwar Fossil Aquifers", lat: 26.25, lng: 72.75, zoom: 8 },
+    { id: "gw-delhi-ncr", name: "Delhi NCR Cones", lat: 28.60, lng: 77.20, zoom: 10 },
+    { id: "gw-tamilnadu-cauvery", name: "Tamil Nadu Hard-Rock", lat: 11.00, lng: 77.50, zoom: 8.5 },
+    { id: "gw-gangetic-eastern", name: "Eastern Gangetic Plain", lat: 25.50, lng: 85.50, zoom: 8 }
   ],
   river_avulsion: [
-    { name: "Kosi Avulsion Corridor", lat: 26.10, lng: 86.90, zoom: 8.5 },
-    { name: "Majuli Island (Assam)", lat: 26.95, lng: 94.20, zoom: 9.5 },
-    { name: "Malda Ganga Migration", lat: 24.90, lng: 88.00, zoom: 9.5 },
-    { name: "Saraswati Paleochannel", lat: 28.80, lng: 74.20, zoom: 7 }
+    { id: "river-kosi-migration", name: "Kosi Avulsion Corridor", lat: 26.10, lng: 86.90, zoom: 8.5 },
+    { id: "river-brahmaputra-majuli", name: "Majuli Island (Assam)", lat: 26.95, lng: 94.20, zoom: 9.5 },
+    { id: "river-ganga-malda", name: "Malda Ganga Migration", lat: 24.90, lng: 88.00, zoom: 9.5 },
+    { id: "river-saraswati-paleochannel", name: "Saraswati Paleochannel", lat: 28.80, lng: 74.20, zoom: 7 },
+    { id: "river-teesta-avulsion", name: "Teesta Historic Avulsion", lat: 26.50, lng: 88.80, zoom: 9 }
   ]
 };
 
@@ -274,7 +283,7 @@ interface EnvironmentalComparisonDeckProps {
   comparisonConfig: EnvironmentalComparisonConfig;
   onUpdateConfig: (newConfig: Partial<EnvironmentalComparisonConfig>) => void;
   onFlyToCoordinates?: (lat: number, lng: number, zoom?: number) => void;
-  onSelectHotspot?: (hotspot: { name: string; lat: number; lng: number; zoom?: number }) => void;
+  onSelectHotspot?: (hotspot: MonitoredHotspot) => void;
 }
 
 export const EnvironmentalComparisonDeck: React.FC<EnvironmentalComparisonDeckProps> = ({
@@ -547,19 +556,54 @@ export const EnvironmentalComparisonDeck: React.FC<EnvironmentalComparisonDeckPr
               </div>
             </div>
 
-            {/* Mode Switch: Delta vs Thematic Baseline */}
-            <button
-              onClick={() => onUpdateConfig({ isDeltaMode: !comparisonConfig.isDeltaMode })}
-              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5 cursor-pointer border ${
-                comparisonConfig.isDeltaMode
-                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/60 shadow-sm'
-                  : 'bg-[#131d24] text-neutral-400 border-white/10 hover:text-white'
-              }`}
-              title="Toggle Delta Rate Color Scale on Map"
-            >
-              <Activity className={`w-3.5 h-3.5 ${comparisonConfig.isDeltaMode ? 'text-emerald-400 animate-pulse' : 'text-neutral-400'}`} />
-              <span>{comparisonConfig.isDeltaMode ? 'Δ Change Rate' : 'Thematic Mode'}</span>
-            </button>
+            {/* Clear Mode Switcher: Category Theme vs Severity Rate */}
+            <div className="flex items-center rounded-lg bg-[#0c1418] p-0.5 border border-white/10 shrink-0">
+              <button
+                onClick={() => onUpdateConfig({ isDeltaMode: false })}
+                className={`px-2.5 py-1 rounded-md text-[10px] font-mono font-bold transition-all flex items-center gap-1 cursor-pointer ${
+                  !comparisonConfig.isDeltaMode
+                    ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/50 shadow-sm'
+                    : 'text-neutral-400 hover:text-neutral-200'
+                }`}
+                title="Pillar Category Mode: Features shaded by environmental theme (Green: Forest, Cyan: Glacier, Orange: Urban, Blue: Wetland)"
+              >
+                <span>🎨 Category Theme</span>
+              </button>
+              <button
+                onClick={() => onUpdateConfig({ isDeltaMode: true })}
+                className={`px-2.5 py-1 rounded-md text-[10px] font-mono font-bold transition-all flex items-center gap-1 cursor-pointer ${
+                  comparisonConfig.isDeltaMode
+                    ? 'bg-amber-950 text-amber-300 border border-amber-500/50 shadow-sm'
+                    : 'text-neutral-400 hover:text-neutral-200'
+                }`}
+                title="Annual Change Rate Mode: Features shaded by rate of loss or growth (🔴 Severe Loss/Sprawl, 🟠 High Stress, 🟢 Recovery)"
+              >
+                <Activity className="w-3 h-3 text-amber-400 animate-pulse" />
+                <span>⚠️ Severity (Rate)</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Explanatory Mode & Rate Helper Strip */}
+          <div className="flex items-center justify-between text-[10px] font-mono px-1 py-0.5 border-t border-b border-white/5">
+            <div className="flex items-center gap-1.5 text-neutral-300">
+              <span className="text-neutral-400 font-bold uppercase tracking-wider">Map Shading:</span>
+              {comparisonConfig.isDeltaMode ? (
+                <span className="flex items-center gap-2">
+                  <span className="text-red-400 flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-red-500 inline-block" />Severe Loss/Sprawl</span>
+                  <span className="text-amber-400 flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-amber-500 inline-block" />High Stress</span>
+                  <span className="text-yellow-300 flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-yellow-400 inline-block" />Moderate</span>
+                  <span className="text-emerald-400 flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />Recovery/Stable</span>
+                </span>
+              ) : (
+                <span className="text-emerald-300">
+                  {currentMeta.title} Category Colors (Standard Cartographic Theme)
+                </span>
+              )}
+            </div>
+            <span className="text-neutral-400 font-bold hidden md:inline">
+              Metric: <span className="text-white">{currentMeta.metricLabel}</span>
+            </span>
           </div>
 
           {/* Quick Fly-To Monitored Hotspot Pills (Single-line compact chips) */}
@@ -571,7 +615,7 @@ export const EnvironmentalComparisonDeck: React.FC<EnvironmentalComparisonDeckPr
               </span>
               {hotspots.map(h => (
                 <button
-                  key={h.name}
+                  key={h.id || h.name}
                   onClick={() => {
                     if (onSelectHotspot) {
                       onSelectHotspot(h);
@@ -594,9 +638,21 @@ export const EnvironmentalComparisonDeck: React.FC<EnvironmentalComparisonDeckPr
                 <div className="p-1 rounded bg-emerald-500/20 text-emerald-400 shrink-0 mt-0.5">
                   <ShieldCheck className="w-3.5 h-3.5" />
                 </div>
-                <div className="space-y-0.5 text-left">
-                  <div className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold">
-                    Official Sovereign Finding ({comparisonConfig.yearA} vs {comparisonConfig.yearB}):
+                <div className="space-y-1 text-left flex-1">
+                  <div className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold flex items-center justify-between">
+                    <span>Official Sovereign Finding ({comparisonConfig.yearA} vs {comparisonConfig.yearB}):</span>
+                    <a
+                      href={`https://en.wikipedia.org/wiki/${encodeURIComponent(currentMeta.title.replace(/\s+/g, '_'))}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white border border-white/20 text-[10px] font-mono font-bold transition-all"
+                      title="Open Wikipedia article"
+                    >
+                      <span className="w-3 h-3 rounded bg-white text-black font-serif font-black text-[9px] flex items-center justify-center leading-none">
+                        W
+                      </span>
+                      <span>Wikipedia</span>
+                    </a>
                   </div>
                   <div className="text-xs text-neutral-200 leading-relaxed font-sans">
                     {currentMeta.keyFinding}

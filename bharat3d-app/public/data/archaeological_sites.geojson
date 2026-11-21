@@ -19,7 +19,8 @@
         "description": "The type-site of the Indus Civilization situated on the left bank of the Ravi river. Gave its name to the entire Harappan cultural horizon.",
         "citation": "Archaeological Survey of India (ASI) & Vats, M.S. (1940)",
         "color": "#14b8a6",
-        "category_display": "Indus Valley Settlements"
+        "category_display": "Indus Valley Settlements",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Harappa"
       },
       "geometry": {
         "type": "Point",
@@ -47,7 +48,8 @@
         "description": "The largest excavated Bronze Age metropolis in the Indus basin, showcasing monumental public civic architecture and an advanced covered drainage network.",
         "citation": "Marshall, Sir John (1931, Mohenjo-daro and the Indus Civilization)",
         "color": "#14b8a6",
-        "category_display": "Indus Valley Settlements"
+        "category_display": "Indus Valley Settlements",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Mohenjo-daro"
       },
       "geometry": {
         "type": "Point",
@@ -75,7 +77,8 @@
         "description": "Located on Khadir Bet island in the Rann of Kutch, Gujarat. Premier example of hydraulic engineering, stone masonry, and urban defense in the ancient world.",
         "citation": "Archaeological Survey of India (ASI) Monograph / Bisht, R.S.",
         "color": "#14b8a6",
-        "category_display": "Indus Valley Settlements"
+        "category_display": "Indus Valley Settlements",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Dholavira"
       },
       "geometry": {
         "type": "Point",
@@ -103,7 +106,8 @@
         "description": "The largest known settlement of the Indus-Saraswati Civilization located in Hisar district, Haryana. Ancient paleochannel of the Drishadvati river.",
         "citation": "ASI Excavation Reports & Shinde et al. (Cell, 2019)",
         "color": "#14b8a6",
-        "category_display": "Indus Valley Settlements"
+        "category_display": "Indus Valley Settlements",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Rakhigarhi"
       },
       "geometry": {
         "type": "Point",
@@ -131,7 +135,8 @@
         "description": "World's earliest identified tidal dockyard connecting the Harappan heartland to Arabian Sea maritime trade channels at the head of the Gulf of Khambhat.",
         "citation": "Rao, S.R. (Lothal and the Indus Civilization, 1973)",
         "color": "#14b8a6",
-        "category_display": "Indus Valley Settlements"
+        "category_display": "Indus Valley Settlements",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Lothal"
       },
       "geometry": {
         "type": "Point",
@@ -159,7 +164,8 @@
         "description": "Situated on the dried bed of the Ghaggar (ancient Saraswati) in Hanumangarh district, Rajasthan. Shows transition from Early to Mature Harappan phases.",
         "citation": "ASI Memoirs No. 98 / Lal, B.B. (2003)",
         "color": "#14b8a6",
-        "category_display": "Indus Valley Settlements"
+        "category_display": "Indus Valley Settlements",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Kalibangan"
       },
       "geometry": {
         "type": "Point",
@@ -187,7 +193,8 @@
         "description": "One of the greatest residential universities of the ancient world. Accommodated 10,000 scholars and 2,000 masters studying philosophy, astronomy, medicine, and logic.",
         "citation": "Archaeological Survey of India & Xuanzang's Great Tang Records on the Western Regions",
         "color": "#f59e0b",
-        "category_display": "Ancient Universities"
+        "category_display": "Ancient Universities",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Nalanda_mahavihara"
       },
       "geometry": {
         "type": "Point",
@@ -215,7 +222,8 @@
         "description": "Legendary seat of Vedic and Buddhist intellectual learning where Chanakya authored the Arthashastra, Panini taught Sanskrit grammar, and Jivaka studied medicine.",
         "citation": "Marshall, Sir John (Taxila: An Illustrated Account, 1951)",
         "color": "#f59e0b",
-        "category_display": "Ancient Universities"
+        "category_display": "Ancient Universities",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Taxila"
       },
       "geometry": {
         "type": "Point",
@@ -243,7 +251,8 @@
         "description": "The oldest stone structure in India, commissioned by Emperor Ashoka over the holy relics of the Buddha in Raisen district, Madhya Pradesh.",
         "citation": "Marshall & Foucher (The Monuments of Sanchi, 1940)",
         "color": "#8b5cf6",
-        "category_display": "Buddhist Monasteries"
+        "category_display": "Buddhist Monasteries",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Sanchi"
       },
       "geometry": {
         "type": "Point",
@@ -271,7 +280,8 @@
         "description": "The sacred site where Gautama Buddha delivered his First Sermon (Dhammacakkappavattana Sutta) setting the Wheel of Law into motion.",
         "citation": "Archaeological Survey of India (ASI)",
         "color": "#8b5cf6",
-        "category_display": "Buddhist Monasteries"
+        "category_display": "Buddhist Monasteries",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Sarnath"
       },
       "geometry": {
         "type": "Point",
@@ -299,7 +309,8 @@
         "description": "The most sacred pilgrimage center of Buddhism, where Siddhartha Gautama attained supreme enlightenment under the Bodhi tree in Gaya district, Bihar.",
         "citation": "UNESCO World Heritage Centre & Cunningham (Mahabodhi, 1892)",
         "color": "#8b5cf6",
-        "category_display": "Buddhist Monasteries"
+        "category_display": "Buddhist Monasteries",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Mahabodhi_Temple"
       },
       "geometry": {
         "type": "Point",
@@ -327,7 +338,8 @@
         "description": "Masterpieces of Buddhist religious art located in Chhatrapati Sambhaji Nagar district, Maharashtra, overlooking the Waghur river ravine.",
         "citation": "Archaeological Survey of India & UNESCO",
         "color": "#f43f5e",
-        "category_display": "Rock-Cut Temples"
+        "category_display": "Rock-Cut Temples",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Ajanta_Caves"
       },
       "geometry": {
         "type": "Point",
@@ -355,7 +367,8 @@
         "description": "34 rock-cut sanctuaries honoring Hindu, Buddhist, and Jain traditions side-by-side, epitomizing the religious tolerance of classical India.",
         "citation": "ASI Monograph & Fergusson / Burgess (The Cave Temples of India)",
         "color": "#f43f5e",
-        "category_display": "Rock-Cut Temples"
+        "category_display": "Rock-Cut Temples",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Ellora_Caves"
       },
       "geometry": {
         "type": "Point",
@@ -383,7 +396,8 @@
         "description": "The grand imperial capital of the Vijayanagara Empire on the banks of the Tungabhadra river. Was the world's second-largest medieval city in 1500 CE.",
         "citation": "Archaeological Survey of India & Longhurst (Hampi Ruins, 1917)",
         "color": "#f43f5e",
-        "category_display": "Rock-Cut Temples"
+        "category_display": "Rock-Cut Temples",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Hampi"
       },
       "geometry": {
         "type": "Point",
@@ -411,7 +425,8 @@
         "description": "Peruvudaiyar Kovil, towering Dravidian architectural triumph constructed entirely of interlocking granite blocks without mortar.",
         "citation": "Archaeological Survey of India (ASI) Southern Circle",
         "color": "#f43f5e",
-        "category_display": "Rock-Cut Temples"
+        "category_display": "Rock-Cut Temples",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Brihadisvara_Temple"
       },
       "geometry": {
         "type": "Point",
@@ -439,7 +454,8 @@
         "description": "Conceived as a colossal celestial chariot for Surya the Sun God emerging from the Bay of Bengal coast in Puri district, Odisha.",
         "citation": "Archaeological Survey of India & UNESCO",
         "color": "#f43f5e",
-        "category_display": "Rock-Cut Temples"
+        "category_display": "Rock-Cut Temples",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Konark_Sun_Temple"
       },
       "geometry": {
         "type": "Point",
@@ -467,7 +483,8 @@
         "description": "The celebrated ancient trans-oceanic spice port described in Sangam poetry and Pliny's Natural History as the destination of Roman pepper ships.",
         "citation": "KCHR Pattanam Excavation Reports & Periplus of the Erythraean Sea",
         "color": "#06b6d4",
-        "category_display": "Ancient Ports"
+        "category_display": "Ancient Ports",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Muziris"
       },
       "geometry": {
         "type": "Point",
@@ -495,7 +512,8 @@
         "description": "Coastal trading emporium near Puducherry on the Ariyankuppam river. Provided the first stratigraphic proof of Indo-Roman commerce in South India.",
         "citation": "Wheeler, R.E.M. (Ancient India No. 2, 1946, ASI)",
         "color": "#06b6d4",
-        "category_display": "Ancient Ports"
+        "category_display": "Ancient Ports",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Arikamedu"
       },
       "geometry": {
         "type": "Point",

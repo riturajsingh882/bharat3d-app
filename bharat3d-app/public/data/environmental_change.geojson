@@ -86,7 +86,10 @@
         "point_coordinates": [
           75.6,
           13.8
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Western_Ghats",
+        "annual_change_rate": "-71.0 sq km / year (-0.22%/yr)",
+        "change_rate_display": "-71.0 km²/yr"
       }
     },
     {
@@ -154,7 +157,10 @@
         "point_coordinates": [
           94,
           26
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Shifting_cultivation_in_India",
+        "annual_change_rate": "-160.0 sq km / year (-0.56%/yr)",
+        "change_rate_display": "-160.0 km²/yr"
       }
     },
     {
@@ -210,7 +216,10 @@
         "point_coordinates": [
           88.6,
           21.9
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Sundarbans",
+        "annual_change_rate": "+3.9 sq km / year (+0.18%/yr)",
+        "change_rate_display": "+3.9 km²/yr"
       }
     },
     {
@@ -278,7 +287,10 @@
         "point_coordinates": [
           82,
           17.2
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Eastern_Ghats",
+        "annual_change_rate": "-28.5 sq km / year (-0.15%/yr)",
+        "change_rate_display": "-28.5 km²/yr"
       }
     },
     {
@@ -334,7 +346,10 @@
         "point_coordinates": [
           80.2,
           22.8
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Central_Highlands_(India)",
+        "annual_change_rate": "+11.2 sq km / year (+0.08%/yr)",
+        "change_rate_display": "+11.2 km²/yr"
       }
     },
     {
@@ -370,7 +385,10 @@
         "point_coordinates": [
           79.08,
           30.92
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Gangotri_Glacier",
+        "annual_change_rate": "-26.8 m / year snout retreat",
+        "change_rate_display": "-26.8 m/yr retreat"
       }
     },
     {
@@ -406,7 +424,10 @@
         "point_coordinates": [
           77.1,
           35.5
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Siachen_Glacier",
+        "annual_change_rate": "-17.5 m / year terminus retreat",
+        "change_rate_display": "-17.5 m/yr retreat"
       }
     },
     {
@@ -442,7 +463,10 @@
         "point_coordinates": [
           79.05,
           30.75
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Chorabari_Glacier",
+        "annual_change_rate": "-11.8 m / year terminus retreat",
+        "change_rate_display": "-11.8 m/yr retreat"
       }
     },
     {
@@ -478,7 +502,10 @@
         "point_coordinates": [
           88.22,
           27.75
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Zemu_Glacier",
+        "annual_change_rate": "-19.3 m / year snout retreat",
+        "change_rate_display": "-19.3 m/yr retreat"
       }
     },
     {
@@ -514,7 +541,10 @@
         "point_coordinates": [
           75.33,
           34.18
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Kolhai_Glacier",
+        "annual_change_rate": "-15.1 m / year terminus retreat",
+        "change_rate_display": "-15.1 m/yr retreat"
       }
     },
     {
@@ -550,7 +580,10 @@
         "point_coordinates": [
           77.62,
           32.25
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Bara_Shigri",
+        "annual_change_rate": "-23.7 m / year snout retreat",
+        "change_rate_display": "-23.7 m/yr retreat"
       }
     },
     {
@@ -606,7 +639,10 @@
         "point_coordinates": [
           77.15,
           28.6
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/National_Capital_Region_(India)",
+        "annual_change_rate": "+45.2 sq km / year (+9.3%/yr)",
+        "change_rate_display": "+45.2 km²/yr sprawl"
       }
     },
     {
@@ -662,7 +698,10 @@
         "point_coordinates": [
           77.6,
           12.97
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Bangalore",
+        "annual_change_rate": "+19.2 sq km / year (+11.6%/yr)",
+        "change_rate_display": "+19.2 km²/yr sprawl"
       }
     },
     {
@@ -718,7 +757,10 @@
         "point_coordinates": [
           72.95,
           19.12
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Mumbai_Metropolitan_Region",
+        "annual_change_rate": "+22.7 sq km / year (+6.5%/yr)",
+        "change_rate_display": "+22.7 km²/yr sprawl"
       }
     },
     {
@@ -774,7 +816,10 @@
         "point_coordinates": [
           78.45,
           17.4
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Hyderabad",
+        "annual_change_rate": "+16.9 sq km / year (+8.9%/yr)",
+        "change_rate_display": "+16.9 km²/yr sprawl"
       }
     },
     {
@@ -830,7 +875,10 @@
         "point_coordinates": [
           80.2,
           13
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Chennai_Metropolitan_Area",
+        "annual_change_rate": "+14.3 sq km / year (+7.2%/yr)",
+        "change_rate_display": "+14.3 km²/yr sprawl"
       }
     },
     {
@@ -884,7 +932,10 @@
         "point_coordinates": [
           88.15,
           21.6
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Sagar_Island",
+        "annual_change_rate": "-13.1 m / year shoreline loss",
+        "change_rate_display": "-13.1 m/yr erosion"
       }
     },
     {
@@ -934,7 +985,10 @@
         "point_coordinates": [
           86.95,
           20.62
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Satabhaya",
+        "annual_change_rate": "-16.4 m / year beach retreat",
+        "change_rate_display": "-16.4 m/yr erosion"
       }
     },
     {
@@ -984,7 +1038,10 @@
         "point_coordinates": [
           76.28,
           9.7
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Chellanam",
+        "annual_change_rate": "-5.8 m / year barrier retreat",
+        "change_rate_display": "-5.8 m/yr erosion"
       }
     },
     {
@@ -1030,7 +1087,10 @@
         "point_coordinates": [
           79.83,
           11.93
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Pondicherry",
+        "annual_change_rate": "-7.2 m / year downdrift erosion",
+        "change_rate_display": "-7.2 m/yr erosion"
       }
     },
     {
@@ -1080,7 +1140,10 @@
         "point_coordinates": [
           72.65,
           21.6
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Gulf_of_Khambhat",
+        "annual_change_rate": "-8.9 m / year bluff collapse",
+        "change_rate_display": "-8.9 m/yr erosion"
       }
     },
     {
@@ -1136,7 +1199,10 @@
         "point_coordinates": [
           85.35,
           19.68
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Chilika_Lake",
+        "annual_change_rate": "+9.5 sq km / year (+1.1%/yr post-dredging)",
+        "change_rate_display": "+9.5 km²/yr recovery"
       }
     },
     {
@@ -1192,7 +1258,10 @@
         "point_coordinates": [
           76.38,
           9.65
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Vembanad",
+        "annual_change_rate": "-4.2 sq km / year (-1.7%/yr)",
+        "change_rate_display": "-4.2 km²/yr contraction"
       }
     },
     {
@@ -1248,7 +1317,10 @@
         "point_coordinates": [
           74.58,
           34.35
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Wular_Lake",
+        "annual_change_rate": "-3.9 sq km / year (-2.1%/yr)",
+        "change_rate_display": "-3.9 km²/yr contraction"
       }
     },
     {
@@ -1304,7 +1376,10 @@
         "point_coordinates": [
           93.82,
           24.52
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Loktak_Lake",
+        "annual_change_rate": "-3.2 sq km / year (-1.2%/yr phumdi loss)",
+        "change_rate_display": "-3.2 km²/yr contraction"
       }
     },
     {
@@ -1360,7 +1435,10 @@
         "point_coordinates": [
           81.4,
           16.65
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Kolleru_Lake",
+        "annual_change_rate": "-2.8 sq km / year (-1.5%/yr)",
+        "change_rate_display": "-2.8 km²/yr contraction"
       }
     },
     {
@@ -1416,7 +1494,10 @@
         "point_coordinates": [
           75.05,
           26.92
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Sambhar_Salt_Lake",
+        "annual_change_rate": "-3.4 sq km / year (-1.8%/yr)",
+        "change_rate_display": "-3.4 km²/yr contraction"
       }
     },
     {
@@ -1472,7 +1553,10 @@
         "point_coordinates": [
           72.2,
           27
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Thar_Desert",
+        "annual_change_rate": "+165.0 sq km / year (+0.35%/yr)",
+        "change_rate_display": "+165.0 km²/yr drift"
       }
     },
     {
@@ -1528,7 +1612,10 @@
         "point_coordinates": [
           76.65,
           27.95
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Aravalli_Range",
+        "annual_change_rate": "+18.5 sq km / year gap widening",
+        "change_rate_display": "+18.5 km²/yr breach"
       }
     },
     {
@@ -1584,7 +1671,10 @@
         "point_coordinates": [
           77.6,
           14.68
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Rayalaseema",
+        "annual_change_rate": "+42.0 sq km / year scrub transition",
+        "change_rate_display": "+42.0 km²/yr scrub"
       }
     },
     {
@@ -1640,7 +1730,10 @@
         "point_coordinates": [
           78.2,
           26.3
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Chambal_River",
+        "annual_change_rate": "+7.8 sq km / year gully advance",
+        "change_rate_display": "+7.8 km²/yr gully"
       }
     },
     {
@@ -1696,7 +1789,10 @@
         "point_coordinates": [
           71.1,
           23.4
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Rann_of_Kutch",
+        "annual_change_rate": "+24.0 sq km / year prosopis expansion",
+        "change_rate_display": "+24.0 km²/yr invasion"
       }
     },
     {
@@ -1752,7 +1848,10 @@
         "point_coordinates": [
           75.85,
           30.25
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Indo-Gangetic_Plain",
+        "annual_change_rate": "+2.6% extraction stage / year",
+        "change_rate_display": "+2.6%/yr depletion"
       }
     },
     {
@@ -1808,7 +1907,10 @@
         "point_coordinates": [
           72.75,
           26.25
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Marwar",
+        "annual_change_rate": "+3.1% extraction stage / year",
+        "change_rate_display": "+3.1%/yr depletion"
       }
     },
     {
@@ -1864,7 +1966,10 @@
         "point_coordinates": [
           77.2,
           28.6
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Yamuna",
+        "annual_change_rate": "+1.8% extraction stage / year",
+        "change_rate_display": "+1.8%/yr depletion"
       }
     },
     {
@@ -1920,7 +2025,10 @@
         "point_coordinates": [
           77.5,
           11
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Cauvery",
+        "annual_change_rate": "+1.5% extraction stage / year",
+        "change_rate_display": "+1.5%/yr depletion"
       }
     },
     {
@@ -1976,7 +2084,10 @@
         "point_coordinates": [
           86,
           25.5
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Arsenic_contamination_of_groundwater",
+        "annual_change_rate": "+1.2% extraction stage / year",
+        "change_rate_display": "+1.2%/yr depletion"
       }
     },
     {
@@ -2030,7 +2141,10 @@
         "point_coordinates": [
           86.9,
           26.1
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Kosi_River",
+        "annual_change_rate": "-0.48 km / year westward displacement",
+        "change_rate_display": "-0.48 km/yr migration"
       }
     },
     {
@@ -2084,7 +2198,10 @@
         "point_coordinates": [
           94.2,
           26.95
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Majuli",
+        "annual_change_rate": "-5.1 sq km / year toe erosion",
+        "change_rate_display": "-5.1 km²/yr toe loss"
       }
     },
     {
@@ -2134,7 +2251,10 @@
         "point_coordinates": [
           88,
           24.9
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Malda_district",
+        "annual_change_rate": "-0.35 km / year meander sweep",
+        "change_rate_display": "-0.35 km/yr cutbank"
       }
     },
     {
@@ -2194,7 +2314,10 @@
         "point_coordinates": [
           74.2,
           28.8
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Sarasvati_River",
+        "annual_change_rate": "Geological channel desiccated (relic)",
+        "change_rate_display": "Relic paleochannel"
       }
     },
     {
@@ -2248,7 +2371,10 @@
         "point_coordinates": [
           89.1,
           26
-        ]
+        ],
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Teesta_River",
+        "annual_change_rate": "Historic mega-avulsion complete (Brahmaputra confluence)",
+        "change_rate_display": "Avulsed to Jamuna"
       }
     }
   ]

@@ -1449,7 +1449,15 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         source: 'environmental-change',
         filter: ['==', ['geometry-type'], 'Polygon'],
         layout: {
-          'text-field': ['concat', ['get', 'name'], '\nΔ ', ['coalesce', ['get', 'delta_text'], '']],
+          'text-field': [
+            'concat',
+            ['get', 'name'],
+            '\nΔ ',
+            ['coalesce', ['get', 'delta_text'], ''],
+            ' (',
+            ['coalesce', ['get', 'change_rate_display'], ''],
+            ')'
+          ],
           'text-size': [
             'interpolate', ['linear'], ['zoom'],
             4, 9.5,

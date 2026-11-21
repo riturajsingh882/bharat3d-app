@@ -19,7 +19,8 @@
         "color": "#d97706",
         "border_color": "#f59e0b",
         "trade_connections": "Mesopotamia (Meluhha trade), Persian Gulf (Dilmun), Oman (Magan)",
-        "highlights": "Grid-pattern urban planning, underground drainage, standardized fired brick ratios (1:2:4), tidal dockyard at Lothal, reservoirs at Dholavira."
+        "highlights": "Grid-pattern urban planning, underground drainage, standardized fired brick ratios (1:2:4), tidal dockyard at Lothal, reservoirs at Dholavira.",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Indus_Valley_Civilisation"
       },
       "geometry": {
         "type": "Polygon",
@@ -103,7 +104,8 @@
         "color": "#059669",
         "border_color": "#10b981",
         "trade_connections": "Uttarapatha (Northern Trunk Route) connecting Taxila to Champa & Tamralipti",
-        "highlights": "Second Urbanization of India, emergence of punch-marked coinage, life of Gautama Buddha and Vardhamana Mahavira."
+        "highlights": "Second Urbanization of India, emergence of punch-marked coinage, life of Gautama Buddha and Vardhamana Mahavira.",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Mahajanapadas"
       },
       "geometry": {
         "type": "Polygon",
@@ -179,7 +181,8 @@
         "color": "#c2410c",
         "border_color": "#ea580c",
         "trade_connections": "Trans-continental links to Hellenistic Kingdoms (Egypt, Syria, Macedonia, Cyrene, Epirus)",
-        "highlights": "First political unification of the subcontinent, Dhamma governance, edicts engraved on rock faces and polished sandstone monoliths, construction of the Grand Trunk precursor."
+        "highlights": "First political unification of the subcontinent, Dhamma governance, edicts engraved on rock faces and polished sandstone monoliths, construction of the Grand Trunk precursor.",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Maurya_Empire"
       },
       "geometry": {
         "type": "Polygon",
@@ -279,7 +282,8 @@
         "color": "#b45309",
         "border_color": "#f59e0b",
         "trade_connections": "Maritime connections with Southeast Asia (Suvarnabhumi) and Sasanian Persia / Rome",
-        "highlights": "Zenith of Sanskrit literature (Kalidasa), mathematics (Aryabhata, discovery of zero/decimal system), metallurgy (Iron Pillar of Delhi), and founding of Nalanda Mahavihara."
+        "highlights": "Zenith of Sanskrit literature (Kalidasa), mathematics (Aryabhata, discovery of zero/decimal system), metallurgy (Iron Pillar of Delhi), and founding of Nalanda Mahavihara.",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Gupta_Empire"
       },
       "geometry": {
         "type": "Polygon",
@@ -359,7 +363,8 @@
         "color": "#0284c7",
         "border_color": "#38bdf8",
         "trade_connections": "Silk routes via Central Asia, maritime connections across Arabian Sea and Persian Gulf",
-        "highlights": "Indo-Islamic architectural synthesis (Qutb complex, Alai Darwaza), introduction of paper, spinning wheel, monetization through silver tanka and copper jital."
+        "highlights": "Indo-Islamic architectural synthesis (Qutb complex, Alai Darwaza), introduction of paper, spinning wheel, monetization through silver tanka and copper jital.",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Delhi_Sultanate"
       },
       "geometry": {
         "type": "Polygon",
@@ -443,7 +448,8 @@
         "color": "#15803d",
         "border_color": "#22c55e",
         "trade_connections": "Global textile exporter producing ~25% of world industrial output (calicoes, muslins, spices)",
-        "highlights": "Monumental architecture (Taj Mahal, Red Fort, Humayun's Tomb, Fatehpur Sikri), standardized silver rupee, revenue assessment under Raja Todar Mal."
+        "highlights": "Monumental architecture (Taj Mahal, Red Fort, Humayun's Tomb, Fatehpur Sikri), standardized silver rupee, revenue assessment under Raja Todar Mal.",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Mughal_Empire"
       },
       "geometry": {
         "type": "Polygon",
@@ -539,7 +545,8 @@
         "color": "#ea580c",
         "border_color": "#f97316",
         "trade_connections": "West coast ports (Kalyan, Chaul, Vijaydurg) and inland Deccan-Gangetic caravan routes",
-        "highlights": "Naval power under Kanhoji Angre, light cavalry guerrilla tactics (Ganimi Kava), extensive hill fort architecture across the Western Ghats."
+        "highlights": "Naval power under Kanhoji Angre, light cavalry guerrilla tactics (Ganimi Kava), extensive hill fort architecture across the Western Ghats.",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Maratha_Empire"
       },
       "geometry": {
         "type": "Polygon",
@@ -619,7 +626,8 @@
         "color": "#be185d",
         "border_color": "#f43f5e",
         "trade_connections": "Extensive broad-gauge railway network, major steamship ports (Bombay, Calcutta, Madras, Karachi)",
-        "highlights": "Construction of the Indian Railway network (1853), telegraph lines, Survey of India Great Trigonometrical Survey under Lambton & Everest, codification of Indian Penal Code."
+        "highlights": "Construction of the Indian Railway network (1853), telegraph lines, Survey of India Great Trigonometrical Survey under Lambton & Everest, codification of Indian Penal Code.",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/British_Raj"
       },
       "geometry": {
         "type": "Polygon",
@@ -711,7 +719,8 @@
         "color": "#2563eb",
         "border_color": "#60a5fa",
         "trade_connections": "National transport integration, resettlement corridors, national highway planning",
-        "highlights": "Birth of the independent sovereign nation (August 15, 1947), integration of Junagadh, Hyderabad (Operation Polo), and Jammu & Kashmir into the Republic."
+        "highlights": "Birth of the independent sovereign nation (August 15, 1947), integration of Junagadh, Hyderabad (Operation Polo), and Jammu & Kashmir into the Republic.",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Partition_of_India"
       },
       "geometry": {
         "type": "Polygon",
@@ -803,7 +812,8 @@
         "color": "#7c3aed",
         "border_color": "#a855f7",
         "trade_connections": "Five-Year Plan developmental industrial corridors, Bhakra-Nangal, Hirakud, DVC multipurpose dams",
-        "highlights": "Creation of linguistic states (Andhra Pradesh, Mysore, Kerala, Madras, Bombay State, Madhya Pradesh), landmark foundation for modern federal cooperative governance."
+        "highlights": "Creation of linguistic states (Andhra Pradesh, Mysore, Kerala, Madras, Bombay State, Madhya Pradesh), landmark foundation for modern federal cooperative governance.",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/States_Reorganisation_Act,_1956"
       },
       "geometry": {
         "type": "Polygon",
@@ -894,7 +904,8 @@
         "color": "#0891b2",
         "border_color": "#0ea5e9",
         "trade_connections": "Modern pan-India transport corridors and maritime trade",
-        "highlights": "Creation of Uttarakhand, Chhattisgarh and Jharkhand (2000)."
+        "highlights": "Creation of Uttarakhand, Chhattisgarh and Jharkhand (2000).",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/States_and_union_territories_of_India"
       },
       "geometry": {
         "type": "Polygon",
@@ -985,7 +996,8 @@
         "color": "#7c3aed",
         "border_color": "#8b5cf6",
         "trade_connections": "Modern pan-India transport corridors and maritime trade",
-        "highlights": "Telangana created as the 29th state (2014)."
+        "highlights": "Telangana created as the 29th state (2014).",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Andhra_Pradesh_Reorganisation_Act,_2014"
       },
       "geometry": {
         "type": "Polygon",
@@ -1076,7 +1088,8 @@
         "color": "#C9A227",
         "border_color": "#D9B23C",
         "trade_connections": "Modern pan-India transport corridors and maritime trade",
-        "highlights": "28 States and 8 Union Territories; sovereign baseline per Survey of India."
+        "highlights": "28 States and 8 Union Territories; sovereign baseline per Survey of India.",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/India"
       },
       "geometry": {
         "type": "Polygon",

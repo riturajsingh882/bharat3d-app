@@ -26,7 +26,8 @@ import {
   Droplets,
   Building2,
   Sun,
-  Gauge
+  Gauge,
+  ExternalLink
 } from 'lucide-react';
 import type { SelectedFeatureInfo } from '../types';
 import { metersToFeetInches } from '../utils/elevation';
@@ -145,7 +146,9 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
 
   const { type, properties, demographics } = feature;
   const displayName = properties.clean_name || properties.shapeName || properties.name || feature.name;
+  const explicitWikiUrl = properties.wikipedia_url;
   const wikiName = (properties.name || displayName || '').replace(/\s*\([^)]*\)\s*$/, '').trim();
+  const wikiUrl = explicitWikiUrl || (wikiName ? `https://en.wikipedia.org/wiki/${encodeURIComponent(wikiName.replace(/\s+/g, '_'))}` : undefined);
   const stateLandmarks = type === 'state' ? STATE_LANDMARKS[properties.shapeName || displayName] : undefined;
   const stateCrops = type === 'state' ? STATE_CROPS[properties.shapeName || displayName] : undefined;
   const stateWildlife = type === 'state' ? STATE_WILDLIFE[properties.shapeName || displayName] : undefined;
@@ -181,6 +184,25 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
           )}
           {properties.state_name && type === 'district' && (
             <p className="font-mono text-sm text-neutral-300 font-bold mt-1">State: {properties.state_name}</p>
+          )}
+
+          {/* Direct Wikipedia Reference Button with Serif 'W' Badge */}
+          {wikiUrl && (
+            <div className="mt-2.5">
+              <a
+                href={wikiUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40 text-xs font-mono font-bold transition-all shadow-sm cursor-pointer group"
+                title={`Open Wikipedia article for ${displayName}`}
+              >
+                <span className="w-4 h-4 rounded bg-white text-black font-serif font-black text-[11px] flex items-center justify-center leading-none select-none">
+                  W
+                </span>
+                <span className="group-hover:underline font-sans text-xs">Wikipedia</span>
+                <ExternalLink className="w-3 h-3 text-neutral-400 group-hover:text-white ml-0.5" />
+              </a>
+            </div>
           )}
         </div>
         <button
@@ -647,6 +669,18 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
                           : 'bg-amber-950 text-amber-300 border border-amber-500/30'
                       }`}>
                         {properties.delta_text}
+                      </span>
+                    </div>
+                  )}
+
+                  {properties.annual_change_rate && (
+                    <div className="pt-2 border-t border-white/10 flex justify-between items-center text-xs">
+                      <span className="text-amber-400 font-bold flex items-center gap-1 text-[11px]">
+                        <Activity className="w-3.5 h-3.5 text-amber-400" />
+                        <span>Annual Change Rate:</span>
+                      </span>
+                      <span className="font-extrabold text-amber-200 font-mono text-[11px] bg-amber-950/70 px-2 py-0.5 rounded border border-amber-500/30">
+                        {properties.annual_change_rate}
                       </span>
                     </div>
                   )}

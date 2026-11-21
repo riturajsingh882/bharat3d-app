@@ -214,7 +214,7 @@ export function App() {
       .catch(err => console.error('Failed to load environmental_change.geojson:', err));
   }, []);
 
-  const handleSelectHotspot = (hotspot: { name: string; lat: number; lng: number; zoom?: number }) => {
+  const handleSelectHotspot = (hotspot: { id?: string; name: string; lat: number; lng: number; zoom?: number }) => {
     if (!activeLayers.has('environmental_change')) {
       setActiveLayers(prev => new Set(prev).add('environmental_change'));
     }
@@ -229,21 +229,12 @@ export function App() {
 
     const match = environmentalFeatures.find(f => {
       const p = f.properties || {};
+      if (hotspot.id && (p.id === hotspot.id || f.id === hotspot.id)) return true;
       const fName = (p.name || '').toLowerCase();
-      const hName = hotspot.name.toLowerCase();
-      return fName.includes(hName) || hName.includes(fName) ||
-        (hName.includes('gangotri') && fName.includes('gangotri')) ||
-        (hName.includes('siachen') && fName.includes('siachen')) ||
-        (hName.includes('delhi') && fName.includes('delhi')) ||
-        (hName.includes('bengaluru') && fName.includes('bengaluru')) ||
-        (hName.includes('sagar') && fName.includes('sagar')) ||
-        (hName.includes('satabhaya') && fName.includes('satabhaya')) ||
-        (hName.includes('chilika') && fName.includes('chilika')) ||
-        (hName.includes('vembanad') && fName.includes('vembanad')) ||
-        (hName.includes('thar') && fName.includes('thar')) ||
-        (hName.includes('punjab') && fName.includes('punjab')) ||
-        (hName.includes('kosi') && fName.includes('kosi')) ||
-        (hName.includes('majuli') && fName.includes('majuli'));
+      const hName = (hotspot.name || '').toLowerCase();
+      if (fName.includes(hName) || hName.includes(fName)) return true;
+      const parts = hName.split(/[\s&,/()-]+/).filter(w => w.length > 2);
+      return parts.some(w => fName.includes(w));
     });
 
     if (match) {

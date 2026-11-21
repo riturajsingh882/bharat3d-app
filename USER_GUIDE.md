@@ -85,9 +85,9 @@ The top navigation bar acts as the central command hub for global views, state c
 
 ### 3.2 Universal Search & Fly-To Autocomplete
 - Located in the center of the navigation bar.
-- **Search Capabilities**: A data-driven pre-indexed search engine indexed across **States, Union Territories, Districts, Cities, Rivers, Mountain Ranges, Peaks, Archaeological Sites, National Highways (e.g. `NH 44`, `Delhi-Mumbai Expressway`), Historical Empires, and Trade Routes**.
-- **Live Autocomplete**: A dropdown opens instantly with ranked, diacritic-insensitive fuzzy matches, showing category badges (e.g., `STATE`, `DISTRICT`, `RIVER`, `HIGHWAY`, `ARCHAEOLOGY`, `TRADE ROUTE`) and secondary regional metadata.
-- **Fly-To & Exact Highlight**: Selecting any result flies and fits the 3D camera to the target coordinates **and places an illuminated gold vector highlight** (gold contour for polygons/lines and a pulsating marker for point sites). The highlight clears automatically upon subsequent searches or canvas clicks.
+- **Search Capabilities**: A data-driven pre-indexed search engine indexed across **States, Union Territories, Districts, Cities, Rivers, Mountain Ranges, Peaks, Archaeological Sites, Ancient Ports & Emporia, National Highways (e.g. `NH 44`, `Delhi-Mumbai Expressway`), Historical Empires, and Trade Routes** (over 1,070 indexed entities).
+- **Live Autocomplete**: A dropdown opens instantly with ranked, diacritic-insensitive fuzzy matches, showing category badges (e.g., `STATE`, `DISTRICT`, `RIVER`, `HIGHWAY`, `ARCHAEOLOGY`, `PORT`, `TRADE ROUTE`, `EMPIRE`) and secondary regional metadata.
+- **Fly-To & Exact Highlight**: Selecting any result flies and fits the 3D camera to the target coordinates **and places an illuminated gold vector highlight** (gold contour for polygons/lines and a pulsating marker for point sites and ports). The highlight clears automatically upon subsequent searches or canvas clicks.
 
 ### 3.3 State vs State Comparison Studio
 - Click the **Compare** button (scale icon, between **Basemap** and **3D Relief**) to open the dedicated comparison modal.
@@ -388,7 +388,7 @@ Clicking any feature on the map automatically opens the in-depth Intelligence Do
 3. **National Highway & Expressway Profile**: Corridor designation, terminal cities, length in kilometers, connecting states, lane count, toll classification, and governing authority (NHAI / MoRTH).
 4. **Historical Empire Dossier**: Reigning dynastic era, approximate active years, historical capital, notable rulers/founders, territorial extent, primary trade commodities, and cultural significance.
 5. **Archaeological Site Dossier**: Historical era/civilization, excavators, discovery year, key excavated artifacts, UNESCO designation, geographic coordinates, and official ASI citations.
-6. **Historical Trade Route Dossier**: Route classification, termini, historical mileage, major trade stations, commodities transported, and accounts from ancient travelers.
+6. **Historical Trade Route, Port & Railway Dossier**: Categorical classification, termini or geographic coordinates, historical mileage, major trade stations/connected hinterlands, cargo/commodities transported, accounts from ancient chroniclers & primary texts, and verified institutional citations.
 7. **Natural Disaster & Seismic Risk Dossier**: BIS 1893 seismic zone classification, zone factor $Z$, peak ground acceleration, fault dynamics, historical earthquake records with magnitude, focal depth, and impact analysis.
 8. **Hydrological River Basin Dossier**: Total length, origin elevation, outflow destination, major dams, confluences, and riparian states.
 9. **Soil Geography Dossier**: ICAR classification, parent rock, chemical composition, moisture retention capacity, agricultural suitability, and geographic extent.
@@ -405,9 +405,16 @@ Located on the bottom right of the screen, dynamic floating legend cards update 
 - **Population Density**: 7-stop plasma gradient legend ($<30$ to $10,000+\text{ persons}/km^2$).
 - **Soil Geography (ICAR)**: Color chips for the 8 primary soil classifications.
 - **National Highways & Expressways**: Color key for Expressways (green), National Highways (amber), and State Highways/corridors (slate).
-- **Civilizations & Archaeology**: Category chips for Indus Valley Settlements (teal), Ancient Universities (amber), Buddhist Monasteries (violet), Rock-Cut Temples (rose), and Ancient Ports (sky blue).
-- **Disaster & Seismic Risk**: Risk factor color scale for Zone V (red), Zone IV (amber), Zone III (yellow), and Epicenter glyphs.
-- **Historical Trade Routes**: Legend indicating terrestrial highways and maritime spice corridors.
+- **Civilizations & Archaeology**: Category chips for Indus Valley Settlements (teal `#2dd4bf`), Ancient Universities (amber `#f59e0b`), Buddhist Monasteries (violet `#a855f7`), Rock-Cut Temples (rose `#f43f5e`), and Ancient Ports (sky blue `#0ea5e9`).
+- **Disaster & Seismic Risk**: Risk factor color scale for Zone V (red), Zone IV (amber), Zone III (yellow), and Epicenter warning glyphs.
+- **Trade & Connectivity (7 Foundations)**: Displays an active sub-pillar counter (e.g. `7/7`), with dynamic keys for:
+  - *Ancient Trade Networks* (Amber `#f59e0b`)
+  - *Indian Ocean Maritime* (Sky Blue `#0ea5e9`)
+  - *Silk Road Connections* (Purple `#a855f7`)
+  - *Spice Trade Routes* (Emerald `#10b981`)
+  - *Ancient Ports (10 Emporia)* (Gold `#fbbf24` dot)
+  - *Colonial Trade Networks* (Indigo `#6366f1`)
+  - *Historical Railways (1853–1905)* (Crimson `#e11d48` dashed track)
 
 ---
 

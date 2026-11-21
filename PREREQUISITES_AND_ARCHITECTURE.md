@@ -238,21 +238,27 @@ Local geospatial vector files (`public/data/*.geojson`) are ingested asynchronou
 
 ### Phase 5: Animated Hydrological Network & Trade Route Shaders
 To simulate moving water currents through river channels and merchant movements along trade corridors:
-- A base glowing line is drawn.
+- A base glowing line is drawn (`rivers-layer`, `trade-glow`).
 - An animated overlay line uses an animated dasharray pattern:
 ```typescript
 let step = 0;
-const animateRivers = () => {
-  step = (step + 1) % 16;
+const animateVectors = () => {
+  step = (step + 1) % 32;
   if (map.getLayer('rivers-animated-flow')) {
-    map.setPaintProperty('rivers-animated-flow', 'line-dasharray', [
-      0.5, 4,
-      step / 4, 2
-    ]);
+    map.setPaintProperty('rivers-animated-flow', 'line-dasharray', [0.5, 4, step / 4, 2]);
   }
-  requestAnimationFrame(animateRivers);
+  if (map.getLayer('trade-flow')) {
+    map.setPaintProperty('trade-flow', 'line-dasharray', [1, 2, (step % 16) / 2, 2]);
+  }
+  requestAnimationFrame(animateVectors);
 };
 ```
+- **Historical Railway Cross-Tie Shaders**: Railway corridors use a specialized high-contrast dashed railbed styling (`trade-railways`) with `line-dasharray: [1, 1]` or cross-tie intervals in crimson (`#e11d48`) overlaid on a dark casing.
+- **Ancient Port Halos & Hit Buffers**: The 10 ancient maritime ports are rendered via a multi-tier WebGL point hierarchy:
+  - `trade-ports-halo`: A pulsating ambient glow ring (`#fbbf24`) with `circle-radius: 9` and `circle-opacity: 0.35`.
+  - `trade-ports-core`: High-contrast golden node with a pure white border.
+  - `trade-ports-labels`: Zoom-responsive typography anchored to port coordinates.
+  - `trade-ports-hit-target`: A 32px radius invisible touch circle for instant mobile selection.
 This produces smooth, pulsing flow vectors along all river courses and trade routes without WebGL re-binding overhead.
 
 ### Phase 6: Census 2011 Data Joining & Dynamic Choropleths
@@ -421,7 +427,7 @@ INTERACTIVE INDIA 3D DATA/
     │       ├── india_highways.geojson     <- 28 NH & Expressway corridors (MoRTH/NHAI)
     │       ├── historical_empires.geojson <- 13 Dynastic era territorial reconstructions
     │       ├── archaeological_sites.geojson <- 18 ASI-verified monumental sites
-    │       ├── historical_trade_routes.geojson <- Uttarapatha, Dakshinapatha & Spice routes
+    │       ├── historical_trade_routes.geojson <- 27 features across 7 foundations (routes, maritime, silk, spice, 10 ports, colonial, railways)
     │       ├── disaster_seismic_zones.geojson <- BIS 1893 seismic zones & M7+ epicenters
     │       ├── india_urban_nodes.geojson  <- Major urban city centers
     │       ├── elevation_high_points.json <- Precision summit coordinates & ft/in data

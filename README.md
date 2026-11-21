@@ -88,8 +88,15 @@ pnpm run preview
    - In-depth dossiers covering excavation history, key finds, and UNESCO status.
 
 4. **Historical Trade Routes, Maritime Networks & Railway Development:**
-   - 27 curated features across 7 foundations: Ancient Trade Networks, Indian Ocean Maritime, Silk Road Connections, Spice Trade Routes, 10 Ancient Ports & Emporia, Colonial Trade Networks, and Historical Railways (1853–1905).
-   - Animated directional flow shaders, dashed railway cross-ties, and glowing ancient port anchors with rich historical dossiers.
+   - 27 curated historical features across 7 foundations:
+     - *Ancient Trade Networks*: Uttarapatha (2,500 km), Dakshinapatha (2,100 km), Central Caravan Route (1,100 km).
+     - *Indian Ocean Maritime Routes*: Western Arabian Sea Monsoon Circuit (3,800 km), Bay of Bengal Suvarnabhumi Network (3,400 km).
+     - *Silk Road Connections*: Karakoram–Ladakh Feeder (950 km), Gandhara–Bactria Link (850 km), Sikkim–Chumbi Valley Route (780 km).
+     - *Spice Trade Routes*: Malabar Coast 'Black Gold' Pepper Route (850 km), Coromandel Spice & Textile Corridor (750 km).
+     - *Ancient Ports & Emporia*: 10 Monumental Seaports (Lothal, Barygaza, Muziris, Arikamedu, Tamralipti, Sopara, Poompuhar, Korkai, Kalyan, Nelcynda) with glowing halos and coordinate dossiers.
+     - *Colonial Trade Networks*: EIC Gangetic Factory Corridor (1,350 km), Bombay Cotton & Opium Artery (820 km), Coromandel Calico Corridor (680 km).
+     - *Historical Railway Development (1853–1905)*: GIPR 1853 (Asia's first line), East Indian Railway 1854, Madras Railway 1856, Imperial Trunk Grid (Dalhousie plan) with railway cross-tie styling.
+   - Interactive category sub-toggles, active pillar counter (`7/7`), "Select All" / "Clear", and dynamic active legend.
 
 5. **National Highways & Expressways (MoRTH / NHAI):**
    - 28 curated corridors: Tolled Expressways (green), National Highway grid (amber), and State Highways/coastal corridors (slate).

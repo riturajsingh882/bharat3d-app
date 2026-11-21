@@ -88,6 +88,15 @@ export type ReligionFilter =
   | 'buddhist'
   | 'jain';
 
+export type TradeCategory = 
+  | 'ancient_highway'
+  | 'maritime_route'
+  | 'silk_road'
+  | 'spice_route'
+  | 'ancient_port'
+  | 'colonial_network'
+  | 'historical_railway';
+
 export type BasemapStyle = 'dark' | 'satellite' | 'osm' | 'geoapify' | 'physical_tactile';
 
 export interface CameraPreset {

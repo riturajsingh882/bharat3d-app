@@ -87,9 +87,9 @@ pnpm run preview
    - Category color coding: Indus Valley Settlements (teal), Ancient Universities (amber), Buddhist Monasteries (violet), Rock-Cut Temples (rose), and Ancient Ports (sky blue).
    - In-depth dossiers covering excavation history, key finds, and UNESCO status.
 
-4. **Historical Trade Routes & Maritime Connectivity:**
-   - Animated trade corridors: Uttarapatha, Dakshinapatha, and the Indian Ocean Monsoon Spice Route.
-   - Traces ancient cargo, commodities, caravan stations, and classical accounts.
+4. **Historical Trade Routes, Maritime Networks & Railway Development:**
+   - 27 curated features across 7 foundations: Ancient Trade Networks, Indian Ocean Maritime, Silk Road Connections, Spice Trade Routes, 10 Ancient Ports & Emporia, Colonial Trade Networks, and Historical Railways (1853–1905).
+   - Animated directional flow shaders, dashed railway cross-ties, and glowing ancient port anchors with rich historical dossiers.
 
 5. **National Highways & Expressways (MoRTH / NHAI):**
    - 28 curated corridors: Tolled Expressways (green), National Highway grid (amber), and State Highways/coastal corridors (slate).

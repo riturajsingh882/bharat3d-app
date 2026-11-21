@@ -163,12 +163,56 @@ Overlays 18 verified monumental archaeological sites documented by the **Archaeo
 
 Clicking any archaeological site opens an in-depth dossier detailing its historical period, excavators, discovery year, key excavated artifacts, UNESCO designation, and official ASI citations.
 
-### 4.3 Historical Trade Routes & Maritime Connectivity
-Visualizes the great transcontinental highways and maritime spice corridors that linked the Indian subcontinent to world trade:
-- **Uttarapatha (Northern High Road / Grand Trunk Precursor)**: From Taxila in the northwest across the Punjab and Gangetic plains to Pataliputra and the Bengal delta port of Tamralipti (~2,500 km).
-- **Dakshinapatha (Southern Transpeninsular Route)**: Connecting Pataliputra and Ujjain through the Narmada and Godavari crossings to Pratishthana, Amaravati, and southern trading emporia (~1,800 km).
-- **Monsoon Maritime Spice Network**: The ancient Indian Ocean maritime trade routes linking the Malabar and Coromandel coasts to the Red Sea, Persian Gulf, Sri Lanka, and the Malacca Strait (~4,200 km).
-- **Dynamic Water & Caravan Animation**: Features animated directional dasharrays simulating caravan and merchant vessel movements. Clicking a route reveals historical commodities traded (spices, silk, muslin, pepper, lapis lazuli), terminal ports, and accounts from Megasthenes, Xuanzang, and the *Periplus of the Erythraean Sea*.
+### 4.3 Historical Trade Routes, Maritime Networks & Railway Development
+Encompasses 27 verified historical features across 7 foundations, accessible with granular category sub-toggles and master overlay controls:
+
+1. **Ancient Trade Networks (Terrestrial Highways)** (Amber `#f59e0b`):
+   - **Uttarapatha (Northern Highway / Grand Trunk Precursor)**: From Taxila in Gandhara across Lahore, Delhi, Mathura, Prayagraj, and Varanasi to Pataliputra and Tamralipti (~2,500 km).
+   - **Dakshinapatha (Great Southern Highway)**: Connecting Varanasi and Ujjayini through Narmada river crossings (Maheshwar) to Pratishthana (Paithan), Tagara, Amaravati, and Madurai (~2,100 km).
+   - **Central India Caravan Route**: Connecting Mathura, Gwalior, Vidisha, Ujjayini, and Mandu directly to the western seaport of Barygaza (~1,100 km).
+
+2. **Indian Ocean Maritime Routes** (Sky Blue `#0ea5e9`):
+   - **Western Indian Ocean Monsoon Route**: Transoceanic sailing route utilizing Hippalus summer monsoon winds connecting Red Sea / Roman Egyptian ports to Barygaza, Sopara, Muziris, and Nelcynda (~3,800 km).
+   - **Bay of Bengal Maritime Network**: Ancient seafaring network linking Tamralipti, Arikamedu, and Nagapattinam across the Bay of Bengal to Kedah, Srivijaya (Sumatra), and China (~3,400 km).
+
+3. **Silk Road Connections** (Purple `#a855f7`):
+   - **Karakoram & Ladakh Silk Route Feeder**: The highest trade route on Earth (Srinagar ↔ Leh ↔ Khardung La ↔ Karakoram Pass ↔ Yarkand/Kashgar, ~950 km) linking the Indian subcontinent to the trans-Eurasian Silk Road.
+   - **Gandhara–Khyber Silk Road Link**: Ancient defile (Taxila ↔ Peshawar ↔ Khyber Pass ↔ Kabul ↔ Bamiyan ↔ Balkh / Bactria, ~850 km) transmitting Buddhist art, manuscripts, and merchants.
+   - **Sikkim–Chumbi Valley Route (Tea Horse & Silk Branch)**: Linking Bengal (Siliguri/Kalimpong) via Nathu La and Jelep La passes to the Chumbi Valley and Lhasa (~780 km).
+
+4. **Spice Trade Routes** (Emerald `#10b981`):
+   - **Malabar Coast 'Black Gold' Pepper Route**: Coastal cabotage circuit (Honnavar ↔ Cannanore ↔ Calicut ↔ Muziris ↔ Nelcynda ↔ Quilon ↔ Kanyakumari, ~850 km) that dominated the ancient global trade in Tellicherry black pepper and cardamom.
+   - **Coromandel Spice & Textile Coastal Route**: Coastal corridor (Pulicat ↔ Madras ↔ Arikamedu ↔ Poompuhar ↔ Nagapattinam ↔ Korkai, ~750 km) exchanging dyed cottons and Gulf of Mannar pearls.
+
+5. **Ancient Ports & Emporia (Monumental Seaports)** (Gold `#fbbf24`):
+   - **10 Verified Archaeological Maritime Ports**:
+     - *Lothal* (World's earliest tidal dockyard, Mature Harappan c. 2400 BCE, Gujarat)
+     - *Barygaza / Bharuch* (Chief Roman export gateway at Narmada mouth)
+     - *Muziris / Pattanam* (Roman pepper capital with Temple of Augustus in Kerala)
+     - *Arikamedu / Poduke* (Roman amphorae and glass bead manufacturing port, Puducherry)
+     - *Tamralipti / Tamluk* (Bengal delta port of embarkation for Southeast Asia and China)
+     - *Sopara / Shurparaka* (Konkan Ashokan Rock Edict port, Maharashtra)
+     - *Poompuhar / Kaveripattinam* (Sangam Chola maritime port capital, Tamil Nadu)
+     - *Korkai* (Pandyan pearl-fishery capital, Gulf of Mannar)
+     - *Kalyan / Calliena* (Satavahana trade port connected to Nana Ghat pass)
+     - *Nelcynda / Niranam* (Ancient Malabar backwater pepper mart)
+
+6. **Colonial Trade Networks** (Indigo `#6366f1`):
+   - **East India Company Gangetic Factory Corridor**: Riverine and road artery (Calcutta ↔ Murshidabad ↔ Patna ↔ Ghazipur ↔ Mirzapur ↔ Agra, ~1,350 km) extracting opium, saltpeter, and silk.
+   - **Bombay Hinterland Cotton & Opium Artery**: Commodity corridor (Nagpur / Berar Cotton Belt ↔ Khandesh ↔ Thull Ghat ↔ Bombay Port, ~820 km) that transformed Bombay into 'Cottonopolis'.
+   - **Coromandel Calico & Indigo Corridor**: Textile procurement artery (Madras ↔ Arcot ↔ Salem ↔ Masulipatnam, ~680 km).
+
+7. **Historical Railway Development (1853–1905)** (Crimson `#e11d48`):
+   - **Great Indian Peninsula Railway (GIPR, 1853)**: Asia's first passenger line (inaugurated 16 April 1853, Bombay Bori Bunder to Thane, later traversing Thal Ghat and Bhor Ghat, ~240 km).
+   - **East Indian Railway (EIR, 1854)**: Howrah to Hooghly and Raniganj coalfields, extending across the Gangetic plain to Delhi (~1,500 km).
+   - **Madras Railway (1856)**: First transpeninsular railway linking Royapuram (Madras) to Beypore (Calicut) on the Arabian Sea across the Palghat Gap (~660 km).
+   - **Imperial Trunk Railway Grid (1853–1880s)**: Governor-General Lord Dalhousie's foundational master plan linking India's presidency ports and strategic frontiers (~3,200 km).
+
+- **Dynamic Visuals & Cartographic Shaders**:
+  - Animated directional dasharray flows for maritime voyages and overland caravans.
+  - Dashed cross-tie rail styling for historical railway lines.
+  - Glowing circular anchors and spot labels for ancient ports.
+  - Granular category sub-toggles with active count indicators and "Select All" / "Clear" buttons.
 
 ### 4.4 National Highways & Expressways (MoRTH / NHAI Corridors)
 Overlays 28 curated major national transport corridors classified into three visual tiers:

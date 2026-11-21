@@ -161,16 +161,29 @@ for (const f of read('historical_empires').features) {
   }
 }
 
-// 9. Trade routes (lines -> fit bounds)
+// 9. Trade routes & Ancient Ports
 for (const f of read('historical_trade_routes').features) {
   const p = f.properties || {};
-  add({
-    name: p.name,
-    type: 'trade_route',
-    key: p.name,
-    sub: p.era ? `Trade Route · ${p.era}` : 'Historical Trade Route',
-    bbox: bboxOf(f.geometry),
-  });
+  if (f.geometry && f.geometry.type === 'Point') {
+    const [lng, lat] = f.geometry.coordinates;
+    add({
+      name: p.name,
+      type: 'ancient_port',
+      key: p.name,
+      sub: p.era ? `Ancient Port · ${p.era}` : 'Ancient Trading Port',
+      lat: round5(lat),
+      lng: round5(lng),
+      zoom: 10,
+    });
+  } else {
+    add({
+      name: p.name,
+      type: 'trade_route',
+      key: p.name,
+      sub: p.category_display ? `${p.category_display} · ${p.era || ''}` : `Trade Artery · ${p.era || ''}`,
+      bbox: bboxOf(f.geometry),
+    });
+  }
 }
 
 // 10. Highways (lines -> fit bounds)

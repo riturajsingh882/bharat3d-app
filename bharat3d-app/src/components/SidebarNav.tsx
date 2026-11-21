@@ -15,9 +15,12 @@ import {
   Scroll,
   AlertTriangle,
   Clock,
-  Info
+  Info,
+  Anchor,
+  Train,
+  Globe
 } from 'lucide-react';
-import type { ActiveLayer, HistoricalPeriodId, ReligionFilter } from '../types';
+import type { ActiveLayer, HistoricalPeriodId, ReligionFilter, TradeCategory } from '../types';
 import { HISTORICAL_ERAS } from '../data/historicalEras';
 import { BharatLogo } from './BharatLogo';
 
@@ -41,6 +44,10 @@ interface SidebarNavProps {
   onSelectEra: (era: HistoricalPeriodId) => void;
   isTimelineOpen: boolean;
   onToggleTimeline: () => void;
+  tradeCategories: Set<TradeCategory>;
+  toggleTradeCategory: (cat: TradeCategory) => void;
+  onSelectAllTradeCategories: () => void;
+  onClearTradeCategories: () => void;
   onResetLayers?: () => void;
   onOpenSoilSources?: () => void;
 }
@@ -54,6 +61,10 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
   onSelectEra,
   isTimelineOpen,
   onToggleTimeline,
+  tradeCategories,
+  toggleTradeCategory,
+  onSelectAllTradeCategories,
+  onClearTradeCategories,
   onResetLayers,
   onOpenSoilSources
 }) => {
@@ -254,14 +265,15 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
             <span className="flex items-center gap-2">
               <ActiveDot on={sectionActive(['trade_routes'])} />
               <Compass className="w-4 h-4 text-sky-400" />
-              <span>Trade Routes & Connectivity</span>
+              <span>Trade Routes &amp; Connectivity</span>
             </span>
             <ChevronDown className={`w-4 h-4 text-neutral-400 chevron-rotate ${openSections.trade ? 'is-open text-white' : ''}`} />
           </button>
           
           <div className={`accordion-collapse ${openSections.trade ? 'is-open' : ''}`}>
             <div>
-              <div className="p-2 space-y-1.5 bg-[#0d1016]">
+              <div className="p-2 space-y-2 bg-[#0d1016]">
+                {/* Master Toggle */}
                 <button
                   onClick={() => toggleLayer('trade_routes')}
                   className={`w-full px-3 py-2 rounded-lg text-sm font-mono flex items-center justify-between transition-all cursor-pointer ${
@@ -272,15 +284,155 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
                 >
                   <div className="flex items-center gap-2">
                     <span className={`w-2.5 h-2.5 rounded-full ${activeLayers.has('trade_routes') ? 'bg-sky-400 shadow-[0_0_8px_#38bdf8]' : 'bg-neutral-600'}`} />
-                    <span>Maritime & Caravan Routes</span>
+                    <span>All Trade &amp; Connectivity</span>
                   </div>
-                  <span className="text-xs px-2 py-0.5 rounded bg-sky-950/80 text-sky-300 border border-sky-500/40 font-bold">Networks</span>
+                  <span className="text-[11px] px-2 py-0.5 rounded bg-sky-950/80 text-sky-300 border border-sky-500/40 font-bold">
+                    27 Features
+                  </span>
                 </button>
 
-                <div className="px-3 py-2 text-xs font-mono font-semibold text-neutral-300 space-y-1 bg-[#131720] rounded-lg">
-                  <div className="text-amber-400 font-bold">• Uttarapatha (Grand Trunk Precursor)</div>
-                  <div className="text-emerald-400 font-bold">• Dakshinapatha (Peninsular Corridors)</div>
-                  <div className="text-sky-400 font-bold">• Monsoon Maritime Spice Network</div>
+                {/* Quick actions */}
+                <div className="flex items-center justify-between px-1 text-[11px] font-mono">
+                  <span className="text-neutral-400 font-bold">
+                    Active Pillars: <span className="text-sky-300">{tradeCategories.size}/7</span>
+                  </span>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={onSelectAllTradeCategories}
+                      className="text-[10px] text-sky-400 hover:text-sky-200 underline cursor-pointer"
+                    >
+                      Select All
+                    </button>
+                    <span className="text-neutral-600">•</span>
+                    <button
+                      onClick={onClearTradeCategories}
+                      className="text-[10px] text-neutral-400 hover:text-neutral-200 underline cursor-pointer"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                </div>
+
+                {/* 7 Individual Thematic Category Filters */}
+                <div className="space-y-1 pt-1 border-t border-white/5">
+                  {/* 1. Ancient Trade Networks */}
+                  <button
+                    onClick={() => toggleTradeCategory('ancient_highway')}
+                    className={`w-full px-2.5 py-1.5 rounded text-xs font-mono flex items-center justify-between transition-all cursor-pointer ${
+                      activeLayers.has('trade_routes') && tradeCategories.has('ancient_highway')
+                        ? 'bg-amber-950/60 text-amber-200 border border-amber-500/40 font-bold'
+                        : 'text-neutral-400 hover:bg-white/5 hover:text-neutral-200'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full ${activeLayers.has('trade_routes') && tradeCategories.has('ancient_highway') ? 'bg-amber-400 shadow-[0_0_6px_#f59e0b]' : 'bg-neutral-600'}`} />
+                      <Landmark className="w-3.5 h-3.5 text-amber-400" />
+                      <span>Ancient Trade Networks</span>
+                    </span>
+                    <span className="text-[10px] text-amber-400/80">3 routes</span>
+                  </button>
+
+                  {/* 2. Indian Ocean Maritime Routes */}
+                  <button
+                    onClick={() => toggleTradeCategory('maritime_route')}
+                    className={`w-full px-2.5 py-1.5 rounded text-xs font-mono flex items-center justify-between transition-all cursor-pointer ${
+                      activeLayers.has('trade_routes') && tradeCategories.has('maritime_route')
+                        ? 'bg-sky-950/60 text-sky-200 border border-sky-500/40 font-bold'
+                        : 'text-neutral-400 hover:bg-white/5 hover:text-neutral-200'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full ${activeLayers.has('trade_routes') && tradeCategories.has('maritime_route') ? 'bg-sky-400 shadow-[0_0_6px_#0ea5e9]' : 'bg-neutral-600'}`} />
+                      <Waves className="w-3.5 h-3.5 text-sky-400" />
+                      <span>Indian Ocean Maritime</span>
+                    </span>
+                    <span className="text-[10px] text-sky-400/80">2 routes</span>
+                  </button>
+
+                  {/* 3. Silk Road Connections */}
+                  <button
+                    onClick={() => toggleTradeCategory('silk_road')}
+                    className={`w-full px-2.5 py-1.5 rounded text-xs font-mono flex items-center justify-between transition-all cursor-pointer ${
+                      activeLayers.has('trade_routes') && tradeCategories.has('silk_road')
+                        ? 'bg-purple-950/60 text-purple-200 border border-purple-500/40 font-bold'
+                        : 'text-neutral-400 hover:bg-white/5 hover:text-neutral-200'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full ${activeLayers.has('trade_routes') && tradeCategories.has('silk_road') ? 'bg-purple-400 shadow-[0_0_6px_#a855f7]' : 'bg-neutral-600'}`} />
+                      <Mountain className="w-3.5 h-3.5 text-purple-400" />
+                      <span>Silk Road Connections</span>
+                    </span>
+                    <span className="text-[10px] text-purple-400/80">3 branches</span>
+                  </button>
+
+                  {/* 4. Spice Trade Routes */}
+                  <button
+                    onClick={() => toggleTradeCategory('spice_route')}
+                    className={`w-full px-2.5 py-1.5 rounded text-xs font-mono flex items-center justify-between transition-all cursor-pointer ${
+                      activeLayers.has('trade_routes') && tradeCategories.has('spice_route')
+                        ? 'bg-emerald-950/60 text-emerald-200 border border-emerald-500/40 font-bold'
+                        : 'text-neutral-400 hover:bg-white/5 hover:text-neutral-200'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full ${activeLayers.has('trade_routes') && tradeCategories.has('spice_route') ? 'bg-emerald-400 shadow-[0_0_6px_#10b981]' : 'bg-neutral-600'}`} />
+                      <TreePine className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Spice Trade Routes</span>
+                    </span>
+                    <span className="text-[10px] text-emerald-400/80">2 circuits</span>
+                  </button>
+
+                  {/* 5. Ancient Ports */}
+                  <button
+                    onClick={() => toggleTradeCategory('ancient_port')}
+                    className={`w-full px-2.5 py-1.5 rounded text-xs font-mono flex items-center justify-between transition-all cursor-pointer ${
+                      activeLayers.has('trade_routes') && tradeCategories.has('ancient_port')
+                        ? 'bg-amber-950/60 text-amber-200 border border-amber-400/50 font-bold shadow-[0_0_8px_rgba(251,191,36,0.2)]'
+                        : 'text-neutral-400 hover:bg-white/5 hover:text-neutral-200'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full ${activeLayers.has('trade_routes') && tradeCategories.has('ancient_port') ? 'bg-amber-400 shadow-[0_0_6px_#fbbf24]' : 'bg-neutral-600'}`} />
+                      <Anchor className="w-3.5 h-3.5 text-amber-300" />
+                      <span>Ancient Ports &amp; Emporia</span>
+                    </span>
+                    <span className="text-[10px] text-amber-300 font-bold">10 ports</span>
+                  </button>
+
+                  {/* 6. Colonial Trade Networks */}
+                  <button
+                    onClick={() => toggleTradeCategory('colonial_network')}
+                    className={`w-full px-2.5 py-1.5 rounded text-xs font-mono flex items-center justify-between transition-all cursor-pointer ${
+                      activeLayers.has('trade_routes') && tradeCategories.has('colonial_network')
+                        ? 'bg-indigo-950/60 text-indigo-200 border border-indigo-500/40 font-bold'
+                        : 'text-neutral-400 hover:bg-white/5 hover:text-neutral-200'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full ${activeLayers.has('trade_routes') && tradeCategories.has('colonial_network') ? 'bg-indigo-400 shadow-[0_0_6px_#6366f1]' : 'bg-neutral-600'}`} />
+                      <Globe className="w-3.5 h-3.5 text-indigo-400" />
+                      <span>Colonial Trade Networks</span>
+                    </span>
+                    <span className="text-[10px] text-indigo-400/80">3 corridors</span>
+                  </button>
+
+                  {/* 7. Historical Railway Development */}
+                  <button
+                    onClick={() => toggleTradeCategory('historical_railway')}
+                    className={`w-full px-2.5 py-1.5 rounded text-xs font-mono flex items-center justify-between transition-all cursor-pointer ${
+                      activeLayers.has('trade_routes') && tradeCategories.has('historical_railway')
+                        ? 'bg-rose-950/60 text-rose-200 border border-rose-500/40 font-bold'
+                        : 'text-neutral-400 hover:bg-white/5 hover:text-neutral-200'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full ${activeLayers.has('trade_routes') && tradeCategories.has('historical_railway') ? 'bg-rose-400 shadow-[0_0_6px_#e11d48]' : 'bg-neutral-600'}`} />
+                      <Train className="w-3.5 h-3.5 text-rose-400" />
+                      <span>Historical Railways (1853–1905)</span>
+                    </span>
+                    <span className="text-[10px] text-rose-400/80">4 lines</span>
+                  </button>
                 </div>
               </div>
             </div>

@@ -227,8 +227,8 @@ Local geospatial vector files (`public/data/*.geojson`) are ingested asynchronou
    - `historical_empires.geojson`: 13 Historical era territorial reconstructions.
 7. **Ancient Civilizations & Archaeology**:
    - `archaeological_sites.geojson`: 18 ASI-verified monumental sites.
-8. **Historical Trade Routes**:
-   - `historical_trade_routes.geojson`: Uttarapatha, Dakshinapatha, and Maritime Spice network.
+8. **Historical Trade Routes, Maritime Networks & Railways**:
+   - `historical_trade_routes.geojson`: 27 verified features across Ancient Trade Networks, Indian Ocean Maritime, Silk Road Connections, Spice Trade Routes, 10 Ancient Ports & Emporia, Colonial Trade Networks, and Historical Railways (1853–1905).
 9. **Disaster & Seismic Risk Intelligence**:
    - `disaster_seismic_zones.geojson`: BIS 1893:2016 seismic hazard zones & historic M7+ earthquake epicenters.
 10. **Demographic Lookup Tables**:

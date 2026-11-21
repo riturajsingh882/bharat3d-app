@@ -36,6 +36,7 @@ const TYPE_LABEL: Record<string, string> = {
   historical_empire: 'Empire',
   historical_capital: 'Capital',
   trade_route: 'Trade Route',
+  ancient_port: 'Port',
   highway: 'Road'
 };
 
@@ -50,6 +51,7 @@ const TYPE_COLOR: Record<string, string> = {
   historical_empire: 'text-amber-400',
   historical_capital: 'text-purple-300',
   trade_route: 'text-emerald-400',
+  ancient_port: 'text-amber-300',
   highway: 'text-orange-300'
 };
 
@@ -59,6 +61,7 @@ const TYPE_PRIORITY: Record<string, number> = {
   district: 90,
   peak: 80,
   archaeological_site: 75,
+  ancient_port: 72,
   river: 70,
   mountain: 68,
   highway: 65,

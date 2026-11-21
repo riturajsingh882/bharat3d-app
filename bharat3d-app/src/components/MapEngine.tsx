@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Map, NavigationControl, ScaleControl, setWorkerUrl, type MapMouseEvent, type MapGeoJSONFeature } from 'maplibre-gl';
-import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo } from '../types';
+import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory } from '../types';
 import { APP_CONFIG } from '../config';
 import { formatElevationDual } from '../utils/elevation';
 
@@ -164,6 +164,7 @@ interface MapEngineProps {
   searchTarget: SearchTarget | null;
   isElevationHighlight: boolean;
   selectedHistoricalPeriod?: HistoricalPeriodId;
+  tradeCategories?: Set<TradeCategory>;
 }
 
 export const MapEngine: React.FC<MapEngineProps> = ({
@@ -177,7 +178,8 @@ export const MapEngine: React.FC<MapEngineProps> = ({
   selectedFeature,
   searchTarget,
   isElevationHighlight,
-  selectedHistoricalPeriod = 'maurya'
+  selectedHistoricalPeriod = 'maurya',
+  tradeCategories
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map | null>(null);
@@ -271,13 +273,46 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     setVis('archaeology-inner-pip', isArchActive);
     setVis('archaeology-labels', isArchActive);
 
-    // 7. Trade Routes
+    // 7. Trade Routes & Connectivity
     const isTradeActive = activeLayers.has('trade_routes');
-    setVis('trade-glow', isTradeActive);
-    setVis('trade-core', isTradeActive);
-    setVis('trade-flow', isTradeActive);
-    setVis('trade-labels', isTradeActive);
-    setVis('trade-hit-target', isTradeActive);
+    const hasAnyTradeCategory = !tradeCategories || tradeCategories.size > 0;
+    const effectiveTradeActive = isTradeActive && hasAnyTradeCategory;
+
+    const cats = tradeCategories ? Array.from(tradeCategories) : [];
+    const catCondition = cats.length > 0 
+      ? ['any', ...cats.map(c => ['==', ['get', 'category'], c])]
+      : ['==', ['get', 'category'], 'none'];
+
+    if (map.getLayer('trade-glow')) {
+      map.setFilter('trade-glow', ['all', ['!=', ['geometry-type'], 'Point'], catCondition] as any);
+      map.setLayoutProperty('trade-glow', 'visibility', effectiveTradeActive ? 'visible' : 'none');
+    }
+    if (map.getLayer('trade-core')) {
+      map.setFilter('trade-core', ['all', ['!=', ['geometry-type'], 'Point'], catCondition] as any);
+      map.setLayoutProperty('trade-core', 'visibility', effectiveTradeActive ? 'visible' : 'none');
+    }
+    if (map.getLayer('trade-flow')) {
+      map.setFilter('trade-flow', ['all', ['!=', ['geometry-type'], 'Point'], ['!=', ['get', 'category'], 'historical_railway'], catCondition] as any);
+      map.setLayoutProperty('trade-flow', 'visibility', effectiveTradeActive ? 'visible' : 'none');
+    }
+    if (map.getLayer('trade-railways')) {
+      const showRailways = effectiveTradeActive && (!tradeCategories || tradeCategories.has('historical_railway'));
+      map.setLayoutProperty('trade-railways', 'visibility', showRailways ? 'visible' : 'none');
+    }
+    if (map.getLayer('trade-labels')) {
+      map.setFilter('trade-labels', ['all', ['!=', ['geometry-type'], 'Point'], catCondition] as any);
+      map.setLayoutProperty('trade-labels', 'visibility', effectiveTradeActive ? 'visible' : 'none');
+    }
+    if (map.getLayer('trade-hit-target')) {
+      map.setFilter('trade-hit-target', ['all', ['!=', ['geometry-type'], 'Point'], catCondition] as any);
+      map.setLayoutProperty('trade-hit-target', 'visibility', effectiveTradeActive ? 'visible' : 'none');
+    }
+
+    const showPorts = effectiveTradeActive && (!tradeCategories || tradeCategories.has('ancient_port'));
+    setVis('trade-ports-halo', showPorts);
+    setVis('trade-ports-core', showPorts);
+    setVis('trade-ports-labels', showPorts);
+    setVis('trade-ports-hit-target', showPorts);
 
     // 7.5 National Highways & Expressways
     const isRoadsActive = activeLayers.has('roads');
@@ -371,7 +406,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     } catch {
       // ignore
     }
-  }, [activeLayers, religionFilter]);
+  }, [activeLayers, religionFilter, tradeCategories]);
 
   // Initialize Map
   useEffect(() => {
@@ -1071,13 +1106,14 @@ export const MapEngine: React.FC<MapEngineProps> = ({
       });
 
       // ========================================================
-      // 3. HISTORICAL TRADE ROUTES LAYERS
+      // 3. HISTORICAL TRADE ROUTES & CONNECTIVITY LAYERS
       // ========================================================
 
       map.addLayer({
         id: 'trade-glow',
         type: 'line',
         source: 'historical-trade-routes',
+        filter: ['!=', ['geometry-type'], 'Point'],
         layout: {
           visibility: activeLayers.has('trade_routes') ? 'visible' : 'none'
         },
@@ -1093,6 +1129,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         id: 'trade-core',
         type: 'line',
         source: 'historical-trade-routes',
+        filter: ['!=', ['geometry-type'], 'Point'],
         layout: {
           visibility: activeLayers.has('trade_routes') ? 'visible' : 'none'
         },
@@ -1107,6 +1144,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         id: 'trade-flow',
         type: 'line',
         source: 'historical-trade-routes',
+        filter: ['all', ['!=', ['geometry-type'], 'Point'], ['!=', ['get', 'category'], 'historical_railway']],
         layout: {
           visibility: activeLayers.has('trade_routes') ? 'visible' : 'none'
         },
@@ -1118,10 +1156,28 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         }
       });
 
+      // Special railway track dash layer for historical railways
+      map.addLayer({
+        id: 'trade-railways',
+        type: 'line',
+        source: 'historical-trade-routes',
+        filter: ['all', ['!=', ['geometry-type'], 'Point'], ['==', ['get', 'category'], 'historical_railway']],
+        layout: {
+          visibility: activeLayers.has('trade_routes') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#ffffff',
+          'line-width': 2.2,
+          'line-dasharray': [2, 3],
+          'line-opacity': 0.95
+        }
+      });
+
       map.addLayer({
         id: 'trade-labels',
         type: 'symbol',
         source: 'historical-trade-routes',
+        filter: ['!=', ['geometry-type'], 'Point'],
         layout: {
           'symbol-placement': 'line',
           'text-field': ['get', 'name'],
@@ -1142,6 +1198,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
         id: 'trade-hit-target',
         type: 'line',
         source: 'historical-trade-routes',
+        filter: ['!=', ['geometry-type'], 'Point'],
         layout: {
           'line-join': 'round',
           'line-cap': 'round',
@@ -1151,6 +1208,76 @@ export const MapEngine: React.FC<MapEngineProps> = ({
           'line-color': '#000000',
           'line-width': 32,
           'line-opacity': 0.001
+        }
+      });
+
+      // ========================================================
+      // 3.2 ANCIENT PORTS & EMPORIA (POINT LAYERS)
+      // ========================================================
+
+      map.addLayer({
+        id: 'trade-ports-halo',
+        type: 'circle',
+        source: 'historical-trade-routes',
+        filter: ['==', ['geometry-type'], 'Point'],
+        layout: {
+          visibility: activeLayers.has('trade_routes') ? 'visible' : 'none'
+        },
+        paint: {
+          'circle-radius': 11,
+          'circle-color': 'rgba(251, 191, 36, 0.22)',
+          'circle-stroke-color': '#fbbf24',
+          'circle-stroke-width': 1.5
+        }
+      });
+
+      map.addLayer({
+        id: 'trade-ports-core',
+        type: 'circle',
+        source: 'historical-trade-routes',
+        filter: ['==', ['geometry-type'], 'Point'],
+        layout: {
+          visibility: activeLayers.has('trade_routes') ? 'visible' : 'none'
+        },
+        paint: {
+          'circle-radius': 6,
+          'circle-color': '#fbbf24',
+          'circle-stroke-color': '#ffffff',
+          'circle-stroke-width': 1.8
+        }
+      });
+
+      map.addLayer({
+        id: 'trade-ports-labels',
+        type: 'symbol',
+        source: 'historical-trade-routes',
+        filter: ['==', ['geometry-type'], 'Point'],
+        layout: {
+          'text-field': ['get', 'name'],
+          'text-size': 11,
+          'text-offset': [0, 1.4],
+          'text-anchor': 'top',
+          'text-allow-overlap': false,
+          visibility: activeLayers.has('trade_routes') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#fef08a',
+          'text-halo-color': '#020617',
+          'text-halo-width': 2
+        }
+      });
+
+      map.addLayer({
+        id: 'trade-ports-hit-target',
+        type: 'circle',
+        source: 'historical-trade-routes',
+        filter: ['==', ['geometry-type'], 'Point'],
+        layout: {
+          visibility: activeLayers.has('trade_routes') ? 'visible' : 'none'
+        },
+        paint: {
+          'circle-radius': 32,
+          'circle-opacity': 0.001
         }
       });
 
@@ -1651,6 +1778,9 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             'seismic-zones-fill',
             'trade-hit-target',
             'trade-core',
+            'trade-railways',
+            'trade-ports-hit-target',
+            'trade-ports-core',
             'roads-hit-target',
             'roads-core',
             'empires-fill',
@@ -1694,12 +1824,15 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             metricValue = `${props.excavator || props.excavators || 'ASI Survey'} (${props.discovery_year || ''})`;
             source = 'Archaeological Survey of India (ASI)';
           } else if (topFeat.layer.id.startsWith('trade-')) {
-            featType = 'HISTORICAL TRADE ROUTE';
+            const isPort = props.category === 'ancient_port';
+            featType = isPort ? 'ANCIENT PORT & EMPORIUM' : (props.category_display ? props.category_display.toUpperCase() : 'HISTORICAL TRADE ROUTE');
             title = props.name || 'Trade Corridor';
-            subtitle = props.era_active || 'Ancient Artery';
-            metricLabel = 'Commodities';
-            metricValue = props.commodities || 'Silk, Spices, Textiles';
-            source = 'Historical Chronicles / Periplus of the Erythraean Sea';
+            subtitle = props.era || props.era_active || 'Historical Artery';
+            metricLabel = isPort ? 'Location' : (props.total_length_km ? 'Length' : 'Commodities');
+            metricValue = isPort 
+              ? (props.location_desc || 'Historic Seaport')
+              : (props.total_length_km ? `${props.total_length_km.toLocaleString()} km` : (props.commodities || 'Trade Artery'));
+            source = props.citation || 'Archaeological Survey of India (ASI) / Project Mausam';
           } else if (topFeat.layer.id.startsWith('roads-')) {
             featType = props.category === 'Expressway' ? 'EXPRESSWAY' : props.category === 'State Highway' ? 'STATE HIGHWAY' : 'NATIONAL HIGHWAY';
             title = `${props.code ? props.code + ' — ' : ''}${props.name || 'Road Corridor'}`;
@@ -1852,6 +1985,9 @@ export const MapEngine: React.FC<MapEngineProps> = ({
           'trade-core',
           'trade-glow',
           'trade-flow',
+          'trade-railways',
+          'trade-ports-hit-target',
+          'trade-ports-core',
           'archaeology-core',
           'archaeology-inner-pip',
           'archaeology-glow',

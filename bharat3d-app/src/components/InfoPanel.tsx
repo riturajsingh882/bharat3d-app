@@ -13,12 +13,15 @@ import {
   Building,
   Activity,
   Landmark,
-  Compass as TradeIcon,
   AlertTriangle,
   Scroll,
   Route,
   Calendar,
-  ChevronDown
+  ChevronDown,
+  Anchor,
+  Train,
+  Waves,
+  Globe
 } from 'lucide-react';
 import type { SelectedFeatureInfo } from '../types';
 import { metersToFeetInches } from '../utils/elevation';
@@ -325,43 +328,101 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose }) => {
           </div>
         )}
 
-        {/* 3. Trade Route Dossier */}
+        {/* 3. Trade Route & Connectivity Dossier */}
         {type === 'trade_route' && (
           <div className="space-y-3">
-            <div className="vista-card p-4 space-y-3">
+            <div className="vista-card p-4 space-y-3 border border-sky-500/30">
               <div className="text-xs font-mono font-bold text-white flex items-center justify-between uppercase tracking-wider">
                 <span className="flex items-center gap-1.5">
-                  <TradeIcon className="w-4 h-4 text-sky-400" />
-                  <span>Maritime & Caravan Corridor</span>
+                  {properties.category === 'ancient_port' ? (
+                    <Anchor className="w-4 h-4 text-amber-300" />
+                  ) : properties.category === 'historical_railway' ? (
+                    <Train className="w-4 h-4 text-rose-400" />
+                  ) : properties.category === 'maritime_route' ? (
+                    <Waves className="w-4 h-4 text-sky-400" />
+                  ) : properties.category === 'silk_road' ? (
+                    <Mountain className="w-4 h-4 text-purple-400" />
+                  ) : properties.category === 'spice_route' ? (
+                    <Trees className="w-4 h-4 text-emerald-400" />
+                  ) : properties.category === 'colonial_network' ? (
+                    <Globe className="w-4 h-4 text-indigo-400" />
+                  ) : (
+                    <Compass className="w-4 h-4 text-amber-400" />
+                  )}
+                  <span className="text-white">
+                    {properties.category_display || (properties.category === 'ancient_port' ? 'Ancient Port & Emporium' : 'Trade & Connectivity Artery')}
+                  </span>
                 </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-950/80 text-sky-300 border border-sky-500/30 font-bold">
-                  {properties.network_type || 'TRADE ARTERY'}
+                <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold border ${
+                  properties.category === 'ancient_port'
+                    ? 'bg-amber-950/80 text-amber-300 border-amber-400/40'
+                    : properties.category === 'historical_railway'
+                    ? 'bg-rose-950/80 text-rose-300 border-rose-500/40'
+                    : properties.category === 'silk_road'
+                    ? 'bg-purple-950/80 text-purple-300 border-purple-500/40'
+                    : properties.category === 'spice_route'
+                    ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40'
+                    : properties.category === 'colonial_network'
+                    ? 'bg-indigo-950/80 text-indigo-300 border-indigo-500/40'
+                    : 'bg-sky-950/80 text-sky-300 border-sky-500/30'
+                }`}>
+                  {properties.route_type_display || properties.route_type || 'TRADE ARTERY'}
                 </span>
               </div>
 
               <div className="space-y-2 text-xs font-mono">
-                {properties.era_active && (
+                {(properties.era || properties.era_active) && (
                   <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400">Era Active:</span>
-                    <span className="font-bold text-white text-sm">{properties.era_active}</span>
+                    <span className="text-neutral-400">Epoch / Active Era:</span>
+                    <span className="font-bold text-white text-sm">{properties.era || properties.era_active}</span>
                   </div>
                 )}
-                {properties.connected_nodes && (
+                {properties.total_length_km && (
+                  <div className="flex justify-between py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400">Total Route Length:</span>
+                    <span className="font-bold text-sky-300">{properties.total_length_km.toLocaleString()} km</span>
+                  </div>
+                )}
+                {properties.termini && (
                   <div className="py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400 block text-[11px]">Connected Hubs & Ports:</span>
-                    <span className="text-amber-400 leading-relaxed">{properties.connected_nodes}</span>
+                    <span className="text-neutral-400 block text-[11px]">Termini &amp; Coastal Endpoints:</span>
+                    <span className="text-neutral-200">{properties.termini}</span>
+                  </div>
+                )}
+                {properties.location_desc && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Geographical Location:</span>
+                    <span className="text-amber-300 font-sans">{properties.location_desc}</span>
+                  </div>
+                )}
+                {(properties.connected_nodes || properties.key_stations) && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Connected Hubs, Ports &amp; Stations:</span>
+                    <span className="text-amber-400 leading-relaxed font-sans">{properties.connected_nodes || properties.key_stations}</span>
                   </div>
                 )}
                 {properties.commodities && (
                   <div className="py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400 block text-[11px]">Principal Commodities:</span>
-                    <span className="text-emerald-400 font-bold leading-relaxed">{properties.commodities}</span>
+                    <span className="text-neutral-400 block text-[11px]">Principal Commodities &amp; Cargo:</span>
+                    <span className="text-emerald-400 font-bold leading-relaxed font-sans">{properties.commodities}</span>
                   </div>
                 )}
-                {properties.chronicles && (
-                  <div className="py-1.5">
-                    <span className="text-neutral-400 block text-[11px]">Historical Chroniclers:</span>
-                    <span className="text-neutral-300">{properties.chronicles}</span>
+                {(properties.chronicles || properties.historical_accounts) && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Historical Chroniclers &amp; Primary Accounts:</span>
+                    <span className="text-neutral-300 italic font-sans">{properties.chronicles || properties.historical_accounts}</span>
+                  </div>
+                )}
+                {properties.significance && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Historical Significance &amp; Impact:</span>
+                    <span className="text-neutral-200 text-[11px] leading-relaxed font-sans">{properties.significance}</span>
+                  </div>
+                )}
+                {properties.citation && (
+                  <div className="pt-1.5">
+                    <span className="text-neutral-500 block text-[10px] uppercase tracking-wider">Official Institutional Citation:</span>
+                    <span className="text-sky-300 text-[11px] leading-relaxed">{properties.citation}</span>
                   </div>
                 )}
               </div>

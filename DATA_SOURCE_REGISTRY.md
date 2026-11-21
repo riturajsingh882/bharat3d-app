@@ -193,16 +193,16 @@ To satisfy the core requirement that all factual information originates from ver
 
 ---
 
-### L. Historical Trade Routes & Connectivity
+### L. Historical Trade Routes, Maritime Corridors & Railway Development
 
 | Property | Details |
 | :--- | :--- |
-| **Repository Name** | Ancient Indian Trade Corridors & Maritime Networks |
-| **Publishing Institution** | Ministry of Culture (Project Mausam), Archaeological Survey of India (ASI), UNESCO Silk Roads Programme |
-| **Coverage** | Principal historical arteries: Uttarapatha (Northern High Road, Taxila to Tamralipti), Dakshinapatha (Transpeninsular Highway, Pataliputra to Pratishthana), Monsoon Maritime Spice Route (Malabar/Coromandel to Red Sea and Southeast Asia) |
-| **Attributes Recorded** | Route designation, era of peak activity, route type (terrestrial vs maritime), estimated length (km), terminal points, major caravan/port stations, commodities exchanged, ancient travelogue accounts |
-| **Format** | GeoJSON LineStrings with directional flow shaders |
-| **Provenance Note** | Schematic corridor reconstructions based on epigraphic evidence, numismatic hoard distributions, and classical traveler accounts (*Megasthenes*, *Xuanzang*, *Periplus of the Erythraean Sea*). |
+| **Repository Name** | Historical Trade Networks, Maritime Silk & Spice Corridors, Ancient Ports, and Heritage Railways |
+| **Publishing Institutions** | Ministry of Culture (Project Mausam), Archaeological Survey of India (ASI Marine Archaeology), UNESCO Silk Roads Programme, National Rail Museum New Delhi, Indian Railways Heritage Directorate, National Archives of India |
+| **Coverage** | **27 Curated Historical Features across 7 Foundations**:<br>1. **Ancient Trade Networks**: Uttarapatha (2,500 km), Dakshinapatha (2,100 km), Central Caravan Route (1,100 km)<br>2. **Indian Ocean Maritime Routes**: Western Arabian Sea Monsoon Route (3,800 km), Bay of Bengal Suvarnabhumi Network (3,400 km)<br>3. **Silk Road Connections**: Karakoram–Ladakh Feeder (950 km), Gandhara–Bactria Link (850 km), Sikkim–Chumbi Valley Route (780 km)<br>4. **Spice Trade Routes**: Malabar Coast 'Black Gold' Pepper Route (850 km), Coromandel Spice & Textile Littoral Corridor (750 km)<br>5. **Ancient Ports & Emporia**: 10 Monumental Seaports (Lothal, Barygaza/Bharuch, Muziris/Pattanam, Arikamedu/Poduke, Tamralipti, Sopara, Poompuhar, Korkai, Kalyan, Nelcynda)<br>6. **Colonial Trade Networks**: EIC Gangetic Factory & Opium Corridor (1,350 km), Bombay Cotton & Opium Artery (820 km), Coromandel Calico Corridor (680 km)<br>7. **Historical Railway Development**: GIPR 1853 (Asia's first line, 240 km), East Indian Railway 1854 (Raniganj coal & trunk, 1,500 km), Madras Railway 1856 (Coast-to-coast line, 660 km), Imperial Trunk Grid (Lord Dalhousie 1853 master plan, 3,200 km) |
+| **Attributes Recorded** | Feature ID, route/port name, thematic category, chronological era, route type, total length (km) or port coordinates, termini, connected nodes/hinterlands, principal commodities/cargo, historical chroniclers & primary texts, significance, and official institutional citations |
+| **Format** | GeoJSON LineStrings (with directional flow shaders & railway track dash patterns) and Point Features (with glowing halos and interactive hit targets) |
+| **Provenance Note** | All routes, ports, and rail alignments are derived from verified official baselines: ASI excavation reports (Lothal, Arikamedu, Sopara, Pattanam), classical navigational epigraphs (*Periplus of the Erythraean Sea*, Pliny the Elder, Kautilya's *Arthashastra*, Xuanzang's *Si-Yu-Ki*), and official Indian Railways heritage documentation (National Rail Museum, Lord Dalhousie Minute 1853, Imperial Gazetteer of India). Lines represent approximate historical corridors rather than modern cadastral centerlines. |
 
 ---
 

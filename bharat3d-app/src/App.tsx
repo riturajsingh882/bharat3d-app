@@ -9,7 +9,7 @@ import { HistoricalTimeline } from './components/HistoricalTimeline';
 import { StateComparisonModal } from './components/StateComparisonModal';
 import { SoilDataModal } from './components/SoilDataModal';
 import { PanelLeftClose, PanelLeftOpen, Mountain, Landmark, Scroll, Compass, AlertTriangle, Route, ChevronUp, Clock, Info } from 'lucide-react';
-import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo } from './types';
+import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory } from './types';
 import { HISTORICAL_ERAS } from './data/historicalEras';
 
 const DEMOGRAPHIC_LAYERS: ActiveLayer[] = [
@@ -18,6 +18,16 @@ const DEMOGRAPHIC_LAYERS: ActiveLayer[] = [
   'literacy',
   'sex_ratio',
   'religion'
+];
+
+const ALL_TRADE_CATEGORIES: TradeCategory[] = [
+  'ancient_highway',
+  'maritime_route',
+  'silk_road',
+  'spice_route',
+  'ancient_port',
+  'colonial_network',
+  'historical_railway'
 ];
 
 export function App() {
@@ -46,6 +56,37 @@ export function App() {
   // State Comparison Studio State
   const [isComparisonModalOpen, setIsComparisonModalOpen] = useState<boolean>(false);
   const [isSoilModalOpen, setIsSoilModalOpen] = useState<boolean>(false);
+
+  // Trade & Connectivity Sub-categories State
+  const [tradeCategories, setTradeCategories] = useState<Set<TradeCategory>>(
+    new Set(ALL_TRADE_CATEGORIES)
+  );
+
+  const toggleTradeCategory = (cat: TradeCategory) => {
+    setTradeCategories(prev => {
+      const next = new Set(prev);
+      if (next.has(cat)) {
+        next.delete(cat);
+      } else {
+        next.add(cat);
+      }
+      return next;
+    });
+    if (!activeLayers.has('trade_routes')) {
+      setActiveLayers(prev => new Set(prev).add('trade_routes'));
+    }
+  };
+
+  const selectAllTradeCategories = () => {
+    setTradeCategories(new Set(ALL_TRADE_CATEGORIES));
+    if (!activeLayers.has('trade_routes')) {
+      setActiveLayers(prev => new Set(prev).add('trade_routes'));
+    }
+  };
+
+  const clearTradeCategories = () => {
+    setTradeCategories(new Set());
+  };
 
   // Ingest Demographics
   useEffect(() => {
@@ -114,6 +155,7 @@ export function App() {
 
   const handleResetLayers = () => {
     setActiveLayers(new Set<ActiveLayer>());
+    setTradeCategories(new Set(ALL_TRADE_CATEGORIES));
     setSelectedHistoricalPeriod('maurya');
     setIsTimelineOpen(false);
   };
@@ -220,6 +262,10 @@ export function App() {
               }}
               isTimelineOpen={isTimelineOpen}
               onToggleTimeline={() => setIsTimelineOpen(!isTimelineOpen)}
+              tradeCategories={tradeCategories}
+              toggleTradeCategory={toggleTradeCategory}
+              onSelectAllTradeCategories={selectAllTradeCategories}
+              onClearTradeCategories={clearTradeCategories}
               onResetLayers={handleResetLayers}
               onOpenSoilSources={() => setIsSoilModalOpen(true)}
             />
@@ -238,8 +284,8 @@ export function App() {
           />
           <div
             className={`absolute left-0 top-0 bottom-0 w-[85vw] max-w-[320px] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-2xl ${
-              isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-            }`}
+            isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
           >
             <SidebarNav
               activeLayers={activeLayers}
@@ -255,6 +301,10 @@ export function App() {
               }}
               isTimelineOpen={isTimelineOpen}
               onToggleTimeline={() => setIsTimelineOpen(!isTimelineOpen)}
+              tradeCategories={tradeCategories}
+              toggleTradeCategory={toggleTradeCategory}
+              onSelectAllTradeCategories={selectAllTradeCategories}
+              onClearTradeCategories={clearTradeCategories}
               onResetLayers={handleResetLayers}
               onOpenSoilSources={() => setIsSoilModalOpen(true)}
             />
@@ -293,6 +343,7 @@ export function App() {
             searchTarget={searchTarget}
             isElevationHighlight={isElevationHighlight}
             selectedHistoricalPeriod={selectedHistoricalPeriod}
+            tradeCategories={tradeCategories}
           />
 
           {/* Dynamic Active Legends Overlay */}
@@ -335,17 +386,40 @@ export function App() {
               </div>
             )}
 
-            {/* Trade Routes Legend */}
+            {/* Trade Routes & Connectivity Legend */}
             {activeLayers.has('trade_routes') && (
-              <div className="glass-panel-glow rounded-xl p-3 shadow-2xl text-xs pointer-events-auto min-w-[200px] border border-sky-500/40 font-mono">
-                <div className="font-bold text-sky-300 mb-1 flex items-center gap-1.5">
-                  <Compass className="w-3.5 h-3.5 text-sky-400" />
-                  <span>Historical Trade Networks</span>
+              <div className="glass-panel-glow rounded-xl p-3 shadow-2xl text-xs pointer-events-auto min-w-[230px] border border-sky-500/40 font-mono">
+                <div className="font-bold text-sky-300 mb-1.5 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <Compass className="w-3.5 h-3.5 text-sky-400" />
+                    <span>Trade &amp; Connectivity</span>
+                  </span>
+                  <span className="text-[10px] text-sky-400 font-bold bg-sky-950/80 px-1.5 py-0.5 rounded border border-sky-500/30">
+                    {tradeCategories.size}/7
+                  </span>
                 </div>
                 <div className="space-y-1 text-[11px] font-bold">
-                  <span className="flex items-center gap-1.5 text-amber-400"><span className="w-3 h-1 bg-[#f59e0b] inline-block"/>Uttarapatha Corridor</span>
-                  <span className="flex items-center gap-1.5 text-emerald-400"><span className="w-3 h-1 bg-[#10b981] inline-block"/>Dakshinapatha Highway</span>
-                  <span className="flex items-center gap-1.5 text-sky-400"><span className="w-3 h-1 bg-[#38bdf8] inline-block"/>Monsoon Maritime Route</span>
+                  {tradeCategories.has('ancient_highway') && (
+                    <span className="flex items-center gap-1.5 text-amber-400"><span className="w-3 h-1 bg-[#f59e0b] inline-block"/>Ancient Trade Networks</span>
+                  )}
+                  {tradeCategories.has('maritime_route') && (
+                    <span className="flex items-center gap-1.5 text-sky-400"><span className="w-3 h-1 bg-[#0ea5e9] inline-block"/>Indian Ocean Maritime</span>
+                  )}
+                  {tradeCategories.has('silk_road') && (
+                    <span className="flex items-center gap-1.5 text-purple-400"><span className="w-3 h-1 bg-[#a855f7] inline-block"/>Silk Road Connections</span>
+                  )}
+                  {tradeCategories.has('spice_route') && (
+                    <span className="flex items-center gap-1.5 text-emerald-400"><span className="w-3 h-1 bg-[#10b981] inline-block"/>Spice Trade Routes</span>
+                  )}
+                  {tradeCategories.has('ancient_port') && (
+                    <span className="flex items-center gap-1.5 text-amber-300"><span className="w-2.5 h-2.5 rounded-full bg-[#fbbf24] border border-white inline-block"/>Ancient Ports (10 Emporia)</span>
+                  )}
+                  {tradeCategories.has('colonial_network') && (
+                    <span className="flex items-center gap-1.5 text-indigo-400"><span className="w-3 h-1 bg-[#6366f1] inline-block"/>Colonial Trade Networks</span>
+                  )}
+                  {tradeCategories.has('historical_railway') && (
+                    <span className="flex items-center gap-1.5 text-rose-400"><span className="w-3 h-1 border-b-2 border-dashed border-[#e11d48] inline-block"/>Historical Railways (1853–1905)</span>
+                  )}
                 </div>
               </div>
             )}

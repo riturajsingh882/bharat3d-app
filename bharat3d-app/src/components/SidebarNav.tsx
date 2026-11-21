@@ -19,11 +19,16 @@ import {
   Info,
   Anchor,
   Train,
-  Globe
+  Globe,
+  Plane,
+  Zap,
+  Factory,
+  Building
 } from 'lucide-react';
-import type { ActiveLayer, HistoricalPeriodId, ReligionFilter, TradeCategory, EnvironmentalPillar, DisasterHazardType, DisasterRegion, HistoricalDisasterEvent } from '../types';
+import type { ActiveLayer, HistoricalPeriodId, ReligionFilter, TradeCategory, EnvironmentalPillar, DisasterHazardType, DisasterRegion, HistoricalDisasterEvent, InfrastructureCategory } from '../types';
 import { HISTORICAL_ERAS } from '../data/historicalEras';
 import { HISTORICAL_DISASTER_EVENTS } from '../data/disasterIntelligence';
+import { ALL_INFRASTRUCTURE_CATEGORIES, INFRASTRUCTURE_GEOJSON } from '../data/infrastructureIntelligence';
 import { BharatLogo } from './BharatLogo';
 
 // Small status light on each main section header:
@@ -68,6 +73,12 @@ interface SidebarNavProps {
   onSelectDisasterEvent?: (event: HistoricalDisasterEvent) => void;
   selectedDisasterEventId?: string | null;
   onResetDisasterFocus?: () => void;
+  infrastructureCategories?: Set<InfrastructureCategory>;
+  toggleInfrastructureCategory?: (cat: InfrastructureCategory) => void;
+  onSelectAllInfrastructureCategories?: () => void;
+  onClearInfrastructureCategories?: () => void;
+  onSelectInfrastructureItem?: (item: any) => void;
+  selectedInfrastructureId?: string | null;
 }
 
 export const SidebarNav: React.FC<SidebarNavProps> = ({
@@ -100,7 +111,13 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
   onToggleDisasterTimeline = () => {},
   onSelectDisasterEvent = () => {},
   selectedDisasterEventId = null,
-  onResetDisasterFocus
+  onResetDisasterFocus,
+  infrastructureCategories = new Set(ALL_INFRASTRUCTURE_CATEGORIES),
+  toggleInfrastructureCategory = () => {},
+  onSelectAllInfrastructureCategories = () => {},
+  onClearInfrastructureCategories = () => {},
+  onSelectInfrastructureItem = () => {},
+  selectedInfrastructureId = null
 }) => {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     historical: false,
@@ -109,6 +126,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
     trade: false,
     environmental: false,
     roads: false,
+    infrastructure: false,
     disaster: false,
     disasterTimeline: false,
     political: false,
@@ -689,44 +707,157 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
         </div>
 
         {/* ======================================================== */}
-        {/* 3.5 NATIONAL HIGHWAYS & EXPRESSWAYS */}
+        {/* 3.5 INFRASTRUCTURE & ECONOMIC GEOGRAPHY */}
         {/* ======================================================== */}
-        <div className="vista-card overflow-hidden border border-orange-500/30">
+        <div className="vista-card overflow-hidden border border-amber-500/30">
           <button
-            onClick={() => toggleSection('roads')}
-            className="w-full px-3.5 py-3 flex items-center justify-between text-sm font-serif font-semibold uppercase tracking-wide text-orange-300 hover:text-orange-200 transition-colors bg-[#1a110a] cursor-pointer select-none"
+            onClick={() => toggleSection('infrastructure')}
+            className="w-full px-3.5 py-3 flex items-center justify-between text-sm font-serif font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200 transition-colors bg-[#17140e] cursor-pointer select-none"
           >
             <span className="flex items-center gap-2">
-              <ActiveDot on={sectionActive(['roads'])} />
-              <Route className="w-4 h-4 text-orange-400" />
-              <span>National Highways &amp; Expressways</span>
+              <ActiveDot on={sectionActive(['infrastructure_economic', 'roads'])} />
+              <Building2 className="w-4 h-4 text-amber-400" />
+              <span>Infrastructure &amp; Economy</span>
             </span>
-            <ChevronDown className={`w-4 h-4 text-neutral-400 chevron-rotate ${openSections.roads ? 'is-open text-white' : ''}`} />
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold">
+                9 NETWORKS
+              </span>
+              <ChevronDown className={`w-4 h-4 text-neutral-400 chevron-rotate ${openSections.infrastructure ? 'is-open text-white' : ''}`} />
+            </div>
           </button>
 
-          <div className={`accordion-collapse ${openSections.roads ? 'is-open' : ''}`}>
+          <div className={`accordion-collapse ${openSections.infrastructure ? 'is-open' : ''}`}>
             <div>
-              <div className="p-2 space-y-1.5 bg-[#0d1016]">
+              <div className="p-2.5 space-y-2 bg-[#0c0f15]">
+                {/* Master activation button */}
                 <button
-                  onClick={() => toggleLayer('roads')}
-                  className={`w-full px-3 py-2 rounded-lg text-sm font-mono flex items-center justify-between transition-all cursor-pointer ${
-                    activeLayers.has('roads')
-                      ? 'bg-orange-500/20 text-white border border-orange-500/50 border-l-3 border-l-orange-500 font-bold shadow-[0_0_12px_rgba(249,115,22,0.25)]'
-                      : 'text-neutral-300 hover:bg-white/5 hover:text-white font-bold'
+                  onClick={() => toggleLayer('infrastructure_economic')}
+                  className={`w-full px-3 py-2.5 rounded-lg text-xs font-mono flex items-center justify-between transition-all cursor-pointer ${
+                    activeLayers.has('infrastructure_economic') || activeLayers.has('roads')
+                      ? 'bg-amber-500/20 text-white border border-amber-500/50 border-l-3 border-l-amber-500 font-bold shadow-[0_0_14px_rgba(245,158,11,0.25)]'
+                      : 'text-neutral-300 hover:bg-white/5 hover:text-white font-bold bg-[#121620]'
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <span className={`w-2.5 h-2.5 rounded-full ${activeLayers.has('roads') ? 'bg-orange-400 shadow-[0_0_8px_#fb923c]' : 'bg-neutral-600'}`} />
-                    <span>Show Road &amp; Highway Network</span>
+                    <span className={`w-2.5 h-2.5 rounded-full ${activeLayers.has('infrastructure_economic') || activeLayers.has('roads') ? 'bg-amber-400 shadow-[0_0_8px_#fbbf24]' : 'bg-neutral-600'}`} />
+                    <span className="font-semibold text-left">Show Infrastructure &amp; Economic Grid</span>
                   </div>
-                  <span className="text-xs px-2 py-0.5 rounded bg-orange-950/80 text-orange-300 border border-orange-500/40 font-bold">28 Corridors</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-500/40 font-bold shrink-0">
+                    128 Assets
+                  </span>
                 </button>
 
-                <div className="px-3 py-2 text-xs font-mono font-semibold text-neutral-300 space-y-1 bg-[#131720] rounded-lg">
-                  <div className="text-emerald-400 font-bold">• Expressways (access-controlled, tolled)</div>
-                  <div className="text-amber-400 font-bold">• National Highways (NH grid &amp; corridors)</div>
-                  <div className="text-slate-300 font-bold">• State Highways &amp; coastal corridors</div>
+                {/* Subcategory Control Toolbar */}
+                <div className="flex items-center justify-between px-1 pt-1 pb-0.5 text-[11px] font-mono">
+                  <span className="text-neutral-400 font-semibold">
+                    Networks Active: <span className="text-amber-400 font-bold">{infrastructureCategories?.size || 0}/9</span>
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={onSelectAllInfrastructureCategories}
+                      className="text-[10px] text-amber-400/90 hover:text-amber-300 hover:underline cursor-pointer font-bold"
+                    >
+                      Select All
+                    </button>
+                    <span className="text-neutral-600">•</span>
+                    <button
+                      onClick={onClearInfrastructureCategories}
+                      className="text-[10px] text-neutral-400 hover:text-neutral-200 hover:underline cursor-pointer"
+                    >
+                      Clear
+                    </button>
+                  </div>
                 </div>
+
+                {/* 9 Networks Category Toggles */}
+                <div className="space-y-1">
+                  {[
+                    { id: 'highways' as InfrastructureCategory, name: 'National Highways & Expressways', count: '28 Corridors', icon: Route, color: '#f59e0b', authority: 'NHAI / MoRTH' },
+                    { id: 'railways' as InfrastructureCategory, name: 'Railways & Freight Corridors (DFCs)', count: '8 Trunk Corridors', icon: Train, color: '#38bdf8', authority: 'IR / DFCCIL' },
+                    { id: 'airports' as InfrastructureCategory, name: 'Major Hub & International Airports', count: '20 Hubs', icon: Plane, color: '#818cf8', authority: 'AAI / DGCA' },
+                    { id: 'seaports' as InfrastructureCategory, name: 'Major Seaports & Deepwater Harbors', count: '15 Ports', icon: Anchor, color: '#06b6d4', authority: 'MoPSW / Sagarmala' },
+                    { id: 'industrial_corridors' as InfrastructureCategory, name: 'National Industrial Corridors (NICDC)', count: '7 Mega Corridors', icon: Factory, color: '#d946ef', authority: 'NICDC / DPIIT' },
+                    { id: 'dams' as InfrastructureCategory, name: 'Major Multipurpose Dams & Hydro', count: '12 Reservoirs', icon: Waves, color: '#0284c7', authority: 'CWC / MoJS' },
+                    { id: 'power_plants' as InfrastructureCategory, name: 'Mega Power Plants & Clean Energy', count: '14 Mega Parks', icon: Zap, color: '#eab308', authority: 'CEA / NTPC / NPCIL' },
+                    { id: 'economic_zones' as InfrastructureCategory, name: 'Special Economic Zones & Tech Hubs', count: '12 SEZ Hubs', icon: Building2, color: '#10b981', authority: 'DPIIT / MoCI' },
+                    { id: 'urban_centres' as InfrastructureCategory, name: 'Metropolitan Urban Centres (Megacities)', count: '12 Agglomerations', icon: Building, color: '#f97316', authority: 'Census / MoHUA' },
+                  ].map((cat) => {
+                    const IconComp = cat.icon;
+                    const isActive = (activeLayers.has('infrastructure_economic') || (cat.id === 'highways' && activeLayers.has('roads'))) && infrastructureCategories?.has(cat.id);
+                    return (
+                      <button
+                        key={cat.id}
+                        onClick={() => toggleInfrastructureCategory(cat.id)}
+                        className={`w-full px-2.5 py-1.5 rounded-md text-xs font-mono flex items-center justify-between transition-all cursor-pointer text-left ${
+                          isActive
+                            ? 'bg-white/10 text-white font-semibold border-l-2'
+                            : 'text-neutral-400 hover:bg-white/5 hover:text-neutral-200'
+                        }`}
+                        style={{ borderLeftColor: isActive ? cat.color : 'transparent' }}
+                      >
+                        <div className="flex items-center gap-2 min-w-0 pr-1">
+                          <IconComp className="w-3.5 h-3.5 shrink-0" style={{ color: cat.color }} />
+                          <span className="truncate text-[11px]">{cat.name}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <span className="text-[10px] text-neutral-400 font-mono">
+                            {cat.count}
+                          </span>
+                          <span className={`w-2 h-2 rounded-full ${isActive ? 'shadow-sm' : 'bg-neutral-700'}`} style={{ backgroundColor: isActive ? cat.color : undefined }} />
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Quick Asset Navigator in Active Networks */}
+                {(activeLayers.has('infrastructure_economic') || activeLayers.has('roads')) && (
+                  <div className="pt-2 border-t border-white/10 space-y-1.5">
+                    <div className="flex items-center justify-between px-1 text-[10px] font-mono uppercase tracking-wider text-neutral-400 font-bold">
+                      <span>Key Assets Navigator</span>
+                      <span className="text-amber-400/80">Click to Fly &amp; Highlight</span>
+                    </div>
+
+                    <div className="max-h-56 overflow-y-auto space-y-1 pr-1 custom-scrollbar">
+                      {INFRASTRUCTURE_GEOJSON.features
+                        .filter(f => infrastructureCategories?.has(f.properties.category))
+                        .slice(0, 40)
+                        .map((f: any) => {
+                          const isSelected = selectedInfrastructureId === f.id || selectedInfrastructureId === f.properties.code;
+                          return (
+                            <button
+                              key={f.id}
+                              onClick={() => onSelectInfrastructureItem(f)}
+                              className={`w-full px-2 py-1.5 rounded text-left font-mono text-[11px] flex items-center justify-between transition-all cursor-pointer ${
+                                isSelected
+                                  ? 'bg-amber-500/20 text-amber-200 border border-amber-500/50 font-bold'
+                                  : 'text-neutral-300 hover:bg-white/5 hover:text-white'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2 min-w-0 pr-1">
+                                <span
+                                  className="w-1.5 h-1.5 rounded-full shrink-0"
+                                  style={{ backgroundColor: f.properties.color }}
+                                />
+                                <span className="truncate">{f.properties.name}</span>
+                              </div>
+                              <span
+                                className="text-[9px] px-1.5 py-0.2 rounded font-bold shrink-0 font-mono"
+                                style={{
+                                  backgroundColor: `${f.properties.color}20`,
+                                  color: f.properties.color,
+                                  border: `1px solid ${f.properties.color}40`
+                                }}
+                              >
+                                {f.properties.code || f.properties.iata_code || f.properties.sub_type?.split(' ')[0] || f.properties.category}
+                              </span>
+                            </button>
+                          );
+                        })}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

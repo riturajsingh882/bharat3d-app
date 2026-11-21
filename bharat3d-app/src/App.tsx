@@ -11,9 +11,10 @@ import { SoilDataModal } from './components/SoilDataModal';
 import { EnvironmentalComparisonDeck } from './components/EnvironmentalComparisonDeck';
 import { DisasterTimelineDeck } from './components/DisasterTimelineDeck';
 import { PanelLeftClose, PanelLeftOpen, Mountain, Leaf, Landmark, Scroll, Compass, AlertTriangle, Route, Info } from 'lucide-react';
-import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory, EnvironmentalPillar, EnvironmentalComparisonConfig, DisasterHazardType, DisasterRegion, HistoricalDisasterEvent } from './types';
+import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory, EnvironmentalPillar, EnvironmentalComparisonConfig, DisasterHazardType, DisasterRegion, HistoricalDisasterEvent, InfrastructureCategory } from './types';
 import { HISTORICAL_ERAS } from './data/historicalEras';
 import { DISASTER_HAZARDS_BY_ID } from './data/disasterIntelligence';
+import { ALL_INFRASTRUCTURE_CATEGORIES, INFRASTRUCTURE_BY_ID } from './data/infrastructureIntelligence';
 import { 
   ALL_ENVIRONMENTAL_PILLARS, 
   PILLAR_VIEWPORTS, 
@@ -339,6 +340,101 @@ export function App() {
     });
   };
 
+  // Infrastructure & Economic Geography State
+  const [infrastructureCategories, setInfrastructureCategories] = useState<Set<InfrastructureCategory>>(
+    new Set<InfrastructureCategory>(ALL_INFRASTRUCTURE_CATEGORIES)
+  );
+  const [selectedInfrastructureId, setSelectedInfrastructureId] = useState<string | null>(null);
+
+  const toggleInfrastructureCategory = (cat: InfrastructureCategory) => {
+    setInfrastructureCategories(prev => {
+      const next = new Set(prev);
+      if (next.has(cat)) {
+        next.delete(cat);
+        if (selectedFeature && (selectedFeature.type === 'infrastructure_item' || selectedFeature.type === 'highway') && selectedFeature.properties?.category === cat) {
+          setSelectedFeature(null);
+          setSelectedInfrastructureId(null);
+        }
+      } else {
+        next.add(cat);
+      }
+      return next;
+    });
+    if (!activeLayers.has('infrastructure_economic')) {
+      setActiveLayers(prev => new Set(prev).add('infrastructure_economic'));
+    }
+    if (cat === 'highways' && !activeLayers.has('roads')) {
+      setActiveLayers(prev => new Set(prev).add('roads'));
+    }
+  };
+
+  const selectAllInfrastructureCategories = () => {
+    setInfrastructureCategories(new Set<InfrastructureCategory>(ALL_INFRASTRUCTURE_CATEGORIES));
+    if (!activeLayers.has('infrastructure_economic')) {
+      setActiveLayers(prev => new Set(prev).add('infrastructure_economic').add('roads'));
+    }
+  };
+
+  const clearInfrastructureCategories = () => {
+    setInfrastructureCategories(new Set<InfrastructureCategory>());
+    if (selectedFeature?.type === 'infrastructure_item' || selectedFeature?.type === 'highway') {
+      setSelectedFeature(null);
+      setSelectedInfrastructureId(null);
+    }
+  };
+
+  const handleSelectInfrastructureItem = (item: any) => {
+    const feat = INFRASTRUCTURE_BY_ID[item.id] || INFRASTRUCTURE_BY_ID[item.properties?.id] || INFRASTRUCTURE_BY_ID[item.properties?.code] || item;
+    const props = feat.properties || item.properties || item;
+    const cat: InfrastructureCategory = props.category || 'highways';
+
+    setSelectedInfrastructureId(props.id || props.code || feat.id);
+
+    if (!activeLayers.has('infrastructure_economic')) {
+      setActiveLayers(prev => new Set(prev).add('infrastructure_economic'));
+    }
+    if (cat === 'highways' && !activeLayers.has('roads')) {
+      setActiveLayers(prev => new Set(prev).add('roads'));
+    }
+
+    setInfrastructureCategories(prev => new Set(prev).add(cat));
+
+    let coords: [number, number] | undefined = props.coordinates;
+    if (!coords && feat.geometry) {
+      if (feat.geometry.type === 'Point') {
+        coords = feat.geometry.coordinates as [number, number];
+      } else if (feat.geometry.type === 'LineString') {
+        const pts = feat.geometry.coordinates;
+        const mid = pts[Math.floor(pts.length / 2)];
+        coords = [mid[0], mid[1]];
+      }
+    }
+
+    if (coords) {
+      setSearchTarget({
+        name: props.name,
+        type: 'infrastructure_item',
+        key: props.id || props.code || feat.id,
+        lat: coords[1],
+        lng: coords[0],
+        zoom: feat.geometry?.type === 'LineString' ? 6.5 : 8.5,
+        pitch: 45,
+        bearing: 0
+      });
+    }
+
+    let featType: SelectedFeatureInfo['type'] = 'infrastructure_item';
+    if (cat === 'highways') featType = 'highway';
+
+    setSelectedFeature({
+      type: featType,
+      name: props.name,
+      properties: props,
+      coordinates: coords,
+      geometry: feat.geometry
+    });
+  };
+
   // Ingest Demographics Data
   useEffect(() => {
     fetch('/data/census_demographics.json')
@@ -501,6 +597,40 @@ export function App() {
         return next;
       }
 
+      // If user toggled Infrastructure & Economic Geography
+      if (layer === 'infrastructure_economic') {
+        if (next.has('infrastructure_economic') || next.has('roads')) {
+          next.delete('infrastructure_economic');
+          next.delete('roads');
+          if (selectedFeature && (selectedFeature.type === 'infrastructure_item' || selectedFeature.type === 'highway')) {
+            setSelectedFeature(null);
+            setSelectedInfrastructureId(null);
+          }
+        } else {
+          next.add('infrastructure_economic');
+          next.add('roads');
+          setInfrastructureCategories(new Set(ALL_INFRASTRUCTURE_CATEGORIES));
+        }
+        return next;
+      }
+
+      // If user toggled Roads / Highways
+      if (layer === 'roads') {
+        if (next.has('roads')) {
+          next.delete('roads');
+          setInfrastructureCategories(prev => {
+            const updated = new Set(prev);
+            updated.delete('highways');
+            return updated;
+          });
+        } else {
+          next.add('roads');
+          next.add('infrastructure_economic');
+          setInfrastructureCategories(prev => new Set(prev).add('highways'));
+        }
+        return next;
+      }
+
       // Independent overlay layers
       if (next.has(layer)) {
         next.delete(layer);
@@ -523,6 +653,8 @@ export function App() {
     setDisasterRegionFilter('all');
     setIsDisasterTimelineOpen(false);
     setSelectedDisasterEventId(null);
+    setInfrastructureCategories(new Set<InfrastructureCategory>(ALL_INFRASTRUCTURE_CATEGORIES));
+    setSelectedInfrastructureId(null);
     setSelectedFeature(null);
   };
 
@@ -656,6 +788,12 @@ export function App() {
               onSelectDisasterEvent={handleSelectDisasterEvent}
               selectedDisasterEventId={selectedDisasterEventId}
               onResetDisasterFocus={handleResetDisasterFocus}
+              infrastructureCategories={infrastructureCategories}
+              toggleInfrastructureCategory={toggleInfrastructureCategory}
+              onSelectAllInfrastructureCategories={selectAllInfrastructureCategories}
+              onClearInfrastructureCategories={clearInfrastructureCategories}
+              onSelectInfrastructureItem={handleSelectInfrastructureItem}
+              selectedInfrastructureId={selectedInfrastructureId}
             />
           </div>
         </div>
@@ -717,6 +855,12 @@ export function App() {
               onSelectDisasterEvent={handleSelectDisasterEvent}
               selectedDisasterEventId={selectedDisasterEventId}
               onResetDisasterFocus={handleResetDisasterFocus}
+              infrastructureCategories={infrastructureCategories}
+              toggleInfrastructureCategory={toggleInfrastructureCategory}
+              onSelectAllInfrastructureCategories={selectAllInfrastructureCategories}
+              onClearInfrastructureCategories={clearInfrastructureCategories}
+              onSelectInfrastructureItem={handleSelectInfrastructureItem}
+              selectedInfrastructureId={selectedInfrastructureId}
             />
             <button
               onClick={() => setIsSidebarOpen(false)}
@@ -759,6 +903,8 @@ export function App() {
             disasterHazardTypes={disasterHazardTypes}
             disasterRegionFilter={disasterRegionFilter}
             selectedDisasterEventId={selectedDisasterEventId}
+            infrastructureCategories={infrastructureCategories}
+            selectedInfrastructureId={selectedInfrastructureId}
           />
 
           {/* Dynamic Active Legends Overlay */}
@@ -893,17 +1039,46 @@ export function App() {
               </div>
             )}
 
-            {/* Roads & Highways Legend */}
-            {activeLayers.has('roads') && (
-              <div className="glass-panel-glow rounded-xl p-3 shadow-2xl text-xs pointer-events-auto min-w-[220px] border border-orange-500/40 font-mono">
-                <div className="font-bold text-orange-300 mb-1 flex items-center gap-1.5">
-                  <Route className="w-3.5 h-3.5 text-orange-400" />
-                  <span>National Highways &amp; Expressways</span>
+            {/* Infrastructure & Economic Geography Legend */}
+            {(activeLayers.has('infrastructure_economic') || activeLayers.has('roads')) && (
+              <div className="glass-panel-glow rounded-xl p-3 shadow-2xl text-xs pointer-events-auto min-w-[240px] border border-amber-500/40 font-mono">
+                <div className="font-bold text-amber-300 mb-1.5 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <Route className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Infrastructure &amp; Economy</span>
+                  </span>
+                  <span className="text-[10px] text-amber-400 font-bold bg-amber-950/80 px-1.5 py-0.5 rounded border border-amber-500/30">
+                    {infrastructureCategories.size}/9
+                  </span>
                 </div>
                 <div className="space-y-1 text-[11px] font-bold">
-                  <span className="flex items-center gap-1.5 text-emerald-400"><span className="w-3 h-1 bg-[#10b981] inline-block"/>Expressway (Tolled)</span>
-                  <span className="flex items-center gap-1.5 text-amber-400"><span className="w-3 h-1 bg-[#f59e0b] inline-block"/>National Highway (NH)</span>
-                  <span className="flex items-center gap-1.5 text-slate-300"><span className="w-3 h-1 bg-[#94a3b8] inline-block"/>State Highway / Corridor</span>
+                  {infrastructureCategories.has('highways') && (
+                    <span className="flex items-center gap-1.5 text-amber-400"><span className="w-3 h-1 bg-[#f59e0b] inline-block"/>National Highways &amp; Expressways</span>
+                  )}
+                  {infrastructureCategories.has('railways') && (
+                    <span className="flex items-center gap-1.5 text-sky-400"><span className="w-3 h-1 border-b-2 border-dashed border-[#38bdf8] inline-block"/>Railways &amp; Freight Corridors (DFCs)</span>
+                  )}
+                  {infrastructureCategories.has('airports') && (
+                    <span className="flex items-center gap-1.5 text-indigo-400"><span className="w-2.5 h-2.5 rounded-full bg-[#818cf8] border border-white/60 inline-block"/>Major Hub Airports (AAI)</span>
+                  )}
+                  {infrastructureCategories.has('seaports') && (
+                    <span className="flex items-center gap-1.5 text-cyan-400"><span className="w-2.5 h-2.5 rounded-full bg-[#06b6d4] border border-white/60 inline-block"/>Major Seaports &amp; Harbors</span>
+                  )}
+                  {infrastructureCategories.has('industrial_corridors') && (
+                    <span className="flex items-center gap-1.5 text-fuchsia-400"><span className="w-3 h-1 bg-[#d946ef] inline-block"/>Industrial Corridors (NICDC)</span>
+                  )}
+                  {infrastructureCategories.has('dams') && (
+                    <span className="flex items-center gap-1.5 text-blue-400"><span className="w-2.5 h-2.5 rounded-full bg-[#0284c7] border border-white/60 inline-block"/>Major Multipurpose Dams (CWC)</span>
+                  )}
+                  {infrastructureCategories.has('power_plants') && (
+                    <span className="flex items-center gap-1.5 text-yellow-400"><span className="w-2.5 h-2.5 rounded-full bg-[#eab308] border border-white/60 inline-block"/>Mega Power Plants &amp; Solar Parks</span>
+                  )}
+                  {infrastructureCategories.has('economic_zones') && (
+                    <span className="flex items-center gap-1.5 text-emerald-400"><span className="w-2.5 h-2.5 rounded-full bg-[#10b981] border border-white/60 inline-block"/>Special Economic Zones (DPIIT)</span>
+                  )}
+                  {infrastructureCategories.has('urban_centres') && (
+                    <span className="flex items-center gap-1.5 text-orange-400"><span className="w-2.5 h-2.5 rounded-full bg-[#f97316] border border-white/60 inline-block"/>Metropolitan Urban Centres</span>
+                  )}
                 </div>
               </div>
             )}

@@ -52,8 +52,20 @@ export type ActiveLayer =
   | 'archaeological_sites'
   | 'trade_routes'
   | 'roads'
+  | 'infrastructure_economic'
   | 'disaster_seismic'
   | 'environmental_change';
+
+export type InfrastructureCategory =
+  | 'highways'
+  | 'railways'
+  | 'airports'
+  | 'seaports'
+  | 'industrial_corridors'
+  | 'dams'
+  | 'power_plants'
+  | 'economic_zones'
+  | 'urban_centres';
 
 export type HistoricalPeriodId =
   | 'indus_valley'
@@ -189,6 +201,16 @@ export interface SelectedFeatureInfo {
     | 'archaeological_site' 
     | 'trade_route' 
     | 'highway'
+    | 'infrastructure_item'
+    | 'infrastructure_highway'
+    | 'infrastructure_railway'
+    | 'infrastructure_airport'
+    | 'infrastructure_seaport'
+    | 'infrastructure_corridor'
+    | 'infrastructure_dam'
+    | 'infrastructure_power'
+    | 'infrastructure_sez'
+    | 'infrastructure_urban'
     | 'seismic_zone' 
     | 'earthquake_epicenter'
     | 'disaster_hazard'

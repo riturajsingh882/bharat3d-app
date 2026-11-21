@@ -29,7 +29,10 @@ import {
   Gauge,
   ExternalLink,
   Flame,
-  Wind
+  Wind,
+  Plane,
+  Zap,
+  Factory
 } from 'lucide-react';
 import type { SelectedFeatureInfo, EnvironmentalComparisonConfig } from '../types';
 import { metersToFeetInches } from '../utils/elevation';
@@ -490,21 +493,82 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
           </div>
         )}
 
-        {/* 3.5 National Highway / Expressway / Road Corridor Dossier */}
-        {type === 'highway' && (
+        {/* 3.5 Infrastructure & Economic Geography Dossier */}
+        {(type === 'highway' || type === 'infrastructure_item' || properties.category === 'highways' || properties.category === 'railways' || properties.category === 'airports' || properties.category === 'seaports' || properties.category === 'industrial_corridors' || properties.category === 'dams' || properties.category === 'power_plants' || properties.category === 'economic_zones' || properties.category === 'urban_centres') && (
           <div className="space-y-3">
-            <div className="vista-card p-4 space-y-3">
+            <div className="vista-card p-4 space-y-3 border border-amber-500/30 bg-[#120f0a]/90">
               <div className="flex items-center justify-between gap-2 pb-2 border-b border-white/10 text-xs font-mono font-bold text-white uppercase tracking-wider">
                 <span className="flex items-center gap-1.5 min-w-0 flex-1">
-                  <Route className="w-4 h-4 text-orange-400 shrink-0" />
-                  <span className="truncate">Road Corridor Profile</span>
+                  {properties.category === 'railways' ? (
+                    <Train className="w-4 h-4 text-sky-400 shrink-0" />
+                  ) : properties.category === 'airports' ? (
+                    <Plane className="w-4 h-4 text-indigo-400 shrink-0" />
+                  ) : properties.category === 'seaports' ? (
+                    <Anchor className="w-4 h-4 text-cyan-400 shrink-0" />
+                  ) : properties.category === 'industrial_corridors' ? (
+                    <Factory className="w-4 h-4 text-fuchsia-400 shrink-0" />
+                  ) : properties.category === 'dams' ? (
+                    <Waves className="w-4 h-4 text-blue-400 shrink-0" />
+                  ) : properties.category === 'power_plants' ? (
+                    <Zap className="w-4 h-4 text-yellow-400 shrink-0" />
+                  ) : properties.category === 'economic_zones' ? (
+                    <Building2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  ) : properties.category === 'urban_centres' ? (
+                    <Building className="w-4 h-4 text-orange-400 shrink-0" />
+                  ) : (
+                    <Route className="w-4 h-4 text-amber-400 shrink-0" />
+                  )}
+                  <span className="truncate">
+                    {properties.category === 'railways' ? 'Railway & Freight Corridor'
+                      : properties.category === 'airports' ? 'Hub & International Airport'
+                      : properties.category === 'seaports' ? 'Major Seaport & Deepwater Harbor'
+                      : properties.category === 'industrial_corridors' ? 'National Industrial Corridor'
+                      : properties.category === 'dams' ? 'Multipurpose Dam & Reservoir'
+                      : properties.category === 'power_plants' ? 'Mega Power & Renewable Park'
+                      : properties.category === 'economic_zones' ? 'Special Economic Zone (SEZ)'
+                      : properties.category === 'urban_centres' ? 'Metropolitan Megacity Centre'
+                      : 'Road Corridor Profile'}
+                  </span>
                 </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-orange-950/80 text-orange-300 border border-orange-500/30 font-bold shrink-0 max-w-[120px] truncate">
-                  {properties.category || 'HIGHWAY'}
+                <span 
+                  className="text-[10px] font-mono px-2 py-0.5 rounded font-bold shrink-0 max-w-[130px] truncate"
+                  style={{
+                    backgroundColor: `${properties.color || '#f59e0b'}25`,
+                    color: properties.color || '#f59e0b',
+                    border: `1px solid ${properties.color || '#f59e0b'}50`
+                  }}
+                  title={properties.authority || properties.sub_type || 'National Asset'}
+                >
+                  {properties.code || properties.iata_code || properties.sub_type?.split(' ')[0] || properties.category?.toUpperCase() || 'INFRA'}
                 </span>
               </div>
 
               <div className="space-y-2 text-xs font-mono">
+                {/* Authority badge row */}
+                {properties.authority && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Governing Authority:</span>
+                    <span className="font-bold text-neutral-200 text-right min-w-0 break-words">{properties.authority}</span>
+                  </div>
+                )}
+
+                {/* Sub-type / Class */}
+                {properties.sub_type && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Classification:</span>
+                    <span className="font-bold text-amber-300 text-right min-w-0 break-words">{properties.sub_type}</span>
+                  </div>
+                )}
+
+                {/* State / Region */}
+                {(properties.state || properties.states) && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Geographic Jurisdiction:</span>
+                    <span className="text-neutral-200 break-words leading-relaxed">{properties.state || properties.states}</span>
+                  </div>
+                )}
+
+                {/* --- HIGHWAY SPECIFIC --- */}
                 {properties.code && (
                   <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
                     <span className="text-neutral-400 shrink-0">Route Designation:</span>
@@ -513,42 +577,216 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ feature, onClose, comparis
                 )}
                 {properties.from && properties.to && (
                   <div className="py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400 block text-[11px]">Terminal Points:</span>
+                    <span className="text-neutral-400 block text-[11px]">Terminal Alignment:</span>
                     <span className="text-neutral-200 break-words leading-relaxed">{properties.from} → {properties.to}</span>
                   </div>
                 )}
                 {properties.length_km && (
                   <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
-                    <span className="text-neutral-400 shrink-0">Route Length:</span>
+                    <span className="text-neutral-400 shrink-0">Corridor Length:</span>
                     <span className="font-bold text-[#C9A227] text-sm text-right min-w-0 break-words">{properties.length_km.toLocaleString()} km</span>
                   </div>
                 )}
-                {properties.states && (
-                  <div className="py-1.5 border-b border-white/5">
-                    <span className="text-neutral-400 block text-[11px]">States Served:</span>
-                    <span className="text-amber-300 break-words leading-relaxed">{properties.states}</span>
+                {properties.lanes && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Lanes / Configuration:</span>
+                    <span className="font-bold text-neutral-200 text-right min-w-0 break-words">{properties.lanes}</span>
                   </div>
                 )}
                 {properties.corridor && (
                   <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
-                    <span className="text-neutral-400 shrink-0">Corridor Class:</span>
-                    <span className="font-bold text-white text-sm text-right min-w-0 break-words">{properties.corridor}</span>
+                    <span className="text-neutral-400 shrink-0">Corridor Group:</span>
+                    <span className="font-bold text-white text-right min-w-0 break-words">{properties.corridor}</span>
                   </div>
                 )}
-                <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
-                  <span className="text-neutral-400 shrink-0">Configuration:</span>
-                  <span className="font-bold text-neutral-200 text-right min-w-0 break-words">{properties.lanes || '—'} lanes</span>
-                </div>
-                <div className="flex justify-between items-start py-1.5 gap-2">
-                  <span className="text-neutral-400 shrink-0">Tolled / Access:</span>
-                  <span className={`font-bold text-sm text-right min-w-0 break-words ${properties.toll ? 'text-emerald-400' : 'text-slate-300'}`}>
-                    {properties.toll ? 'Tolled · Access-Controlled' : 'Open Access'}
-                  </span>
-                </div>
-                {properties.status && (
-                  <div className="pt-1.5 border-t border-white/5">
-                    <span className="text-neutral-400 block text-[11px]">Status:</span>
-                    <span className="text-emerald-300 font-bold break-words leading-relaxed">{properties.status}</span>
+                {properties.toll !== undefined && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Tolled / Access Control:</span>
+                    <span className={`font-bold text-right min-w-0 break-words ${properties.toll ? 'text-emerald-400' : 'text-slate-300'}`}>
+                      {properties.toll ? 'Tolled · Access-Controlled' : 'Open Access'}
+                    </span>
+                  </div>
+                )}
+
+                {/* --- RAILWAY SPECIFIC --- */}
+                {properties.gauge && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Track Gauge:</span>
+                    <span className="font-bold text-sky-300 text-right min-w-0 break-words">{properties.gauge}</span>
+                  </div>
+                )}
+                {properties.electrification_pct !== undefined && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Electrification:</span>
+                    <span className="font-bold text-emerald-400 text-right min-w-0 break-words">{properties.electrification_pct}% 25 kV AC</span>
+                  </div>
+                )}
+                {properties.route_type && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Route Class:</span>
+                    <span className="font-bold text-sky-200 text-right min-w-0 break-words">{properties.route_type}</span>
+                  </div>
+                )}
+
+                {/* --- AIRPORT SPECIFIC --- */}
+                {(properties.iata_code || properties.icao_code) && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Airport Codes:</span>
+                    <span className="font-bold text-indigo-300 text-sm text-right min-w-0 break-words">
+                      IATA: {properties.iata_code || '—'} • ICAO: {properties.icao_code || '—'}
+                    </span>
+                  </div>
+                )}
+                {properties.passengers_mppa && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Annual Passenger Capacity:</span>
+                    <span className="font-bold text-[#C9A227] text-sm text-right min-w-0 break-words">{properties.passengers_mppa} MPPA</span>
+                  </div>
+                )}
+                {properties.runways_count && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Runways:</span>
+                    <span className="font-bold text-neutral-200 text-right min-w-0 break-words">{properties.runways_count} Operational Runway(s)</span>
+                  </div>
+                )}
+                {properties.operator && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Aerodrome Operator:</span>
+                    <span className="font-bold text-neutral-200 text-right min-w-0 break-words">{properties.operator}</span>
+                  </div>
+                )}
+
+                {/* --- SEAPORT SPECIFIC --- */}
+                {properties.port_type && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Port Category:</span>
+                    <span className="font-bold text-cyan-300 text-right min-w-0 break-words">{properties.port_type}</span>
+                  </div>
+                )}
+                {properties.cargo_mmt && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Cargo Throughput:</span>
+                    <span className="font-bold text-[#C9A227] text-sm text-right min-w-0 break-words">{properties.cargo_mmt} MMT / Year</span>
+                  </div>
+                )}
+                {properties.container_teu && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Container Traffic:</span>
+                    <span className="font-bold text-cyan-200 text-right min-w-0 break-words">{properties.container_teu.toLocaleString()} TEU</span>
+                  </div>
+                )}
+                {properties.draft_m && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Natural Draft Depth:</span>
+                    <span className="font-bold text-cyan-300 text-right min-w-0 break-words">{properties.draft_m} m</span>
+                  </div>
+                )}
+
+                {/* --- INDUSTRIAL CORRIDOR SPECIFIC --- */}
+                {properties.investment_target_usd && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Projected Investment:</span>
+                    <span className="font-bold text-fuchsia-300 text-sm text-right min-w-0 break-words">{properties.investment_target_usd}</span>
+                  </div>
+                )}
+                {properties.nodes && Array.isArray(properties.nodes) && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Industrial Nodes &amp; Smart Cities:</span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {properties.nodes.map((node: string, idx: number) => (
+                        <span key={idx} className="px-1.5 py-0.5 rounded bg-fuchsia-950/60 text-fuchsia-300 border border-fuchsia-500/30 text-[10px]">
+                          {node}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* --- DAM SPECIFIC --- */}
+                {properties.river && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Impounded River:</span>
+                    <span className="font-bold text-blue-300 text-right min-w-0 break-words">{properties.river}</span>
+                  </div>
+                )}
+                {properties.height_m && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Dam Height:</span>
+                    <span className="font-bold text-neutral-200 text-right min-w-0 break-words">{properties.height_m} meters</span>
+                  </div>
+                )}
+                {properties.installed_capacity_mw && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Installed Generation:</span>
+                    <span className="font-bold text-yellow-300 text-sm text-right min-w-0 break-words">{properties.installed_capacity_mw.toLocaleString()} MW</span>
+                  </div>
+                )}
+                {properties.reservoir_capacity_mcm && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Gross Storage:</span>
+                    <span className="font-bold text-blue-200 text-right min-w-0 break-words">{properties.reservoir_capacity_mcm.toLocaleString()} MCM</span>
+                  </div>
+                )}
+
+                {/* --- POWER PLANT SPECIFIC --- */}
+                {properties.fuel_type && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Energy Source / Tech:</span>
+                    <span className="font-bold text-yellow-300 text-right min-w-0 break-words">{properties.fuel_type}</span>
+                  </div>
+                )}
+
+                {/* --- SEZ SPECIFIC --- */}
+                {properties.area_acres && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Developed Area:</span>
+                    <span className="font-bold text-emerald-300 text-right min-w-0 break-words">{properties.area_acres.toLocaleString()} Acres</span>
+                  </div>
+                )}
+                {properties.focus_sectors && Array.isArray(properties.focus_sectors) && (
+                  <div className="py-1.5 border-b border-white/5">
+                    <span className="text-neutral-400 block text-[11px]">Anchor Sectors:</span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {properties.focus_sectors.map((sec: string, idx: number) => (
+                        <span key={idx} className="px-1.5 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/30 text-[10px]">
+                          {sec}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* --- URBAN CENTRE SPECIFIC --- */}
+                {properties.population_metro && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Agglomeration Pop:</span>
+                    <span className="font-bold text-[#C9A227] text-sm text-right min-w-0 break-words">{properties.population_metro}</span>
+                  </div>
+                )}
+                {properties.metro_gdp_usd && (
+                  <div className="flex justify-between items-start py-1.5 border-b border-white/5 gap-2">
+                    <span className="text-neutral-400 shrink-0">Estimated Metro GDP:</span>
+                    <span className="font-bold text-emerald-400 text-sm text-right min-w-0 break-words">{properties.metro_gdp_usd}</span>
+                  </div>
+                )}
+
+                {/* Executive Brief */}
+                {(properties.description || properties.summary) && (
+                  <div className="pt-2 border-t border-white/5">
+                    <span className="text-neutral-400 block text-[11px] mb-1 font-bold uppercase tracking-wider">
+                      Strategic Economic Assessment:
+                    </span>
+                    <p className="text-neutral-300 text-xs leading-relaxed font-sans font-medium break-words">
+                      {properties.description || properties.summary}
+                    </p>
+                  </div>
+                )}
+
+                {/* Official Reference citation */}
+                {properties.official_reference && (
+                  <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[10px] text-neutral-400">
+                    <span className="truncate">Source: {properties.official_reference}</span>
+                    <span className="text-emerald-400 font-bold shrink-0">Official Verified</span>
                   </div>
                 )}
               </div>

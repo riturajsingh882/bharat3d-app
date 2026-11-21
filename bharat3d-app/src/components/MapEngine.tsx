@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Map, NavigationControl, ScaleControl, setWorkerUrl, type MapMouseEvent, type MapGeoJSONFeature } from 'maplibre-gl';
-import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory, EnvironmentalPillar, EnvironmentalComparisonConfig, DisasterHazardType, DisasterRegion } from '../types';
+import type { ActiveLayer, BasemapStyle, DemographicRecord, HistoricalPeriodId, ReligionFilter, SearchTarget, SelectedFeatureInfo, TradeCategory, EnvironmentalPillar, EnvironmentalComparisonConfig, DisasterHazardType, DisasterRegion, InfrastructureCategory } from '../types';
 import { APP_CONFIG } from '../config';
 import { formatElevationDual } from '../utils/elevation';
 import { ENVIRONMENTAL_FEATURES, ENVIRONMENTAL_FEATURES_BY_ID } from '../data/environmentalGeojson';
 import { DISASTER_GEOJSON, DISASTER_HAZARDS_BY_ID } from '../data/disasterIntelligence';
+import { INFRASTRUCTURE_GEOJSON, INFRASTRUCTURE_BY_ID } from '../data/infrastructureIntelligence';
 
 // Statically point MapLibre worker to the public directory
 setWorkerUrl('/maplibre-gl-worker.mjs');
@@ -19,7 +20,17 @@ const SEARCH_HIGHLIGHT_SOURCE: Record<string, { source: string; field: string } 
   wetland: { source: 'environmental-change', field: 'id' },
   disaster_hazard: { source: 'disaster-seismic-zones', field: 'id' },
   seismic_zone: { source: 'disaster-seismic-zones', field: 'id' },
-  earthquake_epicenter: { source: 'disaster-seismic-zones', field: 'id' }
+  earthquake_epicenter: { source: 'disaster-seismic-zones', field: 'id' },
+  infrastructure_item: { source: 'infrastructure-economic', field: 'id' },
+  infrastructure_highway: { source: 'infrastructure-economic', field: 'id' },
+  infrastructure_railway: { source: 'infrastructure-economic', field: 'id' },
+  infrastructure_airport: { source: 'infrastructure-economic', field: 'id' },
+  infrastructure_seaport: { source: 'infrastructure-economic', field: 'id' },
+  infrastructure_corridor: { source: 'infrastructure-economic', field: 'id' },
+  infrastructure_dam: { source: 'infrastructure-economic', field: 'id' },
+  infrastructure_power: { source: 'infrastructure-economic', field: 'id' },
+  infrastructure_sez: { source: 'infrastructure-economic', field: 'id' },
+  infrastructure_urban: { source: 'infrastructure-economic', field: 'id' }
 };
 
 function clearSearchHighlight(map: Map) {
@@ -572,6 +583,87 @@ function applySearchHighlight(map: Map, target: SearchTarget | null) {
       }
       break;
     }
+    case 'infrastructure_item':
+    case 'infrastructure_highway':
+    case 'infrastructure_railway':
+    case 'infrastructure_airport':
+    case 'infrastructure_seaport':
+    case 'infrastructure_corridor':
+    case 'infrastructure_dam':
+    case 'infrastructure_power':
+    case 'infrastructure_sez':
+    case 'infrastructure_urban': {
+      const keyOrName = target.key || target.name || '';
+      let match = target.key ? INFRASTRUCTURE_BY_ID[target.key] : undefined;
+      if (!match && keyOrName) {
+        match = INFRASTRUCTURE_BY_ID[keyOrName];
+      }
+      if (!match && target.name) {
+        const tName = target.name.toLowerCase();
+        match = INFRASTRUCTURE_GEOJSON.features.find((f: any) => {
+          const fName = (f.properties?.name || '').toLowerCase();
+          return fName.includes(tName) || tName.includes(fName);
+        });
+      }
+
+      const src = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+      if (match) {
+        const p = match.properties;
+        const color = p.color || '#f59e0b';
+        const hlFeatures: any[] = [];
+
+        if (match.geometry.type === 'Point') {
+          const pt = match.geometry.coordinates as [number, number];
+          const haloCircle = createGeodesicCircle(pt[0], pt[1], 15, 64);
+          hlFeatures.push({
+            type: 'Feature',
+            geometry: haloCircle,
+            properties: {
+              id: (match.id || 'infra') + '_halo',
+              name: p.name,
+              color: color,
+              border_color: '#ffffff',
+              fill_opacity: 0.35,
+              stroke_width: 2.5
+            }
+          });
+          hlFeatures.push({
+            type: 'Feature',
+            geometry: match.geometry,
+            properties: {
+              id: (match.id || 'infra') + '_beacon',
+              name: p.name,
+              label_text: `🏗️ ${p.name}`,
+              color: color,
+              pulse_color: color
+            }
+          });
+        } else {
+          hlFeatures.push({
+            type: 'Feature',
+            geometry: match.geometry,
+            properties: {
+              id: (match.id || 'infra') + '_line',
+              name: p.name,
+              color: color,
+              border_color: '#ffffff',
+              fill_opacity: 0.45,
+              stroke_width: 4.5
+            }
+          });
+        }
+
+        if (src) {
+          src.setData({
+            type: 'FeatureCollection',
+            features: hlFeatures
+          });
+        }
+      } else {
+        setPoint();
+      }
+      break;
+    }
     default: {
       const cfg = SEARCH_HIGHLIGHT_SOURCE[target.type];
       if (cfg && target.key) {
@@ -672,6 +764,8 @@ interface MapEngineProps {
   disasterHazardTypes?: Set<DisasterHazardType>;
   disasterRegionFilter?: DisasterRegion;
   selectedDisasterEventId?: string | null;
+  infrastructureCategories?: Set<InfrastructureCategory>;
+  selectedInfrastructureId?: string | null;
 }
 
 export const MapEngine: React.FC<MapEngineProps> = ({
@@ -691,7 +785,9 @@ export const MapEngine: React.FC<MapEngineProps> = ({
   comparisonConfig,
   disasterHazardTypes,
   disasterRegionFilter = 'all',
-  selectedDisasterEventId = null
+  selectedDisasterEventId = null,
+  infrastructureCategories,
+  selectedInfrastructureId = null
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map | null>(null);
@@ -926,13 +1022,68 @@ export const MapEngine: React.FC<MapEngineProps> = ({
       map.setPaintProperty('env-points-halo', 'circle-color', activeEnvColorExpr);
     }
 
-    // 7.5 National Highways & Expressways
-    const isRoadsActive = activeLayers.has('roads');
+    // 7.5 Infrastructure & Economic Geography Networks
+    const isInfraActive = activeLayers.has('infrastructure_economic');
+    const isRoadsActive = (activeLayers.has('roads') || isInfraActive) && (!infrastructureCategories || infrastructureCategories.has('highways'));
     setVis('roads-casing', isRoadsActive);
     setVis('roads-core', isRoadsActive);
     setVis('roads-label', isRoadsActive);
     setVis('roads-hit-target', isRoadsActive);
     setVis('roads-highlight', true);
+    if (map.getLayer('roads-highlight')) {
+      const isRoadId = selectedInfrastructureId && (selectedInfrastructureId.startsWith('NH-') || selectedInfrastructureId.startsWith('NE-') || selectedInfrastructureId.startsWith('SH-'));
+      map.setFilter('roads-highlight', ['==', 'code', isRoadId ? selectedInfrastructureId : '']);
+    }
+
+    const isRailwaysActive = isInfraActive && (!infrastructureCategories || infrastructureCategories.has('railways'));
+    setVis('infra-railways-glow', isRailwaysActive);
+    setVis('infra-railways-casing', isRailwaysActive);
+    setVis('infra-railways-core', isRailwaysActive);
+    setVis('infra-railways-labels', isRailwaysActive);
+    setVis('infra-railways-hit-target', isRailwaysActive);
+
+    const isCorridorsActive = isInfraActive && (!infrastructureCategories || infrastructureCategories.has('industrial_corridors'));
+    setVis('infra-corridors-glow', isCorridorsActive);
+    setVis('infra-corridors-casing', isCorridorsActive);
+    setVis('infra-corridors-core', isCorridorsActive);
+    setVis('infra-corridors-labels', isCorridorsActive);
+    setVis('infra-corridors-hit-target', isCorridorsActive);
+
+    const isAirportsActive = isInfraActive && (!infrastructureCategories || infrastructureCategories.has('airports'));
+    setVis('infra-airports-halo', isAirportsActive);
+    setVis('infra-airports-core', isAirportsActive);
+    setVis('infra-airports-labels', isAirportsActive);
+    setVis('infra-airports-hit-target', isAirportsActive);
+
+    const isSeaportsActive = isInfraActive && (!infrastructureCategories || infrastructureCategories.has('seaports'));
+    setVis('infra-seaports-halo', isSeaportsActive);
+    setVis('infra-seaports-core', isSeaportsActive);
+    setVis('infra-seaports-labels', isSeaportsActive);
+    setVis('infra-seaports-hit-target', isSeaportsActive);
+
+    const isDamsActive = isInfraActive && (!infrastructureCategories || infrastructureCategories.has('dams'));
+    setVis('infra-dams-halo', isDamsActive);
+    setVis('infra-dams-core', isDamsActive);
+    setVis('infra-dams-labels', isDamsActive);
+    setVis('infra-dams-hit-target', isDamsActive);
+
+    const isPowerActive = isInfraActive && (!infrastructureCategories || infrastructureCategories.has('power_plants'));
+    setVis('infra-power-halo', isPowerActive);
+    setVis('infra-power-core', isPowerActive);
+    setVis('infra-power-labels', isPowerActive);
+    setVis('infra-power-hit-target', isPowerActive);
+
+    const isSezActive = isInfraActive && (!infrastructureCategories || infrastructureCategories.has('economic_zones'));
+    setVis('infra-sez-halo', isSezActive);
+    setVis('infra-sez-core', isSezActive);
+    setVis('infra-sez-labels', isSezActive);
+    setVis('infra-sez-hit-target', isSezActive);
+
+    const isUrbanActive = isInfraActive && (!infrastructureCategories || infrastructureCategories.has('urban_centres'));
+    setVis('infra-urban-halo', isUrbanActive);
+    setVis('infra-urban-core', isUrbanActive);
+    setVis('infra-urban-labels', isUrbanActive);
+    setVis('infra-urban-hit-target', isUrbanActive);
 
     // 8. Disaster & Hazard Intelligence
     const isDisasterActive = activeLayers.has('disaster_seismic');
@@ -1128,7 +1279,7 @@ export const MapEngine: React.FC<MapEngineProps> = ({
     } catch {
       // ignore
     }
-  }, [activeLayers, religionFilter, tradeCategories, environmentalPillars, comparisonConfig, disasterHazardTypes, disasterRegionFilter, selectedDisasterEventId]);
+  }, [activeLayers, religionFilter, tradeCategories, environmentalPillars, comparisonConfig, disasterHazardTypes, disasterRegionFilter, selectedDisasterEventId, infrastructureCategories, selectedInfrastructureId]);
 
   // Initialize Map
   useEffect(() => {
@@ -1274,6 +1425,11 @@ export const MapEngine: React.FC<MapEngineProps> = ({
       map.addSource('disaster-seismic-zones', {
         type: 'geojson',
         data: DISASTER_GEOJSON
+      });
+
+      map.addSource('infrastructure-economic', {
+        type: 'geojson',
+        data: INFRASTRUCTURE_GEOJSON
       });
 
       map.addSource('search-highlight', {
@@ -2430,6 +2586,563 @@ export const MapEngine: React.FC<MapEngineProps> = ({
       });
 
       // ========================================================
+      // 3.6 INFRASTRUCTURE & ECONOMIC GEOGRAPHY NETWORKS
+      // ========================================================
+
+      // --- RAILWAYS & FREIGHT CORRIDORS ---
+      map.addLayer({
+        id: 'infra-railways-glow',
+        type: 'line',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'LineString'], ['==', ['get', 'category'], 'railways']],
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+          visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#38bdf8',
+          'line-width': 5.5,
+          'line-opacity': 0.35,
+          'line-blur': 2
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-railways-casing',
+        type: 'line',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'LineString'], ['==', ['get', 'category'], 'railways']],
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+          visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#030712',
+          'line-width': 3.6,
+          'line-opacity': 0.95
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-railways-core',
+        type: 'line',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'LineString'], ['==', ['get', 'category'], 'railways']],
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+          visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#38bdf8',
+          'line-width': 2.2,
+          'line-dasharray': [3, 2]
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-railways-labels',
+        type: 'symbol',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'LineString'], ['==', ['get', 'category'], 'railways']],
+        layout: {
+          'symbol-placement': 'line',
+          'text-field': ['get', 'name'],
+          'text-size': 10,
+          'text-letter-spacing': 0.05,
+          'text-allow-overlap': false,
+          'text-optional': true,
+          visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#e0f2fe',
+          'text-halo-color': '#030712',
+          'text-halo-width': 2
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-railways-hit-target',
+        type: 'line',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'LineString'], ['==', ['get', 'category'], 'railways']],
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+          visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#000000',
+          'line-width': 32,
+          'line-opacity': 0.001
+        }
+      });
+
+      // --- INDUSTRIAL CORRIDORS ---
+      map.addLayer({
+        id: 'infra-corridors-glow',
+        type: 'line',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'LineString'], ['==', ['get', 'category'], 'industrial_corridors']],
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+          visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#d946ef',
+          'line-width': 6,
+          'line-opacity': 0.35,
+          'line-blur': 2
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-corridors-casing',
+        type: 'line',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'LineString'], ['==', ['get', 'category'], 'industrial_corridors']],
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+          visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#0f172a',
+          'line-width': 4,
+          'line-opacity': 0.95
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-corridors-core',
+        type: 'line',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'LineString'], ['==', ['get', 'category'], 'industrial_corridors']],
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+          visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#d946ef',
+          'line-width': 2.6
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-corridors-labels',
+        type: 'symbol',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'LineString'], ['==', ['get', 'category'], 'industrial_corridors']],
+        layout: {
+          'symbol-placement': 'line',
+          'text-field': ['get', 'name'],
+          'text-size': 10,
+          'text-letter-spacing': 0.05,
+          'text-allow-overlap': false,
+          'text-optional': true,
+          visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#fae8ff',
+          'text-halo-color': '#0f172a',
+          'text-halo-width': 2
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-corridors-hit-target',
+        type: 'line',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'LineString'], ['==', ['get', 'category'], 'industrial_corridors']],
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round',
+          visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none'
+        },
+        paint: {
+          'line-color': '#000000',
+          'line-width': 32,
+          'line-opacity': 0.001
+        }
+      });
+
+      // --- AIRPORTS ---
+      map.addLayer({
+        id: 'infra-airports-halo',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'airports']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 13,
+          'circle-color': '#818cf8',
+          'circle-blur': 0.8,
+          'circle-opacity': 0.65
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-airports-core',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'airports']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 5.5,
+          'circle-color': '#ffffff',
+          'circle-stroke-width': 2.2,
+          'circle-stroke-color': '#4338ca'
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-airports-labels',
+        type: 'symbol',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'airports']],
+        layout: {
+          'text-field': ['concat', ['coalesce', ['get', 'iata_code'], 'AIR'], ' • ', ['get', 'name']],
+          'text-size': 10,
+          'text-offset': [0, -1.3],
+          'text-anchor': 'bottom',
+          'text-allow-overlap': false,
+          visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#e0e7ff',
+          'text-halo-color': '#0f172a',
+          'text-halo-width': 2
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-airports-hit-target',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'airports']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 22,
+          'circle-color': '#000000',
+          'circle-opacity': 0.001
+        }
+      });
+
+      // --- SEAPORTS ---
+      map.addLayer({
+        id: 'infra-seaports-halo',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'seaports']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 13,
+          'circle-color': '#06b6d4',
+          'circle-blur': 0.8,
+          'circle-opacity': 0.65
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-seaports-core',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'seaports']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 5.5,
+          'circle-color': '#ffffff',
+          'circle-stroke-width': 2.2,
+          'circle-stroke-color': '#0891b2'
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-seaports-labels',
+        type: 'symbol',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'seaports']],
+        layout: {
+          'text-field': ['concat', '⚓ ', ['get', 'name']],
+          'text-size': 10,
+          'text-offset': [0, -1.3],
+          'text-anchor': 'bottom',
+          'text-allow-overlap': false,
+          visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#cffafe',
+          'text-halo-color': '#0f172a',
+          'text-halo-width': 2
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-seaports-hit-target',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'seaports']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 22,
+          'circle-color': '#000000',
+          'circle-opacity': 0.001
+        }
+      });
+
+      // --- DAMS & RESERVOIRS ---
+      map.addLayer({
+        id: 'infra-dams-halo',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'dams']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 12,
+          'circle-color': '#0284c7',
+          'circle-blur': 0.8,
+          'circle-opacity': 0.65
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-dams-core',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'dams']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 5,
+          'circle-color': '#ffffff',
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#0369a1'
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-dams-labels',
+        type: 'symbol',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'dams']],
+        layout: {
+          'text-field': ['concat', '💧 ', ['get', 'name']],
+          'text-size': 9.5,
+          'text-offset': [0, -1.3],
+          'text-anchor': 'bottom',
+          'text-allow-overlap': false,
+          visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#bae6fd',
+          'text-halo-color': '#0f172a',
+          'text-halo-width': 2
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-dams-hit-target',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'dams']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 22,
+          'circle-color': '#000000',
+          'circle-opacity': 0.001
+        }
+      });
+
+      // --- POWER PLANTS & CLEAN ENERGY ---
+      map.addLayer({
+        id: 'infra-power-halo',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'power_plants']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 13,
+          'circle-color': '#eab308',
+          'circle-blur': 0.8,
+          'circle-opacity': 0.65
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-power-core',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'power_plants']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 5.5,
+          'circle-color': '#ffffff',
+          'circle-stroke-width': 2.2,
+          'circle-stroke-color': '#ca8a04'
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-power-labels',
+        type: 'symbol',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'power_plants']],
+        layout: {
+          'text-field': ['concat', '⚡ ', ['get', 'name']],
+          'text-size': 9.5,
+          'text-offset': [0, -1.3],
+          'text-anchor': 'bottom',
+          'text-allow-overlap': false,
+          visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#fef08a',
+          'text-halo-color': '#0f172a',
+          'text-halo-width': 2
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-power-hit-target',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'power_plants']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 22,
+          'circle-color': '#000000',
+          'circle-opacity': 0.001
+        }
+      });
+
+      // --- SPECIAL ECONOMIC ZONES (SEZs) ---
+      map.addLayer({
+        id: 'infra-sez-halo',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'economic_zones']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 12,
+          'circle-color': '#10b981',
+          'circle-blur': 0.8,
+          'circle-opacity': 0.65
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-sez-core',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'economic_zones']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 5,
+          'circle-color': '#ffffff',
+          'circle-stroke-width': 2,
+          'circle-stroke-color': '#059669'
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-sez-labels',
+        type: 'symbol',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'economic_zones']],
+        layout: {
+          'text-field': ['concat', '🏢 ', ['get', 'name']],
+          'text-size': 9.5,
+          'text-offset': [0, -1.3],
+          'text-anchor': 'bottom',
+          'text-allow-overlap': false,
+          visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#a7f3d0',
+          'text-halo-color': '#0f172a',
+          'text-halo-width': 2
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-sez-hit-target',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'economic_zones']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 22,
+          'circle-color': '#000000',
+          'circle-opacity': 0.001
+        }
+      });
+
+      // --- MAJOR URBAN CENTRES (MEGACITIES) ---
+      map.addLayer({
+        id: 'infra-urban-halo',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'urban_centres']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 15,
+          'circle-color': '#f97316',
+          'circle-blur': 0.85,
+          'circle-opacity': 0.7
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-urban-core',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'urban_centres']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 6.5,
+          'circle-color': '#ffffff',
+          'circle-stroke-width': 2.5,
+          'circle-stroke-color': '#c2410c'
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-urban-labels',
+        type: 'symbol',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'urban_centres']],
+        layout: {
+          'text-field': ['concat', '🏙️ ', ['get', 'name']],
+          'text-size': 10.5,
+          'text-offset': [0, -1.3],
+          'text-anchor': 'bottom',
+          'text-allow-overlap': false,
+          visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none'
+        },
+        paint: {
+          'text-color': '#fed7aa',
+          'text-halo-color': '#0f172a',
+          'text-halo-width': 2
+        }
+      });
+
+      map.addLayer({
+        id: 'infra-urban-hit-target',
+        type: 'circle',
+        source: 'infrastructure-economic',
+        filter: ['all', ['==', '$type', 'Point'], ['==', ['get', 'category'], 'urban_centres']],
+        layout: { visibility: activeLayers.has('infrastructure_economic') ? 'visible' : 'none' },
+        paint: {
+          'circle-radius': 24,
+          'circle-color': '#000000',
+          'circle-opacity': 0.001
+        }
+      });
+
+      // ========================================================
       // 4. DISASTER & SEISMIC RISK LAYERS
       // ========================================================
 
@@ -3195,6 +3908,14 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             'disaster-tsunami-line',
             'disaster-tsunami-fill',
             'disaster-heatwaves-fill',
+            'infra-railways-hit-target',
+            'infra-corridors-hit-target',
+            'infra-airports-hit-target',
+            'infra-seaports-hit-target',
+            'infra-dams-hit-target',
+            'infra-power-hit-target',
+            'infra-sez-hit-target',
+            'infra-urban-hit-target',
             'trade-hit-target',
             'trade-core',
             'trade-railways',
@@ -3265,6 +3986,32 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             metricLabel = 'Route Length';
             metricValue = props.length_km ? `${props.length_km.toLocaleString()} km` : (props.corridor || 'Road Corridor');
             source = props.source || 'MoRTH / NHAI';
+          } else if (topFeat.layer.id.startsWith('infra-')) {
+            const cat = props.category || '';
+            featType = cat === 'highways' ? 'NATIONAL HIGHWAY'
+              : cat === 'railways' ? 'RAIL & FREIGHT CORRIDOR'
+              : cat === 'airports' ? 'MAJOR HUB AIRPORT'
+              : cat === 'seaports' ? 'MAJOR SEAPORT'
+              : cat === 'industrial_corridors' ? 'INDUSTRIAL CORRIDOR'
+              : cat === 'dams' ? 'MULTIPURPOSE DAM'
+              : cat === 'power_plants' ? 'MEGA POWER PLANT'
+              : cat === 'economic_zones' ? 'SPECIAL ECONOMIC ZONE'
+              : 'METROPOLITAN URBAN CENTRE';
+            title = props.name || 'Infrastructure Asset';
+            subtitle = `${props.sub_type || cat.toUpperCase()} • ${props.state || 'India'}`;
+            metricLabel = props.iata_code ? 'IATA / MPPA'
+              : props.cargo_mmt ? 'Cargo Capacity'
+              : props.installed_capacity_mw ? 'Capacity'
+              : props.population_metro ? 'Metro Population'
+              : props.length_km ? 'Length'
+              : 'Official Asset';
+            metricValue = props.iata_code ? `${props.iata_code} • ${props.passengers_mppa || '—'} MPPA`
+              : props.cargo_mmt ? `${props.cargo_mmt} MMT/yr`
+              : props.installed_capacity_mw ? `${props.installed_capacity_mw.toLocaleString()} MW`
+              : props.population_metro ? `${props.population_metro} (${props.metro_gdp_usd || ''})`
+              : props.length_km ? `${props.length_km} km`
+              : (props.authority || 'Government of India');
+            source = props.authority || 'Government of India';
           } else if (topFeat.layer.id.startsWith('env-')) {
             featType = 'ENVIRONMENTAL CHANGE';
             title = props.name || 'Environmental Hotspot';
@@ -3444,6 +4191,22 @@ export const MapEngine: React.FC<MapEngineProps> = ({
 
         // 1. High priority linear & discrete point layers (highways, mountains, rivers, trade, archaeological sites, summits)
         const priorityLinearPointLayers = [
+          'infra-railways-hit-target',
+          'infra-corridors-hit-target',
+          'infra-airports-hit-target',
+          'infra-seaports-hit-target',
+          'infra-dams-hit-target',
+          'infra-power-hit-target',
+          'infra-sez-hit-target',
+          'infra-urban-hit-target',
+          'infra-railways-core',
+          'infra-corridors-core',
+          'infra-airports-core',
+          'infra-seaports-core',
+          'infra-dams-core',
+          'infra-power-core',
+          'infra-sez-core',
+          'infra-urban-core',
           'roads-hit-target',
           'roads-core',
           'roads-casing',
@@ -3646,6 +4409,63 @@ export const MapEngine: React.FC<MapEngineProps> = ({
                 type: 'FeatureCollection',
                 features: [{ type: 'Feature', geometry: topFeat.geometry, properties: topFeat.properties }]
               });
+            }
+          } else if (topFeat.layer.id.startsWith('infra-')) {
+            const cat = props.category || '';
+            featType = cat === 'highways' ? 'highway' : 'infrastructure_item';
+            const searchHighlightSrc = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
+            if (searchHighlightSrc && topFeat.geometry) {
+              const color = props.color || '#f59e0b';
+              if (topFeat.geometry.type === 'Point') {
+                const pt = topFeat.geometry.coordinates as [number, number];
+                const halo = createGeodesicCircle(pt[0], pt[1], 15, 64);
+                searchHighlightSrc.setData({
+                  type: 'FeatureCollection',
+                  features: [
+                    {
+                      type: 'Feature',
+                      geometry: halo,
+                      properties: {
+                        id: (topFeat.id || 'infra') + '_halo',
+                        name: props.name,
+                        color: color,
+                        border_color: '#ffffff',
+                        fill_opacity: 0.35,
+                        stroke_width: 2.5
+                      }
+                    },
+                    {
+                      type: 'Feature',
+                      geometry: topFeat.geometry,
+                      properties: {
+                        id: (topFeat.id || 'infra') + '_beacon',
+                        name: props.name,
+                        label_text: `🏗️ ${props.name}`,
+                        color: color,
+                        pulse_color: color
+                      }
+                    }
+                  ]
+                });
+              } else {
+                searchHighlightSrc.setData({
+                  type: 'FeatureCollection',
+                  features: [
+                    {
+                      type: 'Feature',
+                      geometry: topFeat.geometry,
+                      properties: {
+                        id: (topFeat.id || 'infra') + '_line',
+                        name: props.name,
+                        color: color,
+                        border_color: '#ffffff',
+                        fill_opacity: 0.45,
+                        stroke_width: 4.5
+                      }
+                    }
+                  ]
+                });
+              }
             }
           } else if (topFeat.layer.id === 'empires-fill') {
             featType = 'historical_empire';

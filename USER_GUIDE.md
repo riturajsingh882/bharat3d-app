@@ -17,19 +17,21 @@
    - [3.5 Basemap Style Switcher](#35-basemap-style-switcher)
    - [3.6 3D Relief & Elevation Controls](#36-3d-relief--elevation-controls)
    - [3.7 Official Data Source Registry & Provenance Modal](#37-official-data-source-registry--provenance-modal)
-4. [Left Layer Control Sidebar (11 Thematic Modules)](#4-left-layer-control-sidebar-11-thematic-modules)
+4. [Left Layer Control Sidebar (Thematic & Intelligence Modules)](#4-left-layer-control-sidebar-thematic--intelligence-modules)
    - [4.1 Historical Atlas & Time Machine (13 Dynastic Eras)](#41-historical-atlas--time-machine-13-dynastic-eras)
    - [4.2 Ancient Civilizations & Archaeological Explorer (ASI Sites)](#42-ancient-civilizations--archaeological-explorer-asi-sites)
    - [4.3 Historical Trade Routes & Maritime Connectivity](#43-historical-trade-routes--maritime-connectivity)
-   - [4.4 National Highways & Expressways (MoRTH / NHAI Corridors)](#44-national-highways--expressways-morth--nhai-corridors)
-   - [4.5 Natural Disasters & Seismic Risk Intelligence (BIS IS 1893)](#45-natural-disasters--seismic-risk-intelligence-bis-is-1893)
-   - [4.6 Political Boundaries & Administrative Units](#46-political-boundaries--administrative-units)
-   - [4.7 Soil Geography (ICAR 8-Fold Classification)](#47-soil-geography-icar-8-fold-classification)
-   - [4.8 Demographic Intelligence (Census of India PCA)](#48-demographic-intelligence-census-of-india-pca)
-   - [4.9 Religious Demographics Explorer (Census Table C-01)](#49-religious-demographics-explorer-census-table-c-01)
-   - [4.10 Hydrological Networks & Animated River Systems](#410-hydrological-networks--animated-river-systems)
-   - [4.11 Orography & Mountain Ranges (GSI / SOI)](#411-orography--mountain-ranges-gsi--soi)
-   - [4.12 Sidebar Status Dots, Collapsing & Overlay Reset](#412-sidebar-status-dots-collapsing--overlay-reset)
+   - [4.4 Environmental Change Explorer & Year Comparison Tool](#44-environmental-change-explorer--year-comparison-tool)
+   - [4.5 Infrastructure & Economic Geography Intelligence Grid (138 Assets across 9 Sectors)](#45-infrastructure--economic-geography-intelligence-grid-138-assets-across-9-sectors)
+   - [4.6 Disaster & Hazard Intelligence System (8 Hazard Pillars)](#46-disaster--hazard-intelligence-system-8-hazard-pillars)
+   - [4.7 Dedicated Historical Disaster Event Timeline (1897–2024)](#47-dedicated-historical-disaster-event-timeline-18972024)
+   - [4.8 Political Boundaries & Administrative Units](#48-political-boundaries--administrative-units)
+   - [4.9 Soil Geography (ICAR 8-Fold Classification)](#49-soil-geography-icar-8-fold-classification)
+   - [4.10 Demographic Intelligence (Census of India PCA)](#410-demographic-intelligence-census-of-india-pca)
+   - [4.11 Religious Demographics Explorer (Census Table C-01)](#411-religious-demographics-explorer-census-table-c-01)
+   - [4.12 Hydrological Networks & Animated River Systems](#412-hydrological-networks--animated-river-systems)
+   - [4.13 Orography & Mountain Ranges (GSI / SOI)](#413-orography--mountain-ranges-gsi--soi)
+   - [4.14 Sidebar Status Dots, Collapsing & Overlay Reset](#414-sidebar-status-dots-collapsing--overlay-reset)
 5. [Docked Historical Timeline & Time Machine Scrubber](#5-docked-historical-timeline--time-machine-scrubber)
 6. [State Comparison Studio (Side-by-Side Analytics)](#6-state-comparison-studio-side-by-side-analytics)
 7. [Mobile Touch Interaction & Proximity Picking](#7-mobile-touch-interaction--proximity-picking)
@@ -278,42 +280,115 @@ Encompasses 42 verified multidecadal environmental change features across 8 foun
   - Toggle **Show Change Rate (Δ Active)** to transform map styling into a color-coded severity spectrum (Severe Degradation in red, High Vulnerability in amber, Moderate in yellow, Stable/Recovery in emerald).
   - Click any **Monitored Site** quick-fly pill (e.g. *Gangotri / Gaumukh*, *Bengaluru BBMP*, *Chilika Lagoon*, *Satabhaya*) to fly the 3D camera directly to the feature and open its complete environmental dossier.
 
-### 4.5 National Highways & Expressways (MoRTH / NHAI Corridors)
-Overlays 28 curated major national transport corridors classified into three visual tiers:
-- **Expressways (Tolled, Access-Controlled)** (Emerald Green `#10b981`): Delhi–Mumbai Expressway (NE-4), Samruddhi Mahamarg, Purvanchal Expressway, Yamuna Expressway, Agra–Lucknow Expressway, Bangalore–Mysore Expressway, Eastern Peripheral Expressway.
-- **National Highways (The Core NH Grid)** (Amber `#f59e0b`):
-  - *North–South Arteries*: NH 44 (Srinagar to Kanyakumari — India's longest highway, 3,745 km).
-  - *Golden Quadrilateral*: NH 48 (Delhi–Mumbai–Chennai), NH 16 (Kolkata–Chennai), NH 19 (Delhi–Kolkata).
-  - *East–West Artery*: NH 27 (Porbandar to Silchar).
-  - *Coastal & Regional Corridors*: NH 66 (Panvel to Kanyakumari along the Konkan/Malabar coast), NH 53 (Hajira–Kolkata), NH 9 (Pune–Machilipatnam), NH 15 (Samakhiali–Pathankot).
-- **State Highways & Scenic Corridors** (Slate / Cyan `#94a3b8`): East Coast Road (ECR Tamil Nadu), Jodhpur–Jaisalmer Corridor.
+### 4.5 Infrastructure & Economic Geography Intelligence Grid (138 Assets across 9 Sectors)
+A unified national infrastructure and economic geography intelligence system integrating **138 verified sovereign assets** across 9 foundational sectors of India's growth engine:
 
-Clicking any highway opens its Corridor Profile displaying total route length, terminal cities, connecting states, lane count, and toll status.
+1. **National Highways & Expressways (28 Corridors)** (Amber `#f59e0b` / Emerald `#10b981`):
+   - *Flagship Expressways*: Delhi–Mumbai Expressway (NE-4, 1,386 km), Mumbai–Nagpur Samruddhi Mahamarg (701 km), Purvanchal Expressway (341 km), Agra–Lucknow Expressway (302 km), Yamuna Expressway, Bengaluru–Mysuru Expressway, Eastern Peripheral Expressway (NE-2).
+   - *National Trunk Grid*: Golden Quadrilateral (5,846 km connecting Delhi, Mumbai, Chennai, Kolkata), North–South Corridor (NH 44 Srinagar–Kanyakumari, 3,745 km), East–West Corridor (NH 27 Porbandar–Silchar, 3,300 km), NH 48, NH 16, NH 19, NH 66 (Konkan–Malabar Coastal Artery), NH 53, and NH 15 (NHAI / MoRTH).
+2. **Railways & Major Hubs / DFCs (18 Hubs & Routes)** (Sky Blue `#38bdf8`):
+   - *Dedicated Freight Corridors (DFCCIL)*: Western Dedicated Freight Corridor (WDFC, 1,504 km Dadri–JNPT, 100% electrified double-stack container corridor) and Eastern Dedicated Freight Corridor (EDFC, 1,875 km Ludhiana–Dankuni heavy-haul bulk coal corridor).
+   - *High-Speed Rail*: Mumbai–Ahmedabad High-Speed Rail (MAHSR Bullet Train, 508 km, 320 km/h operating speed with 21 km undersea tunnel).
+   - *Trunk Rail Corridors*: Delhi–Howrah Grand Chord, Delhi–Mumbai Western Trunk, Konkan Coastal Railway, Howrah–Chennai Eastern Coastal Main Line, and Kashmir Udhampur–Srinagar–Baramulla Rail Link (USBRL featuring the world's highest Chenab Rail Bridge).
+   - *10 Major National Railway Hubs & Junction Terminals*:
+     - **New Delhi Railway Hub (NDLS)**: 16 platforms, 500,000+ daily passengers, Northern Railway HQ.
+     - **Chhatrapati Shivaji Maharaj Terminus (CSMT, Mumbai)**: 18 platforms, UNESCO World Heritage site, Central Railway HQ.
+     - **Howrah Junction Railway Hub (HWH, Kolkata)**: 23 platforms, 1,000,000+ daily commuters, Eastern Railway HQ.
+     - **Puratchi Thalaivar Dr. MGR Chennai Central (MAS)**: 17 platforms, Southern Railway premier gateway.
+     - **KSR Bengaluru City Railway Hub (SBC)**: 10 platforms, South Western Railway hub.
+     - **Ahmedabad Junction Railway Hub (ADI)**: 12 platforms, Western Railway hub & MAHSR Bullet Train northern terminal.
+     - **Prayagraj Junction Mega Terminal (PRYJ)**: 10 platforms, EDFC freight nexus & North Central Railway HQ.
+     - **Secunderabad Junction Railway Hub (SC)**: 10 platforms, South Central Railway HQ.
+     - **Gorakhpur Junction Railway Hub (GKP)**: 10 platforms, world-record 1,366.33m platform, North Eastern Railway HQ.
+     - **Varanasi Junction Cantt Hub (BSB)**: 9 platforms, premier cultural transit terminal.
+3. **Major Hub & International Airports (20 Hubs)** (Indigo `#818cf8`):
+   - Major international passenger and cargo gateways: Indira Gandhi International Delhi (DEL, 72+ MPPA), Chhatrapati Shivaji Maharaj Mumbai (BOM, 51+ MPPA), Kempegowda Bengaluru (BLR, 37+ MPPA), Chennai (MAA), Rajiv Gandhi Hyderabad (HYD), Netaji Subhash Chandra Bose Kolkata (CCU), Cochin (COK — world's first fully solar-powered airport), Sardar Vallabhbhai Patel Ahmedabad (AMD), and key regional terminals with IATA codes, runway systems, and annual passenger volumes (AAI / DGCA).
+4. **Major Seaports & Deepwater Harbors (15 Ports)** (Cyan `#06b6d4`):
+   - All 12 central major trust ports and premier private deepwater maritime hubs governed under the Sagarmala Programme: Jawaharlal Nehru Port (JNPT, Mumbai — India's largest container gateway), Deendayal / Kandla (Gujarat — India's highest cargo volume port, 137+ MMT), Paradip (Odisha — primary mineral export terminal), Chennai Port, Visakhapatnam Port, V.O. Chidambaranar / Tuticorin, Cochin Port, Kamarajar / Ennore, New Mangalore Port, Mormugao, Syama Prasad Mookerjee Kolkata–Haldia, and Mundra Mega Port (MoPSW).
+5. **National Industrial Corridors (7 Mega Corridors)** (Fuchsia `#d946ef`):
+   - High-throughput manufacturing corridors executed by NICDC / DPIIT: Delhi–Mumbai Industrial Corridor (DMIC, 1,504 km with 24 smart industrial nodes), Chennai–Bengaluru (CBIC), Amritsar–Kolkata (AKIC, 1,839 km aligned with EDFC), Bengaluru–Mumbai (BMIC), Visakhapatnam–Chennai (VCIC, India's first coastal corridor), Hyderabad–Nagpur (HNIC), and Hyderabad–Bengaluru (HBIC).
+6. **Major Multipurpose Dams & Reservoirs (12 Reservoirs)** (Sky Blue `#0284c7`):
+   - Critical water security, irrigation, and hydroelectric infrastructure monitored by the Central Water Commission: Tehri Dam (Uttarakhand — Highest dam in India, 260.5m), Bhakra Dam (Himachal — 226m concrete gravity dam impounding Gobind Sagar), Sardar Sarovar Dam (Gujarat — Narmada lifeline), Hirakud Dam (Odisha — World's longest earthen dam, 25.8 km), Nagarjuna Sagar Dam (Telangana/AP — World's largest masonry dam), Idukki Arch Dam (Kerala), Indira Sagar Dam (MP), and Rihand / Govind Ballabh Pant Sagar.
+7. **Mega Power Plants & Clean Energy Parks (14 Mega Parks)** (Yellow `#eab308`):
+   - Base-load and clean energy giants: Khavda Renewable Energy Park (Gujarat — World's largest hybrid solar-wind park, 30 GW), Bhadla Solar Park (Rajasthan — World's largest single-site solar farm, 2,245 MW), Pavagada Solar Park (Karnataka — 2,050 MW), Kudankulam Nuclear Power Plant (Tamil Nadu — 2,000 MW VVER), Vindhyachal Super Thermal (MP — 4,760 MW, India's largest thermal station), Mundra Ultra Mega Power Plant, Tarapur Atomic Power Station, and Koyna Hydroelectric Project (CEA / MoP / MNRE).
+8. **Special Economic Zones & Tech Hubs (12 SEZ Hubs)** (Emerald `#10b981`):
+   - National export processing and IT hubs: SEEPZ Mumbai (Gems & electronics), Gujarat International Finance Tec-City (GIFT City IFSC — India's first operational smart city and international financial services centre), Electronics City Bengaluru (India's Silicon Valley pioneer), HITEC City Hyderabad (Cyberabad), DLF Cyber City Gurugram, Mahindra World City Chennai, and Noida Special Economic Zone (DPIIT / SEZ India).
+9. **Metropolitan Urban Centres (12 Agglomerations)** (Red-Orange `#ea580c`):
+   - Tier-1 and emerging megacity economic engines: Delhi National Capital Region ($33\text{M}$ pop, \$370B GDP), Mumbai Metropolitan Region ($21\text{M}$ pop, \$310B GDP), Greater Bengaluru ($13.5\text{M}$ pop, \$130B GDP), Greater Kolkata ($15.3\text{M}$ pop, \$150B GDP), Greater Hyderabad ($10.8\text{M}$ pop), Greater Chennai ($11.5\text{M}$ pop), Ahmedabad–Gandhinagar, and Pune Metropolitan Region (MoHUA / Census).
 
-### 4.5 Natural Disasters & Seismic Risk Intelligence (BIS IS 1893)
-Displays India's official seismic hazard zoning according to the **Bureau of Indian Standards (IS 1893:2016 Part 1)** along with historical high-magnitude earthquake epicenters:
-- **Seismic Zone V (Very High Damage Risk — Factor $Z = 0.36$, MSK IX+)**: Highlighted in vivid red (`#dc2626`). Covers the entire Northeast, Kashmir, Western & Central Himalayas (Himachal, Uttarakhand), North Bihar, and the Rann of Kutch.
-- **Seismic Zone IV (High Damage Risk — Factor $Z = 0.24$, MSK VIII)**: Highlighted in amber (`#f59e0b`). Covers Delhi NCR, parts of UP, Punjab, Haryana, and the Koyna fault zone in Maharashtra.
-- **Seismic Zone III (Moderate Damage Risk — Factor $Z = 0.16$, MSK VII)**: Highlighted in yellow (`#eab308`). Covers large sections of Central India and the Deccan shield.
-- **Historical Major Earthquake Epicenters**: Marked with pulsating warning glyphs across the map:
-  - *1819 Rann of Kutch* (M7.8, Allah Bund fault scarp)
-  - *1897 Great Assam Earthquake* (M8.1, Shillong Plateau)
-  - *1905 Kangra Earthquake* (M7.8, Himachal Pradesh)
-  - *1934 Bihar–Nepal Earthquake* (M8.0, massive Gangetic liquefaction)
-  - *1950 Assam–Tibet Earthquake* (M8.6, largest subcontinental instrumented event)
-  - *1993 Latur Earthquake* (M6.2, intraplate Killari disaster)
-  - *2001 Bhuj Earthquake* (M7.7, Republic Day Gujarat tragedy)
-  - *2004 Sumatra–Andaman Megathrust & Tsunami* (M9.1)
-  - *2005 Kashmir Earthquake* (M7.6, Muzaffarabad / Uri)
+#### 3D Beacon Pin & Vector Logo Visualization
+- **Ground Beacon Pin**: When any asset is selected, an illuminated 3D pin marker appears at its exact coordinates, anchored with a precision needle tip, an outer animated radar ping wave ring, a concentric glow ring, and a glossy teardrop body with high-contrast custom vector SVG logos:
+  - 🚆 **Railways & Hubs**: Train locomotive with dual bogie wheels.
+  - ✈️ **Airports**: Climbing passenger airliner silhouette.
+  - ⚓ **Seaports**: Marine anchor with flukes.
+  - 🏭 **Industrial Corridors**: High-tech manufacturing facility.
+  - 🌊 **Multipurpose Dams**: Water barrier and reservoir waves.
+  - ⚡ **Power Plants**: Electric energy lightning bolt.
+  - 🏢 **Special Economic Zones (SEZ)**: Precision tech towers.
+  - 🏙️ **Metropolitan Centres**: Urban skyline silhouette.
+  - 🛣️ **National Highways**: Highway shield with dashed median divider.
+- **Floating Glassmorphic Billboard Card**: Hovering above the pin is a frosted glass card showing official authority badges (`🚆 INDIAN RAILWAYS`, `✈️ AAI / INTERNATIONAL AIRPORT`, `⚓ MoPSW / SAGARMALA`, etc.), asset titles, and platform/capacity metrics.
+- **Track Illumination**: Clicking any linear corridor (e.g. WDFC, EDFC, MAHSR Bullet Train, NH 44, Delhi–Mumbai Expressway) illuminates its entire route in glowing neon casing and core across the 3D terrain.
+- **Key Asset Navigator Dropdown**: A filterable quick-access menu in the sidebar that allows direct alphabetical or categorized searching across all 138 assets with instant camera fly-to.
 
-Clicking an epicenter opens its Seismic Event Dossier detailing Richter magnitude, hypocentral depth, fatalities, and geotectonic fault mechanisms.
+---
 
-### 4.6 Political Boundaries & Administrative Units
+### 4.6 Disaster & Hazard Intelligence System (8 Hazard Pillars)
+An official multi-hazard early warning and risk intelligence system integrating sovereign scientific baselines across **8 catastrophic hazard categories**:
+
+1. **Historical Earthquakes & Magnitudes (NCS / IMD)** (Rose `#f43f5e`):
+   - 12 catastrophic $M_w 6.0$ to $M_w 9.1$ historical earthquake epicenters:
+     - *1819 Rann of Kutch* ($M_w 7.8$, Allah Bund fault scarp).
+     - *1897 Great Shillong Earthquake* ($M_w 8.1$, Oldham fault rupture).
+     - *1905 Kangra Earthquake* ($M_w 7.8$, Kangra-Kullu Himalayan rupture).
+     - *1934 Bihar–Nepal Earthquake* ($M_w 8.0$, massive Gangetic liquefaction).
+     - *1950 Great Assam–Tibet Earthquake* ($M_w 8.6$, largest subcontinental instrumented event).
+     - *1991 Uttarkashi Earthquake* ($M_w 6.8$, Main Central Thrust rupture).
+     - *1993 Latur (Killari) Earthquake* ($M_w 6.2$, intraplate stable continental crust disaster).
+     - *1997 Jabalpur Earthquake* ($M_w 5.8$, Narmada-Son lineament).
+     - *1999 Chamoli Earthquake* ($M_w 6.6$, Alaknanda valley).
+     - *2001 Bhuj Earthquake* ($M_w 7.7$, Kachchh Mainland Fault Republic Day tragedy).
+     - *2004 Sumatra–Andaman Megathrust & Tsunami* ($M_w 9.1$, 1,300 km subduction megathrust rupture).
+     - *2005 Kashmir Earthquake* ($M_w 7.6$, Balakot-Bagh fault).
+   - Selecting any epicenter renders an interactive geodesic rupture halo showing its shockwave impact radius.
+2. **BIS IS 1893:2016 Seismic Hazard Zones** (Ruby / Amber / Yellow / Sky Blue):
+   - **Zone V (Very High Damage Risk — Factor $Z = 0.36$, PGA $>0.36g$)** (`#ef4444`): Entire Northeast, Jammu & Kashmir, Ladakh, Himachal, Uttarakhand, North Bihar, and Kutch.
+   - **Zone IV (High Damage Risk — Factor $Z = 0.24$, PGA $0.24g$)** (`#f97316`): Delhi NCR, Indo-Gangetic basin, parts of Maharashtra (Koyna), and Gujarat.
+   - **Zone III (Moderate Damage Risk — Factor $Z = 0.16$, PGA $0.16g$)** (`#eab308`): Central India, Mumbai, Chennai, and Kolkata.
+   - **Zone II (Low Damage Risk — Factor $Z = 0.10$, PGA $0.10g$)** (`#38bdf8`): Stable Deccan peninsular shield.
+3. **Tropical Cyclone Tracks & Landfalls (IMD)** (Purple `#a855f7`):
+   - Super Cyclones and Extremely Severe Cyclonic Storms tracked with official IMD Best Track coordinates, sustained wind speeds, surge heights, and 45 km impact swath corridors: 1999 Odisha Super Cyclone (260 km/h, 9m surge), Cyclone Phailin (2013), Cyclone Fani (2019, 215 km/h Puri landfall), Cyclone Amphan (2020 Super Cyclone in Bay of Bengal), Cyclone Tauktae (2021 Arabian Sea), and Cyclone Biparjoy (2023 Gujarat landfall).
+4. **Flood-Prone River Basins (Central Water Commission)** (Cyan `#0ea5e9`):
+   - High-vulnerability flood basins monitored by CWC: Brahmaputra Valley & Kaziranga Floodplain, North Bihar Kosi-Kamala-Bagmati Basin, Mahanadi Delta Coastal Floodplain, and Mumbai Mithi River & Coastal Lowlands with historical flood peak levels, breach dynamics, and structural flood-control embankments.
+5. **Landslide Susceptibility Corridors (GSI NLSM)** (Amber `#f59e0b`):
+   - High-hazard landslide corridors classified by the Geological Survey of India National Landslide Susceptibility Mapping program: Wayanad Western Ghats Escarpment (Meppadi-Chooralmala debris flow axis), Garhwal MCT Corridor (Kedarnath-Joshimath high-relief axis), Kangra-Kullu-Mandi Corridor (Beas Valley), and Teesta Valley (Darjeeling-Sikkim Sub-Himalaya).
+6. **Chronic Drought-Prone Belts (NITI Aayog / CWC)** (Orange `#f97316`):
+   - Arid and semi-arid water-stressed regions: Bundelkhand Gneissic Plateau (impermeable granite, Ken-Betwa link focus), Marathwada & Western Vidarbha Drought Belt (Godavari rain-shadow, Cotton belt crisis), Rayalaseema Rain-Shadow Basin (Anantapur red soils), and Western Thar Desert Arid Belt (Indira Gandhi Canal perimeter).
+7. **Tsunami Inundation Hazard Zones (INCOIS)** (Teal `#06b6d4`):
+   - Coastal tsunami risk zones monitored by the Indian National Centre for Ocean Information Services: Coromandel Littoral Coast (Nagapattinam-Cuddalore-Chennai), Andaman & Nicobar Archipelago (Indira Point-Port Blair subduction arc), and Andhra Deltaic Shelf (Krishna-Godavari confluence).
+8. **Severe Heatwave Core Belts (IMD / NDMA)** (Rose `#f43f5e`):
+   - Critical urban and arid thermal stress zones: Indo-Gangetic & Delhi-NCR Urban Heat Corridor ($49.2^\circ\text{C}$ urban heat island), Western Rajasthan Extreme Arid Heat Zone ($51^\circ\text{C}$ all-time national record at Phalodi), and Vidarbha & Central India Heat Core (Nagpur-Chandrapur $48.6^\circ\text{C}$ basaltic heat sink).
+
+#### Spatial Filtering & Non-Overflowing Intelligence Dossiers
+- **Geographic Filtering Tabs**: Filter hazard layers instantly by zone: `All India`, `North`, `East & NE`, `Central & West`, and `South`.
+- **Responsive Dossiers**: Right-hand intelligence panel displays comprehensive hazard assessments, structural vulnerability indices, peak acceleration, and mitigating packages with zero text overflow.
+
+---
+
+### 4.7 Dedicated Historical Disaster Event Timeline (1897–2024)
+To ensure clarity and prevent visual clutter, India's **Pivotal Historical Disasters (1897 to 2024)** are isolated into a dedicated docked bottom timeline deck:
+- **Interactive Scrubber & Step Navigation**: Scrub forward and backward chronologically through India's most devastating natural events.
+- **Synchronized Map Highlighting**: Advancing through the timeline automatically flies the 3D camera to the event location, renders an illuminated shockwave halo, cyclone line, or landslide swath on the map, and populates the right intelligence dossier with casualties, Richter magnitudes, wind speeds, and tectonic fault analyses.
+- **Era Filtering**: Filter events by historical periods (Colonial Era 1897–1947, Post-Independence 1948–1999, Modern Era 2000–2024).
+
+---
+
+### 4.8 Political Boundaries & Administrative Units
 - **State & UT Boundaries (36 Units)**: Toggles sovereign state borders with glowing outlines.
 - **State Name Labels (Typography)**: Renders elegant, zoom-responsive typographic labels directly onto the map canvas.
 - **District Polygons (735 Units)**: Overlays official district boundary borders across all 36 States and UTs.
 
-### 4.7 Soil Geography (ICAR 8-Fold Classification)
+### 4.9 Soil Geography (ICAR 8-Fold Classification)
 Activates the scientific pedological classification established by the **ICAR - National Bureau of Soil Survey & Land Use Planning (NBSS&LUP)**:
 - **Alluvial Soils**: Indo-Gangetic plains and coastal deltas.
 - **Black / Regur Soils**: Volcanic basaltic Deccan plateau (cotton soils).
@@ -322,7 +397,7 @@ Activates the scientific pedological classification established by the **ICAR - 
 - **Arid / Desert Soils**: Western Thar Desert formations.
 - **Mountain & Forest Soils**: Himalayan and hill slope humic soils.
 
-### 4.8 Demographic Intelligence (Census of India PCA)
+### 4.10 Demographic Intelligence (Census of India PCA)
 Enables single-click district-level demographic choropleths sourced from the Census of India:
 - **Population Density**: Persons per square kilometer ($persons/km^2$), from under 30 in high Ladakh/Arunachal to over 10,000 in urban Delhi/Mumbai.
 - **Total Population**: Graduated choropleth reflecting absolute population mass per district.
@@ -332,7 +407,7 @@ Enables single-click district-level demographic choropleths sourced from the Cen
 > [!NOTE]
 > Demographic choropleths and Soil Geography feature smart mutual exclusivity: activating a demographic fill automatically clears soil fills to prevent visual clashing.
 
-### 4.9 Religious Demographics Explorer (Census Table C-01)
+### 4.11 Religious Demographics Explorer (Census Table C-01)
 Clicking **Show Religion Choropleth** displays the geographic concentration of India's major faith communities by district from Census 2011 Table C-01:
 - **Hindu Population**: Regional concentration throughout northern, western, central, and southern basins.
 - **Muslim Population**: Distributions across the Kashmir Valley, Indo-Gangetic belt, Assam, and Kerala.
@@ -341,18 +416,18 @@ Clicking **Show Religion Choropleth** displays the geographic concentration of I
 - **Buddhist Population**: Concentrations in Ladakh, Sikkim, and Maharashtra.
 - **Jain Population**: Concentrations in Rajasthan, Gujarat, and urban Maharashtra.
 
-### 4.10 Hydrological Networks & Animated River Systems
+### 4.12 Hydrological Networks & Animated River Systems
 Activates glowing hydrological vector networks for India's 10 major river basins (Ganga, Brahmaputra, Indus, Godavari, Krishna, Kaveri, Mahanadi, Narmada, Tapi, Sabarmati):
 - Features animated dasharray pulse vectors indicating flow direction from mountain headwaters to delta outflows.
 - Selecting any river displays its full physical length, dams, confluences, and riparian states.
 
-### 4.11 Orography & Mountain Ranges (GSI / SOI)
+### 4.13 Orography & Mountain Ranges (GSI / SOI)
 Overlays major tectonic and geological mountain ranges:
 - Great Himalayas, Karakoram, and Pir Panjal.
 - Western Ghats (Sahyadri) and Eastern Ghats.
 - Ancient Aravalli Range, Vindhya Range, and Satpura Range.
 
-### 4.12 Sidebar Status Dots, Collapsing & Overlay Reset
+### 4.14 Sidebar Status Dots, Collapsing & Overlay Reset
 - **Active Status Indicator Dots**: Each section header features a round indicator dot:
   - **Glowing Emerald Green**: At least one layer in this group is currently toggled on and rendered on the map.
   - **Ruby Red**: All layers in this group are currently inactive.

@@ -70,7 +70,7 @@ pnpm run preview
 
 ---
 
-## 🗺️ Key Features Implemented (13 Thematic & Analytical Modules)
+## 🗺️ Key Features Implemented (15 Thematic & Analytical Modules)
 
 1. **Hardware-Accelerated 3D Terrain & Relief:**
    - Full 3D pitch ($0^\circ$ to $85^\circ$) and bearing rotation using AWS / NASA Terrarium RGB DEM elevation tiles.
@@ -110,38 +110,67 @@ pnpm run preview
      - *River Course Changes & Avulsion*: Multi-century and decadal fluvial migration (1760 to 2022) including Kosi River avulsion, Majuli Island erosion, and Ganga at Farakka.
    - **Interactive Year Comparison Tool**: Dedicated docked deck allowing users to select Baseline Year (A) and Comparison Year (B), switch between Baseline, Comparison, and Delta Rate ($\Delta$) modes, review net rates of change, and click quick-fly hotspot navigation pills.
 
-6. **National Highways & Expressways (MoRTH / NHAI):**
-   - 28 curated corridors: Tolled Expressways (green), National Highway grid (amber), and State Highways/coastal corridors (slate).
-   - Route profiles detailing lengths, terminal cities, connecting states, lanes, and toll status.
+6. **Infrastructure & Economic Geography Intelligence Grid (138 Verified Assets across 9 Sectors):**
+   - Unified national economic infrastructure grid integrating 138 official sovereign assets:
+     - 🛣️ **National Highways & Expressways (28 Corridors)**: Golden Quadrilateral (5,846 km), North-South Corridor (3,745 km), East-West Corridor (3,300 km), Delhi-Mumbai Expressway (NE-4, 1,386 km), Purvanchal Expressway, Samruddhi Mahamarg, and major national trunk routes (NHAI / MoRTH).
+     - 🚆 **Railways & Major Hubs / DFCs (18 Hubs & Routes)**: Western Dedicated Freight Corridor (WDFC, 1,504 km), Eastern Dedicated Freight Corridor (EDFC, 1,875 km), Mumbai-Ahmedabad High-Speed Rail (MAHSR Bullet Train, 508 km), Delhi-Howrah Trunk, Delhi-Mumbai Trunk, Konkan Railway, plus **10 Major National Railway Hubs & Junction Terminals** (New Delhi NDLS, CSMT Mumbai, Howrah HWH, Chennai Central MAS, Bengaluru SBC, Ahmedabad ADI, Prayagraj PRYJ, Secunderabad SC, Gorakhpur GKP, Varanasi BSB) with verified platform counts and daily commuter statistics.
+     - ✈️ **Major Hub & International Airports (20 Hubs)**: IGI Delhi (DEL), CSMI Mumbai (BOM), Kempegowda Bengaluru (BLR), Chennai (MAA), RGIA Hyderabad (HYD), Netaji Subhash Kolkata (CCU), Cochin (COK), Ahmedabad (AMD), and key regional terminals with annual passenger volumes (MPPA) and IATA codes (AAI / DGCA).
+     - ⚓ **Major Seaports & Deepwater Harbors (15 Ports)**: Jawaharlal Nehru Port (JNPT), Deendayal / Kandla, Paradip, Chennai, Visakhapatnam, VO Chidambaranar / Tuticorin, Cochin, Kamarajar / Ennore, and New Mangalore with annual cargo handling (MMT) under Sagarmala (MoPSW).
+     - 🏭 **National Industrial Corridors (7 Mega Corridors)**: Delhi-Mumbai Industrial Corridor (DMIC), Chennai-Bengaluru (CBIC), Amritsar-Kolkata (AKIC), Bengaluru-Mumbai (BMIC), Vizag-Chennai (VCIC), Hyderabad-Nagpur, and Hyderabad-Bengaluru (NICDC / DPIIT).
+     - 🌊 **Major Multipurpose Dams & Reservoirs (12 Reservoirs)**: Tehri Dam (Highest in India, 260.5m), Bhakra Dam, Sardar Sarovar, Hirakud (Longest earthen dam, 25.8 km), Nagarjuna Sagar, Idukki Arch Dam, Indira Sagar, and Rihand (Central Water Commission).
+     - ⚡ **Mega Power Plants & Clean Energy Parks (14 Mega Parks)**: Khavda Renewable Energy Park (World's largest, 30 GW), Bhadla Solar Park (2,245 MW), Kudankulam Nuclear (2,000 MW), Vindhyachal Super Thermal (4,760 MW), Mundra Thermal, Tarapur Atomic, and Koyna Hydroelectric (CEA / MoP / MNRE).
+     - 🏢 **Special Economic Zones & Tech Hubs (12 SEZ Hubs)**: SEEPZ Mumbai, GIFT City International Financial Services Centre, Electronics City Bengaluru, HITEC City Hyderabad, DLF Cyber City Gurugram, Mahindra World City Chennai, and Noida Special Economic Zone (DPIIT / SEZ India).
+     - 🏙️ **Metropolitan Urban Centres (12 Agglomerations)**: Delhi National Capital Region, Mumbai Metropolitan Region, Greater Bengaluru, Greater Kolkata, Greater Hyderabad, Greater Chennai, Ahmedabad-Gandhinagar, and Pune Metropolitan Region with metro GDP and population data (MoHUA).
+   - **3D Ground Beacon Pins & Vector Logos**: High-DPI 3D pins with animated radar ping wave rings and custom vector SVG glyphs for every category (Train locomotive, Climbing aircraft, Marine anchor, Factory, Dam wall, Lightning bolt, SEZ skyscraper, Megacity skyline, Highway shield).
+   - **Illuminated Glassmorphic Billboard Cards**: Hovering billboard badges displaying official authority pills (`🚆 INDIAN RAILWAYS`, `✈️ AAI / INTERNATIONAL AIRPORT`, `⚓ MoPSW / SAGARMALA`, etc.), asset titles, and key technical metrics.
+   - **Dual Track Illumination**: Clicking any linear railway, expressway, or industrial corridor highlights its exact route in neon glow across the 3D terrain while simultaneously displaying the anchor beacon pin.
 
-7. **Natural Disasters & Seismic Risk Intelligence (BIS IS 1893):**
-   - Official Bureau of Indian Standards seismic hazard zoning (Zone V, Zone IV, Zone III).
-   - Major historical M7+ earthquake epicenters (1819 Kutch, 1897 Assam, 1905 Kangra, 1934 Bihar, 1950 Assam-Tibet, 1993 Latur, 2001 Bhuj, 2004 Tsunami, 2005 Kashmir) with depth, magnitude, and casualty records.
+7. **Disaster & Hazard Intelligence System (8 Hazard Pillars):**
+   - Official multi-hazard early warning and risk intelligence system:
+     - 🌋 **Historical Earthquakes & Magnitudes (NCS / IMD)**: 12 catastrophic $M_w 6.0$ to $M_w 9.1$ earthquake epicenters (1819 Kutch, 1897 Great Shillong $M_w 8.1$, 1905 Kangra, 1934 Bihar-Nepal, 1950 Great Assam-Tibet $M_w 8.6$, 1993 Latur, 2001 Bhuj, 2004 Sumatra-Andaman Tsunami $M_w 9.1$, 2005 Kashmir) with focal depth, fault systems, and geodesic rupture impact radius circles.
+     - 🏗️ **BIS IS 1893:2016 Seismic Hazard Zones**: Zone V (Very High Risk, $Z = 0.36$), Zone IV (High Risk, $Z = 0.24$), Zone III (Moderate Risk, $Z = 0.16$), Zone II (Low Risk, $Z = 0.10$) with peak ground acceleration ($PGA$) calculations.
+     - 🌀 **Tropical Cyclone Tracks & Landfalls (IMD)**: Super Cyclones & Extremely Severe Cyclones (1999 Odisha Super Cyclone, Phailin, Fani, Amphan, Tauktae, Biparjoy) with wind swath impact corridors, maximum sustained wind speeds, and coastal storm surge heights.
+     - 🌊 **Flood-Prone River Basins (Central Water Commission)**: Brahmaputra & Kaziranga, North Bihar Kosi-Kamala, Mahanadi Delta, and Mumbai Mithi River basins with historical peak flood levels and embankment breach data.
+     - 🏔️ **Landslide Susceptibility Corridors (GSI NLSM)**: Wayanad Western Ghats, Garhwal MCT Axis (Kedarnath-Joshimath), Kangra-Kullu (Beas Valley), and Teesta Valley (Darjeeling-Sikkim) with Geological Survey of India national landslide susceptibility ratings.
+     - ☀️ **Chronic Drought-Prone Belts (NITI Aayog / CWC)**: Bundelkhand Gneissic Plateau, Marathwada & Western Vidarbha, Rayalaseema rain-shadow, and Western Thar with aridity indices and mitigation packages.
+     - 🌊 **Tsunami Inundation Hazard Zones (INCOIS)**: Coromandel Littoral Coast, Andaman & Nicobar Archipelago, and Andhra Deltaic Shelf with run-up elevation buffers and INCOIS early warning monitoring.
+     - 🔥 **Severe Heatwave Core Belts (IMD / NDMA)**: Indo-Gangetic & Delhi-NCR Urban Heat Island ($49.2^\circ\text{C}$), Western Rajasthan Arid Heat Core ($51^\circ\text{C}$ Phalodi record), and Vidarbha & Central India Core ($48.6^\circ\text{C}$).
+   - **Geographic Filtering**: Instant spatial filters (All India, Northern Mountain & Plains, Eastern & North-Eastern, Central & Western Arid, Peninsular & Southern Coastal).
+   - **Responsive Non-Overflowing Dossiers**: Cleanly styled right-panel intelligence cards with zero horizontal clipping.
 
-8. **Administrative Boundary Exploration:**
+8. **Pivotal Historical Disaster Event Timeline (1897–2024):**
+   - Dedicated docked bottom timeline scrubber isolated from other controls to eliminate clutter.
+   - Chronological step-by-step navigation through India's most significant historical disaster events.
+   - Synchronous map impact highlighting with geodesic shockwave halos, cyclone track lines, and landslide swaths as you scrub forward and backward in time.
+
+9. **Administrative Boundary Exploration:**
    - All 36 Indian States and Union Territories (ADM1) with official capitals, populations, density, and areas.
    - 735 District administrative boundaries (ADM2) enriched with Census 2011 microdata.
    - State Name Typography Grid directly rendered on map with zoom-responsive scaling.
 
-9. **Animated River Systems & Tributaries:**
-   - Dual-layer glowing cyan lines with smooth animated flow vectors.
-   - 10 major basins: Ganga, Brahmaputra, Indus, Godavari, Krishna, Kaveri, Mahanadi, Narmada, Tapi, Sabarmati.
-   - Comprehensive hydrological dossiers: length, origin elevation, outflow confluences, riparian states, major dams, and key cities.
+10. **Animated River Systems & Tributaries:**
+    - Dual-layer glowing cyan lines with smooth animated flow vectors.
+    - 10 major basins: Ganga, Brahmaputra, Indus, Godavari, Krishna, Kaveri, Mahanadi, Narmada, Tapi, Sabarmati.
+    - Comprehensive hydrological dossiers: length, origin elevation, outflow confluences, riparian states, major dams, and key cities.
 
-10. **Soil Geography Layer (ICAR):**
+11. **Soil Geography Layer (ICAR):**
     - 8-fold ICAR-NBSS&LUP scientific soil classification (Alluvial, Black/Regur, Red & Yellow, Laterite, Arid/Desert, Mountain & Forest).
     - Agricultural suitability profiles, geological genesis, and regional extent.
 
-11. **Demographic Intelligence & Faith Communities:**
+12. **Demographic Intelligence & Faith Communities:**
     - Fully joined district-level choropleths from Census 2011 PCA and Table C-01:
       - **Population Density** ($persons / km^2$) with plasma color ramp.
       - **Total Population**, **Literacy Rate**, and **Sex Ratio** ($F/1000M$).
       - **6 Faith Communities** (Hindu, Muslim, Christian, Sikh, Buddhist, Jain).
 
-12. **State vs State Comparison Studio:**
+13. **State vs State Comparison Studio:**
     - Side-by-side comparative analysis of any two states across demographic, geographic, and religious metrics.
 
-13. **Mobile Touch Responsiveness & Spring-Damped Animations:**
+14. **Universal Data-Driven Search & Highlighting:**
+    - Pre-indexed search engine across states, districts, rivers, mountains, peaks, archaeological sites, ports, corridors, highways, and infrastructure assets.
+    - Exact 3D ground pin beacon and contour highlighting upon selection.
+
+15. **Mobile Touch Responsiveness & Spring-Damped Animations:**
     - 24px–32px invisible hit targets for single-tap selection of fine linear features (roads, rivers, ridges).
     - Proximity-based feature selection (`sortFeaturesByProximity`) to eliminate multi-tap frustration.
     - Smooth CSS Grid accordion animations and rotating chevrons across left and right panels.

@@ -44,8 +44,9 @@
 - **Physical & Hydrological Systems**: 10 animated river basins, ICAR 8-fold soil geography, and tectonic mountain orogeny.
 - **Historical Atlas & Time Machine**: 13 historical eras from the Indus Valley Civilization to the modern day with a docked interactive timeline.
 - **Archaeological & Cultural Explorer**: 18 ASI-verified sites with excavation histories and category color coding.
-- **National Infrastructure**: 28 curated expressway and national highway corridors.
-- **Disaster Risk Intelligence**: BIS 1893:2016 seismic zones and historical M7+ earthquake epicenters.
+- **Environmental Change Explorer**: Multi-decadal tracking across 8 pillars (forests, glaciers, urban sprawl, coastal erosion, wetlands, desertification, groundwater, avulsion) with dedicated Year Comparison Tool.
+- **Infrastructure & Economic Geography Intelligence Grid**: 138 verified sovereign assets across 9 foundational sectors (highways, railways & major hubs, airports, seaports, industrial corridors, dams, power plants, SEZs, urban centres) rendered with high-DPI 3D beacon pins, custom vector SVG logos, animated radar waves, and illuminated glassmorphic billboard badges.
+- **Disaster & Hazard Intelligence System**: Official multi-hazard early warning risk intelligence across 8 pillars (earthquakes, BIS seismic zones II-V, cyclone tracks with 45km wind swaths, flood basins, landslide susceptibility, drought belts, tsunami inundation, severe heatwave cores) plus an isolated Pivotal Historical Disaster Event Timeline (1897–2024).
 - **Absolute Geographic Integrity**: **Zero AI Hallucination**. Every coordinate, length, and statistic is verified against official government publications.
 
 ---
@@ -448,16 +449,19 @@ INTERACTIVE INDIA 3D DATA/
         ├── config.ts                      <- Default coordinates, colors & layer presets
         ├── data/
         │   ├── historicalEras.ts          <- 13 Historical era metadata, rulers, and dates
-        │   └── environmentalChange.ts     <- 8 Environmental change pillars, available years & metadata
+        │   ├── environmentalChange.ts     <- 8 Environmental change pillars, available years & metadata
+        │   ├── disasterIntelligence.ts    <- 8 Disaster hazard pillars, seismic zones, epicenters & 1897-2024 timeline
+        │   └── infrastructureIntelligence.ts <- 138 Assets across 9 sectors (highways, rail hubs, airports, ports, dams, energy, SEZ)
         ├── utils/
         │   └── elevation.ts               <- Dual feet/inches & metric elevation converter
         └── components/
             ├── BharatLogo.tsx             <- Spatial network emblem & BHARAT 3D brand
             ├── TopNavBar.tsx              <- Navigation bar, search, presets & 3D controls
             ├── SidebarNav.tsx             <- Left layer control drawer & accordions
-            ├── MapEngine.tsx              <- Core MapLibre GL 3D WebGL engine & canvas
+            ├── MapEngine.tsx              <- Core MapLibre GL 3D WebGL engine & canvas with 3D beacon pins
             ├── InfoPanel.tsx              <- Right intelligence dossier & KPI dashboard
-            ├── HistoricalTimeline.tsx     <- Docked bottom timeline scrubber & play controls
+            ├── HistoricalTimeline.tsx     <- Docked bottom dynastic timeline scrubber & play controls
+            ├── DisasterTimeline.tsx       <- Dedicated docked bottom disaster event timeline deck (1897-2024)
             ├── EnvironmentalComparisonDeck.tsx <- Multi-decadal year comparison floating dock & delta toggles
             ├── StateComparisonModal.tsx   <- Side-by-side dual-state comparison studio
             ├── SourceModal.tsx            <- Official Provenance & Data Registry dialog

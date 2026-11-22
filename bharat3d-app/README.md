@@ -32,18 +32,33 @@ Built with **React 19 · TypeScript · Vite · Tailwind CSS v4 · MapLibre GL JS
   - *Colonial Trade Networks*: EIC Gangetic Factory Corridor (1,350 km), Bombay Cotton & Opium Artery (820 km), Coromandel Calico Corridor (680 km).
   - *Historical Railway Development (1853–1905)*: GIPR 1853 (Asia's first line), East Indian Railway 1854, Madras Railway 1856, Imperial Trunk Grid (Dalhousie master plan) with authentic railway cross-tie styling.
   - *Controls*: Granular sub-category toggles, active indicator counter (`7/7`), "Select All" / "Clear", and dynamic active legend.
-- **Disaster & seismic risk** — BIS IS 1893:2016 zones (Zones V, IV, III) and historical M7+ earthquake epicenters with depth, magnitude, and casualty records.
-- **Environmental Change Explorer & Year Comparison Tool (8 Foundations, 42 Features)** —
-  - *Forest-Cover Changes*: FSI ISFR 2001–2021 decadal gain/loss, fragmentation, and density transitions (Western Ghats, Sunderbans, Northeast).
-  - *Glacier Retreat*: SAC-ISRO & GSI cryosphere benchmarks (1965–2022) for Gangotri (Gaumukh), Siachen Glacier, Chhota Shigri, and Zanskar.
-  - *Urban Expansion*: NRSC Decadal LULC (1991–2021) built-up expansion footprint for Delhi NCR, Bengaluru BBMP, Hyderabad GHMC, Mumbai MMR, and Pune.
-  - *Coastal Erosion*: NCCR-MoES Shoreline Change Atlas (1990–2022) monitoring Sagar Island, Satabhaya, Puducherry, and Chellanam.
-  - *Wetland Dynamics*: SAC National Wetland Atlas & Ramsar baseline (1990–2020) tracking Chilika Lake, Vembanad-Kol, Deepor Beel, and Sambhar.
-  - *Desertification & Land Degradation*: SAC-ISRO Atlas (2003–2018) monitoring Thar Fringe, Rayalaseema, and Vidarbha scrub expansion.
-  - *Groundwater Stress*: CGWB Dynamic Groundwater Extraction assessments (2004–2022) for Punjab Granary, Central Rajasthan, and North Gujarat.
-  - *River Course Changes & Avulsion*: Historical meander and avulsion corridors (1760–2022) including Kosi River, Majuli Island (Brahmaputra), and Ganga at Farakka.
-  - *Interactive Multi-Decadal Year Comparison Tool*: Dedicated analysis deck with Baseline Year (A) vs Comparison Year (B) selectors, Delta Rate ($\Delta$) toggle, severity classification, and instant hotspot navigation.
-- **National Highways & Expressways** — 28 curated corridors (tolled expressways, national highway grid, scenic state corridors) with route metadata.
+- **Disaster & Hazard Intelligence (8 Hazard Pillars)** —
+  - *Earthquakes & Fault Mechanisms (NCS / IMD)*: 12 catastrophic $M_w 6.0$ to $M_w 9.1$ historical epicenters (1819 Kutch to 2005 Kashmir) with depth, fault system, and geodesic shockwave rupture radii.
+  - *BIS IS 1893:2016 Seismic Hazard Zones*: Comprehensive coverage of Zone V (Very High, $Z=0.36$), Zone IV (High, $Z=0.24$), Zone III (Moderate, $Z=0.16$), and Zone II (Low, $Z=0.10$) with peak ground acceleration calculations.
+  - *Tropical Cyclone Tracks & Landfalls (IMD)*: Historic cyclones (1999 Odisha Super Cyclone, Phailin, Fani, Amphan, Tauktae, Biparjoy) with sustained wind speeds, surge heights, and 45km impact swath corridors.
+  - *Flood-Prone River Basins (CWC)*: Chronic flood basins across Brahmaputra-Kaziranga, North Bihar Kosi-Kamala, Mahanadi Delta, and Mumbai Mithi River.
+  - *Landslide Susceptibility Corridors (GSI NLSM)*: High-risk Himalayan and Western Ghats corridors (Wayanad, Garhwal MCT axis, Kangra-Kullu, Teesta Valley).
+  - *Chronic Drought-Prone Belts (NITI Aayog / CWC)*: Bundelkhand, Marathwada, Rayalaseema, and Western Thar with aridity metrics and mitigation plans.
+  - *Tsunami Inundation Hazard Zones (INCOIS)*: Coromandel, Andaman & Nicobar, and Andhra coastlines with run-up elevation buffer zones.
+  - *Severe Heatwave Core Belts (IMD / NDMA)*: Indo-Gangetic & Delhi NCR, Western Rajasthan ($51^\circ\text{C}$ Phalodi record), and Vidarbha cores.
+  - *Geographic Filtering*: Regional filters for North, East/Northeast, Central/West, and South.
+- **Pivotal Historical Disaster Event Timeline (1897–2024)** —
+  - Dedicated docked bottom timeline scrubber isolated from other controls for zero clutter.
+  - Step-by-step chronological traversal across 127 years of pivotal national disasters.
+  - Synchronous map impact highlighting with geodesic rupture circles, cyclone paths, and landslide swaths as you scrub forward and backward.
+- **Infrastructure & Economic Geography Grid (138 Verified Assets across 9 Strategic Sectors)** —
+  - *National Highways & Expressways (28 Corridors)*: Golden Quadrilateral, North-South & East-West Corridors, Delhi-Mumbai Expressway (NE-4), Samruddhi Mahamarg, and major national trunk routes (NHAI / MoRTH).
+  - *Railways & Major Hubs / DFCs (18 Hubs & Routes)*: Western Dedicated Freight Corridor (WDFC, 1,504 km), Eastern Dedicated Freight Corridor (EDFC, 1,875 km), Mumbai-Ahmedabad Bullet Train (MAHSR, 508 km), plus **10 Major National Railway Hubs & Terminals** (New Delhi NDLS, CSMT Mumbai, Howrah HWH, Chennai Central MAS, Bengaluru SBC, Ahmedabad ADI, Prayagraj PRYJ, Secunderabad SC, Gorakhpur GKP, Varanasi BSB) with verified platform counts and daily commuter volumes.
+  - *Major Hub & International Airports (20 Hubs)*: IGI Delhi (DEL), CSMI Mumbai (BOM), Kempegowda Bengaluru (BLR), Chennai (MAA), Hyderabad (HYD), Kolkata (CCU), etc. (AAI / DGCA).
+  - *Major Seaports & Deepwater Harbors (15 Ports)*: JNPT, Deendayal/Kandla, Paradip, Chennai, Visakhapatnam, Tuticorin, Cochin under Sagarmala (MoPSW).
+  - *National Industrial Corridors (7 Mega Corridors)*: DMIC, CBIC, AKIC, BMIC, VCIC (NICDC / DPIIT).
+  - *Major Multipurpose Dams & Reservoirs (12 Reservoirs)*: Tehri, Bhakra, Sardar Sarovar, Hirakud, Nagarjuna Sagar, Idukki (Central Water Commission).
+  - *Mega Power Plants & Clean Energy Parks (14 Mega Parks)*: Khavda Renewable Park (30 GW), Bhadla Solar (2,245 MW), Kudankulam Nuclear, Vindhyachal Super Thermal (CEA / MoP / MNRE).
+  - *Special Economic Zones & Tech Hubs (12 SEZ Hubs)*: SEEPZ, GIFT City IFSC, Electronics City Bengaluru, HITEC City Hyderabad, DLF Cyber City (DPIIT).
+  - *Metropolitan Urban Centres (12 Agglomerations)*: Delhi NCR, Mumbai MMR, Bengaluru, Kolkata, Hyderabad, Chennai, Ahmedabad, Pune (MoHUA).
+  - *3D Ground Beacon Pins & Vector Logos*: Custom vector SVG glyphs for all 9 categories (Train locomotive, Airplane, Anchor, Factory, Dam, Lightning bolt, Skyscraper, Skyline, Highway shield) with animated radar ping wave rings.
+  - *Illuminated Glassmorphic Billboard Cards*: Hovering billboard badges displaying official authority pills (`🚆 INDIAN RAILWAYS`, `✈️ AAI`, etc.), asset titles, and key technical metrics.
+  - *Synchronous Track Illumination*: Rail corridors, highways, and industrial corridors illuminate their exact geometry in glowing neon across the 3D terrain.
 
 ### Search (data-driven)
 - Unified search across **states, districts, cities, rivers, mountain ranges, peaks, archaeological sites, ancient ports, highways (e.g. "NH 44", "Delhi-Mumbai Expressway"), historical empires, trade routes, glaciers, and environmental monitoring hotspots** — powered by a generated index (`public/data/search_index.json`, 1,119 entries).

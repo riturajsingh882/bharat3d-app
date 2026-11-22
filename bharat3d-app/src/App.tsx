@@ -417,7 +417,7 @@ export function App() {
         key: props.id || props.code || feat.id,
         lat: coords[1],
         lng: coords[0],
-        zoom: feat.geometry?.type === 'LineString' ? 6.5 : 8.5,
+        zoom: feat.geometry?.type === 'LineString' ? 6.2 : 7.2,
         pitch: 45,
         bearing: 0
       });

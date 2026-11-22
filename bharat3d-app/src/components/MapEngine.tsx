@@ -238,22 +238,88 @@ function getCategoryBadgeMeta(category: string): { label: string; emoji: string 
     case 'railways':
       return { label: 'INDIAN RAILWAYS', emoji: '🚆' };
     case 'airports':
-      return { label: 'AAI / INTERNATIONAL AIRPORT', emoji: '✈️' };
+      return { label: 'AIRPORT HUB', emoji: '✈️' };
     case 'seaports':
-      return { label: 'SAGARMALA MAJOR PORT', emoji: '⚓' };
+      return { label: 'MAJOR PORT', emoji: '⚓' };
     case 'industrial_corridors':
-      return { label: 'NICDC INDUSTRIAL CORRIDOR', emoji: '🏭' };
+      return { label: 'CORRIDOR', emoji: '🏭' };
     case 'dams':
-      return { label: 'CWC MULTIPURPOSE DAM', emoji: '💧' };
+      return { label: 'MAJOR DAM', emoji: '💧' };
     case 'power_plants':
-      return { label: 'CEA / NTPC MEGA POWER', emoji: '⚡' };
+      return { label: 'MEGA POWER', emoji: '⚡' };
     case 'economic_zones':
-      return { label: 'DPIIT SPECIAL ECONOMIC ZONE', emoji: '🏢' };
+      return { label: 'SEZ TECH HUB', emoji: '🏢' };
     case 'urban_centres':
-      return { label: 'METROPOLITAN MEGACITY', emoji: '🏙️' };
+      return { label: 'METRO CITY', emoji: '🏙️' };
     default:
-      return { label: 'NHAI / MoRTH CORRIDOR', emoji: '🛣️' };
+      return { label: 'HIGHWAY', emoji: '🛣️' };
   }
+}
+
+// Dynamic zoom-responsive scaling curve:
+// Zoom out (<= 4.5): small & compact (0.65) so it never covers states
+// Zoom mid (7.0): legible peak size (0.80)
+// Zoom in (> 7.0 to 16.0): progressively shrinks (0.80 down to 0.32) so ground features/terrain are completely unblocked
+function computeMarkerZoomScale(zoom: number): number {
+  if (zoom <= 4.5) {
+    return 0.65;
+  } else if (zoom <= 7.0) {
+    return 0.65 + ((zoom - 4.5) / 2.5) * 0.15;
+  } else {
+    const progress = Math.min(1, Math.max(0, (zoom - 7.0) / 9.0));
+    return 0.80 - progress * 0.48;
+  }
+}
+
+// Extracts a concise, high-impact 1-liner metric (never long summary paragraphs!)
+function getCompactInfrastructureMetric(p: any): string | undefined {
+  if (!p) return undefined;
+  // Mega Power Plants
+  if (p.capacity_mw || p.installed_capacity_mw) {
+    const val = (p.capacity_mw || p.installed_capacity_mw).toLocaleString();
+    return `${val} MW${p.power_type ? ` · ${p.power_type}` : ''}`;
+  }
+  // Major Hub Airports
+  if (p.passengers_mppa) {
+    return `${p.passengers_mppa} MPPA${p.iata_code ? ` · ${p.iata_code}` : ''}`;
+  }
+  if (p.iata_code && !p.passengers_mppa) {
+    return `IATA: ${p.iata_code}`;
+  }
+  // Major Seaports
+  if (p.cargo_mmt) {
+    return `${p.cargo_mmt} MMT/yr Cargo`;
+  }
+  // Railways Hubs & Junctions
+  if (p.platforms) {
+    return `${p.platforms} Platforms${p.daily_passengers ? ` · ${p.daily_passengers}` : ''}`;
+  }
+  // Multipurpose Dams
+  if (p.height_m) {
+    return `Height: ${p.height_m}m${p.reservoir_capacity_bcm ? ` · ${p.reservoir_capacity_bcm} BCM` : ''}`;
+  }
+  // Corridors & Expressways
+  if (p.length_km) {
+    return `${p.length_km.toLocaleString()} km${p.lanes ? ` · ${p.lanes} Lanes` : ' Corridor'}`;
+  }
+  // Metropolitan Urban Centres
+  if (p.population_metro) {
+    return `Metro Pop: ${p.population_metro}`;
+  }
+  // Special Economic Zones
+  if (p.area_acres) {
+    return `${p.area_acres.toLocaleString()} Acres${p.specialization ? ` · ${p.specialization}` : ''}`;
+  }
+  if (p.specialization && p.specialization.length <= 30) {
+    return p.specialization;
+  }
+  if (p.route_type && p.route_type.length <= 30) {
+    return p.route_type;
+  }
+  if (p.sub_type && p.sub_type.length <= 30) {
+    return p.sub_type;
+  }
+  return undefined;
 }
 
 function createInfrastructureMarkerElement(opts: {
@@ -262,154 +328,197 @@ function createInfrastructureMarkerElement(opts: {
   subType?: string;
   metricText?: string;
   color?: string;
+  initialZoom?: number;
 }): HTMLElement {
   const color = opts.color || '#38bdf8';
   const badgeMeta = getCategoryBadgeMeta(opts.category);
   const svgIcon = getCategorySvgIcon(opts.category);
+  const initialScale = computeMarkerZoomScale(opts.initialZoom ?? 7.2);
 
   const container = document.createElement('div');
   container.className = 'infra-exact-marker-root flex flex-col items-center select-none pointer-events-none';
   container.style.cssText = 'position: relative; display: flex; flex-direction: column; align-items: center; pointer-events: none; z-index: 1000;';
 
   container.innerHTML = `
-    <!-- Floating Illuminated Billboard Card -->
-    <div style="
-      background: rgba(8, 12, 20, 0.94);
-      border: 1.5px solid ${color}80;
-      box-shadow: 0 0 24px ${color}50, 0 12px 28px rgba(0,0,0,0.85);
-      border-radius: 12px;
-      padding: 8px 12px 9px 12px;
+    <!-- Zoom Scaler Wrapper -->
+    <div class="infra-marker-zoom-scaler" style="
+      transform-origin: bottom center;
+      transform: scale(${initialScale.toFixed(3)});
+      transition: transform 0.08s cubic-bezier(0.2, 0, 0, 1);
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-bottom: 8px;
-      min-width: 175px;
-      max-width: 280px;
-      position: relative;
-      backdrop-filter: blur(12px);
+      pointer-events: none;
     ">
-      <!-- Category Badge Pill -->
-      <div style="
-        background: ${color}22;
-        color: ${color};
-        border: 1px solid ${color}60;
-        font-family: monospace;
-        font-size: 9.5px;
-        font-weight: 800;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        padding: 2px 7px;
-        border-radius: 9999px;
+      <!-- Floating Compact Billboard Card -->
+      <div class="infra-marker-billboard" style="
+        background: rgba(6, 10, 18, 0.94);
+        border: 1px solid ${color}80;
+        box-shadow: 0 0 14px ${color}40, 0 6px 20px rgba(0,0,0,0.85);
+        border-radius: 8px;
+        padding: 3.5px 7px 4.5px 7px;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        gap: 4px;
-        margin-bottom: 4px;
-        white-space: nowrap;
-      ">
-        <span>${badgeMeta.emoji}</span>
-        <span>${badgeMeta.label}</span>
-      </div>
-
-      <!-- Asset Name -->
-      <div style="
-        color: #ffffff;
-        font-family: sans-serif;
-        font-size: 12.5px;
-        font-weight: 800;
-        line-height: 1.25;
-        text-align: center;
-        letter-spacing: -0.01em;
-        margin-bottom: 3px;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-      ">
-        ${opts.name}
-      </div>
-
-      <!-- Key Metric / Subtitle -->
-      ${opts.metricText ? `
-        <div style="
-          color: #cbd5e1;
-          font-family: monospace;
-          font-size: 10px;
-          font-weight: 600;
-          text-align: center;
-          line-height: 1.2;
-        ">
-          ${opts.metricText}
-        </div>
-      ` : ''}
-
-      <!-- Bottom Triangle Pointer -->
-      <div style="
-        position: absolute;
-        bottom: -5px;
-        left: 50%;
-        transform: translateX(-50%) rotate(45deg);
-        width: 10px;
-        height: 10px;
-        background: rgba(8, 12, 20, 0.95);
-        border-right: 1.5px solid ${color}80;
-        border-bottom: 1.5px solid ${color}80;
-      "></div>
-    </div>
-
-    <!-- The 3D Ground Pin Beacon -->
-    <div style="position: relative; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;">
-      <!-- Outer pulsing animated radar ring -->
-      <div style="
-        position: absolute;
-        width: 54px;
-        height: 54px;
-        border-radius: 50%;
-        background: ${color}30;
-        border: 2px solid ${color};
-        animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
-      "></div>
-
-      <!-- Concentric secondary glow ring -->
-      <div style="
-        position: absolute;
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        box-shadow: 0 0 18px ${color}, inset 0 0 10px ${color}80;
-      "></div>
-
-      <!-- Glossy 3D Teardrop Pin Body with Detailed Logo -->
-      <div style="
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        background: radial-gradient(circle at 35% 35%, ${color}, #050912 85%);
-        border: 2.8px solid #ffffff;
-        box-shadow: 0 4px 14px rgba(0,0,0,0.9), 0 0 20px ${color}90;
-        color: #ffffff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        margin-bottom: 5px;
+        min-width: 90px;
+        max-width: 170px;
         position: relative;
-        z-index: 10;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        pointer-events: none;
       ">
-        ${svgIcon}
+        <!-- Category Badge Pill -->
+        <div style="
+          background: ${color}20;
+          color: ${color};
+          border: 1px solid ${color}55;
+          font-family: monospace;
+          font-size: 7.5px;
+          font-weight: 800;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          padding: 1px 5px;
+          border-radius: 9999px;
+          display: flex;
+          align-items: center;
+          gap: 3px;
+          margin-bottom: 2px;
+          white-space: nowrap;
+        ">
+          <span style="font-size: 8.5px; line-height: 1;">${badgeMeta.emoji}</span>
+          <span>${badgeMeta.label}</span>
+        </div>
+
+        <!-- Asset Name -->
+        <div style="
+          color: #ffffff;
+          font-family: system-ui, -apple-system, sans-serif;
+          font-size: 10.5px;
+          font-weight: 800;
+          line-height: 1.2;
+          text-align: center;
+          letter-spacing: -0.01em;
+          margin-bottom: 1.5px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 160px;
+          text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+        ">
+          ${opts.name}
+        </div>
+
+        <!-- Key Metric (Clean 1-liner) -->
+        ${opts.metricText ? `
+          <div class="infra-marker-metric" style="
+            color: #cbd5e1;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 8.5px;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.15;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 155px;
+          ">
+            ${opts.metricText}
+          </div>
+        ` : ''}
+
+        <!-- Bottom Triangle Pointer -->
+        <div style="
+          position: absolute;
+          bottom: -4px;
+          left: 50%;
+          transform: translateX(-50%) rotate(45deg);
+          width: 7px;
+          height: 7px;
+          background: rgba(6, 10, 18, 0.95);
+          border-right: 1px solid ${color}80;
+          border-bottom: 1px solid ${color}80;
+        "></div>
       </div>
 
-      <!-- Ground Needle Anchor -->
-      <div style="
-        position: absolute;
-        bottom: -8px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 3px;
-        height: 8px;
-        background: #ffffff;
-        border-radius: 0 0 2px 2px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        z-index: 9;
-      "></div>
+      <!-- The 3D Ground Pin Beacon -->
+      <div class="infra-marker-beacon" style="position: relative; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+        <!-- Outer pulsing animated radar ring -->
+        <div style="
+          position: absolute;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: ${color}25;
+          border: 1.5px solid ${color};
+          animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+        "></div>
+
+        <!-- Concentric secondary glow ring -->
+        <div style="
+          position: absolute;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          box-shadow: 0 0 12px ${color}, inset 0 0 7px ${color}80;
+        "></div>
+
+        <!-- Glossy 3D Teardrop Pin Body with Detailed Logo -->
+        <div style="
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          background: radial-gradient(circle at 35% 35%, ${color}, #050912 85%);
+          border: 2px solid #ffffff;
+          box-shadow: 0 3px 9px rgba(0,0,0,0.9), 0 0 14px ${color}80;
+          color: #ffffff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          z-index: 10;
+        ">
+          ${svgIcon}
+        </div>
+
+        <!-- Ground Needle Anchor -->
+        <div style="
+          position: absolute;
+          bottom: -6px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 2.5px;
+          height: 6px;
+          background: #ffffff;
+          border-radius: 0 0 1.5px 1.5px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.8);
+          z-index: 9;
+        "></div>
+      </div>
     </div>
   `;
 
   return container;
+}
+
+function applyMarkerScaleToElement(map: Map) {
+  const marker = (map as any)._activeInfraMarker;
+  if (!marker) return;
+  const el = marker.getElement();
+  if (!el) return;
+  const scaler = el.querySelector('.infra-marker-zoom-scaler') as HTMLElement | null;
+  if (!scaler) return;
+  const z = map.getZoom();
+  const scale = computeMarkerZoomScale(z);
+  scaler.style.transform = `scale(${scale.toFixed(3)})`;
+  const metricEl = el.querySelector('.infra-marker-metric') as HTMLElement | null;
+  if (metricEl) {
+    if (z >= 11) {
+      metricEl.style.display = 'none';
+    } else {
+      metricEl.style.display = 'block';
+    }
+  }
 }
 
 function clearSearchHighlight(map: Map) {
@@ -1050,13 +1159,15 @@ function applySearchHighlight(map: Map, target: SearchTarget | null) {
               name: p.name,
               category: p.category || 'railways',
               subType: p.sub_type,
-              metricText: p.route_type || p.summary || (p.length_km ? `${p.length_km} km` : undefined),
-              color: color
+              metricText: getCompactInfrastructureMetric(p),
+              color: color,
+              initialZoom: map.getZoom()
             });
             const marker = new Marker({ element: markerEl, anchor: 'bottom' })
               .setLngLat(anchorCoords)
               .addTo(map);
             (map as any)._activeInfraMarker = marker;
+            applyMarkerScaleToElement(map);
           } catch (e) {
             console.warn('Marker placement error in applySearchHighlight:', e);
           }
@@ -4778,6 +4889,10 @@ export const MapEngine: React.FC<MapEngineProps> = ({
           if (map.getLayer('env-highlight-border')) map.setFilter('env-highlight-border', ['==', ['id'], '']);
           if (map.getLayer('env-highlight-line')) map.setFilter('env-highlight-line', ['==', ['id'], '']);
           if (map.getLayer('env-highlight-point')) map.setFilter('env-highlight-point', ['==', ['id'], '']);
+          if ((map as any)._activeInfraMarker) {
+            try { (map as any)._activeInfraMarker.remove(); } catch {}
+            (map as any)._activeInfraMarker = null;
+          }
           const searchHighlightSrc = map.getSource('search-highlight') as { setData: (d: unknown) => void } | undefined;
           if (searchHighlightSrc) searchHighlightSrc.setData({ type: 'FeatureCollection', features: [] });
         };
@@ -5026,6 +5141,10 @@ export const MapEngine: React.FC<MapEngineProps> = ({
           onSelectFeature(null);
         }
       });
+
+      // Dynamic zoom-responsive scaling listener for active on-map markers
+      map.on('zoom', () => applyMarkerScaleToElement(map));
+      map.on('zoomend', () => applyMarkerScaleToElement(map));
 
     });
 
@@ -5339,14 +5458,16 @@ export const MapEngine: React.FC<MapEngineProps> = ({
             name: featName || p.name || 'Asset',
             category: p.category || (type === 'highway' ? 'highways' : 'railways'),
             subType: p.sub_type,
-            metricText: p.route_type || p.summary || (p.length_km ? `${p.length_km} km` : undefined),
-            color: color
+            metricText: getCompactInfrastructureMetric(p),
+            color: color,
+            initialZoom: map.getZoom()
           });
           const marker = new Marker({ element: markerEl, anchor: 'bottom' })
             .setLngLat(anchorCoords)
             .addTo(map);
           activeMarkerRef.current = marker;
           (map as any)._activeInfraMarker = marker;
+          applyMarkerScaleToElement(map);
         } catch (e) {
           console.warn('Marker placement error in selectedFeature effect:', e);
         }

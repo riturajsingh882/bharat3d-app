@@ -150,19 +150,27 @@ bharat3d-app/
     ├── types.ts               # shared TypeScript types
     ├── index.css              # design system (fonts, palette, panels)
     ├── data/
-    │   ├── historicalEras.ts          # historical era metadata
-    │   └── environmentalChange.ts     # 8 environmental change pillars & metadata
-    ├── utils/elevation.ts             # elevation formatting & registry
+    │   ├── historicalEras.ts          # 13 historical era metadata
+    │   ├── environmentalChange.ts     # 8 environmental change pillars & metadata
+    │   ├── environmentalGeojson.ts    # 42 pre-bundled environmental features
+    │   ├── disasterIntelligence.ts    # 8 disaster hazard pillars & 1897-2024 timeline
+    │   ├── infrastructureIntelligence.ts # 138 assets across 9 infrastructure sectors
+    │   ├── stateAgriculture.ts        # state agricultural crops & production
+    │   ├── stateLandmarks.ts          # state UNESCO & cultural landmarks
+    │   └── stateWildlife.ts           # state wildlife reserves & sanctuaries
+    ├── utils/elevation.ts             # dual elevation formatting & registry
     └── components/
-        ├── MapEngine.tsx              # MapLibre map, layers, interactions, search highlight
-        ├── TopNavBar.tsx              # search, basemap, 3D, views, compare, eco change, sources
-        ├── SidebarNav.tsx             # layer toggles & sub-pillar controls
-        ├── InfoPanel.tsx              # feature dossier drawer
-        ├── HistoricalTimeline.tsx
+        ├── MapEngine.tsx              # MapLibre 3D engine, dynamic marker scaler & canvas
+        ├── TopNavBar.tsx              # search, basemap, 3D, views, compare, sources
+        ├── SidebarNav.tsx             # 15 thematic module drawers & controls
+        ├── InfoPanel.tsx              # feature dossier drawer & KPI dashboard
+        ├── HistoricalTimeline.tsx     # docked bottom dynastic timeline scrubber
+        ├── DisasterTimelineDeck.tsx   # dedicated bottom disaster event timeline (1897-2024)
         ├── EnvironmentalComparisonDeck.tsx # floating multi-decadal year comparison dock
-        ├── StateComparisonModal.tsx
-        ├── SourceModal.tsx
-        ├── LoadingScreen.tsx
+        ├── StateComparisonModal.tsx   # side-by-side dual-state comparison studio
+        ├── SoilDataModal.tsx          # ICAR soil chemical breakdown & quality modal
+        ├── SourceModal.tsx            # official provenance & data registry
+        ├── LoadingScreen.tsx          # cinematic splash screen
         └── BharatLogo.tsx
 ```
 

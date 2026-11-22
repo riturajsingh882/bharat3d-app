@@ -415,8 +415,11 @@ INTERACTIVE INDIA 3D DATA/
 ├── PREREQUISITES_AND_ARCHITECTURE.md     <- This file (developer & prerequisites manual)
 ├── DATA_SOURCE_REGISTRY.md                <- Detailed scientific audit of all data sources
 ├── DATA_AVAILABILITY_MATRIX.md            <- Feasibility & layer availability matrix
+├── SOIL_DATA_QUALITY_REPORT.md            <- ICAR soil classification quality & scientific audit
+├── SOIL_SOURCE/                           <- Reference soil vector datasets and shapefile assets
 ├── start-bharat3d.bat                     <- One-click launch script for Windows
 └── bharat3d-app/                          <- React + Vite web application root
+    ├── README.md                          <- Dedicated application-level technical overview
     ├── package.json                       <- Project dependencies, scripts & metadata
     ├── vite.config.ts                     <- Vite configuration & React/Tailwind plugins
     ├── tsconfig.json                      <- TypeScript compilation settings
@@ -438,7 +441,9 @@ INTERACTIVE INDIA 3D DATA/
     │       ├── disaster_seismic_zones.geojson <- BIS 1893 seismic zones & M7+ epicenters
     │       ├── environmental_change.geojson <- 42 features across 8 foundations (FSI, SAC-ISRO, CGWB, NCCR)
     │       ├── india_urban_nodes.geojson  <- Major urban city centers
-    │       ├── elevation_high_points.json <- Precision summit coordinates & ft/in data
+    │       ├── india_elevation_points.geojson <- Precision summit coordinates & ft/in data
+    │       ├── state_centroids.geojson    <- Calculated label anchors for 36 states and UTs
+    │       ├── soils_of_india_reference.jpg <- Official ICAR reference atlas plate
     │       ├── census_demographics.json   <- Census 2011 PCA + C-01 demographic data
     │       └── search_index.json          <- Pre-compiled search lookup index
     └── src/
@@ -450,8 +455,12 @@ INTERACTIVE INDIA 3D DATA/
         ├── data/
         │   ├── historicalEras.ts          <- 13 Historical era metadata, rulers, and dates
         │   ├── environmentalChange.ts     <- 8 Environmental change pillars, available years & metadata
+        │   ├── environmentalGeojson.ts    <- Pre-bundled fallback & 42 environmental GeoJSON features
         │   ├── disasterIntelligence.ts    <- 8 Disaster hazard pillars, seismic zones, epicenters & 1897-2024 timeline
-        │   └── infrastructureIntelligence.ts <- 138 Assets across 9 sectors (highways, rail hubs, airports, ports, dams, energy, SEZ)
+        │   ├── infrastructureIntelligence.ts <- 138 Assets across 9 sectors (highways, rail hubs, airports, ports, dams, energy, SEZ)
+        │   ├── stateAgriculture.ts        <- State-level agricultural crops & production data
+        │   ├── stateLandmarks.ts          <- State cultural & UNESCO heritage landmarks
+        │   └── stateWildlife.ts           <- State national parks, tiger reserves & sanctuaries
         ├── utils/
         │   └── elevation.ts               <- Dual feet/inches & metric elevation converter
         └── components/
@@ -461,9 +470,10 @@ INTERACTIVE INDIA 3D DATA/
             ├── MapEngine.tsx              <- Core MapLibre GL 3D WebGL engine & canvas with 3D beacon pins
             ├── InfoPanel.tsx              <- Right intelligence dossier & KPI dashboard
             ├── HistoricalTimeline.tsx     <- Docked bottom dynastic timeline scrubber & play controls
-            ├── DisasterTimeline.tsx       <- Dedicated docked bottom disaster event timeline deck (1897-2024)
+            ├── DisasterTimelineDeck.tsx   <- Dedicated docked bottom disaster event timeline deck (1897-2024)
             ├── EnvironmentalComparisonDeck.tsx <- Multi-decadal year comparison floating dock & delta toggles
             ├── StateComparisonModal.tsx   <- Side-by-side dual-state comparison studio
+            ├── SoilDataModal.tsx          <- ICAR soil classification quality & chemical breakdown modal
             ├── SourceModal.tsx            <- Official Provenance & Data Registry dialog
             └── LoadingScreen.tsx          <- Initializing cinematic splash screen
 ```
